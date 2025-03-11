@@ -5,7 +5,6 @@ public class Main {
 //        UIScanner scannerUI = new UIScanner();
 //        scannerUI.start();
         Config config = new Config();
-        config.initialize();
         System.out.println("aside.home = " + config.getAsideHome());
 
     }

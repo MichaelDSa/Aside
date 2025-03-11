@@ -8,7 +8,7 @@ import java.util.List;
 
 public class UIConfig {
     private Path asideHome;
-    private final List<Path> suggestions = SearchFor.mockUserHomeDirectories().search("documents");
+    private final List<Path> suggestions = SearchFor.mockHomeUserDirectories().search("documents");
 
     public void ui(){
 
@@ -20,7 +20,7 @@ public class UIConfig {
             System.out.println("Here are some suggested directories...");
 
             for(int i = 0; i < suggestions.size(); i++){
-                System.out.printf("%d) %s%n", i+1, suggestions.get(i));
+                System.out.printf("%d) %s%n", i+1, suggestions.get(i).toAbsolutePath());
             }
 
             System.out.println("Select a number from the above menu, or enter a full path:");
@@ -28,7 +28,7 @@ public class UIConfig {
             System.out.println("Enter directory below (suggestion: chose a documents folder):");
         }
 
-        asideHome = consoleGetPath("GO: ");
+        asideHome = consoleGetPath(": ");
         if(!Files.isDirectory(asideHome)){
             do {
                 asideHome = consoleGetPath(" not a directory: " + asideHome.toString() + " \nTry again or 'exit' to quit");
@@ -59,7 +59,7 @@ public class UIConfig {
                 int index = Integer.parseInt(input) - 1;
                 if(index >= 0 && index < suggestions.size()){
 
-                    return suggestions.get(index);
+                    return suggestions.get(index).toAbsolutePath();
 
                 } else {
                     System.out.println("choose a number from the menu.");
@@ -77,6 +77,6 @@ public class UIConfig {
         }
     }
 
-    public Path getAsideHome() {return asideHome;}
+    public Path getParentAsideHome() {return asideHome;}
 
 }

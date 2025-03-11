@@ -6,8 +6,8 @@ public interface SearchFor {
         return new UserHomeDirectories();
     }
 
-    static Search mockUserHomeDirectories() {
-        return new MockUserHomeDirectories();
+    static Search mockHomeUserDirectories() {
+        return new MockHomeUserDirectories();
     }
 
 }
