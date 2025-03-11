@@ -6,5 +6,8 @@ public class Main {
 //        scannerUI.start();
         Config config = new Config();
         config.initialize();
+
+
+
     }
 }

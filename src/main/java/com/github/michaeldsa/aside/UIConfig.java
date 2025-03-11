@@ -1,48 +1,80 @@
 package com.github.michaeldsa.aside;
 
-import java.io.IOException;
+import java.io.Console;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class UIConfig {
-    private final Path home = Paths.get(System.getProperty("user.home"));
-    private String parentDir;
+    Path asidePath;
+    List<Path> suggestions = SearchFor.mockUserHomeDirectories().search("documents");
 
     public void ui(){
 
-        if (document_folders.size() > 1) {
-            System.out.printf("Set home directory to: %s?%n ", document_folders.getLast());
-            System.out.println("Alternative folders found");
-            for (int i = 0; i < document_folders.size(); i++) {
-                System.out.printf("%d: %s%n", i, document_folders.get(i));
+        // greet & prep user
+        Prnt.width80ch("Welcome to Aside. This is the Configuration UI. Here, we will  assign a dedicated path for all notes, metadata, configuration files and more. Please answer a few questions to assign these configuration settings ");
+        Prnt.width80ch("Set Aside_home: Which directory would you like to store all Aside notes?");
+
+        if(!suggestions.isEmpty()) {
+            System.out.println("Here are some suggested directories...");
+
+            for(int i = 0; i < suggestions.size(); i++){
+                System.out.printf("%d) %s%n", i+1, suggestions.get(i));
             }
-        } else if (document_folders.size() == 1) {
-            System.out.printf("Set home directory to: %s%n? ", document_folders.get(0));
-        } else {
-            System.out.println("In which directory would you like to save the Aside home folder? Enter full path: ");
-        }
-    }
-    public List<Path> findSuggestions(){
-        return findSuggestions("documents");
-    }
-    public List<Path> findSuggestions(String choice) {
 
-        // find $XDG_DOCUMENTS in user.home, ignoring case.
-        List<Path> document_folders;
-        try (Stream<Path> pathStream = Files.find(
-                home,
-                3,
-                ((path, basicFileAttributes) ->
-                        path.getFileName().toString().equalsIgnoreCase(choice)))
-        ){
-            document_folders = pathStream.toList();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Select a number from the above menu, or enter a full path:");
         }
 
-        return document_folders;
+        asidePath = consoleGetPath("Enter directory: ");
+        if(!Files.isDirectory(asidePath)){
+            do {
+                asidePath = consoleGetPath(" not a directory: " + asidePath.toString() + " \nTry again or 'exit' to quit");
+            } while (!Files.isDirectory(asidePath));
+        }
     }
+
+    private boolean canParseInt(String string){
+        try {
+            Integer.parseInt(string);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
+    }
+
+    private Path consoleGetPath(String prompt){
+        Console console = System.console();
+        String input = "";
+        Path chosen;
+
+        while(true){
+            input = console.readLine(prompt);
+            if (input.equals("exit")){
+                System.out.println("Exiting...");
+                System.exit(0);
+            } else if(!suggestions.isEmpty() && canParseInt(input)){
+                int index = Integer.parseInt(input) - 1;
+                if(index >= 0 && index < suggestions.size()){
+
+                    return suggestions.get(index);
+
+                } else {
+                    System.out.println("choose a number from the menu.");
+                }
+            } else {
+                chosen = Paths.get(input);
+                if(Files.exists(chosen)){
+
+                    return chosen;
+
+                } else {
+                    System.out.println("Path is invalid. Does not exist, or is not a directory.");
+                }
+            }
+        }
+    }
+
+    public Path getAsidePath() {return asidePath;}
+
 }
