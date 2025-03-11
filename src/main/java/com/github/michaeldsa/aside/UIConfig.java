@@ -7,8 +7,8 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class UIConfig {
-    Path asidePath;
-    List<Path> suggestions = SearchFor.mockUserHomeDirectories().search("documents");
+    private Path asideHome;
+    private final List<Path> suggestions = SearchFor.mockUserHomeDirectories().search("documents");
 
     public void ui(){
 
@@ -24,13 +24,15 @@ public class UIConfig {
             }
 
             System.out.println("Select a number from the above menu, or enter a full path:");
+        } else {
+            System.out.println("Enter directory below (suggestion: chose a documents folder):");
         }
 
-        asidePath = consoleGetPath("Enter directory: ");
-        if(!Files.isDirectory(asidePath)){
+        asideHome = consoleGetPath("GO: ");
+        if(!Files.isDirectory(asideHome)){
             do {
-                asidePath = consoleGetPath(" not a directory: " + asidePath.toString() + " \nTry again or 'exit' to quit");
-            } while (!Files.isDirectory(asidePath));
+                asideHome = consoleGetPath(" not a directory: " + asideHome.toString() + " \nTry again or 'exit' to quit");
+            } while (!Files.isDirectory(asideHome));
         }
     }
 
@@ -62,7 +64,7 @@ public class UIConfig {
                 } else {
                     System.out.println("choose a number from the menu.");
                 }
-            } else {
+            } else if (!input.isEmpty()){
                 chosen = Paths.get(input);
                 if(Files.exists(chosen)){
 
@@ -75,6 +77,6 @@ public class UIConfig {
         }
     }
 
-    public Path getAsidePath() {return asidePath;}
+    public Path getAsideHome() {return asideHome;}
 
 }

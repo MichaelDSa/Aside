@@ -6,8 +6,7 @@ public class Main {
 //        scannerUI.start();
         Config config = new Config();
         config.initialize();
-
-
+        System.out.println("aside.home = " + config.getAsideHome());
 
     }
 }
