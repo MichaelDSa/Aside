@@ -7,33 +7,34 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class UIConfig {
-    private Path asideHome;
-    private final List<Path> suggestions = SearchFor.mockHomeUserDirectories().search("documents");
+    private Path parentAsideHome;
+    private final List<Path> suggestions;
+
+    public UIConfig(){
+        suggestions = SearchFor.mockHomeUserDirectories().search("documents");
+        // parentAsideHome is assigned interactively with ui().
+    }
 
     public void ui(){
 
         // greet & prep user
-        Prnt.width80ch("Welcome to Aside. This is the Configuration UI. Here, we will  assign a dedicated path for all notes, metadata, configuration files and more. Please answer a few questions to assign these configuration settings ");
-        Prnt.width80ch("Set Aside_home: Which directory would you like to store all Aside notes?");
+        System.out.printf("%nWelcome to Aside.%n");
+        Prnt.width80ch("This is the configuration UI. Aside wants to create a designated folder in which to store all notes, metadata, configuration files and more. This folder will be called 'Aside_home'. Please choose a directory in which the Aside_home folder will live. You may enter your choice below.");
+        Prnt.width80ch("%nHint: '~/' not accepted. Use `/home/[username]/Documents`, not `~/Documents`");
 
         if(!suggestions.isEmpty()) {
-            System.out.println("Here are some suggested directories...");
+            System.out.printf("%nHere are some suggested directories...%n");
 
             for(int i = 0; i < suggestions.size(); i++){
                 System.out.printf("%d) %s%n", i+1, suggestions.get(i).toAbsolutePath());
             }
 
-            System.out.println("Select a number from the above menu, or enter a full path:");
+            Prnt.width80ch("Select a number from the above menu, enter a full path, or 'exit' to quit:");
         } else {
-            System.out.println("Enter directory below (suggestion: chose a documents folder):");
+            Prnt.width80ch("Enter directory below or 'exit' to quit. (suggestion: chose a documents folder):");
         }
 
-        asideHome = consoleGetPath(": ");
-        if(!Files.isDirectory(asideHome)){
-            do {
-                asideHome = consoleGetPath(" not a directory: " + asideHome.toString() + " \nTry again or 'exit' to quit");
-            } while (!Files.isDirectory(asideHome));
-        }
+        parentAsideHome = consoleGetPath(": ");
     }
 
     private boolean canParseInt(String string){
@@ -49,6 +50,7 @@ public class UIConfig {
         Console console = System.console();
         String input = "";
         Path chosen;
+        int count = 1;
 
         while(true){
             input = console.readLine(prompt);
@@ -66,7 +68,7 @@ public class UIConfig {
                 }
             } else if (!input.isEmpty()){
                 chosen = Paths.get(input);
-                if(Files.exists(chosen)){
+                if(Files.exists(chosen) && Files.isDirectory(chosen)){
 
                     return chosen;
 
@@ -74,9 +76,12 @@ public class UIConfig {
                     System.out.println("Path is invalid. Does not exist, or is not a directory.");
                 }
             }
+            if(count++ % 3 == 0){
+                System.out.println("'exit' to quit.");
+            }
         }
     }
 
-    public Path getParentAsideHome() {return asideHome;}
+    public Path getParentAsideHome() {return parentAsideHome;}
 
 }

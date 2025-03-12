@@ -15,7 +15,7 @@ public class Config {
     // Paths to configuration directories & files:
 //    private final Path home = Paths.get(System.getProperty("user.home"));  // This will be the real user home:
     private final Path configParentPath;    // ~/.config/
-    private final Path configFilePath;      // ~/.config/aside/
+    private final Path configFileParent;    // ~/.config/aside/
     private final Path asideHomeFilename; // Last element of application root directory Path.
                                           // Full parent dir given by user interaction
     private final Properties properties;  // abstraction for reading config file
@@ -35,7 +35,7 @@ public class Config {
         // private final Path home = Paths.get(System.getProperty("user.home"));  // This will be the real user home:
         Path home = Paths.get("MOCK", "home", "user");  // pretend this is /home/user/
         configParentPath = home.resolve(Paths.get(".config", configFolder)); // ~/.config/aside/
-        configFilePath = configParentPath.resolve(configFile);  // ~/.config/aside/config
+        configFileParent = configParentPath.resolve(configFile);  // ~/.config/aside/config
 
         // application root directory name: Will be resolved to user's choice.
         // full resolved path to be saved in config file via Properties object.
@@ -64,7 +64,7 @@ public class Config {
         }
 
         // get, set, store user data, or load it if it already stored.
-        if (Files.notExists(configFilePath) || !validateFileSize(configFilePath)) {
+        if (Files.notExists(configFileParent) || !validateFileSize(configFileParent)) {
 
             // interact with user to get configuration property: aside_home=?
             UIConfig uiconfig = new UIConfig();
@@ -76,9 +76,9 @@ public class Config {
             properties.setProperty("aside_home", asideHomeFilePath.toString());
 
             // store user data
-            try (OutputStream out = Files.newOutputStream(configFilePath, CREATE, WRITE)) {
+            try (OutputStream out = Files.newOutputStream(configFileParent, CREATE, WRITE)) {
                 properties.store(out, " important directories:");
-                properties.load(Files.newInputStream(configFilePath, READ));
+                properties.load(Files.newInputStream(configFileParent, READ));
             } catch (IOException e) {
                 System.err.println("failed to write config file: " + e.getMessage());
             }
@@ -86,9 +86,9 @@ public class Config {
         // if config file exists, load it:
         } else {
             try {
-                properties.load(Files.newInputStream(configFilePath, READ));
+                properties.load(Files.newInputStream(configFileParent, READ));
             } catch (IOException e) {
-                System.out.printf("failed to load config file: %s%n%s%n", configFilePath, e);
+                System.out.printf("failed to load config file: %s%n%s%n", configFileParent, e);
             }
         }
 
