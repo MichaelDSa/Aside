@@ -16,9 +16,12 @@ public class UIConfig {
     }
 
     public void ui(){
+        ui("Welcome to Aside.");
+    }
+    public void ui(String message){
 
         // greet & prep user
-        System.out.printf("%nWelcome to Aside.%n");
+        System.out.printf("%n%s%n", message);
         Prnt.width80ch("This is the configuration UI. Aside wants to create a designated folder in which to store all notes, metadata, configuration files and more. This folder will be called 'Aside_home'. Please choose a directory in which the Aside_home folder will live. You may enter your choice below.");
         Prnt.width80ch("%nHint: '~/' not accepted. Use `/home/[username]/Documents`, not `~/Documents`");
 

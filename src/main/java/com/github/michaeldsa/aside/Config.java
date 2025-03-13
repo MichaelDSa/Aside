@@ -14,32 +14,49 @@ import static java.nio.file.StandardOpenOption.*;
 public class Config {
     // Paths to configuration directories & files:
 //    private final Path home = Paths.get(System.getProperty("user.home"));  // This will be the real user home:
-    private final Path configParentPath;    // ~/.config/
-    private final Path configFileParent;    // ~/.config/aside/
-    private final Path asideHomeFilename; // Last element of application root directory Path.
+    private final Path linuxConfig;
+    private final Path macConfig;
+    private final Path winConifg;
+    private final Path configPath;    // ~/.config/aside/config
+    private Path config_file;
+    private final Path configPath_full;
+    private final Path asideDir; // Last element of application root directory Path.
                                           // Full parent dir given by user interaction
     private final Properties properties;  // abstraction for reading config file
 
     public Config() {
 
-        // unchanging file names. Other folder/file names may change based on OS.
-        final String configFolder = "aside";
-        final String configFile = "config";
-        final String rootFolder = "Aside_home";
+        // main folder that serves as root of aside directory:
+        final String rootDir = "Aside_home";
 
-        // TODO:
-        // [ ] branching statement based on o.s.. dir names will differ. Linux for now.
-        //    [ ] Windows
-        //    [ ] Mac
+        // config file, last element of path:
+        config_file = Paths.get("config");
 
-        // private final Path home = Paths.get(System.getProperty("user.home"));  // This will be the real user home:
-        Path home = Paths.get("MOCK", "home", "user");  // pretend this is /home/user/
-        configParentPath = home.resolve(Paths.get(".config", configFolder)); // ~/.config/aside/
-        configFileParent = configParentPath.resolve(configFile);  // ~/.config/aside/config
+        linuxConfig = Paths.get(System.getProperty("user.home"), ".config", "aside"); // $XDG_CONFIG_HOME
+        macConfig = Paths.get(System.getProperty("user.home"), ".aside");
+        winConifg = Paths.get(System.getProperty("user.home"), ".aside");
+
+        // default config path & file is linuxConfig / 'config':
+//        configPath = linuxConfig;
+//
+//        String osName = System.getProperty("os,name");
+//        if(osName.toLowerCase(Locale.ENGLISH).startsWith("win")) {
+//            configPath = winConifg;
+//            config_file = Paths.get("config.txt");
+//        } else if (osName.toLowerCase(Locale.ENGLISH).startsWith("mac")) {
+//            configPath = macConfig;
+//        }
+
+        // assign to test dir for now. uncomment above
+        // branch and delete following line when ready
+        configPath = Paths.get("MOCK", "home", "user", ".config");
+
+        // configPath_full: config directory including config file:
+        configPath_full = configPath.resolve(config_file);
 
         // application root directory name: Will be resolved to user's choice.
         // full resolved path to be saved in config file via Properties object.
-        asideHomeFilename = Paths.get(rootFolder);
+        asideDir = Paths.get(rootDir);
 
         properties = new Properties();
 
@@ -55,42 +72,33 @@ public class Config {
 
         // If not exists, create the parent directory
         // of the config file (~/.config/aside/):
-        if(Files.notExists(configParentPath)){
+        if(Files.notExists(configPath)){
             try {
-                Files.createDirectories(configParentPath);
+                Files.createDirectories(configPath);
             } catch (IOException e) {
-                System.err.printf("failed to create config parent directory: %s%n%s%n", configParentPath, e);
+                System.err.printf("failed to create config parent directory: %s%n%s%n", configPath, e);
             }
         }
 
         // get, set, store user data, or load it if it already stored.
-        if (Files.notExists(configFileParent) || !validateFileSize(configFileParent)) {
+        if (Files.notExists(configPath_full) || !validateFileSize(configPath_full)) {
 
-            // interact with user to get configuration property: aside_home=?
-            UIConfig uiconfig = new UIConfig();
-            uiconfig.ui();
-            Path asideHomeFilePath = uiconfig.getParentAsideHome().resolve(asideHomeFilename).toAbsolutePath().normalize();
-
-
-            // set the user data
-            properties.setProperty("aside_home", asideHomeFilePath.toString());
-
-            // store user data
-            try (OutputStream out = Files.newOutputStream(configFileParent, CREATE, WRITE)) {
-                properties.store(out, " important directories:");
-                properties.load(Files.newInputStream(configFileParent, READ));
-            } catch (IOException e) {
-                System.err.println("failed to write config file: " + e.getMessage());
-            }
-
-        // if config file exists, load it:
-        } else {
-            try {
-                properties.load(Files.newInputStream(configFileParent, READ));
-            } catch (IOException e) {
-                System.out.printf("failed to load config file: %s%n%s%n", configFileParent, e);
-            }
+            configurePropertiesWithUser();
+            storeProperties();
         }
+
+        // if the loaded file does not have the home_directory
+        // key, we need to get, set, save, and load that data.
+        loadProperties();
+        if(properties.contains("home_directory") ||
+                properties.getProperty("home_directory") == null) {
+
+           configurePropertiesWithUser("Problem with config file.");
+           storeProperties();
+           loadProperties();
+
+        }
+
 
         // If necessary create Aside_home root
         // folder as specified by config file:
@@ -106,8 +114,9 @@ public class Config {
     // returns Aside_home root folder
     // as specified by config file:
     public Path getAsideHome(){
-        return Paths.get(properties.getProperty("aside_home"));
+        return Paths.get(properties.getProperty("home_directory"));
     }
+
 
     private boolean validateFileSize(Path file) {
         try {
@@ -117,4 +126,42 @@ public class Config {
         }
     }
 
+    public void configurePropertiesWithUser() {
+        configurePropertiesWithUser(null);
+    }
+
+    public void configurePropertiesWithUser(String message) {
+
+        // interact with user to get configuration property: aside_home=?
+        UIConfig uiconfig = new UIConfig();
+        if(message == null){
+            uiconfig.ui();
+        } else {
+            uiconfig.ui(message);
+        }
+
+        // get the full path of the aside_home_directory
+        Path asideHomeFilePath = uiconfig.getParentAsideHome().resolve(asideDir).toAbsolutePath().normalize();
+
+        // set the user data
+        properties.setProperty("home_directory", asideHomeFilePath.toString());
+    }
+
+    public void storeProperties() {
+        // store user data
+        try (OutputStream out = Files.newOutputStream(configPath_full, CREATE, WRITE)) {
+            properties.store(out, " home directory:");
+        } catch (IOException e) {
+            System.err.println("failed to write config file: " + e.getMessage());
+        }
+    }
+
+    public void loadProperties() {
+        // load user data
+        try (OutputStream out = Files.newOutputStream(configPath_full, CREATE, WRITE)) {
+            properties.load(Files.newInputStream(configPath_full, READ));
+        } catch (IOException e) {
+            System.err.println("failed to write config file: " + e.getMessage());
+        }
+    }
 }
