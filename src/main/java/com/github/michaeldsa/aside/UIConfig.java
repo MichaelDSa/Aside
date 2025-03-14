@@ -4,15 +4,21 @@ import java.io.Console;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class UIConfig {
     private Path parentAsideHome;
     private final List<Path> suggestions;
 
     public UIConfig(){
+        if(!System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("mac")){
 //        suggestions = SearchFor.mockHomeUserDirectories().search("documents");
-        suggestions = SearchFor.userHomeDirectories().search("documents");
+            suggestions = SearchFor.userHomeDirectories().search("documents");
+        } else {
+            suggestions = new ArrayList<>();
+        }
         // parentAsideHome is assigned interactively with ui().
     }
 
