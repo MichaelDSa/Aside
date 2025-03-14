@@ -11,7 +11,8 @@ public class UIConfig {
     private final List<Path> suggestions;
 
     public UIConfig(){
-        suggestions = SearchFor.mockHomeUserDirectories().search("documents");
+//        suggestions = SearchFor.mockHomeUserDirectories().search("documents");
+        suggestions = SearchFor.userHomeDirectories().search("documents");
         // parentAsideHome is assigned interactively with ui().
     }
 
