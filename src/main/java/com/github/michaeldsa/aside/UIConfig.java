@@ -13,11 +13,12 @@ public class UIConfig {
     private final List<Path> suggestions;
 
     public UIConfig(){
-        if(!System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("mac")){
-//        suggestions = SearchFor.mockHomeUserDirectories().search("documents");
-            suggestions = SearchFor.userHomeDirectories().search("documents");
-        } else {
+        if(System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("mac")){
             suggestions = new ArrayList<>();
+            suggestions.add(Paths.get(System.getProperty("user.home"), "Documents"));
+        } else {
+            suggestions = SearchFor.userHomeDirectories().search("documents");
+//        suggestions = SearchFor.mockHomeUserDirectories().search("documents");
         }
         // parentAsideHome is assigned interactively with ui().
     }
