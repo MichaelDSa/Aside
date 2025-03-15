@@ -52,6 +52,10 @@ public interface Search {
                     }
                     return FileVisitResult.CONTINUE;
                 }
+                @Override
+                public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+                    return FileVisitResult.CONTINUE;
+                }
 
             });
         } catch (IOException e) {
