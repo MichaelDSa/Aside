@@ -15,8 +15,7 @@ public class UIConfig {
     public UIConfig(){
 
         if(System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("mac")){
-            // Avoid exceptions and prompts caused by
-            // TCC on mac by only suggesting ~/Documents
+            // Avoid TCC nuisance on macOS.
             suggestions = new ArrayList<>();
             suggestions.add(Paths.get(System.getProperty("user.home"), "Documents"));
         } else {

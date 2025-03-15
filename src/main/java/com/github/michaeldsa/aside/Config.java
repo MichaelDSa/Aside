@@ -39,7 +39,7 @@ public class Config {
         // CROSS-PLATFORM CONFIG SETUP:
         // VERIFIED WORKS ON:
         // [x] linux :-)
-        // [ ] mac
+        // [x] mac
         // [ ] win
         // default non-mac unix ($XDG_CONFIG_HOME)
         // uncomment following to pacify Intellij.
