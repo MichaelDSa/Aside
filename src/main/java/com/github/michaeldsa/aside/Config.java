@@ -46,18 +46,18 @@ public class Config {
         String osName = System.getProperty("os.name");
         Path dir = unixConfig;
         Path file = Paths.get("config");
-//        if (osName.toLowerCase(Locale.ENGLISH).contains("windows")) {
-//            dir = winConifg;
-//            file = Paths.get("config.txt");
-//        } else if (osName.toLowerCase(Locale.ENGLISH).contains("mac")) {
-//            dir = macConfig;
-//        }
-//        configPath = dir;
+        if (osName.toLowerCase(Locale.ENGLISH).contains("windows")) {
+            dir = winConifg;
+            file = Paths.get("config.txt");
+        } else if (osName.toLowerCase(Locale.ENGLISH).contains("mac")) {
+            dir = macConfig;
+        }
+        configPath = dir;
         final Path config_file = file;
 
         // assign to test dir for now. uncomment above
         // branch and delete following line when ready
-        configPath = Paths.get("MOCK", "home", "user", ".config");
+//        configPath = Paths.get("MOCK", "home", "user", ".config");
 
         // configPath_full: config directory including config file:
         configPath_full = configPath.resolve(config_file);

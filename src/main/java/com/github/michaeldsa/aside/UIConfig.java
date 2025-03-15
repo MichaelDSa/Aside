@@ -21,7 +21,7 @@ public class UIConfig {
             suggestions.add(Paths.get(System.getProperty("user.home"), "Documents"));
         } else {
             suggestions = SearchFor.userHomeDirectories().search("documents");
-//        suggestions = SearchFor.mockHomeUserDirectories().search("documents");
+//            suggestions = SearchFor.mockHomeUserDirectories().search("documents");
         }
         // parentAsideHome is assigned interactively with ui().
     }
