@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class UIConfig {
-    private Path parentAsideHome;
+    private Path aside_root_parent;
     private final List<Path> suggestions;
 
     public UIConfig(){
@@ -22,7 +22,7 @@ public class UIConfig {
             suggestions = SearchFor.userHomeDirectories().search("documents");
 //            suggestions = SearchFor.mockHomeUserDirectories().search("documents");
         }
-        // parentAsideHome is assigned interactively with ui().
+        // aside_root_parent is assigned interactively with ui().
     }
 
     public void ui(){
@@ -47,7 +47,7 @@ public class UIConfig {
             Prnt.width80ch("Enter directory below or 'exit' to quit. (suggestion: chose a documents folder):");
         }
 
-        parentAsideHome = consoleGetPath(": ");
+        aside_root_parent = consoleGetPath(": ");
     }
 
     private boolean canParseInt(String string){
@@ -95,6 +95,6 @@ public class UIConfig {
         }
     }
 
-    public Path getParentAsideHome() {return parentAsideHome;}
+    public Path getDirectoryHomeParent() {return aside_root_parent;}
 
 }

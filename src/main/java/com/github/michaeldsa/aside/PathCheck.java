@@ -18,7 +18,7 @@ public class PathCheck {
         }
 
         // All categories must start with either current or home:
-        if(!candidate.startsWith(pk.getHome())) {
+        if(!candidate.startsWith(pk.getHome_directory())) {
             candidate = pk.getCurrent().resolve(candidate);
         }
 
@@ -32,14 +32,14 @@ public class PathCheck {
     // returns true unless candidate is null, does not start with
     // home, or contains home in an element other than [0].
     private boolean validHomeUsage(Path candidate) {
-        if(candidate == null || !candidate.startsWith(pk.getHome()) ) {
+        if(candidate == null || !candidate.startsWith(pk.getHome_directory()) ) {
             return false;
         }
 
         if(candidate.getNameCount() > 1) {
             Path subpath = candidate.subpath(1, candidate.getNameCount());
             for(Path p : subpath) {
-                if(p.toString().equals(pk.getHome().toString())) {
+                if(p.toString().equals(pk.getHome_directory().toString())) {
                     return false;
                 }
             }
