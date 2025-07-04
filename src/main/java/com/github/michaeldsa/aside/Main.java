@@ -10,10 +10,14 @@ public class Main {
 //        scannerUI.start();
 
         Config config = new Config();
-        config.initialize();
+        boolean success = config.initialize();
         System.out.println("aside_root = " + config.get_aside_root());
-        System.out.println("metapath_root = " + config.get_meta_root());
-        System.out.println("viewpath_root = " + config.get_view_root());
+        System.out.println("metapath_root = " + config.get_metapath_root());
+        System.out.println("viewpath_root = " + config.get_viewpath_root());
+        System.out.println("Successful initialization: " + success);
+        if (!success) {
+            System.exit(1);
+        }
 
 //        PathKeeper pk = PathKeeper.INSTANCE;
 //        Test.metaPathNonDefaultConstructor();

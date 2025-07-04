@@ -17,10 +17,8 @@ import static java.nio.file.StandardOpenOption.*;
 public class Config {
 
     // Paths to configuration directories & files:
-    private final Path configPath;    // eg: ~/.config/aside/
     private final Path configPath_full; // eg: will become ~/.config/aside/config
     private final Path aside_root; // Last element of aside_root directory. Parent dir given by user interaction
-    private final String[] subdirectory_roots; // subdirectories to be resolved to directory_home, such as metapath_root, viewpath_root.
     private final Properties properties;  // Java abstraction for reading config files
 
 
@@ -31,32 +29,31 @@ public class Config {
         // parent directory of config file on each os:
         final Path unixConfig = Paths.get(System.getProperty("user.home"), ".config", "aside"); // $XDG_CONFIG_HOME
         final Path macConfig = Paths.get(System.getProperty("user.home"), ".aside");
-        final Path winConifg = Paths.get(System.getProperty("user.home"), ".aside");
+        final Path winConfig = Paths.get(System.getProperty("user.home"), ".aside");
 
-        // default config file parent directory
-        Path dir = unixConfig;
+        String os = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
+        // switch based on os:
+        // default case: "linux":
+        Path configPath = unixConfig;                    // eg: ~/.config/aside/
+        Path configFile = Paths.get("config");      // eg: ~/.config/aside/config
 
-        // default config file name:
-        Path file = Paths.get("config");
-
-        // assign value to configPath and file path based on os.name.
-        // Later configPath.resolve(file) will be configPath_full
-        String osName = System.getProperty("os.name");
-        if (osName.toLowerCase(Locale.ENGLISH).contains("windows")) {
-            dir = winConifg;
-            file = Paths.get("config.txt");
-        } else if (osName.toLowerCase(Locale.ENGLISH).contains("mac")) {
-            dir = macConfig;
+        switch (os) {
+            case "mac":
+                configPath = macConfig;
+                break;
+            case "windows":
+                configPath = winConfig;
+                configFile = Paths.get("config.txt");
+                break;
         }
-        configPath = dir;
-        final Path config_file = file;
 
+        configPath_full = configPath.resolve(configFile);
+
+        // TEST:
         // assign to test dir for testing. (un)comment above
         // branch and delete following line when necessary
 //        configPath = Paths.get("MOCK", "home", "user", ".config");
 
-        // configPath_full: config directory including config file:
-        configPath_full = configPath.resolve(config_file);
 
 
         // APPLICATION DIRECTORY SETUP (aside_root):
@@ -69,79 +66,39 @@ public class Config {
         // in config file via Properties
         aside_root = Paths.get(rootDir);
 
-        // necessary subdirectories of aside_home
-        subdirectory_roots = new String[]{".meta", "view", ".trash"};
-
         properties = new Properties();
 
     }
 
+    // detect config file and the sandbox root (aside_root):
+    public boolean initialize(){
 
-    // detect config file and the sandbox root, aside_root:
-    public void initialize() {
+        // necessary keys:
+        Set<String> keys = new HashSet<>(Arrays.asList("aside_root", "metapath_root", "viewpath_root"));
 
-        // create the path to the config file
-        // if it doesn't exist (~/.config/aside/):
-        if(Files.notExists(configPath)){
-            try {
-                Files.createDirectories(configPath);
-            } catch (IOException e) {
-                System.err.printf("failed to create config parent directory: %s%n%s%n", configPath, e);
-            }
+        // load properties; preserve success:
+        boolean configured = loadProperties();
+
+        if (!configured) {
+            configured = setup() && loadProperties();
         }
 
-        // If the config file does not exist, first get the data it
-        // needs from the user and other sources, then create the config file
-        // and store the properties. Later, we load the properties from source.
-        if (Files.notExists(configPath_full) || !validateFileSize(configPath_full)) {
-            configurePropertiesWithUser();
-            configure_metapath_root();
-            configure_viewpath_root();
-            storeProperties();
+        // check that all property keys are found, and that all associated directories exist:
+        if (configured) {
+            configured = allPropKeysFound(keys) && directoriesInPropertiesExist() && validateConfigPaths();
+        } else {
+            System.out.println("setup() or loadProperties() failed");
+            return false;
         }
 
-        // Now we load the properties, but if the file does not have the
-        // aside_root key, we again get the data from the user and other
-        // sources, and load the config file again.
-        loadProperties();
-        if( !properties.containsKey("aside_root")
-                || properties.getProperty("aside_root") == null
-                || properties.getProperty("aside_root").isEmpty()
-                || Files.notExists(Paths.get(properties.getProperty("aside_root")).getParent())
-                || !Files.isDirectory(Paths.get(properties.getProperty("aside_root")))
-        ) {
-
-
-            configurePropertiesWithUser("Problem with config file.");
-            configure_metapath_root();
-            configure_viewpath_root();
-            storeProperties();
-            loadProperties();
-
+        if (!configured) {
+            System.out.println("Failed: allPropKeysFound() && directoriesInPropertiesExist() && validateConfigPaths().\ncorrecting...");
+            // directories have not been created. attempt setup again, load properties, and check directories again:
+            configured = setup("Let's try that again.") && loadProperties() && allPropKeysFound(keys) && directoriesInPropertiesExist() && validateConfigPaths();
         }
 
-        // if aside_root path does not exist, create
-        // it as well as its necessary subdirectories.
-        // first check if the subdirectories exist
-        boolean subdirs_exist = false;
-        for (String subdir : subdirectory_roots) {
-            if (Files.exists(get_aside_root().resolve(subdir))){
-                subdirs_exist = true;
-            }
-        }
-        if (Files.notExists(get_aside_root()) || !subdirs_exist) {
-            try {
-                // directory_home
-                Files.createDirectories(get_aside_root());
+        return configured;
 
-                // sub-dirs of directory_home: .meta/, view/, .trash/
-                for (String subdir : subdirectory_roots) {
-                    Files.createDirectories(get_aside_root().resolve(subdir));
-                }
-            } catch (IOException e) {
-                System.err.printf("failed to create aside_home directory: %s%n%s%n", get_aside_root(), e);
-            }
-        }
     }
 
     // returns aside_root as specified by config file
@@ -157,13 +114,25 @@ public class Config {
         return Paths.get(properties.getProperty("viewpath_root"));
     }
 
+    public boolean allPropKeysFound(Set<String> keys) {
 
-    private boolean validateFileSize(Path file) {
-        try {
-            return Files.size(file) > 0;
-        } catch (IOException e) {
-            return false;
+        Set<String> propKeys = properties.stringPropertyNames();
+
+        boolean valid = propKeys.size() == keys.size();
+
+        if (!valid) {
+            System.out.println("allPropKeysFound(): key sizes don't match!");
         }
+
+        if(valid) {
+            for (String key : keys) {
+                if (!propKeys.contains(key)){
+                    System.out.println("allPropKeysFound() false");
+                    return false;
+                }
+            }
+        }
+        return valid;
     }
 
     public void configurePropertiesWithUser() {
@@ -172,7 +141,7 @@ public class Config {
 
     public void configurePropertiesWithUser(String message) {
 
-        // interact with user to get configuration property: aside_root=?
+        // interact with user to get configura
         UIConfig uiconfig = new UIConfig();
         if(message == null){
             uiconfig.ui();
@@ -212,6 +181,67 @@ public class Config {
         properties.setProperty("viewpath_root", viewpath.toString());
     }
 
+    public boolean directoriesInPropertiesExist() {
+
+        // make a modifiable set of the keys:
+        Set<String> keys = new HashSet<>(properties.stringPropertyNames());
+
+        // make a set of keys associated with non-directory values:
+        Set<String> nonDirKeys = new HashSet<>(Arrays.asList("Some_nonDir_example", "another_nonDir_example"));
+
+        // remove all non-dirs from set:
+        keys.removeAll(nonDirKeys);
+
+        // traverse only the directory keys:
+        for(String key : keys) {
+            String value = properties.getProperty(key);
+            Path path = Paths.get(value);
+            if(Files.notExists(path) || !Files.isDirectory(path) || value.isEmpty()){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean loadProperties() {
+        try (InputStream in = Files.newInputStream(configPath_full, READ)) {
+            properties.load(in);
+        } catch (IOException e) {
+            System.err.println("failed to read config file: " + e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public boolean setup() {return setup(null);}
+    public boolean setup(String message) {
+
+        // first set the properties:
+        if(Files.notExists(configPath_full) || !validateFileSize(configPath_full) || properties.getProperty("aside_root").isEmpty()){
+            configurePropertiesWithUser(message);
+        }
+        configure_metapath_root();
+        configure_viewpath_root();
+
+        // create the directories from the key values that are directories:
+        Set<String> nonDirKeys = new HashSet<>(Arrays.asList("Non_directory_key_example", "another_example"));
+        try {
+            for (String s : properties.stringPropertyNames()) {
+                if (!nonDirKeys.contains(s)) {
+                    Files.createDirectories(Paths.get(properties.getProperty(s)));
+                }
+            }
+            // then store properties:
+            storeProperties();
+        } catch (IOException e) {
+            System.err.printf("exception caught in Config.setup(). exception: %n%s%n", e.getMessage());
+            return false;
+        }
+
+        return true;
+
+    }
+
     public void storeProperties() {
         // store user data
         try (OutputStream out = Files.newOutputStream(configPath_full, CREATE, WRITE)) {
@@ -221,19 +251,19 @@ public class Config {
         }
     }
 
-    public void loadProperties() {
-        // load user data
-        try (OutputStream out = Files.newOutputStream(configPath_full, CREATE, WRITE)) {
-            properties.load(Files.newInputStream(configPath_full, READ));
-        } catch (IOException e) {
-            System.err.println("failed to write config file: " + e.getMessage());
-        }
+    private boolean validateConfigPaths() {
+        Path root = get_aside_root();
+        Path viewpath = get_viewpath_root();
+        Path metapath = get_metapath_root();
+
+        return viewpath.getParent().equals(root) && metapath.getParent().equals(root);
     }
-    public void loadProperties1() {
-        try (InputStream in = Files.newInputStream(configPath_full, CREATE, WRITE)) {
-            properties.load(in);
+
+    private boolean validateFileSize(Path file) {
+        try {
+            return Files.size(file) > 0;
         } catch (IOException e) {
-            System.err.println("failed to read config file: " + e.getMessage());
+            return false;
         }
     }
 }
