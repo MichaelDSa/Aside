@@ -1,6 +1,8 @@
 package com.github.michaeldsa.aside;
 
-public interface SearchFor {
+public class SearchFor {
+
+    private SearchFor () {}
 
     static Search userHomeDirectories() {
         return new UserHomeDirectories();

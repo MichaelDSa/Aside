@@ -10,21 +10,34 @@ import java.util.*;
 
 import static java.nio.file.StandardOpenOption.*;
 
-// Config validates or creates config file and application
-// root dir (aside_root=/path/to/aside_root). aside_root is
-// the root of the sandbox in which aside operates. If not
-// exists, its created interactively using UIConfig.ui().
-public class Config {
+// Config:
+// - is a Singleton
+// ** is used to initialize the application
+// - determines where config file will be stored based on os.
+// - validates the config file, or creates it if necessary.
+// - determines where the application will be sandboxed
+//   - this is done interactively if config file not found.
+// - creates, if necessary, fundamental directories in the sandbox.
+// ** is used to distribute configuration data to all backend clients,
+//   such as the fundamental directories, like sandbox root.
+public enum Config {
+    INSTANCE;
 
     // Paths to configuration directories & files:
     private final Path configPath_full; // eg: will become ~/.config/aside/config
     private final Path aside_root; // Last element of aside_root directory. Parent dir given by user interaction
     private final Properties properties;  // Java abstraction for reading config files
 
+    private final boolean success_initialization;
 
-    public Config() {
+    private final Path aside;
+    private final Path viewpath_root;
+    private final Path metapath_root;
 
-        // CONFIGURATION PATH SETUP:
+
+    Config() {
+
+        // DETERMINE CONFIG PATH
 
         // parent directory of config file on each os:
         final Path unixConfig = Paths.get(System.getProperty("user.home"), ".config", "aside"); // $XDG_CONFIG_HOME
@@ -36,7 +49,6 @@ public class Config {
         // default case: "linux":
         Path configPath = unixConfig;                    // eg: ~/.config/aside/
         Path configFile = Paths.get("config");      // eg: ~/.config/aside/config
-
         switch (os) {
             case "mac":
                 configPath = macConfig;
@@ -68,10 +80,25 @@ public class Config {
 
         properties = new Properties();
 
+        success_initialization = initialize();
+
+        if (isSuccess_initialization() && validateConfigPaths()) {
+            aside = Paths.get(properties.getProperty("aside_root"));
+            metapath_root = Paths.get(properties.getProperty("metapath_root"));
+            viewpath_root = Paths.get(properties.getProperty("viewpath_root"));
+        } else {
+            aside = null;
+            metapath_root = null;
+            viewpath_root = null;
+            System.err.println("Error initializing config");
+            System.exit(1);
+        }
+
+
     }
 
     // detect config file and the sandbox root (aside_root):
-    public boolean initialize(){
+    private boolean initialize(){
 
         // necessary keys:
         Set<String> keys = new HashSet<>(Arrays.asList("aside_root", "metapath_root", "viewpath_root"));
@@ -102,19 +129,23 @@ public class Config {
     }
 
     // returns aside_root as specified by config file
-    public Path get_aside_root(){
-        return Paths.get(properties.getProperty("aside_root"));
+    public Path getAside() {
+        return aside;
     }
 
-    public Path get_metapath_root() {
-        return Paths.get(properties.getProperty("metapath_root"));
+    public Path getMetapath() {
+        return metapath_root;
     }
 
-    public Path get_viewpath_root() {
-        return Paths.get(properties.getProperty("viewpath_root"));
+    public Path getViewpath() {
+        return viewpath_root;
     }
 
-    public boolean allPropKeysFound(Set<String> keys) {
+    public boolean isSuccess_initialization() {
+        return success_initialization;
+    }
+
+    private boolean allPropKeysFound(Set<String> keys) {
 
         Set<String> propKeys = properties.stringPropertyNames();
 
@@ -135,11 +166,11 @@ public class Config {
         return valid;
     }
 
-    public void configurePropertiesWithUser() {
+    private void configurePropertiesWithUser() {
         configurePropertiesWithUser(null);
     }
 
-    public void configurePropertiesWithUser(String message) {
+    private void configurePropertiesWithUser(String message) {
 
         // interact with user to get configura
         UIConfig uiconfig = new UIConfig();
@@ -155,10 +186,10 @@ public class Config {
         // set the user data
         properties.setProperty("aside_root", value.toString());
     }
-    public void configure_metapath_root(){
+    private void configure_metapath_root(){
         configure_metapath_root(null);
     }
-    public void configure_metapath_root(String path) {
+    private void configure_metapath_root(String path) {
         Path metapath;
         if(path == null) {
             // default metapath_root is aside_root/.meta
@@ -169,8 +200,8 @@ public class Config {
         properties.setProperty("metapath_root", metapath.toString());
     }
 
-    public void configure_viewpath_root() {configure_viewpath_root(null);}
-    public void configure_viewpath_root(String path) {
+    private void configure_viewpath_root() {configure_viewpath_root(null);}
+    private void configure_viewpath_root(String path) {
         Path viewpath;
         if(path == null) {
             // default viewpath_root is aside_root/vidw
@@ -181,7 +212,7 @@ public class Config {
         properties.setProperty("viewpath_root", viewpath.toString());
     }
 
-    public boolean directoriesInPropertiesExist() {
+    private boolean directoriesInPropertiesExist() {
 
         // make a modifiable set of the keys:
         Set<String> keys = new HashSet<>(properties.stringPropertyNames());
@@ -203,7 +234,7 @@ public class Config {
         return true;
     }
 
-    public boolean loadProperties() {
+    private boolean loadProperties() {
         try (InputStream in = Files.newInputStream(configPath_full, READ)) {
             properties.load(in);
         } catch (IOException e) {
@@ -213,8 +244,8 @@ public class Config {
         return true;
     }
 
-    public boolean setup() {return setup(null);}
-    public boolean setup(String message) {
+    private boolean setup() {return setup(null);}
+    private boolean setup(String message) {
 
         // first set the properties:
         if(Files.notExists(configPath_full) || !validateFileSize(configPath_full) || properties.getProperty("aside_root").isEmpty()){
@@ -242,7 +273,7 @@ public class Config {
 
     }
 
-    public void storeProperties() {
+    private void storeProperties() {
         // store user data
         try (OutputStream out = Files.newOutputStream(configPath_full, CREATE, WRITE)) {
             properties.store(out, null);
@@ -252,9 +283,9 @@ public class Config {
     }
 
     private boolean validateConfigPaths() {
-        Path root = get_aside_root();
-        Path viewpath = get_viewpath_root();
-        Path metapath = get_metapath_root();
+        Path root = Paths.get(properties.getProperty("aside_root"));
+        Path viewpath = Paths.get(properties.getProperty("viewpath_root"));
+        Path metapath = Paths.get(properties.getProperty("metapath_root"));
 
         return viewpath.getParent().equals(root) && metapath.getParent().equals(root);
     }

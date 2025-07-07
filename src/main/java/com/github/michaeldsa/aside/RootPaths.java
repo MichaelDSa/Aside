@@ -9,11 +9,10 @@ public enum RootPaths {
     private final Path viewpath;
 
     RootPaths() {
-        Config config = new Config();
-        config.initialize();
-        aside = config.get_aside_root();
-        metapath = config.get_metapath_root();
-        viewpath = config.get_viewpath_root();
+        Config config = Config.INSTANCE;
+        aside = config.getAside();
+        metapath = config.getMetapath();
+        viewpath = config.getViewpath();
     }
 
     public Path getAside() {return aside;}

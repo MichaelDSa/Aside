@@ -10,12 +10,10 @@ public enum PathKeeper {
     private final Path view_home;
     private Path current;
     public final PathCheck pathCheck;
-    private final Config config;
 
     PathKeeper(){
-        config = new Config();
-        config.initialize();
-        home_directory = config.get_aside_root();
+        Config config = Config.INSTANCE;
+        home_directory = config.getAside();
         meta_home = home_directory.resolve(".meta");
         view_home = home_directory.resolve("view");
         current = home_directory;

@@ -1,6 +1,8 @@
 package com.github.michaeldsa.aside;
 
-public interface Prnt {
+public class Prnt {
+
+    private Prnt() {}
 
     static void width80ch(String string) {
         width(string, 80);

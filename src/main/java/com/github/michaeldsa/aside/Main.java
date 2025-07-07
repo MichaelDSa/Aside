@@ -9,13 +9,14 @@ public class Main {
 //        UIScanner scannerUI = new UIScanner();
 //        scannerUI.start();
 
-        Config config = new Config();
-        boolean success = config.initialize();
-        System.out.println("aside_root = " + config.get_aside_root());
-        System.out.println("metapath_root = " + config.get_metapath_root());
-        System.out.println("viewpath_root = " + config.get_viewpath_root());
-        System.out.println("Successful initialization: " + success);
-        if (!success) {
+        Config config = Config.INSTANCE;
+        System.out.println("aside_root = " + config.getAside());
+        System.out.println("metapath_root = " + config.getMetapath());
+        System.out.println("viewpath_root = " + config.getViewpath());
+        System.out.println("Successful initialization: " + config.isSuccess_initialization());
+        Prnt.width80ch("width80ch works!");
+        Prnt.width("Prnt.width() works!", 30);
+        if (!config.isSuccess_initialization()) {
             System.exit(1);
         }
 
