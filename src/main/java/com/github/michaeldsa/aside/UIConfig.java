@@ -95,6 +95,6 @@ public class UIConfig {
         }
     }
 
-    public Path getDirectoryHomeParent() {return aside_root_parent;}
+    public Path get_aside_root_parent() {return aside_root_parent;}
 
 }

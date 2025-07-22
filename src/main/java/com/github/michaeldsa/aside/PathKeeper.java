@@ -13,7 +13,7 @@ public enum PathKeeper {
 
     PathKeeper(){
         Config config = Config.INSTANCE;
-        home_directory = config.getAside();
+        home_directory = config.getAside_root();
         meta_home = home_directory.resolve(".meta");
         view_home = home_directory.resolve("view");
         current = home_directory;

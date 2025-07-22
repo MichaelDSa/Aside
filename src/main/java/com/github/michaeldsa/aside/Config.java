@@ -25,12 +25,12 @@ public enum Config {
 
     // Paths to configuration directories & files:
     private final Path configPath_full; // eg: will become ~/.config/aside/config
-    private final Path aside_root; // Last element of aside_root directory. Parent dir given by user interaction
+    private final Path aside_root_last_element; // Last element of aside_root directory. Parent dir given by user interaction
     private final Properties properties;  // Java abstraction for reading config files
 
     private final boolean success_initialization;
 
-    private final Path aside;
+    private final Path aside_root;
     private final Path viewpath_root;
     private final Path metapath_root;
 
@@ -44,9 +44,9 @@ public enum Config {
         final Path macConfig = Paths.get(System.getProperty("user.home"), ".aside");
         final Path winConfig = Paths.get(System.getProperty("user.home"), ".aside");
 
-        String os = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
         // switch based on os:
         // default case: "linux":
+        String os = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
         Path configPath = unixConfig;                    // eg: ~/.config/aside/
         Path configFile = Paths.get("config");      // eg: ~/.config/aside/config
         switch (os) {
@@ -70,24 +70,24 @@ public enum Config {
 
         // APPLICATION DIRECTORY SETUP (aside_root):
 
-        // the final element of aside_home
-        final String rootDir = "aside_home";
+        // the final element of aside_root
+        final String rootDir = "aside_notes";
 
-        // aside_home will be resolved to aside_root_parent
-        // from UIConfig. It will then be saved as `aside_home`
+        // aside_root will be resolved to aside_root_parent
+        // from UIConfig. It will then be saved as `aside_root`
         // in config file via Properties
-        aside_root = Paths.get(rootDir);
+        aside_root_last_element = Paths.get(rootDir);
 
         properties = new Properties();
 
         success_initialization = initialize();
 
         if (isSuccess_initialization() && validateConfigPaths()) {
-            aside = Paths.get(properties.getProperty("aside_root"));
+            aside_root = Paths.get(properties.getProperty("aside_root"));
             metapath_root = Paths.get(properties.getProperty("metapath_root"));
             viewpath_root = Paths.get(properties.getProperty("viewpath_root"));
         } else {
-            aside = null;
+            aside_root = null;
             metapath_root = null;
             viewpath_root = null;
             System.err.println("Error initializing config");
@@ -129,8 +129,8 @@ public enum Config {
     }
 
     // returns aside_root as specified by config file
-    public Path getAside() {
-        return aside;
+    public Path getAside_root() {
+        return aside_root;
     }
 
     public Path getMetapath() {
@@ -181,7 +181,7 @@ public enum Config {
         }
 
         // get the full path of the "home_directory" value
-        Path value = uiconfig.getDirectoryHomeParent().resolve(aside_root).toAbsolutePath().normalize();
+        Path value = uiconfig.get_aside_root_parent().resolve(aside_root_last_element).toAbsolutePath().normalize();
 
         // set the user data
         properties.setProperty("aside_root", value.toString());

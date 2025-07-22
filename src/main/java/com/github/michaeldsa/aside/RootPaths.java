@@ -10,7 +10,7 @@ public enum RootPaths {
 
     RootPaths() {
         Config config = Config.INSTANCE;
-        aside = config.getAside();
+        aside = config.getAside_root();
         metapath = config.getMetapath();
         viewpath = config.getViewpath();
     }
