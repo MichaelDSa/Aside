@@ -11,7 +11,7 @@ public class Create {
 
     private Create(){}
 
-    public static <T> void inCurrent(Creator<MetaPath> newCategory, T t) {
+    public static <T> void inThisCategory(Creator<MetaPath> newCategory, T t) {
         CurrentCategory cc = CurrentCategory.INSTANCE;
         MetaPath metaPath = asMetaPath(t);
 
@@ -25,7 +25,7 @@ public class Create {
         }
     }
 
-    public static <T, U> void inOther(Creator<MetaPath> newCategory, T parent, U child) {
+    public static <T, U> void inOtherCategory(Creator<MetaPath> newCategory, T parent, U child) {
         CurrentCategory cc = CurrentCategory.INSTANCE;
         MetaPath mpFirst = asMetaPath(parent);
         MetaPath mpSecond = asMetaPath(child);

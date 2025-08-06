@@ -3,6 +3,8 @@ package com.github.michaeldsa.aside;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static com.github.michaeldsa.aside.Creators.NEW_CATEGORY;
+
 public class Main {
     public static void main(String[] args) {
 //        UIScanner scannerUI = new UIScanner();
@@ -201,7 +203,7 @@ public class Main {
         System.out.println("empty_resolve5: " + empty_resolve5);
 
         // test Create.newCategory(T name)
-        Create.inCurrent(Creators.newCategory(), ".TestNewCategory");
-//        Create.newCategory(Creators.newCategory(), ".anotherTestNewCategory");
+        Create.inThisCategory(NEW_CATEGORY, ".TestNewCategory");
+        Create.inThisCategory(NEW_CATEGORY, ".testEnumAlgo");
     }
 }
