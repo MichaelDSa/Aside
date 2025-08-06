@@ -186,6 +186,12 @@ public enum Config {
         // set the user data
         properties.setProperty("aside_root", value.toString());
     }
+    private void configure_last_category() {
+        configure_last_category(null);
+    }
+    private void configure_last_category(MetaPath metaPath) {
+        // not yet. First create a strategy or a method that creates a Category.
+    }
     private void configure_metapath_root(){
         configure_metapath_root(null);
     }
@@ -253,6 +259,7 @@ public enum Config {
         }
         configure_metapath_root();
         configure_viewpath_root();
+        configure_last_category();
 
         // create the directories from the key values that are directories:
         Set<String> nonDirKeys = new HashSet<>(Arrays.asList("Non_directory_key_example", "another_example"));

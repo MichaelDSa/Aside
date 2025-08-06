@@ -17,12 +17,13 @@ public class MetaPath {
     MetaPath(Path path) {
         path = path.normalize();
         if(validate(path)) {
-            if (!path.startsWith(rp.getMetapath())) {
-                path = rp.getMetapath().resolve(path);
-            }
+            // Should MetaPath objects always start with metapath_root?
+//            if (!path.startsWith(rp.getMetapath())) {
+//                path = rp.getMetapath().resolve(path);
+//            }
             this.path = path;
         } else {
-            throw new IllegalArgumentException("invalid Path argument" + path);
+            throw new IllegalArgumentException("invalid Path argument " + path);
         }
     }
 
@@ -102,6 +103,16 @@ public class MetaPath {
         return path;
     }
 
+    public MetaPath resolve(MetaPath other) {
+        Path this_path = removeXroot(path);
+        Path other_path = removeXroot(other.getPath());
+        if(other_path.equals(rp.getMetapath())) {
+            return this;
+        }
+        Path resolved_path = this_path.resolve(other_path);
+        return new MetaPath(resolved_path);
+    }
+
     private Path resolve_to_metapath_root(Path path) {
         String noleadingSlash = path.toString();
         String fileSeparator = FileSystems.getDefault().getSeparator();
@@ -110,6 +121,13 @@ public class MetaPath {
             path = Paths.get(noleadingSlash);
         }
         return rp.getMetapath().resolve(path);
+    }
+
+    public boolean startsWith(MetaPath other) {
+        return path.startsWith(other.getPath());
+    }
+    public boolean startsWithRoot() {
+        return path.startsWith(rp.getMetapath());
     }
 
     private boolean validate(Path path) {
@@ -136,6 +154,9 @@ public class MetaPath {
     }
 
     private Path qualifyAsMetaPath(ViewPath viewPath) {
+        if(path == rp.getViewpath()) {
+            return rp.getMetapath();
+        }
         Path path = removeXroot(viewPath.getPath());
         path = addLeadingDotToEachElement(path);
         return resolve_to_metapath_root(path);

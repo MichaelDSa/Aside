@@ -18,9 +18,10 @@ public class ViewPath {
     ViewPath(Path path) {
         path = path.normalize();
         if(validate(path)) {
-            if(!path.startsWith(rp.getViewpath())) {
-                path = resolve_to_viewpath_root(path);
-            }
+            // Should ViewPath objects always start with viewpath_root?
+//            if(!path.startsWith(rp.getViewpath())) {
+//                path = resolve_to_viewpath_root(path);
+//            }
             this.path = path;
         } else {
             throw new IllegalArgumentException("Invalid path argument: " + path);
@@ -85,6 +86,16 @@ public class ViewPath {
             path = path.subpath(first, last);
         }
         return path;
+    }
+
+    public ViewPath resolve(ViewPath other) {
+        Path this_path = removeXroot(path);
+        Path other_path = removeXroot(other.getPath());
+        if(other_path.equals(rp.getViewpath())) {
+            return this;
+        }
+        Path resolved_path = this_path.resolve(other_path);
+        return new ViewPath(resolved_path);
     }
 
     private Path resolve_to_viewpath_root(Path path) {
