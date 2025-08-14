@@ -61,7 +61,38 @@ public interface Search {
         } catch (IOException e) {
             System.err.printf("Search for %s failed: %s%n", searchTerm, e.getMessage());
         }
-        System.out.println(walkList);
+        return walkList;
+    }
+
+    default List<Path> search(Path start, PathMatcher pathMatcher, int depth) {
+        List<Path> walkList = new ArrayList<>();
+        Set<FileVisitOption> options = Collections.emptySet();
+        try{
+            Files.walkFileTree(start, options, depth, new SimpleFileVisitor<>() {
+                @Override
+                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                    Path name = dir.getFileName();
+                    if(name != null && pathMatcher.matches(name) && !walkList.contains(dir)){
+                        walkList.add(dir);
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    Path name = file.getFileName();
+                    if(name != null && pathMatcher.matches(name) && !walkList.contains(file)){
+                        walkList.add(file);
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+                @Override
+                public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException e) {
+            System.err.printf("Search for %s failed: %s%n", pathMatcher.toString(), e.getMessage());
+        }
         return walkList;
     }
 

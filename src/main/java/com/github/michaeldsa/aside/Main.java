@@ -1,12 +1,15 @@
 package com.github.michaeldsa.aside;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static com.github.michaeldsa.aside.Creators.NEW_CATEGORY;
+import static com.github.michaeldsa.aside.Create.Alg.*;
+import static com.github.michaeldsa.aside.Deleters.CATEGORY_TEST;
 
 public class Main {
     public static void main(String[] args) {
+        CurrentCategory cc = CurrentCategory.INSTANCE;
 //        UIScanner scannerUI = new UIScanner();
 //        scannerUI.start();
 
@@ -202,8 +205,44 @@ public class Main {
         System.out.println("empty_resolve4: " + empty_resolve4);
         System.out.println("empty_resolve5: " + empty_resolve5);
 
-        // test Create.newCategory(T name)
-        Create.inThisCategory(NEW_CATEGORY, ".TestNewCategory");
-        Create.inThisCategory(NEW_CATEGORY, ".testEnumAlgo");
+
+        // invoker UI: success.
+//        UIInvoker ui_invoker = new UIInvoker();
+//        ui_invoker.invokeUI();
+        // this invoker worked as expected.
+
+
+//        Path pathStart = Paths.get("/home/michael");
+//        Search testSearch = new Search() {
+//            private final Path start = pathStart;
+//            @Override
+//            public List<Path> search(String searchTerm) {
+//                PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:" + searchTerm);
+//                return search(start, matcher, 3).stream().sorted().collect(Collectors.toList());
+//            }
+//        };
+
+//        List<Path> contents = SearchFor.userHomeDirectories().search("Documents");
+//        List<Path> contents = testSearch.search("?*");
+//        for (Path path : contents) {
+//            System.out.println(path.toString());
+//        }
+        //------------------------------------------------------------------------------
+
+        // worked as expected:
+//        MetaPath test = NEW_NAME.execute(cc.getCurrentMetaPath());
+//        System.out.println(test);
+        // worked as expected:
+//        NEW_NOTE.execute(cc.getCurrentMetaPath());
+
+        // test Create.newCateory(MetaPath metaPath):
+        MetaPath newCategory = new MetaPath(Paths.get(".NewNewCategory"));
+        newCategory = cc.getCurrentMetaPath().resolve(newCategory);
+        MetaPath testMP = Create.newCategory(newCategory);
+        System.out.println("test: Create.newCategory(newCategory): File exists: " + Files.exists(testMP.getPath()));
+
+
+
+
     }
 }
