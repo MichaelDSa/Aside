@@ -1,5 +1,8 @@
 package com.github.michaeldsa.aside;
 
+import com.github.michaeldsa.aside.AsidePath.MetaPath;
+import com.github.michaeldsa.aside.AsidePath.ViewPath;
+
 import java.nio.file.Files;
 
 public class Category {

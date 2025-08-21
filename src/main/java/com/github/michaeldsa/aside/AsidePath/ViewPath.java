@@ -1,4 +1,4 @@
-package com.github.michaeldsa.aside;
+package com.github.michaeldsa.aside.AsidePath;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ViewPath {
-    RootPaths rp = RootPaths.INSTANCE;
-    private final Path path;
+public class ViewPath extends AsidePath {
+    // defined in superclass
+//    RootPaths rp = RootPaths.INSTANCE;
+//    private final Path path;
 
     ViewPath() {
         path = rp.getViewpath();
@@ -19,9 +20,9 @@ public class ViewPath {
         path = path.normalize();
         if(validate(path)) {
             // Should ViewPath objects always start with viewpath_root?
-//            if(!path.startsWith(rp.getViewpath())) {
-//                path = resolve_to_viewpath_root(path);
-//            }
+            if(!path.startsWith(rp.getViewpath())) {
+                path = resolve_to_viewpath_root(path);
+            }
             this.path = path;
         } else {
             throw new IllegalArgumentException("Invalid path argument: " + path);
@@ -72,20 +73,26 @@ public class ViewPath {
         return nodots;
     }
 
-    private Path removeXroot(Path path){
-        if(path == rp.getViewpath() || path == rp.getMetapath()){
-            return path;
-        }
-        if(path.startsWith(rp.getMetapath())) {
-            int first = rp.getMetapath().getNameCount();
-            int last = path.getNameCount();
-            path = path.subpath(first, last);
-        } else if(path.startsWith(rp.getViewpath())) {
-            int first = rp.getViewpath().getNameCount();
-            int last = path.getNameCount();
-            path = path.subpath(first, last);
-        }
-        return path;
+    // implemented in superlcass
+//    private Path removeXroot(Path path){
+//        if(path == rp.getViewpath() || path == rp.getMetapath()){
+//            return path;
+//        }
+//        if(path.startsWith(rp.getMetapath())) {
+//            int first = rp.getMetapath().getNameCount();
+//            int last = path.getNameCount();
+//            path = path.subpath(first, last);
+//        } else if(path.startsWith(rp.getViewpath())) {
+//            int first = rp.getViewpath().getNameCount();
+//            int last = path.getNameCount();
+//            path = path.subpath(first, last);
+//        }
+//        return path;
+//    }
+
+    @Override
+    public boolean startsWithRoot() {
+        return path.startsWith(rp.getViewpath());
     }
 
     public ViewPath resolve(ViewPath other) {
@@ -97,6 +104,8 @@ public class ViewPath {
         Path resolved_path = this_path.resolve(other_path);
         return new ViewPath(resolved_path);
     }
+
+
 
     private Path resolve_to_viewpath_root(Path path) {
         String noLeadingSlash = path.toString();

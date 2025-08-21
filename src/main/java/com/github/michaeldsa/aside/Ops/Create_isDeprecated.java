@@ -1,4 +1,7 @@
-package com.github.michaeldsa.aside;
+package com.github.michaeldsa.aside.Ops;
+
+import com.github.michaeldsa.aside.AsidePath.MetaPath;
+import com.github.michaeldsa.aside.AsidePath.ViewPath;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -6,21 +9,28 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.Properties;
 
 import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.WRITE;
 
-public interface Create<T> {
+public interface Create_isDeprecated<T> extends FileOps<T> {
 
-    T execute(T t);
+//    T execute(T t);
 
+    static Create_isDeprecated<MetaPath> begin(Create_isDeprecated<MetaPath> c) {
+        return c;
+    }
+    default Create_isDeprecated<T> create(Create_isDeprecated<T> c) {
+        return (mp) -> c.execute(execute(mp));
+    }
 
     static MetaPath newCategory(MetaPath metaPath) {
-        return Alg.NEW_CATEGORY.execute(metaPath);
+        return Alg.CREATE_NEW_CATEGORY.execute(metaPath);
     }
     static MetaPath newNote(MetaPath parent) {
-        return Alg.NEW_NOTE.execute(parent);
+        return Alg.CREATE_NEW_NOTE.execute(parent);
     }
 
     // generate a MetaPath that ends with the unique file name formatted for notes.
@@ -36,25 +46,28 @@ public interface Create<T> {
 
         // edge case: resolve naming conflict
         if (Files.exists(name.getPath())) {
-            for (int i = 0; i < 25; i++) {
+            for (int i = 0; i < 60; i++) {
                 try {
                     Thread.sleep(1000);
                     name = newNoteName(parent);
 
-                    if (name != null && Files.notExists(name.getPath())) {
+                    if (Files.notExists(name.getPath())) {
                         break;
+                    } else {
+                        System.out.print(".");
+                        name = null;
                     }
                 } catch (InterruptedException ex) {
                     System.out.printf("Thread.sleep() exception: %s%n", ex);
                 }
             }
         }
-        return name != null && Files.notExists(name.getPath()) ? name : null;
+        return Objects.requireNonNull(name, "Create.newNoteName(): failed to generate unique file name");
     }
 
     // implementations:
-    enum Alg implements Create<MetaPath> {
-        NEW_CATEGORY {
+    enum Alg implements Create_isDeprecated<MetaPath> {
+        CREATE_NEW_CATEGORY {
             @Override
             public MetaPath execute(MetaPath mp) {
                 if(Files.notExists(mp.getPath())) {
@@ -71,9 +84,15 @@ public interface Create<T> {
                 return mp;
             }
         },
-        NEW_NOTE {
+        CREATE_NEW_NOTE {
             @Override
             public MetaPath execute(MetaPath parent) {
+                // one file to be created for MetaPath metadata
+                // another file to be created for ViewPath
+
+                // This just creates the files only.
+                // to write content to note, use UPDATE_NOTE.
+
 
                 // define the fields of the MetaPath file:
                 Properties prop = new Properties();
@@ -82,10 +101,16 @@ public interface Create<T> {
                     prop.setProperty(field, "");
                 }
 
+                if(Files.notExists(parent.getPath())) {
+                    System.out.println("Not exists: " + parent.getPath());
+                    return parent;
+                }
+
                 // generate time stamp and resolve to parent:
-                MetaPath note = Create.newNoteName(parent);
+                MetaPath note = Create_isDeprecated.newNoteName(parent);
+
                 // create .meta/ and view/ files
-                if(note != null && Files.notExists(note.getPath())) {
+                if(Files.notExists(note.getPath())) {
                     try (OutputStream metadata = Files.newOutputStream(note.getPath(), CREATE, WRITE)) {
 
                         // create empty properties .txt file in aside_notes/.meta/
@@ -97,10 +122,10 @@ public interface Create<T> {
                         }
 
                     } catch (IOException e) {
-                        System.err.printf("unable to create file %s %s%n", note.getPath(), e);
+                        System.err.printf("unable to create file %s %s%n", note.getPath().toAbsolutePath(), e);
                     }
                 } else {
-                    System.err.printf("File already exists %s%n", note != null ? note.getPath() : null);
+                    System.err.printf("File already exists %s%n",note.getPath());
                 }
                 return note;
             }

@@ -1,5 +1,7 @@
 package com.github.michaeldsa.aside;
 
+import com.github.michaeldsa.aside.AsidePath.MetaPath;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;

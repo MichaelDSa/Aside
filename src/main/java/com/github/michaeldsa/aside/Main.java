@@ -1,11 +1,11 @@
 package com.github.michaeldsa.aside;
 
-import java.nio.file.Files;
+import com.github.michaeldsa.aside.AsidePath.MetaPath;
+import com.github.michaeldsa.aside.AsidePath.ViewPath;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static com.github.michaeldsa.aside.Create.Alg.*;
-import static com.github.michaeldsa.aside.Deleters.CATEGORY_TEST;
 
 public class Main {
     public static void main(String[] args) {
@@ -233,15 +233,45 @@ public class Main {
 //        MetaPath test = NEW_NAME.execute(cc.getCurrentMetaPath());
 //        System.out.println(test);
         // worked as expected:
-//        NEW_NOTE.execute(cc.getCurrentMetaPath());
+//        CREATE_NEW_NOTE.execute(cc.getCurrentMetaPath());
 
         // test Create.newCateory(MetaPath metaPath):
         MetaPath newCategory = new MetaPath(Paths.get(".NewNewCategory"));
         newCategory = cc.getCurrentMetaPath().resolve(newCategory);
-        MetaPath testMP = Create.newCategory(newCategory);
-        System.out.println("test: Create.newCategory(newCategory): File exists: " + Files.exists(testMP.getPath()));
+        // this create is deprecated:
+//        MetaPath testMP = Create.newCategory(newCategory);
+
+//        CmdOps<MetaPath> newCat_cmd = Create.begin(CREATE_NEW_CATEGORY).andThen(CREATE_NEW_NOTE);
+//        newCat_cmd.execute(newCategory);
 
 
+
+//
+//        Ops<MetaPath,MetaPath> command1 = CREATE_NEW_CATEGORY.andThen(CREATE_NEW_NOTE);
+//        newCategory = new MetaPath(Paths.get(".command1"));
+////        command1.execute(newCategory);
+//        MetaPath val = CREATE_NEW_CATEGORY.andThen(CREATE_NEW_NOTE).execute(newCategory);
+//        System.out.println("val: " + val);
+//
+//        FileOps<MetaPath,MetaPath> fileOps =
+//                FileCreate.NEW_CATEGORY
+//                        .andThen(FileUpdate.METADATA_CONTENT_TRUNCATE)
+//                        .andThen(FileUpdate.RESOLVE_CONTENT_META_TO_VIEW);
+//
+//        DisplayOps<MetaPath> displayOps = DisplayList.ALL_IN_CATEGORY;
+//
+//        OpsCommand<FileOps<MetaPath,MetaPath>, MetaPath, Boolean> opsCommand = (fops, mp) -> {
+//            MetaPath test = fops.execute(mp);
+//            return Files.exists(test.getPath());
+//        };
+//
+//
+//        MetaPath forOps = new MetaPath(Paths.get(".forOps"));
+//        opsCommand.execute(fileOps, forOps);
+//        opsCommand.execute(FileCreate.NEW_NOTE, forOps);
+//        opsCommand.execute(FileUpdate.METADATA_CONTENT_TRUNCATE, forOps);
+//        opsCommand.execute(FileDelete.DELETE_CATEGORY, forOps);
+//
 
 
     }

@@ -1,4 +1,4 @@
-package com.github.michaeldsa.aside;
+package com.github.michaeldsa.aside.AsidePath;
 
 import java.nio.file.*;
 import java.util.ArrayList;
@@ -6,9 +6,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-public class MetaPath {
-    RootPaths rp = RootPaths.INSTANCE;
-    private final Path path;
+public class MetaPath extends AsidePath{
+    // defined in superclass
+//    RootPaths rp = RootPaths.INSTANCE;
+//    private final Path path;
 
     MetaPath() {
         path = rp.getMetapath();
@@ -18,9 +19,9 @@ public class MetaPath {
         path = path.normalize();
         if(validate(path)) {
             // Should MetaPath objects always start with metapath_root?
-//            if (!path.startsWith(rp.getMetapath())) {
-//                path = rp.getMetapath().resolve(path);
-//            }
+            if (!path.startsWith(rp.getMetapath())) {
+                path = rp.getMetapath().resolve(path);
+            }
             this.path = path;
         } else {
             throw new IllegalArgumentException("invalid Path argument " + path);
@@ -82,26 +83,28 @@ public class MetaPath {
         }
         return true;
     }
+    // implemented in superclass
+//    @Override
+//    public Path getPath() {
+//        return path;
+//    }
 
-    public Path getPath() {
-        return path;
-    }
-
-    private Path removeXroot(Path path){
-        if(path == rp.getMetapath() || path == rp.getViewpath()) {
-            return path;
-        }
-        if(path.startsWith(rp.getMetapath())) {
-            int first = rp.getMetapath().getNameCount();
-            int last = path.getNameCount();
-            path = path.subpath(first, last);
-        } else if(path.startsWith(rp.getViewpath())) {
-            int first = rp.getViewpath().getNameCount();
-            int last = path.getNameCount();
-            path = path.subpath(first, last);
-        }
-        return path;
-    }
+    // implemented in superclass
+//    private Path removeXroot(Path path){
+//        if(path == rp.getMetapath() || path == rp.getViewpath()) {
+//            return path;
+//        }
+//        if(path.startsWith(rp.getMetapath())) {
+//            int first = rp.getMetapath().getNameCount();
+//            int last = path.getNameCount();
+//            path = path.subpath(first, last);
+//        } else if(path.startsWith(rp.getViewpath())) {
+//            int first = rp.getViewpath().getNameCount();
+//            int last = path.getNameCount();
+//            path = path.subpath(first, last);
+//        }
+//        return path;
+//    }
 
     public MetaPath resolve(MetaPath other) {
         Path this_path = removeXroot(path);
@@ -110,6 +113,7 @@ public class MetaPath {
             return this;
         }
         Path resolved_path = this_path.resolve(other_path);
+
         return new MetaPath(resolved_path);
     }
 
@@ -123,9 +127,10 @@ public class MetaPath {
         return rp.getMetapath().resolve(path);
     }
 
-    public boolean startsWith(MetaPath other) {
-        return path.startsWith(other.getPath());
-    }
+    // implemented in superclass
+//    public boolean startsWith(AsidePath other) {
+//        return path.startsWith(other.getPath());
+//    }
     public boolean startsWithRoot() {
         return path.startsWith(rp.getMetapath());
     }
