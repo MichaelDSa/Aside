@@ -1,5 +1,7 @@
 package com.github.michaeldsa.aside.AsidePath;
 
+import com.github.michaeldsa.aside.RootPaths;
+
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,11 +14,13 @@ public class ViewPath extends AsidePath {
 //    RootPaths rp = RootPaths.INSTANCE;
 //    private final Path path;
 
-    ViewPath() {
+    public ViewPath() {
+        rp = RootPaths.INSTANCE;
         path = rp.getViewpath();
     }
 
-    ViewPath(Path path) {
+    public ViewPath(Path path) {
+        rp = RootPaths.INSTANCE;
         path = path.normalize();
         if(validate(path)) {
             // Should ViewPath objects always start with viewpath_root?
@@ -29,7 +33,8 @@ public class ViewPath extends AsidePath {
         }
     }
 
-    ViewPath(MetaPath metaPath) {
+    public ViewPath(MetaPath metaPath) {
+        rp = RootPaths.INSTANCE;
         Path candidate = qualifyAsViewPath(metaPath);
         if(validate(candidate)){
             this.path = candidate;

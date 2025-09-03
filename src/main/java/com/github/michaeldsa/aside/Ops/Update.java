@@ -2,7 +2,7 @@ package com.github.michaeldsa.aside.Ops;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 
-public enum FileUpdate implements FileOps<MetaPath> {
+public enum Update implements CrudOps<MetaPath,MetaPath> {
 
 
 
@@ -28,9 +28,10 @@ public enum FileUpdate implements FileOps<MetaPath> {
     });
 
 
-    private final FileOps<MetaPath> fops;
+    // class boilerplate
+    private final CrudOps<MetaPath,MetaPath> fops;
 
-    FileUpdate(FileOps<MetaPath> fops) {
+    Update(CrudOps<MetaPath,MetaPath> fops) {
         this.fops = fops;
     }
 

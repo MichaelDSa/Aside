@@ -2,9 +2,16 @@ package com.github.michaeldsa.aside;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.AsidePathElement.Note;
+import com.github.michaeldsa.aside.AsidePathElement.Category;
+import com.github.michaeldsa.aside.Validation.ValidateElement;
+import com.github.michaeldsa.aside.Validation.ValidateString;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import static com.github.michaeldsa.aside.Validation.ValidateElement.NOTE_NAME_ELEMENT;
 
 
 public class Main {
@@ -236,8 +243,8 @@ public class Main {
 //        CREATE_NEW_NOTE.execute(cc.getCurrentMetaPath());
 
         // test Create.newCateory(MetaPath metaPath):
-        MetaPath newCategory = new MetaPath(Paths.get(".NewNewCategory"));
-        newCategory = cc.getCurrentMetaPath().resolve(newCategory);
+//        MetaPath newCategory = new MetaPath(Paths.get(".NewNewCategory"));
+//        newCategory = cc.getCurrentMetaPath().resolve(newCategory);
         // this create is deprecated:
 //        MetaPath testMP = Create.newCategory(newCategory);
 
@@ -272,6 +279,45 @@ public class Main {
 //        opsCommand.execute(FileUpdate.METADATA_CONTENT_TRUNCATE, forOps);
 //        opsCommand.execute(FileDelete.DELETE_CATEGORY, forOps);
 //
+         // test Files.isRegularFile() on file that does not exist:
+        Path noex = Paths.get(rp.getMetapath().resolve(".notexists.txt").toString());
+        Path yesex = rp.getMetapath().resolve(Paths.get(".command1", ".250814_0909_22.txt"));
+        System.out.println("\nFILE EXISTS & IS REGULAR FILE TEST");
+        System.out.println("noex: " + noex + " exists: " + Files.exists(noex));
+        System.out.println("is regular file: " + Files.isRegularFile(noex));
+        System.out.println("yesex: " + yesex + " exists: " + Files.exists(yesex));
+        System.out.println("is regular file: " + Files.isRegularFile(yesex));
+
+        // test Files.isDirectory() on file that does not exists:
+        Path fictional = rp.getMetapath().resolve(Paths.get("Fictional/"));
+        System.out.println(".meta: " + rp.getMetapath() + " exists " + Files.exists(rp.getMetapath()));
+        System.out.println("is directory: " + Files.isDirectory(rp.getMetapath()));
+        System.out.println(".meta/Fictional/: " + fictional + " exists " + Files.exists(fictional));
+        System.out.println("is directory: " + Files.isDirectory(fictional));
+
+        // resolution does not care if file or dir.
+        MetaPath noyesex_resolved = new MetaPath(noex).resolve(new MetaPath(yesex));
+        Path noyesex_resolved_as_path = noex.resolve(yesex);
+        System.out.println("noyesex_resolved: " + noyesex_resolved);
+        System.out.println("noyesex_resolved_as_path: " + noyesex_resolved_as_path);
+
+
+        // Test: does Note's Category mutate when separate reference to category mutates?
+        // Changes to category should change the Note's value. Determine if a new reference should be craeted in Notes.
+        MetaPath metyesex = new MetaPath(yesex);
+        Category categ = new Category(metyesex);
+        Note note = new Note(categ);
+
+        System.out.println("TESTING CATEGORY:");
+        System.out.println("Note.getParentMetaPath(): " + note.getParentMetaPath());
+        System.out.println("Category.getMetaPath(): " + categ.getMetaPath());
+        categ.setAsidePaths(metyesex.resolve(new MetaPath(meta_cities.getPath())));
+        System.out.println("categ mutation. Category.getMetaPath(): " + categ.getMetaPath());
+        System.out.println("Note.getParentMetaPath(): " + note.getParentMetaPath());
+
+        Note note_yesex = new Note(metyesex);
+        boolean name_is_valid = ValidateString.NOTE_NAME.test(".");
+        System.out.println("name_is_valid: " + name_is_valid);
 
 
     }

@@ -15,14 +15,14 @@ import java.util.Properties;
 import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.WRITE;
 
-public interface Create_isDeprecated<T> extends FileOps<T> {
+public interface Create_isDeprecated<T,R> extends CrudOps<T,R> {
 
 //    T execute(T t);
 
-    static Create_isDeprecated<MetaPath> begin(Create_isDeprecated<MetaPath> c) {
+    static Create_isDeprecated<MetaPath,MetaPath> begin(Create_isDeprecated<MetaPath,MetaPath> c) {
         return c;
     }
-    default Create_isDeprecated<T> create(Create_isDeprecated<T> c) {
+    default <V> Create_isDeprecated<T,V> create(Create_isDeprecated<R,V> c) {
         return (mp) -> c.execute(execute(mp));
     }
 
@@ -66,7 +66,7 @@ public interface Create_isDeprecated<T> extends FileOps<T> {
     }
 
     // implementations:
-    enum Alg implements Create_isDeprecated<MetaPath> {
+    enum Alg implements Create_isDeprecated<MetaPath,MetaPath> {
         CREATE_NEW_CATEGORY {
             @Override
             public MetaPath execute(MetaPath mp) {

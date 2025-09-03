@@ -5,8 +5,8 @@ import com.github.michaeldsa.aside.RootPaths;
 import java.nio.file.Path;
 
 public abstract class AsidePath {
-    RootPaths rp;
-    Path path;
+    protected RootPaths rp;
+    protected Path path;
 
 
     public Path getPath(){

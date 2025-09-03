@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public interface Delete_isDepricated<T,R> extends FileOps<T,R> {
+public interface Delete_isDepricated<T,R> extends CrudOps<T,R> {
 
 
 
@@ -56,9 +56,9 @@ public interface Delete_isDepricated<T,R> extends FileOps<T,R> {
             return metaPath;
         }) ;
 
-        private final Delete_isDepricated<MetaPath> delete;
+        private final Delete_isDepricated<MetaPath,MetaPath> delete;
 
-        Alg(Delete_isDepricated<MetaPath> delete) {
+        Alg(Delete_isDepricated<MetaPath,MetaPath> delete) {
             this.delete = delete;
         }
 

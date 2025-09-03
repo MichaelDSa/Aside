@@ -2,7 +2,7 @@ package com.github.michaeldsa.aside.Ops;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 
-public enum FileCreate implements FileOps<MetaPath> {
+public enum Create implements CrudOps<MetaPath,MetaPath> {
 
     NEW_CATEGORY (m -> {
         System.out.println("Create.NEW_CATEGORY");
@@ -14,9 +14,9 @@ public enum FileCreate implements FileOps<MetaPath> {
     });
 
     // class boilerplate:
-    private final FileOps<MetaPath> fops;
+    private final CrudOps<MetaPath,MetaPath> fops;
 
-    FileCreate(FileOps<MetaPath> fops) {
+    Create(CrudOps<MetaPath,MetaPath> fops) {
         this.fops = fops;
     }
 

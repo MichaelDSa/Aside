@@ -2,7 +2,7 @@ package com.github.michaeldsa.aside.Ops;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 
-public enum DisplayContent implements DisplayOps<MetaPath> {
+public enum DisplayContent implements DisplayOps<MetaPath,MetaPath> {
 
     METADATA_ALL (m -> {
         System.out.println("DisplayList.METADATA_ALL");
@@ -34,9 +34,9 @@ public enum DisplayContent implements DisplayOps<MetaPath> {
 
 
     // class boilerplate
-    private final DisplayOps<MetaPath> dops;
+    private final DisplayOps<MetaPath,MetaPath> dops;
 
-    DisplayContent(DisplayOps<MetaPath> dops) {
+    DisplayContent(DisplayOps<MetaPath,MetaPath> dops) {
         this.dops = dops;
     }
 

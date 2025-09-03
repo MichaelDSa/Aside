@@ -1,5 +1,7 @@
 package com.github.michaeldsa.aside.AsidePath;
 
+import com.github.michaeldsa.aside.RootPaths;
+
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,11 +13,13 @@ public class MetaPath extends AsidePath{
 //    RootPaths rp = RootPaths.INSTANCE;
 //    private final Path path;
 
-    MetaPath() {
+    public MetaPath() {
+        rp = RootPaths.INSTANCE;
         path = rp.getMetapath();
     }
 
-    MetaPath(Path path) {
+    public MetaPath(Path path) {
+        rp = RootPaths.INSTANCE;
         path = path.normalize();
         if(validate(path)) {
             // Should MetaPath objects always start with metapath_root?
@@ -28,7 +32,8 @@ public class MetaPath extends AsidePath{
         }
     }
 
-    MetaPath(ViewPath viewPath) {
+    public MetaPath(ViewPath viewPath) {
+        rp = RootPaths.INSTANCE;
         Path candidate = qualifyAsMetaPath(viewPath);
         if(validate(candidate)){
             this.path = candidate;

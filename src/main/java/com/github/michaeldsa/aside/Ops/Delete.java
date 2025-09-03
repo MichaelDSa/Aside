@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public enum FileDelete implements FileOps<MetaPath> {
+public enum Delete implements CrudOps<MetaPath,MetaPath> {
 
 
     NOTE (m -> {
@@ -56,8 +56,8 @@ public enum FileDelete implements FileOps<MetaPath> {
 
 
 
-    private final FileOps<MetaPath> fops;
-    FileDelete(FileOps<MetaPath> fops) {
+    private final CrudOps<MetaPath,MetaPath> fops;
+    Delete(CrudOps<MetaPath,MetaPath> fops) {
         this.fops = fops;
     }
     @Override
