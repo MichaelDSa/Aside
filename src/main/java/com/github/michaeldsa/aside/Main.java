@@ -2,16 +2,10 @@ package com.github.michaeldsa.aside;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
-import com.github.michaeldsa.aside.AsidePathElement.Note;
-import com.github.michaeldsa.aside.AsidePathElement.Category;
-import com.github.michaeldsa.aside.Validation.ValidateElement;
-import com.github.michaeldsa.aside.Validation.ValidateString;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import static com.github.michaeldsa.aside.Validation.ValidateElement.NOTE_NAME_ELEMENT;
 
 
 public class Main {
@@ -304,21 +298,47 @@ public class Main {
 
         // Test: does Note's Category mutate when separate reference to category mutates?
         // Changes to category should change the Note's value. Determine if a new reference should be craeted in Notes.
-        MetaPath metyesex = new MetaPath(yesex);
-        Category categ = new Category(metyesex);
-        Note note = new Note(categ);
-
-        System.out.println("TESTING CATEGORY:");
-        System.out.println("Note.getParentMetaPath(): " + note.getParentMetaPath());
-        System.out.println("Category.getMetaPath(): " + categ.getMetaPath());
-        categ.setAsidePaths(metyesex.resolve(new MetaPath(meta_cities.getPath())));
-        System.out.println("categ mutation. Category.getMetaPath(): " + categ.getMetaPath());
-        System.out.println("Note.getParentMetaPath(): " + note.getParentMetaPath());
-
-        Note note_yesex = new Note(metyesex);
-        boolean name_is_valid = ValidateString.NOTE_NAME.test(".");
-        System.out.println("name_is_valid: " + name_is_valid);
-
-
+//        MetaPath metyesex = new MetaPath(yesex);
+//        MetaPath metyesex = new MetaPath(Paths.get(".category1", ".category2"));
+//        Category categ = new Category(metyesex);
+//        Note note = new Note(categ);
+//
+//        System.out.println("TESTING CATEGORY:");
+//        System.out.println("Note.getParentMetaPath(): " + note.getParentMetaPath());
+//        System.out.println("Category.getMetaPath(): " + categ.getMetaPath());
+//        categ.setAsidePaths(metyesex.resolve(new MetaPath(meta_cities.getPath())));
+//        System.out.println("categ mutation. Category.getMetaPath(): " + categ.getMetaPath());
+//        System.out.println("Note.getParentMetaPath(): " + note.getParentMetaPath());
+//
+//        Note note_yesex = new Note(metyesex);
+//        boolean name_is_valid = ValidateString.NOTE_NAME.test(".");
+//        System.out.println("name_is_valid: " + name_is_valid);
+//
+//
+//        // hashcodes
+//        MetaPath someMetaPath = new MetaPath(meta.getPath());
+//        System.out.println("rootpaths: getmetapath: " + rp.getMetapath().hashCode());
+//        System.out.println("rootpaths: getviewpath: " + rp.getViewpath().hashCode());
+//        System.out.println("metacities: " + meta_cities.hashCode());
+//        System.out.println("metacities == someMetaPath: " + meta_cities.equals(someMetaPath));
+//
+//
+//        // .getParent():
+//        Path root = Paths.get(".some_path");
+//        System.out.println("root: " + root);
+//        System.out.println("root's parent: " + root.getParent());
+//        MetaPath testRoot = new MetaPath(root);
+//        System.out.println("testRoot: " + testRoot + " " + testRoot.getPath().getNameCount());
+//        System.out.println("metapathroot name count: " + rp.getMetapath() + " " + rp.getMetapath().getNameCount());
+//        System.out.println("testRoot.getParent(): " + testRoot.getParent());
+//
+//        // print category:
+//        System.out.println(categ);
+//        System.out.println("categ.getParent(): " + categ.getParent().getMetaPath());
+//        System.out.println("categ.getParent().getParent(): " + categ.getParent().getParent().getMetaPath());
+//        Category getChild = categ.getParent().getParent();
+//        System.out.println("getChild(): " + getChild.getChild().getMetaPath());
+//        System.out.println("categ.getParent().getParent().getParent(): " + categ.getParent().getParent().getParent().getMetaPath());
+//        System.out.println("root: " + new Category(new MetaPath(AsidePath.getMetapathRoot())));
     }
 }

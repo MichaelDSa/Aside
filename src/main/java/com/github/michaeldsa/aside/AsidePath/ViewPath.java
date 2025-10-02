@@ -15,16 +15,14 @@ public class ViewPath extends AsidePath {
 //    private final Path path;
 
     public ViewPath() {
-        rp = RootPaths.INSTANCE;
-        path = rp.getViewpath();
+        path = getViewPathRoot();
     }
 
     public ViewPath(Path path) {
-        rp = RootPaths.INSTANCE;
         path = path.normalize();
         if(validate(path)) {
             // Should ViewPath objects always start with viewpath_root?
-            if(!path.startsWith(rp.getViewpath())) {
+            if(!path.startsWith(getViewPathRoot())) {
                 path = resolve_to_viewpath_root(path);
             }
             this.path = path;
@@ -34,13 +32,18 @@ public class ViewPath extends AsidePath {
     }
 
     public ViewPath(MetaPath metaPath) {
-        rp = RootPaths.INSTANCE;
         Path candidate = qualifyAsViewPath(metaPath);
+        System.out.println("candidate:" + candidate);
         if(validate(candidate)){
             this.path = candidate;
         } else {
             throw new IllegalArgumentException("Invalid path argument: " + metaPath);
         }
+    }
+
+    // getters/setters:
+    public ViewPath getParent() {
+        return (ViewPath) super.getParent(this);
     }
 
 
@@ -64,7 +67,6 @@ public class ViewPath extends AsidePath {
         return true;
     }
 
-    public Path getPath() { return path; }
 
     private Path removeLeadingDotsFromElements(Path path) {
         Path nodots = Paths.get("");
@@ -97,13 +99,13 @@ public class ViewPath extends AsidePath {
 
     @Override
     public boolean startsWithRoot() {
-        return path.startsWith(rp.getViewpath());
+        return path.startsWith(getViewPathRoot());
     }
 
     public ViewPath resolve(ViewPath other) {
         Path this_path = removeXroot(path);
         Path other_path = removeXroot(other.getPath());
-        if(other_path.equals(rp.getViewpath())) {
+        if(other_path.equals(getViewPathRoot())) {
             return this;
         }
         Path resolved_path = this_path.resolve(other_path);
@@ -119,7 +121,7 @@ public class ViewPath extends AsidePath {
             noLeadingSlash = noLeadingSlash.substring(fileSeparator.length());
             path = Paths.get(noLeadingSlash);
         }
-        return rp.getViewpath().resolve(path);
+        return getViewPathRoot().resolve(path);
     }
 
     private boolean validate(Path path) {
@@ -133,7 +135,7 @@ public class ViewPath extends AsidePath {
         // not start with viewpath_root, the path will be
         // resolved to viewpath_root in the constructor.
 
-        if(path == rp.getViewpath()) {
+        if(path.equals(getViewPathRoot())) {
             return true;
         }
         Path candidate = removeXroot(path);
@@ -142,6 +144,10 @@ public class ViewPath extends AsidePath {
     }
 
     private Path qualifyAsViewPath(MetaPath metaPath) {
+        if(metaPath.getPath().equals(getMetaPathRoot())){
+            System.out.println("metaPath equals root");
+            return getViewPathRoot();
+        }
         Path path = removeXroot(metaPath.getPath());
         path = removeLeadingDotsFromElements(path);
         return resolve_to_viewpath_root(path);

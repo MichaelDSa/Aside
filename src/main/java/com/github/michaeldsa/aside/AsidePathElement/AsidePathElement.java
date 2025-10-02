@@ -6,6 +6,26 @@ import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import java.util.Objects;
 
 public abstract class AsidePathElement {
+
+    protected MetaPath metaPath;
+    protected ViewPath viewPath;
+
+    public MetaPath getMetaPath(){
+        return metaPath;
+    }
+    public ViewPath getViewPath(){
+        return viewPath;
+    }
+    // remove setters to keep fields effectively final
+//    public void setAsidePaths(MetaPath metaPath){
+//        this.metaPath = metaPath;
+//        this.viewPath = new ViewPath(metaPath);
+//    }
+//    public void setAsidePaths(ViewPath viewPath){
+//        this.viewPath = viewPath;
+//        this.metaPath = new MetaPath(viewPath);
+//    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof AsidePathElement that)) return false;
@@ -17,21 +37,11 @@ public abstract class AsidePathElement {
         return Objects.hash(metaPath, viewPath);
     }
 
-    protected MetaPath metaPath;
-    protected ViewPath viewPath;
-
-    public MetaPath getMetaPath(){
-        return metaPath;
-    }
-    public ViewPath getViewPath(){
-        return viewPath;
-    }
-    public void setAsidePaths(MetaPath metaPath){
-        this.metaPath = metaPath;
-        this.viewPath = new ViewPath(metaPath);
-    }
-    public void setAsidePaths(ViewPath viewPath){
-        this.viewPath = viewPath;
-        this.metaPath = new MetaPath(viewPath);
+    @Override
+    public String toString() {
+        return "AsidePathElement{" +
+                "metaPath=" + metaPath +
+                ", viewPath=" + viewPath +
+                '}';
     }
 }

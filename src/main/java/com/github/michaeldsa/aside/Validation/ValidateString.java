@@ -54,6 +54,23 @@ public enum ValidateString implements Predicate<String> {
                 parts_have_valid_lengths &&
                 all_characters_are_in_position &&
                 chars_between_underscores_and_ext_are_numerals;
+    }),
+    CATEGORY_NAME (s -> {
+        /*
+        category names must:
+        - Must not have note format
+        - Must not have an extension. May not contain dots except first char.
+        - QUESTION: What if user uses non-standard character for directory name? What about non-english characters?
+         */
+        if(s.startsWith(".")){
+            s = s.substring(1);
+        }
+//        TEST
+//        System.out.println(s);
+//        System.out.println("no contains dot: " + !s.contains("."));
+//        System.out.println("is invalid as notename: " + !ValidateString.NOTE_NAME.test(s));
+//        System.out.println("return value: " + (!s.contains(".") && !ValidateString.NOTE_NAME.test(s)) );
+        return !s.contains(".") && !ValidateString.NOTE_NAME.test(s);
     });
 
     // class boilerplate:

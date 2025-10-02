@@ -14,17 +14,15 @@ public class MetaPath extends AsidePath{
 //    private final Path path;
 
     public MetaPath() {
-        rp = RootPaths.INSTANCE;
-        path = rp.getMetapath();
+        path = getMetaPathRoot();
     }
 
     public MetaPath(Path path) {
-        rp = RootPaths.INSTANCE;
         path = path.normalize();
         if(validate(path)) {
             // Should MetaPath objects always start with metapath_root?
-            if (!path.startsWith(rp.getMetapath())) {
-                path = rp.getMetapath().resolve(path);
+            if (!path.startsWith(getMetaPathRoot())) {
+                path = getMetaPathRoot().resolve(path);
             }
             this.path = path;
         } else {
@@ -33,13 +31,17 @@ public class MetaPath extends AsidePath{
     }
 
     public MetaPath(ViewPath viewPath) {
-        rp = RootPaths.INSTANCE;
         Path candidate = qualifyAsMetaPath(viewPath);
         if(validate(candidate)){
             this.path = candidate;
         } else {
             throw new IllegalArgumentException("Invalid path argument: " + viewPath);
         }
+    }
+
+    // getters/setters:
+    public MetaPath getParent() {
+        return (MetaPath) super.getParent(this);
     }
 
     private Path addLeadingDotToEachElement(Path path) {
@@ -114,7 +116,7 @@ public class MetaPath extends AsidePath{
     public MetaPath resolve(MetaPath other) {
         Path this_path = removeXroot(path);
         Path other_path = removeXroot(other.getPath());
-        if(other_path.equals(rp.getMetapath())) {
+        if(other_path.equals(getMetaPathRoot())) {
             return this;
         }
         Path resolved_path = this_path.resolve(other_path);
@@ -129,7 +131,7 @@ public class MetaPath extends AsidePath{
             noleadingSlash = noleadingSlash.substring(fileSeparator.length());
             path = Paths.get(noleadingSlash);
         }
-        return rp.getMetapath().resolve(path);
+        return getMetaPathRoot().resolve(path);
     }
 
     // implemented in superclass
@@ -137,7 +139,7 @@ public class MetaPath extends AsidePath{
 //        return path.startsWith(other.getPath());
 //    }
     public boolean startsWithRoot() {
-        return path.startsWith(rp.getMetapath());
+        return path.startsWith(getMetaPathRoot());
     }
 
     private boolean validate(Path path) {
@@ -151,7 +153,7 @@ public class MetaPath extends AsidePath{
         // not start with metapath_root, the path will be
         // resolved to metapath_root in the constructor.
 
-        if(path == rp.getMetapath()) {
+        if(path.equals(getMetaPathRoot())) {
             return true;
         }
 
@@ -164,8 +166,8 @@ public class MetaPath extends AsidePath{
     }
 
     private Path qualifyAsMetaPath(ViewPath viewPath) {
-        if(path == rp.getViewpath()) {
-            return rp.getMetapath();
+        if(path == getViewPathRoot()) {
+            return getMetaPathRoot();
         }
         Path path = removeXroot(viewPath.getPath());
         path = addLeadingDotToEachElement(path);
