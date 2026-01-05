@@ -14,7 +14,7 @@ public interface CrudOps<T,R> extends Ops<T,R> {
 
     default <V> CrudOps<V,R> compose(CrudOps<? super V,? extends T> before) {
         Objects.requireNonNull(before);
-        return t -> execute(before.execute(t));
+        return v -> execute(before.execute(v));
     }
 
     default CrudOps<T,T> identity() {

@@ -22,15 +22,15 @@ public enum Delete implements CrudOps<MetaPath,MetaPath> {
     }),
     CATEGORY_TEST (m -> {
         final CurrentCategory cc = CurrentCategory.INSTANCE;
-        Path mpPath = cc.getCurrentMetaPath().getPath().resolve(m.getPath());
+        Path mpPath = cc.getCurrentCategory().getMetaPath().getPath().resolve(m.getPath());
         Path vpPath = new ViewPath(m).getPath();
         MetaPath metaPath = AsideUtils.asMetaPath(mpPath);
 
-        if(m == cc.getCurrentMetaPath()) {
+        if(m == cc.getCurrentCategory().getMetaPath()) {
             System.out.println("CURRENT CATEGORY");
             return null;
         }
-        if(!AsideUtils.isCategory(cc.getCurrentMetaPath().resolve(m))) {
+        if(!AsideUtils.isCategory(cc.getCurrentCategory().getMetaPath().resolve(m))) {
             System.out.println("NOT A CATEGORY");
             return null;
         }

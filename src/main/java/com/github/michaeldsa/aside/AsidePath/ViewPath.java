@@ -33,7 +33,7 @@ public class ViewPath extends AsidePath {
 
     public ViewPath(MetaPath metaPath) {
         Path candidate = qualifyAsViewPath(metaPath);
-        System.out.println("candidate:" + candidate);
+//        System.out.println("candidate:" + candidate);
         if(validate(candidate)){
             this.path = candidate;
         } else {
@@ -145,7 +145,7 @@ public class ViewPath extends AsidePath {
 
     private Path qualifyAsViewPath(MetaPath metaPath) {
         if(metaPath.getPath().equals(getMetaPathRoot())){
-            System.out.println("metaPath equals root");
+//            System.out.println("metaPath equals root");
             return getViewPathRoot();
         }
         Path path = removeXroot(metaPath.getPath());

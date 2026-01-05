@@ -23,11 +23,9 @@ public enum ValidateAsidePath implements Predicate<AsidePath> {
         if(ap instanceof MetaPath mp) {
             mname = mp.getPath().getFileName().toString();
             vname = new ViewPath(mp).getPath().getFileName().toString();
-            System.out.println(mname + " " + vname);
         } else if (ap instanceof ViewPath vp) {
             mname = new MetaPath(vp).getPath().getFileName().toString();
             vname = vp.getPath().getFileName().toString();
-            System.out.println(mname + " " + vname);
         }
         return ValidateString.CATEGORY_NAME.test(mname) && ValidateString.CATEGORY_NAME.test(vname);
     });

@@ -71,6 +71,16 @@ public enum ValidateString implements Predicate<String> {
 //        System.out.println("is invalid as notename: " + !ValidateString.NOTE_NAME.test(s));
 //        System.out.println("return value: " + (!s.contains(".") && !ValidateString.NOTE_NAME.test(s)) );
         return !s.contains(".") && !ValidateString.NOTE_NAME.test(s);
+    }),
+    TAG_NAME (s -> {
+        /*
+        tag names:
+        - Must not start with a dot
+        - May contain a dot
+        - May end with a dot
+        - Must not be in NOTE_NAME format
+         */
+        return !s.startsWith(".") && !ValidateString.NOTE_NAME.test(s);
     });
 
     // class boilerplate:

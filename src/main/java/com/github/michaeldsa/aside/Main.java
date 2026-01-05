@@ -2,6 +2,9 @@ package com.github.michaeldsa.aside;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
+import com.github.michaeldsa.aside.Testing.Test;
+import com.github.michaeldsa.aside.Testing.TestRunner;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -250,7 +253,7 @@ public class Main {
 //
 //        Ops<MetaPath,MetaPath> command1 = CREATE_NEW_CATEGORY.andThen(CREATE_NEW_NOTE);
 //        newCategory = new MetaPath(Paths.get(".command1"));
-////        command1.execute(newCategory);
+//        command1.execute(newCategory);
 //        MetaPath val = CREATE_NEW_CATEGORY.andThen(CREATE_NEW_NOTE).execute(newCategory);
 //        System.out.println("val: " + val);
 //
@@ -340,5 +343,9 @@ public class Main {
 //        System.out.println("getChild(): " + getChild.getChild().getMetaPath());
 //        System.out.println("categ.getParent().getParent().getParent(): " + categ.getParent().getParent().getParent().getMetaPath());
 //        System.out.println("root: " + new Category(new MetaPath(AsidePath.getMetapathRoot())));
+
+        TestRunner.MutableNoteTests.run();
+
+
     }
 }

@@ -24,6 +24,7 @@ public class Category extends AsidePathElement {
         // assign viewPath
         this.viewPath = new ViewPath(this.metaPath);
     }
+
     public Category(ViewPath viewPath) {
         // assign viewPath
         if(endsWithCategoryName(viewPath)) {
@@ -36,6 +37,7 @@ public class Category extends AsidePathElement {
         // assign metaPath
         this.metaPath = new MetaPath(this.viewPath);
     }
+
     public Category(Category stepParent, MetaPath metaPath) {
         // assign metaPath:
         if(endsWithCategoryName(metaPath)) {

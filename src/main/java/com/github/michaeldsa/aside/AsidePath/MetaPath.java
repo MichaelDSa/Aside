@@ -166,7 +166,7 @@ public class MetaPath extends AsidePath{
     }
 
     private Path qualifyAsMetaPath(ViewPath viewPath) {
-        if(path == getViewPathRoot()) {
+        if(viewPath.getPath().equals(getViewPathRoot())) {
             return getMetaPathRoot();
         }
         Path path = removeXroot(viewPath.getPath());

@@ -2,32 +2,26 @@ package com.github.michaeldsa.aside;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.AsidePathElement.Category;
 
 public enum CurrentCategory {
     INSTANCE;
-    private MetaPath currentMetaPath;
-    private ViewPath currentViewPath;
+    private Category currentCategory;
 
     CurrentCategory(){
         RootPaths rp = RootPaths.INSTANCE;
         Config cfg = Config.INSTANCE;
-        currentMetaPath = new MetaPath(rp.getMetapath());
-        currentViewPath = new ViewPath(rp.getViewpath());
+        MetaPath mp = new MetaPath(rp.getMetapath());
+        currentCategory = new Category(mp);
         // If 'last_category' of .config has an entry, reassign above values
     }
 
-    public MetaPath getCurrentMetaPath(){
-        return currentMetaPath;
-    }
-    public ViewPath getCurrentViewPath(){
-        return currentViewPath;
-    }
+    public Category getCurrentCategory() { return this.currentCategory; }
+    public MetaPath getCurrentMetaPath() { return this.currentCategory.getMetaPath(); }
+    public ViewPath getCurrentViewPath() { return this.currentCategory.getViewPath(); }
 
-    // these setters should be used on exit.
-    public void setMetaPath(MetaPath mp) {
-        currentMetaPath = mp;
-    }
-    public void setViewPath(ViewPath vp) {
-        currentViewPath = vp;
-    }
+    // A setter should be used on exit.
+    public void setCategory(Category c) { currentCategory = c; }
+    public void setCateogry(MetaPath m) { currentCategory = new Category(m); }
+    public void setCategory(ViewPath v) { currentCategory = new Category(v); }
 }
