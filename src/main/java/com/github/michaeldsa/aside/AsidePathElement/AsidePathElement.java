@@ -1,30 +1,31 @@
 package com.github.michaeldsa.aside.AsidePathElement;
 
+import com.github.michaeldsa.aside.AsidePath.AsidePath;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
 import java.util.Objects;
 
 public abstract class AsidePathElement {
-
     protected MetaPath metaPath;
     protected ViewPath viewPath;
+    // public Category stepParent; // subclasses can optionally assign this field
 
-    public MetaPath getMetaPath(){
-        return metaPath;
-    }
-    public ViewPath getViewPath(){
-        return viewPath;
-    }
-    // remove setters to keep fields effectively final
-//    public void setAsidePaths(MetaPath metaPath){
-//        this.metaPath = metaPath;
-//        this.viewPath = new ViewPath(metaPath);
-//    }
-//    public void setAsidePaths(ViewPath viewPath){
-//        this.viewPath = viewPath;
-//        this.metaPath = new MetaPath(viewPath);
-//    }
+    // getters:
+    public MetaPath getMetaPath() {return this.metaPath;}
+    public ViewPath getViewPath() {return this.viewPath;}
+
+    // abstract methods:
+    // most of these methods are for subclasses that choose to include a Category stepParent field.
+    public abstract Category getParentCategory();
+    public abstract Category getStepParentsCategory();
+    public abstract void setStepParentsCategory(Category newStepParents);
+    public abstract boolean hasStepParents();
+
+    // static methods:
+    protected static boolean endsWithNoteName(AsidePath ap) {return ValidateAsidePath.NOTE_NAME.test(ap);}
+    protected static boolean endsWithCategoryName(AsidePath ap) {return ValidateAsidePath.CATEGORY_NAME.test(ap);}
 
     @Override
     public boolean equals(Object o) {

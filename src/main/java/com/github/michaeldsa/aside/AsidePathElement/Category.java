@@ -1,103 +1,73 @@
 package com.github.michaeldsa.aside.AsidePathElement;
 
-import com.github.michaeldsa.aside.AsidePath.AsidePath;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
-import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
 import java.util.Objects;
 
+public class Category extends AsidePathElement{
+        // inherited:
+    // MetaPath metaPath;
+    // ViewPath viewPath;
+    protected Category stepParent;
 
-public class Category extends AsidePathElement {
-    private Category stepParent;
-
-    public Category(){}
-    public Category(MetaPath metaPath) {
-        // assign metaPath:
-        if(endsWithCategoryName(metaPath)) {
-            this.metaPath = Objects.requireNonNull(metaPath);
-        } else if (endsWithNoteName(metaPath)) {
-            this.metaPath = Objects.requireNonNull(metaPath.getParent());
-        } else {
-            throw new IllegalArgumentException("Invalid metaPath: " + metaPath);
+    public Category(MetaPath mp) {
+        if (AsidePathElement.endsWithNoteName(mp)) {
+            metaPath = new MetaPath(mp.getParent().getPath());
+        } else if (AsidePathElement.endsWithCategoryName(mp)) {
+            metaPath = mp;
         }
-        // assign viewPath
-        this.viewPath = new ViewPath(this.metaPath);
+        viewPath = new ViewPath(metaPath);
+        stepParent = null;
     }
-
-    public Category(ViewPath viewPath) {
-        // assign viewPath
-        if(endsWithCategoryName(viewPath)) {
-            this.viewPath = Objects.requireNonNull(viewPath);
-        } else if (endsWithNoteName(viewPath)) {
-            this.viewPath = Objects.requireNonNull(viewPath.getParent());
-        } else {
-            throw new IllegalArgumentException("Invalid viewPath: " + viewPath);
+    public Category(ViewPath vp) {
+        if (AsidePathElement.endsWithNoteName(viewPath)) {
+            viewPath = new ViewPath(vp.getParent().getPath());
+        } else if (AsidePathElement.endsWithCategoryName(viewPath)) {
+            viewPath = vp;
         }
-        // assign metaPath
-        this.metaPath = new MetaPath(this.viewPath);
+        metaPath = new MetaPath(viewPath);
+        stepParent = null;
     }
-
-    public Category(Category stepParent, MetaPath metaPath) {
-        // assign metaPath:
-        if(endsWithCategoryName(metaPath)) {
-            this.metaPath = Objects.requireNonNull(metaPath);
-        } else if (endsWithNoteName(metaPath)) {
-            this.metaPath = Objects.requireNonNull(metaPath.getParent());
-        } else {
-            throw new IllegalArgumentException("Invalid metaPath: " + metaPath);
+    public Category(Category c) {
+        MetaPath mp = c.getMetaPath();
+        if (AsidePathElement.endsWithNoteName(mp)) {
+            metaPath = new MetaPath(mp.getParent().getPath());
+        } else if (AsidePathElement.endsWithCategoryName(mp)) {
+            metaPath = mp;
         }
-        // assign viewPath and stepParent:
-        this.viewPath = new ViewPath(this.metaPath);
-        this.stepParent = Objects.requireNonNull(stepParent);
+        viewPath = new ViewPath(metaPath);
+        stepParent = null;
     }
 
-    public Category(Category stepParent, ViewPath viewPath) {
-        // assign viewPath:
-        if(endsWithCategoryName(viewPath)) {
-            this.viewPath = Objects.requireNonNull(viewPath);
-        } else if (endsWithNoteName(viewPath)) {
-            this.viewPath = Objects.requireNonNull(viewPath.getParent());
-        } else {
-            throw new IllegalArgumentException("Invalid viewPath: " + viewPath);
-        }
-        // assign metaPath and stepParent:
-        this.metaPath = new MetaPath(this.viewPath);
-        this.stepParent = Objects.requireNonNull(stepParent);
+
+    @Override
+    public Category getParentCategory() {
+        return new Category(metaPath);
     }
 
-    // getters/setters:
-    public void setParent(Category stepParent) {
-        this.stepParent = stepParent;
-    }
-    public void setParent(MetaPath metaPath) {
-        setParent(new Category(metaPath));
-    }
-    public void setParent(ViewPath viewPath) {
-        setParent(new Category(viewPath));
-    }
-
-    public Category getParent() {
-        return new Category(metaPath.getParent());
-    }
-
-    public Category getStepParent(){
+    @Override
+    public Category getStepParentsCategory() {
         return stepParent;
     }
 
-    public boolean hasSetpParent() {
+    @Override
+    public void setStepParentsCategory(Category newStepParents) {
+        stepParent = newStepParents;
+
+    }
+
+    @Override
+    public boolean hasStepParents() {
         return stepParent != null;
     }
 
-    private boolean endsWithCategoryName(AsidePath asidePath) {
-        return ValidateAsidePath.CATEGORY_NAME.test(asidePath);
+    @Override
+    public String toString() {
+        return "Category{" +
+                "stepParent=" + stepParent +
+                '}';
     }
-
-    private boolean endsWithNoteName(AsidePath asidePath) {
-        return ValidateAsidePath.NOTE_NAME.test(asidePath);
-    }
-
-    // implement .equals, .hashCode, .toString
 
     @Override
     public boolean equals(Object o) {
