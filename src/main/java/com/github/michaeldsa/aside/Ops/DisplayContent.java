@@ -1,32 +1,33 @@
 package com.github.michaeldsa.aside.Ops;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
+import com.github.michaeldsa.aside.AsidePathElement.AsidePathElement;
 
-public enum DisplayContent implements DisplayOps<MetaPath,MetaPath> {
+public enum DisplayContent implements DisplayOps<AsidePathElement, AsidePathElement> {
 
-    METADATA_ALL (m -> {
+    METADATA_ALL (ape -> {
         System.out.println("DisplayList.METADATA_ALL");
-        return m;
+        return ape;
     }),
-    METADATA_TITLE (m -> {
+    METADATA_TITLE (ape -> {
         System.out.println("DisplayList.METADATA_TITLE");
-        return m;
+        return ape;
     }),
-    METADATA_TO (m -> {
+    METADATA_TO (ape -> {
         System.out.println("DisplayList.METADATA_TO");
-        return m;
+        return ape;
     }),
-    METADATA_FROM (m -> {
+    METADATA_FROM (ape -> {
         System.out.println("DisplayList.METADATA_FROM");
-        return m;
+        return ape;
     }),
-    METADATA_TAGS (m -> {
+    METADATA_TAGS (ape -> {
         System.out.println("DisplayList.METADATA_TAGS");
-        return m;
+        return ape;
     }),
-    METADATA_CONTENT (m -> {
+    METADATA_CONTENT (ape -> {
         System.out.println("DisplayList.METADATA_CONTENT");
-        return m;
+        return ape;
     });
 
 
@@ -34,13 +35,13 @@ public enum DisplayContent implements DisplayOps<MetaPath,MetaPath> {
 
 
     // class boilerplate
-    private final DisplayOps<MetaPath,MetaPath> dops;
+    private final DisplayOps<AsidePathElement, AsidePathElement> dops;
 
-    DisplayContent(DisplayOps<MetaPath,MetaPath> dops) {
+    DisplayContent(DisplayOps<AsidePathElement, AsidePathElement> dops) {
         this.dops = dops;
     }
 
-    public MetaPath execute(MetaPath m) {
-        return dops.execute(m);
+    public AsidePathElement execute(AsidePathElement ape) {
+        return dops.execute(ape);
     }
 }

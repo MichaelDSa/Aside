@@ -1,42 +1,43 @@
 package com.github.michaeldsa.aside.Ops;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
+import com.github.michaeldsa.aside.AsidePathElement.AsidePathElement;
 
-public enum DisplayList implements DisplayOps<MetaPath,MetaPath> {
+public enum DisplayList implements DisplayOps<AsidePathElement, AsidePathElement> {
 
-    CATEGORY (m -> {
+    CATEGORY (ape -> {
         System.out.println("DisplayList.CATEGORY");
-        return m;
+        return ape;
     }),
-    CATEGORIES (m -> {
+    CATEGORIES (ape -> {
         System.out.println("DisplayList.CATEGORIES");
-        return m;
+        return ape;
     }),
-    NOTE (m -> {
+    NOTE (ape -> {
         System.out.println("DisplayList.NOTE");
-        return m;
+        return ape;
     }),
-    NOTES (m -> {
+    NOTES (ape -> {
         System.out.println("DisplayList.NOTES");
-        return m;
+        return ape;
     }),
-    ALL_IN_CATEGORY (m -> {
+    ALL_IN_CATEGORY (ape -> {
         System.out.println("DisplayList.ALL_IN_CATEGORY");
-        return m;
+        return ape;
     }),
-    ALL_RECURSIVE (m -> {
+    ALL_RECURSIVE ( ape-> {
         System.out.println("DisplayList.ALL_RECURSIVE");
-        return m;
+        return ape;
     });
 
     // class boilerplate
-    private final DisplayOps<MetaPath,MetaPath> dops;
+    private final DisplayOps<AsidePathElement, AsidePathElement> dops;
 
-    DisplayList(DisplayOps<MetaPath,MetaPath> dops) {
+    DisplayList(DisplayOps<AsidePathElement, AsidePathElement> dops) {
         this.dops = dops;
     }
 
-    public MetaPath execute(MetaPath m) {
-        return dops.execute(m);
+    public AsidePathElement execute(AsidePathElement ape) {
+        return dops.execute(ape);
     }
 }

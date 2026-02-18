@@ -1,26 +1,26 @@
 package com.github.michaeldsa.aside.Ops;
 
-import com.github.michaeldsa.aside.AsidePath.MetaPath;
+import com.github.michaeldsa.aside.AsidePathElement.AsidePathElement;
 
-public enum Create implements CrudOps<MetaPath,MetaPath> {
+public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
 
-    NEW_CATEGORY (m -> {
+    NEW_CATEGORY ( ape-> {
         System.out.println("Create.NEW_CATEGORY");
-        return m;
+        return ape;
     }),
-    NEW_NOTE (m -> {
+    NEW_NOTE (ape -> {
         System.out.println("Create.NEW_NOTE");
-        return m;
+        return ape;
     });
 
     // class boilerplate:
-    private final CrudOps<MetaPath,MetaPath> fops;
+    private final CrudOps<AsidePathElement,AsidePathElement> fops;
 
-    Create(CrudOps<MetaPath,MetaPath> fops) {
+    Create(CrudOps<AsidePathElement,AsidePathElement> fops) {
         this.fops = fops;
     }
 
-    public MetaPath execute(MetaPath m) {
-        return fops.execute(m);
+    public AsidePathElement execute(AsidePathElement ape) {
+        return fops.execute(ape);
     }
 }

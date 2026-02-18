@@ -1,36 +1,39 @@
 package com.github.michaeldsa.aside.Ops;
 
+import com.github.michaeldsa.aside.AsidePathElement.Category;
 import com.github.michaeldsa.aside.AsideUtils;
 import com.github.michaeldsa.aside.CurrentCategory;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.AsidePathElement.AsidePathElement;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public enum Delete implements CrudOps<MetaPath,MetaPath> {
+public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
 
 
-    NOTE (m -> {
-        System.out.println("DELETE_NOTE" + m);
-        return m;
+    NOTE (ape -> {
+        System.out.println("DELETE_NOTE" + ape);
+        return ape;
     }),
-    DELETE_CATEGORY (m -> {
-        System.out.println("DELETE_CATEGORY" + m);
-        return m;
+    DELETE_CATEGORY (ape -> {
+        System.out.println("DELETE_CATEGORY" + ape);
+        return ape;
     }),
-    CATEGORY_TEST (m -> {
+    CATEGORY_TEST (ape -> {
         final CurrentCategory cc = CurrentCategory.INSTANCE;
-        Path mpPath = cc.getCurrentCategory().getMetaPath().getPath().resolve(m.getPath());
-        Path vpPath = new ViewPath(m).getPath();
-        MetaPath metaPath = AsideUtils.asMetaPath(mpPath);
+        Path mpPath = cc.getCurrentMetaPath().resolve(ape.getMetaPath()).getPath();
+        Path vpPath = new ViewPath(mpPath).getPath();
+        Category category = new Category(new MetaPath(mpPath));
+//        MetaPath metaPath = AsideUtils.asMetaPath(mpPath);
 
-        if(m == cc.getCurrentCategory().getMetaPath()) {
+        if(ape.getMetaPath() == cc.getCurrentCategory().getMetaPath()) {
             System.out.println("CURRENT CATEGORY");
             return null;
         }
-        if(!AsideUtils.isCategory(cc.getCurrentCategory().getMetaPath().resolve(m))) {
+        if(!AsideUtils.isCategory(cc.getCurrentCategory().getMetaPath().resolve(ape.getMetaPath()))) {
             System.out.println("NOT A CATEGORY");
             return null;
         }
@@ -48,20 +51,20 @@ public enum Delete implements CrudOps<MetaPath,MetaPath> {
             e.printStackTrace();
         }
 
-        if(AsideUtils.isCategory(metaPath)) {
-            System.err.printf("CATEGORY_TEST: something went wrong. Category still exists: %s%n", metaPath);
+        if(AsideUtils.isCategory(category.getMetaPath())) {
+            System.err.printf("CATEGORY_TEST: something went wrong. Category still exists: %s%n", category);
         }
-        return metaPath;
+        return category;
     }) ;
 
 
 
-    private final CrudOps<MetaPath,MetaPath> fops;
-    Delete(CrudOps<MetaPath,MetaPath> fops) {
+    private final CrudOps<AsidePathElement, AsidePathElement> fops;
+    Delete(CrudOps<AsidePathElement, AsidePathElement> fops) {
         this.fops = fops;
     }
     @Override
-    public MetaPath execute(MetaPath m) {
-        return fops.execute(m);
+    public AsidePathElement execute(AsidePathElement ape) {
+        return fops.execute(ape);
     }
 }
