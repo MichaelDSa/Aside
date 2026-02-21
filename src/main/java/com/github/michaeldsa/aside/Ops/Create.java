@@ -6,6 +6,7 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
 
     NEW_CATEGORY ( ape-> {
         System.out.println("Create.NEW_CATEGORY");
+        // if the ape is not a Category type, the alg should get the parent of the file.
         return ape;
     }),
     NEW_NOTE (ape -> {

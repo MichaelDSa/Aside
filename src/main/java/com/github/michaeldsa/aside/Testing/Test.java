@@ -9,6 +9,7 @@ import com.github.michaeldsa.aside.AsidePathElement.ImmutableNote;
 import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
 import com.github.michaeldsa.aside.CurrentCategory;
 import com.github.michaeldsa.aside.PathKeeper;
+import com.github.michaeldsa.aside.Validation.ValidatePath;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -90,6 +91,16 @@ public class Test {
             return;
         }
         System.out.println("IllegalArgumentException not caught. " + msg);
+    }
+
+    public static boolean validatePath_CN(Path path) {
+        return ValidatePath.CATEGORY_OR_NOTE_NAME_SUBMISSION.test(path);
+    }
+    public static boolean validatePath_C(Path path) {
+        return ValidatePath.CATEGORY_NAME_SUBMISSION.test(path);
+    }
+    public static boolean validatePath_N(Path path) {
+        return ValidatePath.NOTE_NAME_SUBMISSION.test(path);
     }
 
 
