@@ -1,4 +1,4 @@
-package com.github.michaeldsa.aside;
+package com.github.michaeldsa.aside.Search;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

@@ -10,7 +10,7 @@ import java.util.function.Predicate;
 // multiple elements, like so:
 //   `new_category1/new_category2/new_category3/note_name`
 public enum ValidatePath implements Predicate<Path> {
-    CATEGORY_OR_NOTE_NAME_SUBMISSION (p -> {
+    CATEGORY_OR_NOTE_NAME(p -> {
         /*
         - Tests each element of the full path for
           correct naming, whether the path elements
@@ -29,10 +29,10 @@ public enum ValidatePath implements Predicate<Path> {
 
         // if path starts with MetaPath or ViewPath root, remove root from path:
         if (p.startsWith(mpr)){
-            path = path.subpath(rp.getMetapath().getNameCount(), p.getNameCount());
+            path = path.subpath(rp.getMetapath().getNameCount() - 1, p.getNameCount());
         }
         else if (p.startsWith(vpr)){
-            path = path.subpath(rp.getViewpath().getNameCount(), p.getNameCount());
+            path = path.subpath(rp.getViewpath().getNameCount() - 1, p.getNameCount());
         }
 
         // test all elements except last
@@ -52,22 +52,22 @@ public enum ValidatePath implements Predicate<Path> {
         return pass;
 
     }),
-    CATEGORY_NAME_SUBMISSION (p -> {
+    CATEGORY_NAME(p -> {
         /*
         first test with CLIENT_PATH_NAME_SUBMISSION
         then, test last element with CATEGORY_NAME
          */
-        if (CATEGORY_OR_NOTE_NAME_SUBMISSION.test(p)) {
+        if (CATEGORY_OR_NOTE_NAME.test(p)) {
             return ValidateString.CATEGORY_NAME.test(p.getFileName().toString());
         }
         return false;
     }),
-    NOTE_NAME_SUBMISSION (p -> {
+    NOTE_NAME(p -> {
         /*
         first test with CLIENT_PATH_NAME_SUBMISSION
         then, test last element with NOTE_NAME
          */
-        if (CATEGORY_OR_NOTE_NAME_SUBMISSION.test(p)) {
+        if (CATEGORY_OR_NOTE_NAME.test(p)) {
             return ValidateString.NOTE_NAME.test(p.getFileName().toString());
         }
         return false;

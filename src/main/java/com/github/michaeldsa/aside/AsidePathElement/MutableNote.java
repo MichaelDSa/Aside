@@ -20,6 +20,8 @@ public class MutableNote extends AbstractNote{
         } else {
             metaPath = AbstractNote.generateNewNoteName(mp);
         }
+        metaPath = AsidePathElement.filterMetaPathElements_withNoteName(metaPath);
+
         viewPath = new ViewPath(metaPath);
         stepParent = null;
         previousState = null;
@@ -33,6 +35,8 @@ public class MutableNote extends AbstractNote{
         } else {
             viewPath = new ViewPath(AbstractNote.generateNewNoteName(new MetaPath(vp)));
         }
+        viewPath = AsidePathElement.filterViewPathElements_withNoteName(viewPath);
+
         metaPath = new MetaPath(viewPath);
         stepParent = null;
         previousState = null;
@@ -41,6 +45,7 @@ public class MutableNote extends AbstractNote{
         tags = new HashSet<>();
     }
     public MutableNote(Category c){
+        metaPath = AsidePathElement.filterMetaPathElements(c.getMetaPath());
         metaPath = AbstractNote.generateNewNoteName(c.getMetaPath());
         viewPath = new ViewPath(metaPath);
         stepParent = c.getStepParentsCategory();

@@ -1,5 +1,7 @@
 package com.github.michaeldsa.aside;
 
+import com.github.michaeldsa.aside.Search.SearchFor;
+
 import java.io.Console;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,8 +34,8 @@ public class UIConfig {
 
         // greet & prep user
         System.out.printf("%n%s%n", message);
-        Prnt.width80ch("This is the configuration UI. Aside wants to create a designated folder in which to store all notes, metadata, configuration files and more. This folder will be called 'Aside_home'. Please choose a directory in which the Aside_home folder will live. You may enter your choice below.");
-        Prnt.width80ch("%nHint: '~/' not accepted. Use `/home/[username]/Documents`, not `~/Documents`");
+        Pretty.print("This is the configuration UI. Aside wants to create a designated folder in which to store all notes, metadata, configuration files and more. This folder will be called 'Aside_home'. Please choose a directory in which the Aside_home folder will live. You may enter your choice below.");
+        Pretty.print("%nHint: '~/' not accepted. Use `/home/[username]/Documents`, not `~/Documents`");
 
         if(!suggestions.isEmpty()) {
             System.out.printf("%nHere are some suggested directories...%n");
@@ -42,9 +44,9 @@ public class UIConfig {
                 System.out.printf("%d) %s%n", i+1, suggestions.get(i).toAbsolutePath());
             }
 
-            Prnt.width80ch("Select a number from the above menu, enter a full path, or 'exit' to quit:");
+            Pretty.print("Select a number from the above menu, enter a full path, or 'exit' to quit:");
         } else {
-            Prnt.width80ch("Enter directory below or 'exit' to quit. (suggestion: chose a documents folder):");
+            Pretty.print("Enter directory below or 'exit' to quit. (suggestion: chose a documents folder):");
         }
 
         aside_root_parent = consoleGetPath(": ");

@@ -1,11 +1,11 @@
-package com.github.michaeldsa.aside;
+package com.github.michaeldsa.aside.Search;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class MockHomeUserDirectories implements Search{
+public class MockHomeUserDirectories implements Search {
 
     public List<Path> search(String searchTerm){
         Path mockUserHome = Paths.get("MOCK", "home", "user");

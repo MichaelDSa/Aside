@@ -3,21 +3,25 @@ package com.github.michaeldsa.aside.Testing;
 // so I'm writing this class to test stuff.
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
-import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.AsidePathElement.AsidePathElement;
 import com.github.michaeldsa.aside.AsidePathElement.Category;
-import com.github.michaeldsa.aside.AsidePathElement.ImmutableNote;
 import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
 import com.github.michaeldsa.aside.CurrentCategory;
+import com.github.michaeldsa.aside.FileTraversal.Traversers;
+import com.github.michaeldsa.aside.Ops.Create;
 import com.github.michaeldsa.aside.PathKeeper;
+import com.github.michaeldsa.aside.Search.Search;
 import com.github.michaeldsa.aside.Validation.ValidatePath;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Test {
     public static PathKeeper pk = PathKeeper.INSTANCE;
@@ -94,15 +98,89 @@ public class Test {
     }
 
     public static boolean validatePath_CN(Path path) {
-        return ValidatePath.CATEGORY_OR_NOTE_NAME_SUBMISSION.test(path);
+        return ValidatePath.CATEGORY_OR_NOTE_NAME.test(path);
     }
     public static boolean validatePath_C(Path path) {
-        return ValidatePath.CATEGORY_NAME_SUBMISSION.test(path);
+        return ValidatePath.CATEGORY_NAME.test(path);
     }
     public static boolean validatePath_N(Path path) {
-        return ValidatePath.NOTE_NAME_SUBMISSION.test(path);
+        return ValidatePath.NOTE_NAME.test(path);
     }
 
+    public static void searchLambda() {
+        String h = System.getProperty("user.home");
+        Path home = Paths.get(h);
+        String searchTerm = "documents";
+        int depth = 5;
+        Search lambda = (s) -> {
+            try (Stream<Path> stream = Files.find(
+                    home,
+                    depth,
+                    ((path, baf) ->
+                            path.getFileName().toString().equalsIgnoreCase(s)))
+                    ){
+
+                return stream.collect(Collectors.toList());
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+            return new ArrayList<>();
+        };
+        ArrayList<Path> ls = new ArrayList<>();
+        ls.addAll(lambda.search("documents"));
+        ls.addAll(lambda.search("projects"));
+        ls.addAll(lambda.search("pictures"));
+        ArrayList<Path> lssearch = new ArrayList<>(ls.stream().sorted().toList());
+
+        for(Path p : lssearch) {
+            System.out.println(p);
+        }
+    }
+
+    public static void getRootDirs() {
+        Iterable<Path> paths = FileSystems.getDefault().getRootDirectories();
+        for(Path path : paths) {
+            System.err.println(path);
+        }
+    }
+
+    // Traversers:
+    public static void resolveViewPath() {
+        MetaPath mr = new MetaPath(); // metapath root
+        try {
+            Traversers.resolveViewPath()
+                    .setStartingPoint(mr) // not necessary as default is metaPath root.
+                    .setWidth(80)
+                    .traverse();
+        } catch (IOException e) {
+            System.out.println("Test.resolveViewPath() failed \n" + e.getMessage());
+        }
+    }
+
+    public static void createDefaultCategory() {
+        Create.createDefaultCategory();
+    }
+
+    public static void purgeViewPathOrphans() {
+        try {
+            Traversers.purgeViewPathOrphans()
+                    .traverse();
+        } catch (IOException e) {
+            System.err.println("Test.purgeViewPathOrphans() failed \n" + e.getMessage());
+        }
+    }
+
+    public static void createCategory() {
+        MutableNote in1 = new MutableNote(new MetaPath(Paths.get(".Default", ".one", ".two")));
+        MutableNote in2 = new MutableNote(new MetaPath(Paths.get(".zero",".one", ".two", ".three")));
+        Category c1 = new Category(new MetaPath(Paths.get(".Default", ".one", ".two", ".three")));
+        Category c2 = new Category(new MetaPath(Paths.get(".zero", ".one", ".two", ".three")));
+        MutableNote noCat = new MutableNote(new MetaPath());
+        AsidePathElement[] array = {in1, in2, c1, c2, noCat};
+        for (AsidePathElement ape : array) {
+            Create.NEW_CATEGORY.execute(ape);
+        }
+    }
 
 
 }

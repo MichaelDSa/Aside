@@ -22,8 +22,8 @@ public class Main {
 //        System.out.println("metapath_root = " + config.getMetapath());
 //        System.out.println("viewpath_root = " + config.getViewpath());
 //        System.out.println("Successful initialization: " + config.isSuccess_initialization());
-//        Prnt.width80ch("width80ch works!");
-//        Prnt.width("Prnt.width() works!", 30);
+//        Pretty.width80ch("width80ch works!");
+//        Pretty.width("Pretty.width() works!", 30);
 //        if (!config.isSuccess_initialization()) {
 //            System.exit(1);
 //        }

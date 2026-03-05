@@ -1,9 +1,8 @@
-package com.github.michaeldsa.aside;
+package com.github.michaeldsa.aside.Search;
 
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.nio.file.attribute.PosixFileAttributes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

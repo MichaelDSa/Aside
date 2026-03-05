@@ -2,7 +2,10 @@ package com.github.michaeldsa.aside.AsidePathElement;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.RootPaths;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Objects;
 
 public class Category extends AsidePathElement{
@@ -13,33 +16,36 @@ public class Category extends AsidePathElement{
 
     public Category(MetaPath mp) {
         if (AsidePathElement.endsWithNoteName(mp)) {
-            metaPath = new MetaPath(mp.getParent().getPath());
+            metaPath = mp.getParent();
         } else if (AsidePathElement.endsWithCategoryName(mp)) {
             metaPath = mp;
         }
+
+        metaPath = AsidePathElement.filterMetaPathElements(metaPath);
         viewPath = new ViewPath(metaPath);
         stepParent = null;
     }
     public Category(ViewPath vp) {
-        if (AsidePathElement.endsWithNoteName(viewPath)) {
-            viewPath = new ViewPath(vp.getParent().getPath());
+        if (AsidePathElement.endsWithNoteName(vp)) {
+            viewPath = vp.getParent();
         } else if (AsidePathElement.endsWithCategoryName(viewPath)) {
             viewPath = vp;
         }
+        viewPath = AsidePathElement.filterViewPathElements(viewPath);
         metaPath = new MetaPath(viewPath);
         stepParent = null;
     }
     public Category(Category c) {
         MetaPath mp = c.getMetaPath();
         if (AsidePathElement.endsWithNoteName(mp)) {
-            metaPath = new MetaPath(mp.getParent().getPath());
+            metaPath = mp.getParent();
         } else if (AsidePathElement.endsWithCategoryName(mp)) {
             metaPath = mp;
         }
+        metaPath = AsidePathElement.filterMetaPathElements(metaPath);
         viewPath = new ViewPath(metaPath);
         stepParent = null;
     }
-
 
     @Override
     public Category getParentCategory() {

@@ -1,5 +1,6 @@
 package com.github.michaeldsa.aside.AsidePath;
 
+import com.github.michaeldsa.aside.AsidePathElement.RestrictedLists;
 import com.github.michaeldsa.aside.RootPaths;
 
 import java.nio.file.*;
@@ -26,6 +27,7 @@ public class MetaPath extends AsidePath{
             }
             this.path = path;
         } else {
+            System.out.println("IllegalArgumentException: " + path);
             throw new IllegalArgumentException("invalid Path argument " + path);
         }
     }
@@ -70,7 +72,8 @@ public class MetaPath extends AsidePath{
 
     // check that each element of a path passes name restrictions
     private boolean allElementsPassNameRestrictions(Path candidate) {
-        List<String> restrictedNames = new ArrayList<>(Arrays.asList(".meta", ".view", ".aside", ".aside_home", ".trash"));
+//        List<String> restrictedNames = new ArrayList<>(Arrays.asList(".meta", ".view", ".aside", ".aside_home", ".trash"));
+        List<String> restrictedNames = RestrictedLists.getRestrictedMetaPathNames();
         for(int i = 0; i < candidate.getNameCount(); i++){
             String name = candidate.getName(i).toString().toLowerCase(Locale.ENGLISH);
             if(restrictedNames.contains(name)) {

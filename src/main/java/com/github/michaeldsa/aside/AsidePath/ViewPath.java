@@ -1,5 +1,6 @@
 package com.github.michaeldsa.aside.AsidePath;
 
+import com.github.michaeldsa.aside.AsidePathElement.RestrictedLists;
 import com.github.michaeldsa.aside.RootPaths;
 
 import java.nio.file.FileSystems;
@@ -48,7 +49,8 @@ public class ViewPath extends AsidePath {
 
 
     private boolean allElementsPassNameRestrictions(Path candidate) {
-        List<String> restrictedNames = new ArrayList<>(Arrays.asList("meta", "view", "aside_home", "aside", "trash"));
+//        List<String> restrictedNames = new ArrayList<>(Arrays.asList("meta", "view", "aside_home", "aside", "trash"));
+        List<String> restrictedNames = RestrictedLists.getRestrictedViewPathNames();
         for(int i = 0; i < candidate.getNameCount(); i++){
             String name = candidate.getName(i).toString().toLowerCase();
             if(restrictedNames.contains(name)){
