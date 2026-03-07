@@ -121,20 +121,21 @@ public class TestRunner {
             MetaPath mp = new MetaPath(Paths.get(".default", ".subcategory", ".subcategory1", ".subcategory2"));
             ViewPath vp = new ViewPath(Paths.get("default", "subcategory", "subcategory1", "subcategory2", "260302_1732_07.txt"));
             ViewPath vp1 = new ViewPath(Paths.get("default", "260302_1732_07.txt"));
+            ViewPath vp2 = new ViewPath(Paths.get("DEFAULT"));
 
             Category meta = new Category(mp);
-            Category view = new Category(vp);
+            Category view = new Category(vp2);
 //            System.out.println("meta:   " + meta.getMetaPath());
 //            System.out.println("view:   " + view.getViewPath());
             // The test worked, avoiding duplicates of permanent categories.
 
             MutableNote mnvp = new MutableNote(vp);
-            MutableNote mnvp1 = new MutableNote(vp1);
+            MutableNote mnvp1 = new MutableNote(vp2);
 
             System.out.println("mnvp.getMetaPath(): " + mnvp.getMetaPath());
             System.out.println("mnvp.getViewPath(): " + mnvp.getViewPath());
             System.out.println("mnvp1.getMetaPath(): " + mnvp1.getMetaPath());
-            System.out.println("mnvp1.getViewPath(): " + mnvp1.getViewPath());
+            System.out.println("mnvp1.getViewPath(): " + view.getViewPath());
 
 
 

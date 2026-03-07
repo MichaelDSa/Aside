@@ -42,6 +42,9 @@ public class MetaPath extends AsidePath{
     }
 
     // getters/setters:
+    public MetaPath getFileName() {
+        return (MetaPath) super.getFileName(this);
+    }
     public MetaPath getParent() {
         return (MetaPath) super.getParent(this);
     }

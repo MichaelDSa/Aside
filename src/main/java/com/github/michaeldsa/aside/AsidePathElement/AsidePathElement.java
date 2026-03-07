@@ -34,32 +34,36 @@ public abstract class AsidePathElement {
         // remove permanent directories such as .default
         // from the Path elements of metaPath.
         Path path = mp.getPath();
-        Path perm = RootPaths.INSTANCE.getMetapath();
+        MetaPath perm = new MetaPath(); // MetaPath root
         boolean identical = false;
         boolean startsWith = false;
         boolean isLonger = false;
 
         for (String s : RestrictedLists.getPermanentDirectories()) {
             if (s.startsWith(".")) {
-                perm = new MetaPath(Paths.get(s)).getPath();
+                perm = new MetaPath(Paths.get(s.toLowerCase()));
 
                 String path_str = path.toString().toLowerCase();
                 String perm_str = perm.toString().toLowerCase();
 
                 identical = path_str.equals(perm_str);
                 startsWith = path_str.startsWith(perm_str);
-                isLonger = path.getNameCount() > perm.getNameCount();
+                isLonger = path.getNameCount() > perm.getPath().getNameCount();
+
             }
             if (identical || startsWith) {
                 break;
             }
         }
         if (identical) {
-            return mp;
+            // keep permanent dir as final dir name after metaPath root.
+            return perm; // (perm has lowercase dir name).
         }
         if (startsWith && isLonger) {
-            return new MetaPath(path.subpath(perm.getNameCount(), path.getNameCount()));
+            // eliminate permanent dir name from MetaPath.
+            return new MetaPath(path.subpath(perm.getPath().getNameCount(), path.getNameCount()));
         }
+        // does not have permanent dir name after MetaPath root.
         return mp;
     }
 
@@ -68,11 +72,9 @@ public abstract class AsidePathElement {
     }
 
     protected static MetaPath filterMetaPathElements_withNoteName(MetaPath mp) {
-        Path p = mp.getPath();
-        Path noteName = p.getFileName();
-        Path parent = p.getParent();
-        Path filtered = filterMetaPathElements(new MetaPath(parent)).getPath();
-        return new MetaPath(filtered.resolve(noteName));
+        MetaPath name = mp.getFileName();
+        MetaPath newdir = filterMetaPathElements(mp.getParent());
+        return newdir.resolve(name);
     }
 
     protected static ViewPath filterViewPathElements_withNoteName(ViewPath vp) {

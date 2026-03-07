@@ -13,6 +13,18 @@ public abstract class AsidePath {
     public abstract boolean startsWithRoot();
 
     // getters/setters:
+    protected AsidePath getFileName(AsidePath asidePath) {
+        if (!(asidePath.getPath().equals(getMetaPathRoot()) || asidePath.getPath().equals(getViewPathRoot()))) {
+            if (asidePath instanceof MetaPath) {
+                return new MetaPath(asidePath.getPath().getFileName());
+            }
+            if (asidePath instanceof ViewPath) {
+                return new ViewPath(asidePath.getPath().getFileName());
+            }
+        }
+        return null;
+    }
+
     protected AsidePath getParent(AsidePath asidePath) {
         if (!(asidePath.getPath().equals(getMetaPathRoot()) || asidePath.getPath().equals(getViewPathRoot()))) {
             if(asidePath instanceof MetaPath) {
