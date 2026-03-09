@@ -170,6 +170,10 @@ public class Test {
         }
     }
 
+    public static void createPermanentCategories(){
+        Create.createPermanentCategories();
+    }
+
     public static void createCategory() {
         MutableNote in1 = new MutableNote(new MetaPath(Paths.get(".Default", ".one", ".two")));
         MutableNote in2 = new MutableNote(new MetaPath(Paths.get(".zero",".one", ".two", ".three")));

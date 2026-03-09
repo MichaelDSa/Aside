@@ -93,6 +93,9 @@ public class TestRunner {
             // Create.NEW_CATEGORY
 //            Test.createCategory();
 
+            // Create.createPermanentCategories()
+//            Test.createPermanentCategories();
+
             // test Delete.CATEGORY:
             // 1. create category with nested directories and .txt files.
             // 2. resolveViewPath
@@ -101,7 +104,7 @@ public class TestRunner {
             // 5. try the same thing on an AbstractNote type.
 
             // test for correct path:
-            Path del = Paths.get(".default", ".subcategory", ".260302_1732_07.txt");
+            Path del = Paths.get(".cat0", ".subdir1", ".subdir2" );
             MetaPath deleteIt = new MetaPath(del);
             Category delCat = new Category(deleteIt);
             MutableNote delMN = new MutableNote(delCat);
@@ -112,9 +115,11 @@ public class TestRunner {
 
             // now delete everything starting from .nine, inclusive
 //            Delete.CATEGORY.execute(delMN);
+//            Create.NEW_CATEGORY.execute(delCat);
 //            Update.updateViewPath();
             // It worked. I need to try it with an MutableNote
             // It worked with MutableNote.
+            // Both Create.NEW_CATEGORY & Delete.CATEGORY worked.
 
 
             // test Category: filterMetaPathElements(), filterViewPathElements() in Ctegory constructors.
@@ -136,6 +141,8 @@ public class TestRunner {
             System.out.println("mnvp.getViewPath(): " + mnvp.getViewPath());
             System.out.println("mnvp1.getMetaPath(): " + mnvp1.getMetaPath());
             System.out.println("mnvp1.getViewPath(): " + view.getViewPath());
+
+
 
 
 

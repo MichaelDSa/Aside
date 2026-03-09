@@ -2,6 +2,7 @@ package com.github.michaeldsa.aside.FileTraversal;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.AsidePathElement.RestrictedLists;
 import com.github.michaeldsa.aside.RootPaths;
 
 import java.io.IOException;
@@ -66,7 +67,10 @@ public class DeleteCategory extends Traverser {
 
     @Override
     public FileVisitResult _postVisitDirectory(Path dir, IOException ex) throws IOException {
-        Files.delete(dir);
+        // do not delete permanent directories such as .default or default.
+        if (!RestrictedLists.isPermanentDirectory(dir)) {
+            Files.delete(dir);
+        }
         return FileVisitResult.CONTINUE;
     }
 

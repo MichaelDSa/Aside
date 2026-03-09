@@ -5,7 +5,6 @@ import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsidePathElement.AbstractNote;
 import com.github.michaeldsa.aside.AsidePathElement.AsidePathElement;
 import com.github.michaeldsa.aside.AsidePathElement.Category;
-import com.github.michaeldsa.aside.AsidePathElement.RestrictedLists;
 import com.github.michaeldsa.aside.RootPaths;
 
 import java.io.IOException;
@@ -19,7 +18,7 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
         Path mpr = RootPaths.INSTANCE.getMetapath();
 
         // create permenant categories (.default, .trash, etc) if not exists.
-        createPermenantCategories();
+        createPermanentCategories();
 
         // get the Path from ape.getMetaPath
         Path newCategory = ape instanceof AbstractNote
@@ -32,16 +31,14 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
                 || Files.exists(newCategory)) {
             return ape;
         }
-        // if the first parent after root is 'Default' or 'default':
-        int rlength = mpr.getNameCount();
-        Path testDefault = newCategory.getName(rlength);
-
-        // remove 'Default' or 'default' element from path.
-        if (RestrictedLists.getPermanentDirectories().contains(testDefault.toString().toLowerCase())) {
-//        if (testDefault.toString().equals(".Default") || testDefault.toString().equals(".default")) {
-            Path subpath = newCategory.subpath(rlength + 1, newCategory.getNameCount());
-            newCategory = mpr.resolve(subpath);
-        }
+        
+        // AsidePathElements avoid creation of invalid permanent directories.
+        // for example:
+        //      new Category(new MetaPath(Paths.get(metaPathRoot, ".default"))) is fine,
+        //  but new Category(new MetaPath(Paths.get(metaPathRoot, ".default", ".subdirectory))) is modified to:
+        //      new Category(new MetaPath(Paths.get(metaPathRoot, ".subdirectory")))
+        // so we don't have to modify paths at this level.
+        
         // create category
         Path v_newCategory = new ViewPath(new MetaPath(newCategory)).getPath();
         try {
@@ -107,7 +104,7 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
             }
         }
     }
-    public static void createPermenantCategories() {
+    public static void createPermanentCategories() {
         createDefaultCategory();
         createTrashCategory();
     }

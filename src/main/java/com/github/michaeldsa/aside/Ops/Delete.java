@@ -13,7 +13,6 @@ import com.github.michaeldsa.aside.RootPaths;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
 
@@ -33,11 +32,11 @@ public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
                 : ape.getMetaPath().getPath();
 
 
-        // early dismissal:
-            // if startingPoint equals MetaPath root, return
-            // if startingPoint does not exist
-            // Note: if a permenant category is deleted, it
-            //       will be immediately reinstated.
+        // early dismissal. return if:
+            // startingPoint equals MetaPath root
+            // startingPoint does not exist
+            // startingPoint does not start with MetaPath root
+        // Note: permanent directories will not be deleted
         if (Files.notExists(startingPoint)
                 || startingPoint.equals(mpr)
                 || !startingPoint.toString().startsWith(mpr.toString())
@@ -45,7 +44,7 @@ public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
             return ape;
         }
         // delete MetaPath layer of Categories and contents, then
-        // purge all remnants in the ViewPath layer.
+        // purge all orphans in the ViewPath layer.
         MetaPath m_startingPoint = new MetaPath(startingPoint);
         ViewPath v_startingPoint = new ViewPath(m_startingPoint);
         try {
@@ -57,8 +56,7 @@ public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
             System.err.println("Delete.CATEGORY: IOException \n" + e.getMessage());
         }
 
-        // Reinstate permenant categories if they don't exist.
-        Create.createPermenantCategories();
+        Create.createPermanentCategories();
 
         return ape;
     }),
