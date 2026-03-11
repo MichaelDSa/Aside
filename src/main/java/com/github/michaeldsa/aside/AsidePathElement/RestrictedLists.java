@@ -1,22 +1,52 @@
 package com.github.michaeldsa.aside.AsidePathElement;
 
+import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.RootPaths;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class RestrictedLists {
 
+    /*
+    Instance vars need to be assigned in order of dependency priority. Least abstract to most abstract.
+     */
+
+    // AsidePath dependencies (Must be instantiated first):
     private static final ArrayList<String> restrictedMetaPathNames = new ArrayList<>(Arrays.asList(".meta", ".view", ".aside", ".aside_home"));
     private static final ArrayList<String> restrictedViewPathNames = new ArrayList<>(Arrays.asList("meta", "view", "aside_home", "aside"));
-    private static final ArrayList<String> permanentDirectories = new ArrayList<>(Arrays.asList( "default", ".default", "trash", ".trash" ));
+
+    // AsidePathElement dependencies:
+    private static final String metaPathDefaultDirectory = ".DEFAULT";
+    private static final String viewPathDefaultDirectory = metaPathDefaultDirectory.substring(1);
+    private static final String metaPathTrashDirectory = ".TRASH";
+    private static final String viewPathTrashDirectory = metaPathTrashDirectory.substring(1);
+    private static final ArrayList<String> permanentDirectories = new ArrayList<>(Arrays.asList(
+            metaPathDefaultDirectory, viewPathDefaultDirectory, metaPathTrashDirectory, viewPathTrashDirectory));
+
+    // Higher level dependencies (all classes that use AsidePath & AsidePathElement subclasses):
+    private static final Category defaultCategory = new Category(new MetaPath(Paths.get(metaPathDefaultDirectory)));
+    private static final Category trashCategory = new Category(new MetaPath(Paths.get(metaPathTrashDirectory)));
+
+
+    // getters:
+    // for AsidePath subclasses and higher:
     public static ArrayList<String> getRestrictedMetaPathNames() { return restrictedMetaPathNames; }
     public static ArrayList<String> getRestrictedViewPathNames() { return restrictedViewPathNames; }
-    public static ArrayList<String> getPermanentDirectories() {
-        // this must be used with .toString().toLowerCase()
-        return permanentDirectories;
-    }
+
+    // for AsidePathElement subclasses and higher
+    public static ArrayList<String> getPermanentDirectories() { return permanentDirectories; }
+    public static String getMetaPathDefaultDirectoryName() { return metaPathDefaultDirectory; }
+    public static String getViewPathDefaultDirectoryName() { return viewPathDefaultDirectory; }
+    public static String getMetaPathTrashDirectoryName() { return metaPathTrashDirectory; }
+    public static String getViewPathTrashDirectoryName() { return viewPathTrashDirectory; }
+
+
+    // for higher level classes and interfaces:
+    public static Category getDefaultCategory() {return defaultCategory;}
+    public static Category getTrashCategory() {return trashCategory;}
 
     // utility methods:
     public static boolean isPermanentDirectory(Path dir) {

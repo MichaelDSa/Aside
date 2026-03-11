@@ -35,13 +35,21 @@ public abstract class AsidePathElement {
         // from the Path elements of metaPath.
         Path path = mp.getPath();
         MetaPath perm = new MetaPath(); // MetaPath root
+
+        // return default if mp == metapath root.
+        if (path.equals(perm.getPath())) {
+            System.out.println("path.equals(perm)");
+            return RestrictedLists.getDefaultCategory().getMetaPath();
+        }
+
+        // check if mp is a permanent directory
         boolean identical = false;
         boolean startsWith = false;
         boolean isLonger = false;
 
         for (String s : RestrictedLists.getPermanentDirectories()) {
             if (s.startsWith(".")) {
-                perm = new MetaPath(Paths.get(s.toLowerCase()));
+                perm = new MetaPath(Paths.get(s));
 
                 String path_str = path.toString().toLowerCase();
                 String perm_str = perm.toString().toLowerCase();
@@ -78,7 +86,9 @@ public abstract class AsidePathElement {
     }
 
     protected static ViewPath filterViewPathElements_withNoteName(ViewPath vp) {
-        return new ViewPath(filterMetaPathElements(new MetaPath(vp)));
+        ViewPath name = vp.getFileName();
+        ViewPath newdir = filterViewPathElements(vp.getParent());
+        return newdir.resolve(name);
     }
 
     @Override

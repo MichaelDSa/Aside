@@ -5,6 +5,7 @@ import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsidePathElement.AbstractNote;
 import com.github.michaeldsa.aside.AsidePathElement.AsidePathElement;
 import com.github.michaeldsa.aside.AsidePathElement.Category;
+import com.github.michaeldsa.aside.AsidePathElement.RestrictedLists;
 import com.github.michaeldsa.aside.RootPaths;
 
 import java.io.IOException;
@@ -58,8 +59,8 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
     private final CrudOps<AsidePathElement,AsidePathElement> fops;
 
     // default category metapath:
-    private static final Category defaultCategory = new Category(new MetaPath(Paths.get(".default")));
-    private static final Category trashCategory = new Category(new MetaPath(Paths.get(".trash")));
+    private static final Category defaultCategory = RestrictedLists.getDefaultCategory();
+    private static final Category trashCategory = RestrictedLists.getTrashCategory();
 
     Create(CrudOps<AsidePathElement,AsidePathElement> fops) {
         this.fops = fops;

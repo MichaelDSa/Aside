@@ -33,7 +33,7 @@ public abstract class AbstractNote extends AsidePathElement {
     public static MetaPath generateNewNoteName(MetaPath parent) {
         // generate date stamp String starting with `.` and ending with `.txt`.
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd_hhmm_ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd_HHmm_ss");
         String note_name = "." + now.format(formatter) + ".txt";
 
         // Make MetaPath of the note name resolved to parent

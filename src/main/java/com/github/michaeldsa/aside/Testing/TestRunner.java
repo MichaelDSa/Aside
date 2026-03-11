@@ -18,6 +18,7 @@ import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -94,7 +95,7 @@ public class TestRunner {
 //            Test.createCategory();
 
             // Create.createPermanentCategories()
-//            Test.createPermanentCategories();
+            Test.createPermanentCategories();
 
             // test Delete.CATEGORY:
             // 1. create category with nested directories and .txt files.
@@ -134,13 +135,20 @@ public class TestRunner {
 //            System.out.println("view:   " + view.getViewPath());
             // The test worked, avoiding duplicates of permanent categories.
 
-            MutableNote mnvp = new MutableNote(vp);
-            MutableNote mnvp1 = new MutableNote(vp2);
+            MutableNote mnvp = new MutableNote(new MetaPath());
+            MutableNote mnvp0 = new MutableNote(new ViewPath());
+            MutableNote mnvp1 = new MutableNote(vp1);
+            MutableNote mnvp2 = new MutableNote(vp2);
 
             System.out.println("mnvp.getMetaPath(): " + mnvp.getMetaPath());
             System.out.println("mnvp.getViewPath(): " + mnvp.getViewPath());
-            System.out.println("mnvp1.getMetaPath(): " + mnvp1.getMetaPath());
-            System.out.println("mnvp1.getViewPath(): " + view.getViewPath());
+            System.out.println("mnvp0.getViewPath(): " + mnvp0.getViewPath());
+            System.out.println("mnvp0.getViewPath(): " + mnvp0.getViewPath());
+            System.out.println("mnvp1.getViewPath(): " + mnvp1.getViewPath());
+            System.out.println("mnvp1.getViewPath(): " + mnvp1.getViewPath());
+            System.out.println("mnvp2.getMetaPath(): " + mnvp2.getMetaPath());
+            System.out.println("mnvp2.getViewPath(): " + mnvp2.getViewPath());
+
 
 
 

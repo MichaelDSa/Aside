@@ -43,6 +43,9 @@ public class ViewPath extends AsidePath {
     }
 
     // getters/setters:
+    public ViewPath getFileName() {
+        return (ViewPath) super.getFileName(this);
+    }
     public ViewPath getParent() {
         return (ViewPath) super.getParent(this);
     }
