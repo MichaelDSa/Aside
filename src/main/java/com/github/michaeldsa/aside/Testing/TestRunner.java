@@ -128,6 +128,8 @@ public class TestRunner {
             ViewPath vp = new ViewPath(Paths.get("default", "subcategory", "subcategory1", "subcategory2", "260302_1732_07.txt"));
             ViewPath vp1 = new ViewPath(Paths.get("default", "260302_1732_07.txt"));
             ViewPath vp2 = new ViewPath(Paths.get("DEFAULT"));
+            MetaPath mp2 = new MetaPath(Paths.get(".260302_1732_07.txt"));
+            ViewPath vp3 = new ViewPath(Paths.get("260302_1732_07.txt"));
 
             Category meta = new Category(mp);
             Category view = new Category(vp2);
@@ -140,6 +142,9 @@ public class TestRunner {
             MutableNote mnvp1 = new MutableNote(vp1);
             MutableNote mnvp2 = new MutableNote(vp2);
 
+            MutableNote mnmp2 = new MutableNote(mp2);
+            MutableNote mnvp3 = new MutableNote(vp3);
+
             System.out.println("mnvp.getMetaPath(): " + mnvp.getMetaPath());
             System.out.println("mnvp.getViewPath(): " + mnvp.getViewPath());
             System.out.println("mnvp0.getViewPath(): " + mnvp0.getViewPath());
@@ -148,6 +153,8 @@ public class TestRunner {
             System.out.println("mnvp1.getViewPath(): " + mnvp1.getViewPath());
             System.out.println("mnvp2.getMetaPath(): " + mnvp2.getMetaPath());
             System.out.println("mnvp2.getViewPath(): " + mnvp2.getViewPath());
+            System.out.println("mnmp2.getMetaPath(): " + mnmp2.getMetaPath());
+            System.out.println("mnvp3.getViewPath(): " + mnvp3.getViewPath());
 
 
 

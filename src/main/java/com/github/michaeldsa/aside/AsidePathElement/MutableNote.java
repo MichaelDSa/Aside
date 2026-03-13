@@ -20,7 +20,7 @@ public class MutableNote extends AbstractNote{
         } else {
             metaPath = AbstractNote.generateNewNoteName(mp);
         }
-        metaPath = AsidePathElement.filterMetaPathElements_withNoteName(metaPath);
+        metaPath = AsidePathElement.filterMetaPathElements(metaPath);
 
         viewPath = new ViewPath(metaPath);
         stepParent = null;
@@ -35,7 +35,7 @@ public class MutableNote extends AbstractNote{
         } else {
             viewPath = new ViewPath(AbstractNote.generateNewNoteName(new MetaPath(vp)));
         }
-        viewPath = AsidePathElement.filterViewPathElements_withNoteName(viewPath);
+        viewPath = AsidePathElement.filterViewPathElements(viewPath);
 
         metaPath = new MetaPath(viewPath);
         stepParent = null;

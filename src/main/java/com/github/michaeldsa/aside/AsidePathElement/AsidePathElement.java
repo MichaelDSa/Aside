@@ -41,6 +41,9 @@ public abstract class AsidePathElement {
             System.out.println("path.equals(perm)");
             return RestrictedLists.getDefaultCategory().getMetaPath();
         }
+        if (endsWithNoteName(mp)) {
+            return filterMetaPathElements_withNoteName(mp);
+        }
 
         // check if mp is a permanent directory
         boolean identical = false;
@@ -79,13 +82,13 @@ public abstract class AsidePathElement {
         return new ViewPath(filterMetaPathElements(new MetaPath(vp)));
     }
 
-    protected static MetaPath filterMetaPathElements_withNoteName(MetaPath mp) {
+    private static MetaPath filterMetaPathElements_withNoteName(MetaPath mp) {
         MetaPath name = mp.getFileName();
         MetaPath newdir = filterMetaPathElements(mp.getParent());
         return newdir.resolve(name);
     }
 
-    protected static ViewPath filterViewPathElements_withNoteName(ViewPath vp) {
+    private static ViewPath filterViewPathElements_withNoteName(ViewPath vp) {
         ViewPath name = vp.getFileName();
         ViewPath newdir = filterViewPathElements(vp.getParent());
         return newdir.resolve(name);
