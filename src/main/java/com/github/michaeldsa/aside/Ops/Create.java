@@ -11,11 +11,10 @@ import com.github.michaeldsa.aside.RootPaths;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
 
-    NEW_CATEGORY ( ape-> {
+    CATEGORY(ape-> {
         Path mpr = RootPaths.INSTANCE.getMetapath();
 
         // create permenant categories (.default, .trash, etc) if not exists.
@@ -50,7 +49,7 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
         }
         return ape;
     }),
-    NEW_NOTE (ape -> {
+    NOTE(ape -> {
         System.out.println("Create.NEW_NOTE");
         return ape;
     });

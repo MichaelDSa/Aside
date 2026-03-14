@@ -182,7 +182,7 @@ public class Test {
         MutableNote noCat = new MutableNote(new MetaPath());
         AsidePathElement[] array = {in1, in2, c1, c2, noCat};
         for (AsidePathElement ape : array) {
-            Create.NEW_CATEGORY.execute(ape);
+            Create.CATEGORY.execute(ape);
         }
     }
 
