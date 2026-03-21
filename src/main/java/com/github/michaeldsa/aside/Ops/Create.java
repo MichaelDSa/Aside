@@ -15,23 +15,22 @@ import java.nio.file.Path;
 public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
 
     CATEGORY(ape-> {
-        Path mpr = RootPaths.INSTANCE.getMetapath();
-
-        // create permenant categories (.default, .trash, etc) if not exists.
-        createPermanentCategories();
-
         // get the Path from ape.getMetaPath
-        Path newCategory = ape instanceof AbstractNote
+        Path m_newCategory = ape instanceof AbstractNote
                 ? ape.getParentCategory().getMetaPath().getPath()
                 : ape.getMetaPath().getPath();
 
         // early dismissal:
-        if (newCategory.equals(mpr)
-                || !newCategory.startsWith(mpr)
-                || Files.exists(newCategory)) {
+        Path mpr = RootPaths.INSTANCE.getMetapath();
+        if (m_newCategory.equals(mpr)
+                || !m_newCategory.startsWith(mpr)
+                || Files.exists(m_newCategory)) {
             return ape;
         }
-        
+
+        // create permenant categories (.default, .trash, etc) if not exists.
+        createPermanentCategories();
+
         // AsidePathElements avoid creation of invalid permanent directories.
         // for example:
         //      new Category(new MetaPath(Paths.get(metaPathRoot, ".default"))) is fine,
@@ -40,9 +39,9 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
         // so we don't have to modify paths at this level.
         
         // create category
-        Path v_newCategory = new ViewPath(new MetaPath(newCategory)).getPath();
+        Path v_newCategory = new ViewPath(new MetaPath(m_newCategory)).getPath();
         try {
-            Files.createDirectories(newCategory); // MetaPath
+            Files.createDirectories(m_newCategory); // MetaPath
             Files.createDirectories(v_newCategory); // ViewPath
         } catch (IOException e) {
             System.out.println("Create.NEW_CATEGORY failed \n" + e.getMessage());
@@ -50,7 +49,38 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
         return ape;
     }),
     NOTE(ape -> {
-        System.out.println("Create.NEW_NOTE");
+        // get path of note:
+        Path m_note = ape.getMetaPath().getPath();
+
+        // early dismissal:
+        if ( ape instanceof Category || Files.exists(m_note)) {
+            return ape;
+        }
+
+        // ensure permanent categories exist:
+        // consider placing this in the UI instead of here.
+        Create.createPermanentCategories();
+
+        // get category path of note & ensure exists:
+        // consider omitting this. It can be achieved
+        // by the client with compound strategies. i.e.:
+        // Create.CATEGORY.andThen(Create.NOTE).execute(ape)
+        Path m_category = m_note.getParent();
+        Create.CATEGORY.execute(new Category(new MetaPath(m_category)));
+
+        // touch file:
+        Path v_note = ape.getViewPath().getPath();
+        try {
+            Files.createFile(m_note);
+            Files.createFile(v_note);
+        } catch (IOException e) {
+            System.out.println("Create.NOTE failed: \n file exists: \n " + m_note + "\n" + v_note);
+        }
+
+        // The note is empty. Update note with ape data:
+        Update.WRITE_NOTE_METADATA.execute(ape);
+
+
         return ape;
     });
 

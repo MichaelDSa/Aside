@@ -10,6 +10,7 @@ import com.github.michaeldsa.aside.CurrentCategory;
 import com.github.michaeldsa.aside.FileTraversal.Traversers;
 import com.github.michaeldsa.aside.Ops.Create;
 import com.github.michaeldsa.aside.PathKeeper;
+import com.github.michaeldsa.aside.Pretty;
 import com.github.michaeldsa.aside.Search.Search;
 import com.github.michaeldsa.aside.Validation.ValidatePath;
 
@@ -184,6 +185,21 @@ public class Test {
         for (AsidePathElement ape : array) {
             Create.CATEGORY.execute(ape);
         }
+    }
+
+    public static void createNote() {
+        // define note
+        MutableNote note = new MutableNote(new MetaPath())
+                .setTitle("Test Create.NOTE & Update.WRITE_NOTE_METADATA")
+                .setContent(Pretty.format(
+                        "This is the content for my test of Create.NOTE & Update.WRITE_NOTE_METADATA. I am using Pretty to format this content to 80 ch width.",
+                        80 ))
+                .setTo(new HashSet<>(Arrays.asList("to1", "toJ", "to3")))
+                .setFrom(new HashSet<>(Arrays.asList("from1", "from2", "from3")))
+                .setTags(new HashSet<>(Arrays.asList("tag1", "tag2", "tag3")));
+
+        // create note. Create.NOTE depends on Update.WRITE_NOTE_METADATA.
+        Create.NOTE.execute(note);
     }
 
 

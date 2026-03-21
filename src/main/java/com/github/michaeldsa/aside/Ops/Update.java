@@ -1,18 +1,76 @@
 package com.github.michaeldsa.aside.Ops;
 
-import com.github.michaeldsa.aside.AsidePath.MetaPath;
+import com.github.michaeldsa.aside.AsidePathElement.AbstractNote;
 import com.github.michaeldsa.aside.AsidePathElement.AsidePathElement;
-import com.github.michaeldsa.aside.FileTraversal.PurgeViewPathOrphans;
-import com.github.michaeldsa.aside.FileTraversal.ResolveViewPath;
-import com.github.michaeldsa.aside.FileTraversal.Traverser;
 import com.github.michaeldsa.aside.FileTraversal.Traversers;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
+import java.util.Properties;
+import java.util.Set;
 
 public enum Update implements CrudOps<AsidePathElement,AsidePathElement> {
 
+    CATEGORY (ape -> {
+        return ape;
+    }),
+    WRITE_NOTE_METADATA(ape -> {
+        if (!(ape instanceof AbstractNote)) {
+            return ape;
+        }
 
+        // define and set each property:
+        Properties props = new Properties();
+
+        // set title property
+        String title = ((AbstractNote) ape).getTitle();
+        if (title == null) {
+            title = "";
+        }
+        props.setProperty("title", title);
+
+        // set content property
+        String content = ((AbstractNote) ape).getContent();
+        if (content == null) {
+            content = "";
+        }
+        props.setProperty("content", content);
+
+        // set to property
+        Set<String> to = ((AbstractNote) ape).getTo();
+        if (to == null) {
+            to = Collections.emptySet();
+        }
+        props.setProperty("to", to.toString());
+
+        // set from property
+        Set<String> from = ((AbstractNote) ape).getFrom();
+        if (from == null) {
+            from = Collections.emptySet();
+        }
+        props.setProperty("from", from.toString());
+
+        // set tags property
+        Set<String> tags = ((AbstractNote) ape).getTags();
+        if (tags == null) {
+            tags = Collections.emptySet();
+        }
+        props.setProperty("tags", tags.toString());
+
+        // save the properties to the file:
+        Path m_note = ape.getMetaPath().getPath();
+        try (OutputStream out = Files.newOutputStream(m_note)) {
+            props.store(out, null);
+            Traversers.resolveViewPath(ape.getViewPath()).traverse();
+        } catch (IOException e) {
+            System.err.println("Create.NOTE failed: " + e.getMessage());
+        }
+
+        return ape;
+    }),
 
     METADATA_CONTENT_PREPEND (ape -> {
         System.out.println("METADATA_UPDATE_CONTENT_PREPEND" + ape);

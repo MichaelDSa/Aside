@@ -97,64 +97,8 @@ public class TestRunner {
             // Create.createPermanentCategories()
             Test.createPermanentCategories();
 
-            // test Delete.CATEGORY:
-            // 1. create category with nested directories and .txt files.
-            // 2. resolveViewPath
-            // 3. create Category of one of the nested categoryies
-            // 4. use Delete.CATEGORY on that Category.
-            // 5. try the same thing on an AbstractNote type.
-
-            // test for correct path:
-            Path del = Paths.get(".cat0", ".subdir1", ".subdir2" );
-            MetaPath deleteIt = new MetaPath(del);
-            Category delCat = new Category(deleteIt);
-            MutableNote delMN = new MutableNote(delCat);
-            MutableNote delMN2 = new MutableNote(deleteIt);
-
-            System.out.println("Path to delete: " + deleteIt.getPath());
-            System.out.println("MutableNote delMN: " + delMN2.getMetaPath());
-
-            // now delete everything starting from .nine, inclusive
-//            Delete.CATEGORY.execute(delMN);
-//            Create.NEW_CATEGORY.execute(delCat);
-//            Update.updateViewPath();
-            // It worked. I need to try it with an MutableNote
-            // It worked with MutableNote.
-            // Both Create.NEW_CATEGORY & Delete.CATEGORY worked.
-
-
-            // test Category: filterMetaPathElements(), filterViewPathElements() in Ctegory constructors.
-            MetaPath mp = new MetaPath(Paths.get(".default", ".subcategory", ".subcategory1", ".subcategory2"));
-            ViewPath vp = new ViewPath(Paths.get("default", "subcategory", "subcategory1", "subcategory2", "260302_1732_07.txt"));
-            ViewPath vp1 = new ViewPath(Paths.get("default", "260302_1732_07.txt"));
-            ViewPath vp2 = new ViewPath(Paths.get("DEFAULT"));
-            MetaPath mp2 = new MetaPath(Paths.get(".260302_1732_07.txt"));
-            ViewPath vp3 = new ViewPath(Paths.get("260302_1732_07.txt"));
-
-            Category meta = new Category(mp);
-            Category view = new Category(vp2);
-//            System.out.println("meta:   " + meta.getMetaPath());
-//            System.out.println("view:   " + view.getViewPath());
-            // The test worked, avoiding duplicates of permanent categories.
-
-            MutableNote mnvp = new MutableNote(new MetaPath());
-            MutableNote mnvp0 = new MutableNote(new ViewPath());
-            MutableNote mnvp1 = new MutableNote(vp1);
-            MutableNote mnvp2 = new MutableNote(vp2);
-
-            MutableNote mnmp2 = new MutableNote(mp2);
-            MutableNote mnvp3 = new MutableNote(vp3);
-
-            System.out.println("mnvp.getMetaPath(): " + mnvp.getMetaPath());
-            System.out.println("mnvp.getViewPath(): " + mnvp.getViewPath());
-            System.out.println("mnvp0.getViewPath(): " + mnvp0.getViewPath());
-            System.out.println("mnvp0.getViewPath(): " + mnvp0.getViewPath());
-            System.out.println("mnvp1.getViewPath(): " + mnvp1.getViewPath());
-            System.out.println("mnvp1.getViewPath(): " + mnvp1.getViewPath());
-            System.out.println("mnvp2.getMetaPath(): " + mnvp2.getMetaPath());
-            System.out.println("mnvp2.getViewPath(): " + mnvp2.getViewPath());
-            System.out.println("mnmp2.getMetaPath(): " + mnmp2.getMetaPath());
-            System.out.println("mnvp3.getViewPath(): " + mnvp3.getViewPath());
+            // Create.NOTE. This Ops strategy depends on Update.WRITE_NOTE_METADATA
+            Test.createNote();
 
 
 
