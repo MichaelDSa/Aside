@@ -18,7 +18,9 @@ public enum Update implements CrudOps<AsidePathElement,AsidePathElement> {
         return ape;
     }),
     WRITE_NOTE_METADATA(ape -> {
+        // prerequisite: must be AbstractNote subclass
         if (!(ape instanceof AbstractNote)) {
+            System.out.println("Update.WRITE_NOTE_METADATA can only operate on AbstractNote subclasses.");
             return ape;
         }
 

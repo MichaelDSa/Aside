@@ -2,6 +2,7 @@ package com.github.michaeldsa.aside.Ops;
 
 import com.github.michaeldsa.aside.AsidePathElement.AbstractNote;
 import com.github.michaeldsa.aside.AsidePathElement.Category;
+import com.github.michaeldsa.aside.AsidePathElement.DiscardedElement;
 import com.github.michaeldsa.aside.AsideUtils;
 import com.github.michaeldsa.aside.CurrentCategory;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
@@ -22,9 +23,13 @@ public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
         return ape;
     }),
     CATEGORY(ape -> {
+        // prerequisite: no DiscardedElement objects
+        if (ape instanceof DiscardedElement) {
+            System.out.println("Delete.CATEGORY: Cannot operate on DiscardedElement objects.\nUse Delete.DISCARDED_ELEMENT instead.");
+            return ape;
+        }
 
         Path mpr = RootPaths.INSTANCE.getMetapath();
-
 
         // get path from a Category
         Path startingPoint = ape instanceof AbstractNote

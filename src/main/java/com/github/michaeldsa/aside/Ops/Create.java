@@ -12,6 +12,11 @@ import java.nio.file.Path;
 public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
 
     CATEGORY(ape-> {
+        // prerequisite: no DiscardedElement objects
+        if (ape instanceof DiscardedElement) {
+            System.out.println("Create.CATEGORY: Cannot operate on DiscardedElement objects.");
+            return ape;
+        }
         // get the Path from ape.getMetaPath
         Path m_newCategory = ape instanceof AbstractNote
                 ? ape.getParentCategory().getMetaPath().getPath()
