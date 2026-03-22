@@ -2,26 +2,10 @@ package com.github.michaeldsa.aside.Testing;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
-import com.github.michaeldsa.aside.AsidePathElement.AsidePathElement;
-import com.github.michaeldsa.aside.AsidePathElement.Category;
-import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
-import com.github.michaeldsa.aside.FileTraversal.TestTraverser;
-import com.github.michaeldsa.aside.FileTraversal.Traversers;
-import com.github.michaeldsa.aside.Ops.Create;
-import com.github.michaeldsa.aside.Ops.Delete;
-import com.github.michaeldsa.aside.Ops.NewCreate;
-import com.github.michaeldsa.aside.Ops.Update;
 import com.github.michaeldsa.aside.RootPaths;
 
-import java.io.IOException;
-import java.nio.file.FileVisitOption;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 public class TestRunner {
     public static class MutableNoteTests {
@@ -66,21 +50,7 @@ public class TestRunner {
             Test.getRootDirs();
 
             // TestTraverser:
-            System.out.println("\nTEST TRAVERSER: TestTraverser");
-            Set<FileVisitOption> options = Collections.singleton(FileVisitOption.FOLLOW_LINKS);
-            TestTraverser tt = new TestTraverser()
-                    .setStartingPoint(mpRoot)
-                    .setFileVisitOptions(options);
-
-            try {
-                tt.traverse();
-            } catch (IOException e) {
-                System.out.println("TestRunner: tt.traverse() failed: \n" + e.getMessage());
-            }
-            List<AsidePathElement> elements = tt.getList();
-            for (AsidePathElement asidePathElement : elements) {
-                System.out.println(asidePathElement);
-            }
+            // now deleted. It worked. it returned an arrayList of all paths and dirs from a starting point.
 
             // ResolveViewPath
 //            Test.resolveViewPath();

@@ -2,6 +2,8 @@ package com.github.michaeldsa.aside.FileTraversal;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.AsidePathElement.DiscardedElement;
+import com.github.michaeldsa.aside.AsidePathElement.RestrictedLists;
 import com.github.michaeldsa.aside.Pretty;
 import com.github.michaeldsa.aside.RootPaths;
 import com.github.michaeldsa.aside.Validation.ValidatePath;
@@ -70,14 +72,17 @@ public class ResolveViewPath extends Traverser{
     }
 
     public FileVisitResult _preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-        // first test that the directory has a valid Category name:
-        if (!ValidatePath.CATEGORY_NAME.test(dir)) {
-            return FileVisitResult.CONTINUE;
+        // Does dir have a valid category name?
+        if (ValidatePath.CATEGORY_NAME.test(dir)) {
+
+            // ...if so, get its ViewPath counterpart
+            Path vpath = new ViewPath(new MetaPath(dir)).getPath();
+            if (Files.notExists(vpath)) {
+                Files.createDirectory(vpath);
+            }
         }
 
-        // get the path that would be the ViewPath counterpart to dir.
-        Path vpath = new ViewPath(new MetaPath(dir)).getPath();
-            Files.createDirectories(vpath);
+
         return FileVisitResult.CONTINUE;
     }
 
@@ -85,7 +90,10 @@ public class ResolveViewPath extends Traverser{
 
         // early dismissal:
         // valid files only. Text files in root path are not recognized
+        // Files that are descendants of DISCARDED are not recognized
+        Path discarded = RestrictedLists.getDiscardedElementDirectory().getMetaPath().getPath();
         if (
+                file.startsWith(discarded) ||
                 file.getParent().equals(RootPaths.INSTANCE.getMetapath()) ||
                 !Files.isRegularFile(file) ||
                 !ValidatePath.NOTE_NAME.test(file)

@@ -15,7 +15,8 @@ import java.util.Set;
 public class PurgeViewPathOrphans extends Traverser {
     /*
     Traverses ViewPath from specified starting point; deletes files
-    that do not have a corresponding MetaPath directory or file.
+    that do not have a corresponding MetaPath directory or file. This
+    Traverser has access to all categories and permanent dirs.
      */
     public PurgeViewPathOrphans() {
         this.startingPoint = new ViewPath().getPath();
@@ -61,7 +62,7 @@ public class PurgeViewPathOrphans extends Traverser {
         // get the MetaPath counterpart as a Path
         Path mdir = new MetaPath(new ViewPath(dir)).getPath();
 
-        // delete if it doesnt exist in MetaPath
+        // delete if mdir counterpart does not exist.
         if (Files.notExists(mdir)) {
             Files.delete(dir);
         }

@@ -2,6 +2,7 @@ package com.github.michaeldsa.aside.FileTraversal;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.AsidePathElement.DiscardedElement;
 import com.github.michaeldsa.aside.AsidePathElement.RestrictedLists;
 import com.github.michaeldsa.aside.RootPaths;
 
@@ -61,22 +62,22 @@ public class DeleteCategory extends Traverser {
     // traversal methods:
     @Override
     public FileVisitResult _visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        Files.delete(file);
+        Path de_mpath = RestrictedLists.getDiscardedElementDirectory().getMetaPath().getPath();
+        Path de_vpath = RestrictedLists.getDiscardedElementDirectory().getViewPath().getPath();
+        Path parent = file.getParent();
+        if (!parent.equals(de_mpath) && !parent.equals(de_vpath)) {
+            Files.delete(file);
+        }
         return FileVisitResult.CONTINUE;
     }
 
     @Override
     public FileVisitResult _postVisitDirectory(Path dir, IOException ex) throws IOException {
-        // do not delete permanent directories such as .default or default.
+        // do not delete permanent directories such as .DEFAULT or DISCARDED.
         if (!RestrictedLists.isPermanentDirectory(dir)) {
             Files.delete(dir);
         }
         return FileVisitResult.CONTINUE;
     }
 
-//    @Override
-//    public FileVisitResult _visitFileFailed(Path file, IOException ex) {
-//        System.err.println("DeleteCategory._visitFileFailed() IOException: " + file + "\n" + ex.getMessage());
-//        return FileVisitResult.CONTINUE;
-//    }
 }

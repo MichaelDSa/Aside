@@ -28,7 +28,6 @@ public class RestrictedLists {
 
     // Higher level dependencies (all classes that use AsidePath & AsidePathElement subclasses):
     private static final Category defaultCategory = new Category(new MetaPath(Paths.get(metaPathDefaultDirectory)));
-    private static final Category trashCategory = new Category(new MetaPath(Paths.get(metaPathDiscardedDirectory)));
     private static final DiscardedElement discardedElementDirectory = new DiscardedElement();
 
 
@@ -42,12 +41,11 @@ public class RestrictedLists {
     public static String getMetaPathDefaultDirectoryName() { return metaPathDefaultDirectory; }
     public static String getViewPathDefaultDirectoryName() { return viewPathDefaultDirectory; }
     public static String getMetaPathDiscardedDirectoryName() { return metaPathDiscardedDirectory; }
-    public static String getViewPathDiscardedDirectoryNema() { return viewPathDiscardedDirectory; }
+    public static String getViewPathDiscardedDirectoryName() { return viewPathDiscardedDirectory; }
 
 
     // for higher level classes and interfaces:
     public static Category getDefaultCategory() {return defaultCategory;}
-    public static Category getTrashCategory() {return trashCategory;}
     public static DiscardedElement getDiscardedElementDirectory() {return discardedElementDirectory;}
 
     // utility methods:

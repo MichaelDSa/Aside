@@ -76,7 +76,7 @@ public class DiscardedElement extends AsidePathElement {
 
     public DiscardedElement(ViewPath vp) {
         Path v_default = Paths.get(RestrictedLists.getViewPathDefaultDirectoryName());
-        Path v_discarded = Paths.get(RestrictedLists.getViewPathDiscardedDirectoryNema());
+        Path v_discarded = Paths.get(RestrictedLists.getViewPathDiscardedDirectoryName());
         // no viewpath root or default (contents of default ok)
         if (!vp.equals(new ViewPath())
                 || !vp.equals(new ViewPath(v_default))) {
