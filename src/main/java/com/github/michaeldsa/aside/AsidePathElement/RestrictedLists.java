@@ -21,14 +21,15 @@ public class RestrictedLists {
     // AsidePathElement dependencies:
     private static final String metaPathDefaultDirectory = ".DEFAULT";
     private static final String viewPathDefaultDirectory = metaPathDefaultDirectory.substring(1);
-    private static final String metaPathTrashDirectory = ".TRASH";
-    private static final String viewPathTrashDirectory = metaPathTrashDirectory.substring(1);
+    private static final String metaPathDiscardedDirectory = ".DISCARDED";
+    private static final String viewPathDiscardedDirectory = metaPathDiscardedDirectory.substring(1);
     private static final ArrayList<String> permanentDirectories = new ArrayList<>(Arrays.asList(
-            metaPathDefaultDirectory, viewPathDefaultDirectory, metaPathTrashDirectory, viewPathTrashDirectory));
+            metaPathDefaultDirectory, viewPathDefaultDirectory, metaPathDiscardedDirectory, viewPathDiscardedDirectory));
 
     // Higher level dependencies (all classes that use AsidePath & AsidePathElement subclasses):
     private static final Category defaultCategory = new Category(new MetaPath(Paths.get(metaPathDefaultDirectory)));
-    private static final Category trashCategory = new Category(new MetaPath(Paths.get(metaPathTrashDirectory)));
+    private static final Category trashCategory = new Category(new MetaPath(Paths.get(metaPathDiscardedDirectory)));
+    private static final DiscardedElement discardedElementDirectory = new DiscardedElement();
 
 
     // getters:
@@ -40,13 +41,14 @@ public class RestrictedLists {
     public static ArrayList<String> getPermanentDirectories() { return permanentDirectories; }
     public static String getMetaPathDefaultDirectoryName() { return metaPathDefaultDirectory; }
     public static String getViewPathDefaultDirectoryName() { return viewPathDefaultDirectory; }
-    public static String getMetaPathTrashDirectoryName() { return metaPathTrashDirectory; }
-    public static String getViewPathTrashDirectoryName() { return viewPathTrashDirectory; }
+    public static String getMetaPathDiscardedDirectoryName() { return metaPathDiscardedDirectory; }
+    public static String getViewPathDiscardedDirectoryNema() { return viewPathDiscardedDirectory; }
 
 
     // for higher level classes and interfaces:
     public static Category getDefaultCategory() {return defaultCategory;}
     public static Category getTrashCategory() {return trashCategory;}
+    public static DiscardedElement getDiscardedElementDirectory() {return discardedElementDirectory;}
 
     // utility methods:
     public static boolean isPermanentDirectory(Path dir) {

@@ -2,10 +2,7 @@ package com.github.michaeldsa.aside.Ops;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
-import com.github.michaeldsa.aside.AsidePathElement.AbstractNote;
-import com.github.michaeldsa.aside.AsidePathElement.AsidePathElement;
-import com.github.michaeldsa.aside.AsidePathElement.Category;
-import com.github.michaeldsa.aside.AsidePathElement.RestrictedLists;
+import com.github.michaeldsa.aside.AsidePathElement.*;
 import com.github.michaeldsa.aside.RootPaths;
 
 import java.io.IOException;
@@ -89,7 +86,7 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
 
     // default category metapath:
     private static final Category defaultCategory = RestrictedLists.getDefaultCategory();
-    private static final Category trashCategory = RestrictedLists.getTrashCategory();
+    private static final DiscardedElement discardedElementDirectory = RestrictedLists.getDiscardedElementDirectory();
 
     Create(CrudOps<AsidePathElement,AsidePathElement> fops) {
         this.fops = fops;
@@ -103,9 +100,9 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
         boolean vpisdir = Files.isDirectory(defaultCategory.getViewPath().getPath());
         return mpisdir && vpisdir;
     }
-    public static boolean trashCategoryExists() {
-        boolean mpisdir = Files.isDirectory(trashCategory.getMetaPath().getPath());
-        boolean vpisdir = Files.isDirectory(trashCategory.getViewPath().getPath());
+    public static boolean discardedElementDirectoryExists() {
+        boolean mpisdir = Files.isDirectory(discardedElementDirectory.getMetaPath().getPath());
+        boolean vpisdir = Files.isDirectory(discardedElementDirectory.getViewPath().getPath());
         return mpisdir && vpisdir;
     }
 
@@ -123,9 +120,9 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
         }
     }
     public static void createTrashCategory() {
-        if (!trashCategoryExists()) {
-            Path mpath = trashCategory.getMetaPath().getPath();
-            Path vpath  = trashCategory.getViewPath().getPath();
+        if (!discardedElementDirectoryExists()) {
+            Path mpath = discardedElementDirectory.getMetaPath().getPath();
+            Path vpath  = discardedElementDirectory.getViewPath().getPath();
             try {
                 Files.createDirectories(mpath);
                 Files.createDirectories(vpath);

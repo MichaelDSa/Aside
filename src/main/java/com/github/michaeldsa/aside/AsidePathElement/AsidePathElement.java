@@ -38,7 +38,6 @@ public abstract class AsidePathElement {
 
         // return default if mp == metapath root.
         if (path.equals(perm.getPath())) {
-            System.out.println("path.equals(perm)");
             return RestrictedLists.getDefaultCategory().getMetaPath();
         }
         if (endsWithNoteName(mp)) {
@@ -67,8 +66,9 @@ public abstract class AsidePathElement {
             }
         }
         if (identical) {
-            // keep permanent dir as final dir name after metaPath root.
-            return perm; // (perm has lowercase dir name).
+            // DISCARDED is unavailable to Category and AbstractNote.
+            // Return DEFAULT. DISCARDED is available only to DiscardedItem
+            return new MetaPath(Paths.get(RestrictedLists.getMetaPathDefaultDirectoryName()));
         }
         if (startsWith && isLonger) {
             // eliminate permanent dir name from MetaPath.

@@ -95,10 +95,13 @@ public class TestRunner {
 //            Test.createCategory();
 
             // Create.createPermanentCategories()
-            Test.createPermanentCategories();
+//            Test.createPermanentCategories();
 
             // Create.NOTE. This Ops strategy depends on Update.WRITE_NOTE_METADATA
-            Test.createNote();
+//            Test.createNote();
+
+            // DiscardedElement test:
+//            Test.discardedElement();
 
 
 

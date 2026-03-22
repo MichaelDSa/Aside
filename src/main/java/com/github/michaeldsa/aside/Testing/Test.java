@@ -3,8 +3,10 @@ package com.github.michaeldsa.aside.Testing;
 // so I'm writing this class to test stuff.
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
+import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsidePathElement.AsidePathElement;
 import com.github.michaeldsa.aside.AsidePathElement.Category;
+import com.github.michaeldsa.aside.AsidePathElement.DiscardedElement;
 import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
 import com.github.michaeldsa.aside.CurrentCategory;
 import com.github.michaeldsa.aside.FileTraversal.Traversers;
@@ -200,6 +202,49 @@ public class Test {
 
         // create note. Create.NOTE depends on Update.WRITE_NOTE_METADATA.
         Create.NOTE.execute(note);
+    }
+
+    public static void discardedElement() {
+        System.out.println("\nTest discardedElement:\n");
+        // test that DiscardedElement instantiates with no parameters.
+        System.out.println("DiscardedElement de = new DiscardedElement()");
+        DiscardedElement de = new DiscardedElement();
+        discardedElementHelper(de);
+
+        // Constructor test: Category
+        System.out.println("\nDiscardedElement cat_discard = new DiscardedElement(new Category(new MetaPath(Paths.get(\"category1\", \"category2\"));");
+        discardedElementHelper(new DiscardedElement(new Category(new MetaPath(Paths.get(".category1", ".category2")))));
+
+        // Constructor test: MetaPath
+        System.out.println("\nDiscardedElement m_discard = new DiscardedElement(new MetaPath(Paths.get(\".cat1\", \".cat2\", \".260322_0100_00.txt\"));");
+        discardedElementHelper(new DiscardedElement(new MetaPath(Paths.get(".cat1", ".cat2", ".260322_0100_00.txt"))));
+
+        // Constructor test: ViewPath
+        System.out.println("\nDiscardedElement m_discard = new DiscardedElement(new ViewPath(Pathsget(\"cat1\", \"cat2\", \"260322_0100_00.txt\"));");
+        discardedElementHelper(new DiscardedElement(new ViewPath(Paths.get("cat1", "cat2", "260322_0100_00.txt"))));
+
+        // Constructor test: MutableNote
+        System.out.println("\nDiscardedElement mn = new DiscardedElement new MutableNote...");
+        MutableNote mn = new MutableNote(new MetaPath(Paths.get(".cat1", ".cat2", ".260322_0100_00.txt")))
+                .setTitle("DiscardedElement test MutableNote constructor")
+                .setContent("some content")
+                .setTo(new HashSet<>(Arrays.asList("to1", "to2", "to3")));
+        discardedElementHelper(new DiscardedElement(mn));
+
+
+
+
+    }
+    private static void discardedElementHelper(DiscardedElement de) {
+        // test booleans (should both be false)
+        System.out.println("isCategory: " + de.isCategory());
+        System.out.println("isNote: " + de.isNote());
+        // test getMetaPath() & getViewPath():
+        System.out.println("getMetaPath(): " + de.getMetaPath());
+        System.out.println("getViewPath(): " + de.getViewPath());
+        // test getOriginalMetaPath() & getOriginalViewPath().
+        System.out.println("origninal MetaPath: " + de.getOriginalMetaPath());
+        System.out.println("origninal ViewPath: " + de.getOriginalViewPath());
     }
 
 
