@@ -13,15 +13,15 @@ public class ImmutableNote extends AbstractNote{
     private final ViewPath viewPath;
     private final String title;
     private final String content;
-    private final Set<String> to;
-    private final Set<String> from;
-    private final Set<String> tags;
+    private final HashSet<String> to;
+    private final HashSet<String> from;
+    private final HashSet<String> tags;
     private final Category stepParent;
     // ImmutableNote previousState;
     public ImmutableNote(MutableNote mn) {
         this.metaPath = mn.metaPath;
         this.viewPath = mn.viewPath;
-        this.stepParent = mn.getStepParentsCategory();
+        this.stepParent = mn.getStepParentCategory();
         this.title = mn.getTitle();
         this.content = mn.getContent();
         this.to = new HashSet<>(Collections.unmodifiableSet(getTo()));
@@ -39,17 +39,17 @@ public class ImmutableNote extends AbstractNote{
     }
 
     @Override
-    public Set<String> getTo() {
+    public HashSet<String> getTo() {
         return this.to;
     }
 
     @Override
-    public Set<String> getFrom() {
+    public HashSet<String> getFrom() {
         return this.from;
     }
 
     @Override
-    public Set<String> getTags() {
+    public HashSet<String> getTags() {
         return this.tags;
     }
 
@@ -59,12 +59,12 @@ public class ImmutableNote extends AbstractNote{
     }
 
     @Override
-    public Category getStepParentsCategory() {
+    public Category getStepParentCategory() {
         return this.stepParent;
     }
 
     @Override
-    public void setStepParentsCategory(Category newStepParents) {
+    public void setStepParentCategory(Category newStepParents) {
         return;
     }
 

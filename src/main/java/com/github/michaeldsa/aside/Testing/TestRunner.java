@@ -6,6 +6,9 @@ import com.github.michaeldsa.aside.RootPaths;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 
 public class TestRunner {
     public static class MutableNoteTests {
@@ -74,6 +77,24 @@ public class TestRunner {
 //            Test.discardedElement();
 
 
+            // Testing HashSet<String>
+            HashSet<String> hs = new HashSet<>(Arrays.asList("260328_0130_33.txt", "260328_0130_52.txt", "260328_0131_17.txt", "260328_0131_28.txt" ));
+            String hs_string = hs.toString();
+            hs_string = hs_string.substring(1, hs_string.length()-1);
+            String[ ] hs_array = hs_string.split(", ");
+            HashSet<String> hs1 = new HashSet<>(List.of(hs_array));
+
+            System.out.println();
+            System.out.println(hs);
+            System.out.println(hs1);
+
+            // Testing String.replace()
+            String faux_array = "[string1, string2, string3, string4]";
+            System.out.println("\n" + faux_array);
+            faux_array = faux_array.replace("]", "");
+            faux_array = faux_array.replace("[", "");
+            faux_array = faux_array.replace(",", "");
+            System.out.println(faux_array);
 
 
 

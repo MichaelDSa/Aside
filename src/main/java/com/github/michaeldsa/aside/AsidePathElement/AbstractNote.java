@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -15,16 +16,16 @@ public abstract class AbstractNote extends AsidePathElement {
 
     protected String title;
     protected String content;
-    protected Set<String> to;
-    protected Set<String> from;
-    protected Set<String> tags;
+    protected HashSet<String> to;
+    protected HashSet<String> from;
+    protected HashSet<String> tags;
 
     // getters:
     public abstract String getTitle();
     public abstract String getContent();
-    public abstract Set<String> getTo();
-    public abstract Set<String> getFrom();
-    public abstract Set<String> getTags();
+    public abstract HashSet<String> getTo();
+    public abstract HashSet<String> getFrom();
+    public abstract HashSet<String> getTags();
     public abstract ImmutableNote getPreviousState();
 
 

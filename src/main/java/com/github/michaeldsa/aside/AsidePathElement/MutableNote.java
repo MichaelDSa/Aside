@@ -48,7 +48,7 @@ public class MutableNote extends AbstractNote{
         metaPath = AsidePathElement.filterMetaPathElements(c.getMetaPath());
         metaPath = AbstractNote.generateNewNoteName(c.getMetaPath());
         viewPath = new ViewPath(metaPath);
-        stepParent = c.getStepParentsCategory();
+        stepParent = c.getStepParentCategory();
         previousState = null;
         to = new HashSet<>();
         from = new HashSet<>();
@@ -57,7 +57,7 @@ public class MutableNote extends AbstractNote{
     public MutableNote(MutableNote mn){
         metaPath = mn.getMetaPath();
         viewPath = new ViewPath(metaPath);
-        stepParent = mn.getStepParentsCategory();
+        stepParent = mn.getStepParentCategory();
         previousState = new ImmutableNote(mn);
         title = mn.getTitle();
         content = mn.getContent();
@@ -77,17 +77,17 @@ public class MutableNote extends AbstractNote{
     }
 
     @Override
-    public Set<String> getTo() {
+    public HashSet<String> getTo() {
         return to;
     }
 
     @Override
-    public Set<String> getFrom() {
+    public HashSet<String> getFrom() {
         return from;
     }
 
     @Override
-    public Set<String> getTags() {
+    public HashSet<String> getTags() {
         return tags;
     }
 
@@ -102,12 +102,12 @@ public class MutableNote extends AbstractNote{
     }
 
     @Override
-    public Category getStepParentsCategory() {
+    public Category getStepParentCategory() {
         return stepParent;
     }
 
     @Override
-    public void setStepParentsCategory(Category newStepParents) {
+    public void setStepParentCategory(Category newStepParents) {
         stepParent = newStepParents;
     }
 
@@ -123,7 +123,7 @@ public class MutableNote extends AbstractNote{
 
     // setters that replace existing values
     public MutableNote setStepParents(Category stepParent) {
-        setStepParentsCategory(stepParent);
+        setStepParentCategory(stepParent);
         return this;
     }
     public MutableNote setTitle(String title) {

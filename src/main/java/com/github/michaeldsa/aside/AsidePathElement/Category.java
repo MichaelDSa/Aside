@@ -53,12 +53,12 @@ public class Category extends AsidePathElement{
     }
 
     @Override
-    public Category getStepParentsCategory() {
+    public Category getStepParentCategory() {
         return stepParent;
     }
 
     @Override
-    public void setStepParentsCategory(Category newStepParents) {
+    public void setStepParentCategory(Category newStepParents) {
         stepParent = newStepParents;
 
     }

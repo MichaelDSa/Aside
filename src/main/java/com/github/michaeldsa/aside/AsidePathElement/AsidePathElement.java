@@ -3,7 +3,6 @@ package com.github.michaeldsa.aside.AsidePathElement;
 import com.github.michaeldsa.aside.AsidePath.AsidePath;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
-import com.github.michaeldsa.aside.RootPaths;
 import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
 import java.nio.file.Path;
@@ -22,8 +21,8 @@ public abstract class AsidePathElement {
     // abstract methods:
     // most of these methods are for subclasses that choose to include a Category stepParent field.
     public abstract Category getParentCategory();
-    public abstract Category getStepParentsCategory();
-    public abstract void setStepParentsCategory(Category newStepParents);
+    public abstract Category getStepParentCategory();
+    public abstract void setStepParentCategory(Category newStepParents);
     public abstract boolean hasStepParents();
 
     // static methods:

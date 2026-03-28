@@ -6,6 +6,7 @@ import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashSet;
 
 public class DiscardedElement extends AsidePathElement {
     /*
@@ -17,15 +18,32 @@ public class DiscardedElement extends AsidePathElement {
     is meant to participate in handling files and directories in the
     DISCARDED directory, for which each file and category should
     exist a properties file with the extra properties, "isCategory",
-    "originalMetaPath" and "originalViewPath".
+    "originalMetaPath" and "originalViewPath". Additionally,
+    DiscardedElements files will also have a human readable warning,
+    as well as an optional message for the user's useage.
      */
 
     private final MetaPath originalMetaPath;
     private final ViewPath originalViewPath;
 
+    private MetaPath newLocationMetaPath;
+    private ViewPath newLocationViewPath;
+
+
     private final boolean isNote;
     private final boolean isCategory;
 
+    // Note metadata:
+    private String title;
+    private String content;
+    private final String warning = "THIS IS A DISCARDED ELEMENT";
+    private String message;
+    private HashSet<String> to;
+    private HashSet<String> from;
+    private HashSet<String> tags;
+
+
+    // this should not be possible. A DE should be either a Note or Category. get rid of this constructor.
     public DiscardedElement() {
         metaPath = new MetaPath(Paths.get(RestrictedLists.getMetaPathDiscardedDirectoryName()));
         viewPath = new ViewPath(metaPath);
@@ -33,6 +51,8 @@ public class DiscardedElement extends AsidePathElement {
         isCategory = false;
         originalMetaPath = metaPath;
         originalViewPath = viewPath;
+        newLocationMetaPath = null;
+        newLocationViewPath = null;
     }
 
     public DiscardedElement(Category cat) {
@@ -52,6 +72,15 @@ public class DiscardedElement extends AsidePathElement {
         isCategory = true;
         originalMetaPath = cat.getMetaPath();
         originalViewPath = cat.getViewPath();
+        newLocationMetaPath = null;
+        newLocationViewPath = null;
+
+        title = "";
+        content = "";
+        message = "";
+        to = new HashSet<>();
+        from = new HashSet<>();
+        tags = new HashSet<>();
 
     }
 
@@ -72,6 +101,15 @@ public class DiscardedElement extends AsidePathElement {
         isCategory = ValidateAsidePath.CATEGORY_NAME.test(mp);
         originalMetaPath = mp;
         originalViewPath = new ViewPath(mp);
+        newLocationMetaPath = null;
+        newLocationViewPath = null;
+
+        title = "";
+        content = "";
+        message = "";
+        to = new HashSet<>();
+        from = new HashSet<>();
+        tags = new HashSet<>();
     }
 
     public DiscardedElement(ViewPath vp) {
@@ -90,13 +128,23 @@ public class DiscardedElement extends AsidePathElement {
         isNote = ValidateAsidePath.NOTE_NAME.test(viewPath);
         isCategory = ValidateAsidePath.CATEGORY_NAME.test(vp);
         originalViewPath = vp;
-        originalMetaPath = new MetaPath(originalViewPath);
+        originalMetaPath = new MetaPath(newLocationViewPath);
+        newLocationViewPath = null;
+        newLocationMetaPath = null;
+
+        title = "";
+        content = "";
+        message = "";
+        to = new HashSet<>();
+        from = new HashSet<>();
+        tags = new HashSet<>();
     }
 
     public DiscardedElement(MutableNote mn) {
         Path m_default = Paths.get(RestrictedLists.getMetaPathDefaultDirectoryName());
         Path m_discarded = Paths.get(RestrictedLists.getMetaPathDiscardedDirectoryName());
-        if (!mn.getMetaPath().equals(new MetaPath()) || !mn.getMetaPath().equals(new MetaPath(m_default))) {
+        if (!mn.getMetaPath().equals(new MetaPath())
+                || !mn.getMetaPath().equals(new MetaPath(m_default))) {
             metaPath = new MetaPath(m_discarded).resolve(mn.getMetaPath().getFileName());
             viewPath = new ViewPath(metaPath);
         } else {
@@ -108,8 +156,18 @@ public class DiscardedElement extends AsidePathElement {
         isCategory = false;
         originalMetaPath = mn.getMetaPath();
         originalViewPath = mn.getViewPath();
+        newLocationMetaPath = null;
+        newLocationViewPath = null;
+
+        title = mn.getTitle();
+        content = mn.getContent();
+        message = "";
+        to = mn.getTo();
+        from = mn.getFrom();
+        tags = mn.getTags();
     }
 
+    // booleans
     public boolean isCategory() {
         return isCategory;
     }
@@ -118,31 +176,88 @@ public class DiscardedElement extends AsidePathElement {
         return isNote;
     }
 
-    public MetaPath getOriginalMetaPath() {
-        return originalMetaPath;
+    public boolean hasNewLocationPaths() {
+        return newLocationMetaPath != null && newLocationViewPath != null;
     }
 
-    public ViewPath getOriginalViewPath() {
-        return originalViewPath;
+    // get new location AsidePaths:
+    public MetaPath getNewLocationMetaPath() { return newLocationMetaPath; }
+
+    public ViewPath getNewLocationViewPath() { return newLocationViewPath; }
+
+    // set new location AsidePaths:
+    public DiscardedElement setNewLocationMetaPath(MetaPath mp) {
+        this.newLocationMetaPath = mp;
+        this.newLocationViewPath = new ViewPath(mp);
+        return this;
+    }
+    public DiscardedElement setNewLocationViewPath(ViewPath vp) {
+        this.newLocationViewPath = vp;
+        this.newLocationMetaPath = new MetaPath(vp);
+        return this;
+    }
+
+    // get original AsidePaths:
+    public MetaPath getOriginalMetaPath() { return originalMetaPath; }
+    public ViewPath getOriginalViewPath() { return originalViewPath; }
+
+    // other metadata getters:
+    public String getTitle() { return title; }
+    public String getContent() { return content; }
+    public String getWarning() { return warning;}
+    public String getMessage() { return message; }
+    public HashSet<String> getTo() { return to;}
+    public HashSet<String> getFrom() { return from; }
+    public HashSet<String> getTags() { return tags; }
+
+    // Other metadata setters:
+    public DiscardedElement setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+    public DiscardedElement setContent(String content) {
+        this.content = content;
+        return this;
+    }
+    public DiscardedElement setMessage(String message) {
+        this.message = message;
+        return this;
+    }
+    public DiscardedElement appendToMessage(String message) {
+        this.message += " " + message;
+        return this;
+    }
+    public DiscardedElement prependToMessage(String message) {
+        this.message = message + " " + this.message;
+        return this;
+    }
+    public DiscardedElement setTo(HashSet<String> to) {
+        this.to = to;
+        return this;
+    }
+    public DiscardedElement setFrom(HashSet<String> from) {
+        this.from = from;
+        return this;
+    }
+    public DiscardedElement setTags(HashSet<String> tags) {
+        this.tags = tags;
+        return this;
     }
 
     @Override
-    public Category getParentCategory() {
-        return null;
-    }
+    public Category getParentCategory() { return null; }
 
     @Override
-    public Category getStepParentsCategory() {
-        return null;
-    }
+    public Category getStepParentCategory() { return null; }
 
     @Override
-    public void setStepParentsCategory(Category newStepParents) {
-
-    }
+    public void setStepParentCategory(Category newStepParents) { }
 
     @Override
     public boolean hasStepParents() {
         return false;
     }
+
+
+    // set up object methods: toString, equals, hashCode.
 }

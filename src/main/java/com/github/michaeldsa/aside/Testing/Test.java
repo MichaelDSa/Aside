@@ -243,8 +243,8 @@ public class Test {
         System.out.println("getMetaPath(): " + de.getMetaPath());
         System.out.println("getViewPath(): " + de.getViewPath());
         // test getOriginalMetaPath() & getOriginalViewPath().
-        System.out.println("origninal MetaPath: " + de.getOriginalMetaPath());
-        System.out.println("origninal ViewPath: " + de.getOriginalViewPath());
+        System.out.println("origninal MetaPath: " + de.getNewLocationMetaPath());
+        System.out.println("origninal ViewPath: " + de.getNewLocationViewPath());
     }
 
 
