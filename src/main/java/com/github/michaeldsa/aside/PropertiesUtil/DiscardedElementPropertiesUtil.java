@@ -5,7 +5,7 @@ public abstract class DiscardedElementPropertiesUtil extends NotePropertiesUtil 
     protected final String message_n = "message";
     protected final String originalMetaPath_n = "original_metapath";
     protected final String originalViewPath_n = "original_viewPath";
-    protected final boolean isNote = false;
-    protected final boolean isCategory = false;
+    protected final String isNote_n = "isNote";
+    protected final String isCategory_n = "isCategory";
 
 }

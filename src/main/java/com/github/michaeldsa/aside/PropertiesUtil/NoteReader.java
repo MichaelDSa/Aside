@@ -2,11 +2,6 @@ package com.github.michaeldsa.aside.PropertiesUtil;
 
 import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Properties;
 
@@ -17,39 +12,33 @@ public class NoteReader extends NotePropertiesUtil{
     MutableNote in the constructor parameter.
      */
 
-    public NoteReader(MutableNote mn) {
-        m_path = mn.getMetaPath().getPath();
-        v_path = mn.getViewPath().getPath();
-        properties = getFileProperties(m_path);
-        mn.setTitle(getTitleProp())
-                .setContent(getContentProp())
-                .setTo(getToProp())
-                .setFrom(getFromProp())
-                .setTags(getTagsProp());
+    public NoteReader() {
     }
 
-    private String getTitleProp() {
-        String val = properties.getProperty(title_n);
-        if (val == null) {
-            val = "";
-        }
-        return val;
+    private String getTitleProp(Properties properties) {
+        return getPropAsString(properties, title_n);
     }
-    private String getContentProp() {
-        String val = properties.getProperty(content_n);
-        if (val == null) {
-            val = "";
-        }
-        return val;
+    private String getContentProp(Properties properties) {
+        return getPropAsString(properties, content_n);
     }
-    private HashSet<String> getToProp() {
-        return toHashSet(properties.getProperty(to_n));
+    private HashSet<String> getToProp(Properties properties) {
+        return getPropAsHashSet(properties, to_n);
     }
-    private HashSet<String> getFromProp() {
-        return toHashSet(properties.getProperty(from_n));
+    private HashSet<String> getFromProp(Properties properties) {
+        return getPropAsHashSet(properties, from_n);
     }
-    private HashSet<String> getTagsProp() {
-        return toHashSet(properties.getProperty(tags_n));
+    private HashSet<String> getTagsProp(Properties properties) {
+        return getPropAsHashSet(properties, tags_n);
+    }
+
+    public void read(MutableNote mn) {
+
+        Properties properties = getFileProperties(mn.getMetaPath().getPath());
+        mn.setTitle(getTitleProp(properties))
+                .setContent(getContentProp(properties))
+                .setTo(getToProp(properties))
+                .setFrom(getFromProp(properties))
+                .setTags(getTagsProp(properties));
     }
 
 }
