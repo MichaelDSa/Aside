@@ -9,7 +9,9 @@ import java.util.Properties;
 
 public class DiscardedElementReader extends DiscardedElementPropertiesUtil{
 
-    public DiscardedElementReader() { }
+    public DiscardedElementReader() {
+        properties = new Properties();
+    }
 
 
     private String getOriginalMetaPathProp(Properties properties) {
@@ -44,8 +46,8 @@ public class DiscardedElementReader extends DiscardedElementPropertiesUtil{
     }
 
     public void read(DiscardedElement de) {
-        // Local Properties instead; No need for field var.
-        Properties properties = getFileProperties(de.getMetaPath().getPath());
+
+        loadPropertiesFile(properties, de.getMetaPath().getPath());
 
         // get original MetaPath from de properties file, assign
         // to new DiscardedElement. Will have same metaPath/viewPath

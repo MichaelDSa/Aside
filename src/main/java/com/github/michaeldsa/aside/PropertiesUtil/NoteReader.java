@@ -13,6 +13,7 @@ public class NoteReader extends NotePropertiesUtil{
      */
 
     public NoteReader() {
+        properties = new Properties();
     }
 
     private String getTitleProp(Properties properties) {
@@ -32,8 +33,7 @@ public class NoteReader extends NotePropertiesUtil{
     }
 
     public void read(MutableNote mn) {
-
-        Properties properties = getFileProperties(mn.getMetaPath().getPath());
+        loadPropertiesFile(properties, mn.getMetaPath().getPath());
         mn.setTitle(getTitleProp(properties))
                 .setContent(getContentProp(properties))
                 .setTo(getToProp(properties))

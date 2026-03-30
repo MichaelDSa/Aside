@@ -16,19 +16,6 @@ public abstract class NotePropertiesUtil {
     // note: is this necessary? can it just be passed as method parameter?
     protected Properties properties;
 
-    // Path data:
-    // note: consider just method parameterizing these. They can be gotten from the AsidePathElement.
-    protected Path m_path;
-    protected Path v_path;
-
-    // Note data:
-    protected String title;
-    protected String content;
-    protected HashSet<String> to;
-    protected HashSet<String> from;
-    protected HashSet<String> tags;
-
-
     // property names:
     protected final String title_n = "title";
     protected final String content_n = "content";
@@ -36,20 +23,19 @@ public abstract class NotePropertiesUtil {
     protected final String from_n = "from";
     protected final String tags_n = "tags";
 
+    // lists
     protected ArrayList<String> noteProperties = new ArrayList<>(Arrays.asList(title_n, content_n, to_n, from_n, tags_n));
     protected ArrayList<String> noteStringProperties = new ArrayList<>(Arrays.asList(title_n, content_n));
     protected ArrayList<String> noteHashSetProperties = new ArrayList<>(Arrays.asList(to_n, from_n, tags_n));
 
-    protected Properties getFileProperties(Path path) {
-        Properties p = new Properties();
+    protected void loadPropertiesFile(Properties properties, Path path) {
         if (Files.exists(path)) {
             try (InputStream is = Files.newInputStream(path)) {
-                p.load(is);
+                properties.load(is);
             } catch (IOException e) {
-                System.err.println("NotePropertiesUtil.readNoteData(): IOException: " + m_path);
+                System.err.println("NotePropertiesUtil.readNoteData(): IOException: " + path);
             }
         }
-        return p;
     }
 
     // get properties that should be saved as HashSet<String> in a MutableNote or DiscardedElement
@@ -80,6 +66,9 @@ public abstract class NotePropertiesUtil {
 
     // format a HashSet<String> to be saved in a properties file
     protected String hashSetToString(HashSet<String> hs) {
+        if (hs == null) {
+            return "";
+        }
         return removeListChars(hs.toString());
     }
 
