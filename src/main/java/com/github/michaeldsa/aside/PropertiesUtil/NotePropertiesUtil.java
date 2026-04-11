@@ -33,7 +33,7 @@ public abstract class NotePropertiesUtil {
             try (InputStream is = Files.newInputStream(path)) {
                 properties.load(is);
             } catch (IOException e) {
-                System.err.println("NotePropertiesUtil.readNoteData(): IOException: " + path);
+                System.err.println("NotePropertiesUtil.loadPropertiesFile(): IOException: " + path);
             }
         }
     }
@@ -59,7 +59,7 @@ public abstract class NotePropertiesUtil {
                 val = test;
             }
         } else {
-            System.err.println("DiscardedElementReader: getStringProp() found invalid property: " + prop);
+            System.err.println("NotePropertiesUtil.getPropAsString(): prop parameter not found in noteStringProperties: " + prop);
         }
         return val;
     }
@@ -89,7 +89,7 @@ public abstract class NotePropertiesUtil {
         try (OutputStream os = Files.newOutputStream(m_path)) {
             properties.store(os, "");
         } catch (IOException e) {
-            System.err.println("NoteWriter.writeProperties(): IOException. path: " + m_path);
+            System.err.println("NotePropertiesUtil.writeProperties(): IOException. path: " + m_path);
         }
     }
 
