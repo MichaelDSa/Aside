@@ -26,13 +26,6 @@ public class DiscardedElement extends AsidePathElement {
     private final MetaPath originalMetaPath;
     private final ViewPath originalViewPath;
 
-    private MetaPath newLocationMetaPath;
-    private ViewPath newLocationViewPath;
-
-
-    private final boolean isNote;
-    private final boolean isCategory;
-
     // Note metadata:
     private String title;
     private String content;
@@ -42,47 +35,6 @@ public class DiscardedElement extends AsidePathElement {
     private HashSet<String> from;
     private HashSet<String> tags;
 
-
-    // this should not be possible. A DE should be either a Note or Category. get rid of this constructor.
-    public DiscardedElement() {
-        metaPath = new MetaPath(Paths.get(RestrictedLists.getMetaPathDiscardedDirectoryName()));
-        viewPath = new ViewPath(metaPath);
-        isNote = false;
-        isCategory = false;
-        originalMetaPath = metaPath;
-        originalViewPath = viewPath;
-        newLocationMetaPath = null;
-        newLocationViewPath = null;
-    }
-
-    public DiscardedElement(Category cat) {
-        Path m_default = Paths.get(RestrictedLists.getMetaPathDefaultDirectoryName());
-        Path m_discarded = Paths.get(RestrictedLists.getMetaPathDiscardedDirectoryName());
-        MetaPath mp = cat.getMetaPath();
-        // no metapath root or default (contents of default ok)
-        if (!mp.equals(new MetaPath())
-                || !mp.getPath().equals(m_default)) {
-            metaPath = new MetaPath(m_discarded).resolve(mp.getFileName());
-            viewPath = new ViewPath(metaPath);
-        } else {
-            metaPath = new MetaPath(m_discarded);
-            viewPath = new ViewPath(metaPath);
-        }
-        isNote = false;
-        isCategory = true;
-        originalMetaPath = cat.getMetaPath();
-        originalViewPath = cat.getViewPath();
-        newLocationMetaPath = null;
-        newLocationViewPath = null;
-
-        title = "";
-        content = "";
-        message = "";
-        to = new HashSet<>();
-        from = new HashSet<>();
-        tags = new HashSet<>();
-
-    }
 
     public DiscardedElement(MetaPath mp) {
         Path m_default = Paths.get(RestrictedLists.getMetaPathDefaultDirectoryName());
@@ -97,12 +49,8 @@ public class DiscardedElement extends AsidePathElement {
             viewPath = new ViewPath(metaPath);
         }
 
-        isNote = ValidateAsidePath.NOTE_NAME.test(mp);
-        isCategory = ValidateAsidePath.CATEGORY_NAME.test(mp);
         originalMetaPath = mp;
         originalViewPath = new ViewPath(mp);
-        newLocationMetaPath = null;
-        newLocationViewPath = null;
 
         title = "";
         content = "";
@@ -125,12 +73,8 @@ public class DiscardedElement extends AsidePathElement {
             metaPath = new MetaPath(viewPath);
         }
 
-        isNote = ValidateAsidePath.NOTE_NAME.test(viewPath);
-        isCategory = ValidateAsidePath.CATEGORY_NAME.test(vp);
         originalViewPath = vp;
-        originalMetaPath = new MetaPath(newLocationViewPath);
-        newLocationViewPath = null;
-        newLocationMetaPath = null;
+        originalMetaPath = new MetaPath(vp);
 
         title = "";
         content = "";
@@ -152,12 +96,8 @@ public class DiscardedElement extends AsidePathElement {
             viewPath = new ViewPath(metaPath);
         }
 
-        isNote = true;
-        isCategory = false;
         originalMetaPath = mn.getMetaPath();
         originalViewPath = mn.getViewPath();
-        newLocationMetaPath = null;
-        newLocationViewPath = null;
 
         title = mn.getTitle();
         content = mn.getContent();
@@ -165,36 +105,6 @@ public class DiscardedElement extends AsidePathElement {
         to = mn.getTo();
         from = mn.getFrom();
         tags = mn.getTags();
-    }
-
-    // booleans
-    public boolean isCategory() {
-        return isCategory;
-    }
-
-    public boolean isNote() {
-        return isNote;
-    }
-
-    public boolean hasNewLocationPaths() {
-        return newLocationMetaPath != null && newLocationViewPath != null;
-    }
-
-    // get new location AsidePaths:
-    public MetaPath getNewLocationMetaPath() { return newLocationMetaPath; }
-
-    public ViewPath getNewLocationViewPath() { return newLocationViewPath; }
-
-    // set new location AsidePaths:
-    public DiscardedElement setNewLocationMetaPath(MetaPath mp) {
-        this.newLocationMetaPath = mp;
-        this.newLocationViewPath = new ViewPath(mp);
-        return this;
-    }
-    public DiscardedElement setNewLocationViewPath(ViewPath vp) {
-        this.newLocationViewPath = vp;
-        this.newLocationMetaPath = new MetaPath(vp);
-        return this;
     }
 
     // get original AsidePaths:
