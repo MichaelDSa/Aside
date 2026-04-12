@@ -2,10 +2,6 @@ package com.github.michaeldsa.aside.PropertiesUtil;
 
 import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.util.HashSet;
 import java.util.Properties;
 
 public class NoteWriter extends NotePropertiesUtil{

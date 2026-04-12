@@ -20,8 +20,6 @@ public class DiscardedElementWriter extends DiscardedElementPropertiesUtil {
         String title = emptyIfNull(de.getTitle());
         String content = emptyIfNull(de.getContent());
         String message = emptyIfNull(de.getMessage());
-        String isCategory = String.valueOf(de.isCategory());
-        String isNote = String.valueOf(de.isNote());
         String to = hashSetToString(de.getTo());
         String from = hashSetToString(de.getFrom());
         String tags = hashSetToString(de.getTags());
@@ -29,8 +27,6 @@ public class DiscardedElementWriter extends DiscardedElementPropertiesUtil {
         properties.setProperty(title_n, title);
         properties.setProperty(content_n, content);
         properties.setProperty(message_n, message);
-        properties.setProperty(isCategory_n, isCategory);
-        properties.setProperty(isNote_n, isNote);
         properties.setProperty(to_n, to);
         properties.setProperty(from_n, from);
         properties.setProperty(tags_n, tags);

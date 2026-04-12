@@ -20,12 +20,6 @@ public class DiscardedElementReader extends DiscardedElementPropertiesUtil{
     private String getOriginalViewPathProp(Properties properties) {
         return getPropAsString(properties, originalViewPath_n);
     }
-    private String getIsCategoryProp(Properties properties) {
-        return getPropAsString(properties, isCategory_n);
-    }
-    private String getIsNoteProp(Properties properties) {
-        return getPropAsString(properties, isNote_n);
-    }
     private String getTitleProp(Properties properties) {
         return getPropAsString(properties, title_n);
     }
