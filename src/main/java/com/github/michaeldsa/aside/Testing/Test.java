@@ -180,7 +180,7 @@ public class Test {
     public static void createCategory() {
         MutableNote in1 = new MutableNote(new MetaPath(Paths.get(".Default", ".one", ".two")));
         MutableNote in2 = new MutableNote(new MetaPath(Paths.get(".zero",".one", ".two", ".three")));
-        Category c1 = new Category(new MetaPath(Paths.get(".Default", ".one", ".two", ".three")));
+        Category c1 = new Category(new MetaPath(Paths.get(".Discarded", ".one", ".two", ".three")));
         Category c2 = new Category(new MetaPath(Paths.get(".zero", ".one", ".two", ".three")));
         MutableNote noCat = new MutableNote(new MetaPath());
         AsidePathElement[] array = {in1, in2, c1, c2, noCat};
@@ -208,12 +208,14 @@ public class Test {
         System.out.println("\nTest discardedElement:\n");
         // test that DiscardedElement instantiates with no parameters.
         System.out.println("DiscardedElement de = new DiscardedElement()");
-        DiscardedElement de = new DiscardedElement();
-        discardedElementHelper(de);
+        // update: default constructor no longer valid
+//        DiscardedElement de = new DiscardedElement();
+//        discardedElementHelper(de);
 
         // Constructor test: Category
+        // update: Category no longer valid constructor parameter.
         System.out.println("\nDiscardedElement cat_discard = new DiscardedElement(new Category(new MetaPath(Paths.get(\"category1\", \"category2\"));");
-        discardedElementHelper(new DiscardedElement(new Category(new MetaPath(Paths.get(".category1", ".category2")))));
+//        discardedElementHelper(new DiscardedElement(new Category(new MetaPath(Paths.get(".category1", ".category2")))));
 
         // Constructor test: MetaPath
         System.out.println("\nDiscardedElement m_discard = new DiscardedElement(new MetaPath(Paths.get(\".cat1\", \".cat2\", \".260322_0100_00.txt\"));");
@@ -237,14 +239,16 @@ public class Test {
     }
     private static void discardedElementHelper(DiscardedElement de) {
         // test booleans (should both be false)
-        System.out.println("isCategory: " + de.isCategory());
-        System.out.println("isNote: " + de.isNote());
+        // these boolean methods have been removed
+//        System.out.println("isCategory: " + de.isCategory());
+//        System.out.println("isNote: " + de.isNote());
         // test getMetaPath() & getViewPath():
         System.out.println("getMetaPath(): " + de.getMetaPath());
         System.out.println("getViewPath(): " + de.getViewPath());
         // test getOriginalMetaPath() & getOriginalViewPath().
-        System.out.println("origninal MetaPath: " + de.getNewLocationMetaPath());
-        System.out.println("origninal ViewPath: " + de.getNewLocationViewPath());
+        // these methods have been removed.
+//        System.out.println("origninal MetaPath: " + de.getNewLocationMetaPath());
+//        System.out.println("origninal ViewPath: " + de.getNewLocationViewPath());
     }
 
 

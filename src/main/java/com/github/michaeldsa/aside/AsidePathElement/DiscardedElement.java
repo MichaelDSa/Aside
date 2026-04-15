@@ -35,6 +35,12 @@ public class DiscardedElement extends AsidePathElement {
     private HashSet<String> from;
     private HashSet<String> tags;
 
+    private static final DiscardedElement emptyDiscardedElement = new DiscardedElement();
+
+    private DiscardedElement() {
+        originalMetaPath = new MetaPath(Paths.get(RestrictedLists.getMetaPathDiscardedDirectoryName()));
+        originalViewPath = new ViewPath(Paths.get(RestrictedLists.getViewPathDiscardedDirectoryName()));
+    }
 
     public DiscardedElement(MetaPath mp) {
         Path m_default = Paths.get(RestrictedLists.getMetaPathDefaultDirectoryName());
@@ -105,6 +111,11 @@ public class DiscardedElement extends AsidePathElement {
         to = mn.getTo();
         from = mn.getFrom();
         tags = mn.getTags();
+    }
+
+    // get empty final DiscardedElement:
+    public static DiscardedElement getEmptyDiscardedElement() {
+        return emptyDiscardedElement;
     }
 
     // get original AsidePaths:

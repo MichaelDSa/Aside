@@ -65,7 +65,7 @@ public class TestRunner {
 //            Test.purgeViewPathOrphans();
 
             // Create.NEW_CATEGORY
-//            Test.createCategory();
+            Test.createCategory();
 
             // Create.createPermanentCategories()
 //            Test.createPermanentCategories();

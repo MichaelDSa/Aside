@@ -14,7 +14,7 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
     CATEGORY(ape-> {
         // prerequisite: no DiscardedElement objects
         if (ape instanceof DiscardedElement) {
-            System.out.println("Create.CATEGORY: Cannot operate on DiscardedElement objects.");
+            System.err.println("Create.CATEGORY: Cannot operate on DiscardedElement objects.");
             return ape;
         }
         // get the Path from ape.getMetaPath
@@ -31,7 +31,7 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
         }
 
         // create permenant categories (.default, .trash, etc) if not exists.
-        createPermanentCategories();
+        Create.createPermanentCategories();
 
         // AsidePathElements avoid creation of invalid permanent directories.
         // for example:
@@ -46,7 +46,7 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
             Files.createDirectories(m_newCategory); // MetaPath
             Files.createDirectories(v_newCategory); // ViewPath
         } catch (IOException e) {
-            System.out.println("Create.NEW_CATEGORY failed \n" + e.getMessage());
+            System.err.println("Create.NEW_CATEGORY failed \n" + e.getMessage());
         }
         return ape;
     }),
@@ -55,7 +55,7 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
         Path m_note = ape.getMetaPath().getPath();
 
         // early dismissal:
-        if ( ape instanceof Category || Files.exists(m_note)) {
+        if ( !(ape instanceof AbstractNote) || Files.exists(m_note)) {
             return ape;
         }
 
@@ -124,7 +124,7 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
             }
         }
     }
-    public static void createTrashCategory() {
+    public static void createDiscardedCategory() {
         if (!discardedElementDirectoryExists()) {
             Path mpath = discardedElementDirectory.getMetaPath().getPath();
             Path vpath  = discardedElementDirectory.getViewPath().getPath();
@@ -138,6 +138,6 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
     }
     public static void createPermanentCategories() {
         createDefaultCategory();
-        createTrashCategory();
+        createDiscardedCategory();
     }
 }
