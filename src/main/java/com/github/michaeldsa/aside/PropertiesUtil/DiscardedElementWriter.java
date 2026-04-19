@@ -11,13 +11,6 @@ public class DiscardedElementWriter extends DiscardedElementPropertiesUtil {
     }
 
     private void setProperties(DiscardedElement de) {
-
-    }
-
-    public void write(DiscardedElement de) {
-        // what is this???
-        loadPropertiesFile(properties, de.getMetaPath().getPath());
-
         String filename = de.getMetaPath().getFileName().toString();
         String warning = emptyIfNull(de.getWarning());
         String message = emptyIfNull(de.getMessage());
@@ -28,6 +21,8 @@ public class DiscardedElementWriter extends DiscardedElementPropertiesUtil {
         String to = hashSetToString(de.getTo());
         String from = hashSetToString(de.getFrom());
         String tags = hashSetToString(de.getTags());
+
+        properties.clear();
 
         properties.setProperty(filename_n, filename);
         properties.setProperty(warning_n, warning);
@@ -40,6 +35,13 @@ public class DiscardedElementWriter extends DiscardedElementPropertiesUtil {
         properties.setProperty(from_n, from);
         properties.setProperty(tags_n, tags);
 
+    }
+
+    public void write(DiscardedElement de) {
+
+        // set properties
+        setProperties(de);
+
         // write to metapath
         writeProperties(properties, de.getMetaPath().getPath());
 
@@ -48,6 +50,9 @@ public class DiscardedElementWriter extends DiscardedElementPropertiesUtil {
 
     }
 
+    public void writeToViewPath(DiscardedElement de) {
+        writeViewPath(de.getMetaPath().getPath(), formatViewPathDiscardedElement(properties));
+    }
 
 
 }
