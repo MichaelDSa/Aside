@@ -17,6 +17,6 @@ public class Pretty {
             String regex = String.format("(.{1,%d})(\\s+|$)", width);
             return string.replaceAll(regex, "$1\n");
         }
-        return " ";
+        return "";
     }
 }

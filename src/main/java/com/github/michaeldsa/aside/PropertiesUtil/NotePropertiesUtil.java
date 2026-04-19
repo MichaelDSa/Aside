@@ -1,5 +1,8 @@
 package com.github.michaeldsa.aside.PropertiesUtil;
 
+import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.Pretty;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -17,6 +20,7 @@ public abstract class NotePropertiesUtil {
     protected Properties properties;
 
     // property names:
+    protected final String filename_n = "filename";
     protected final String title_n = "title";
     protected final String content_n = "content";
     protected final String to_n = "to";
@@ -38,6 +42,9 @@ public abstract class NotePropertiesUtil {
         }
     }
 
+     protected static String emptyIfNull(String str) {
+        return str == null ? "" : str;
+    }
     // get properties that should be saved as HashSet<String> in a MutableNote or DiscardedElement
     protected HashSet<String> getPropAsHashSet(Properties properties, String prop) {
         HashSet<String> val = new HashSet<>();
@@ -48,6 +55,39 @@ public abstract class NotePropertiesUtil {
             }
         }
         return val;
+    }
+
+    // format string for AbstractNote subclass:
+    protected String formatViewPathNote(Properties properties) {
+        String filename = getPropAsString(properties, filename_n);
+        String title = Pretty.format(getPropAsString(properties, title_n), 80);
+        String content = Pretty.format(getPropAsString(properties, content_n), 80);
+        String to = Pretty.format(getPropAsString(properties, to_n), 80);
+        String from = Pretty.format(getPropAsString(properties, from_n), 80);
+        String tags = Pretty.format(getPropAsString(properties, tags_n), 80);
+
+        String nl = "\n";
+
+        if (!filename.isBlank()) {
+            filename += nl;
+        }
+        if (!title.isBlank()) {
+            title = "TITLE:" + nl + title + nl;
+        }
+        if (!content.isBlank()) {
+            content = "CONTENT:" + nl + content + nl + ('-' * 80) + nl;
+        }
+        if (!to.isBlank()) {
+            to = "TO:" + nl + to + nl;
+        }
+        if (!from.isBlank()) {
+            from = "FROM:" + nl + from + nl;
+        }
+        if (!tags.isBlank()) {
+            tags = "TAGS:" + nl + tags + nl;
+        }
+
+        return filename + title + content + to + from + tags;
     }
 
     // get properties that should be saved as String in a MutableNote or DiscardedElement
@@ -86,10 +126,20 @@ public abstract class NotePropertiesUtil {
 
     // write a properties file
     protected void writeProperties(Properties properties, Path m_path) {
-        try (OutputStream os = Files.newOutputStream(m_path)) {
-            properties.store(os, "");
+        try (OutputStream out = Files.newOutputStream(m_path)) {
+            properties.store(out, "");
         } catch (IOException e) {
             System.err.println("NotePropertiesUtil.writeProperties(): IOException. path: " + m_path);
+        }
+    }
+
+    // write ViewPath file
+    protected void writeViewPath(Path m_path, String formattedString) {
+        Path v_path = new ViewPath(m_path).getPath();
+        try (OutputStream out = Files.newOutputStream(v_path)) {
+            out.write(formattedString.getBytes());
+        } catch (IOException e) {
+            System.err.println("NotePropertiesUtil.writeViewPath(): caught IOException. path: " + v_path);
         }
     }
 

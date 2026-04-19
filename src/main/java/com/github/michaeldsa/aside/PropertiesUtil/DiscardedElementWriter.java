@@ -10,28 +10,41 @@ public class DiscardedElementWriter extends DiscardedElementPropertiesUtil {
         properties = new Properties();
     }
 
-    private String emptyIfNull(String str) {
-        return str == null ? "" : str;
+    private void setProperties(DiscardedElement de) {
+
     }
 
     public void write(DiscardedElement de) {
+        // what is this???
         loadPropertiesFile(properties, de.getMetaPath().getPath());
 
+        String filename = de.getMetaPath().getFileName().toString();
+        String warning = emptyIfNull(de.getWarning());
+        String message = emptyIfNull(de.getMessage());
         String title = emptyIfNull(de.getTitle());
         String content = emptyIfNull(de.getContent());
-        String message = emptyIfNull(de.getMessage());
+        String original_mp = emptyIfNull(de.getOriginalMetaPath().toString());
+        String original_vp = emptyIfNull(de.getOriginalViewPath().toString());
         String to = hashSetToString(de.getTo());
         String from = hashSetToString(de.getFrom());
         String tags = hashSetToString(de.getTags());
 
+        properties.setProperty(filename_n, filename);
+        properties.setProperty(warning_n, warning);
+        properties.setProperty(message_n, message);
         properties.setProperty(title_n, title);
         properties.setProperty(content_n, content);
-        properties.setProperty(message_n, message);
+        properties.setProperty(originalMetaPath_n, original_mp);
+        properties.setProperty(originalViewPath_n, original_vp);
         properties.setProperty(to_n, to);
         properties.setProperty(from_n, from);
         properties.setProperty(tags_n, tags);
 
+        // write to metapath
         writeProperties(properties, de.getMetaPath().getPath());
+
+        // write to viewpath
+        writeViewPath(de.getMetaPath().getPath(), formatViewPathDiscardedElement(properties));
 
     }
 

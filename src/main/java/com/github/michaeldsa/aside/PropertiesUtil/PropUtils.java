@@ -1,5 +1,6 @@
 package com.github.michaeldsa.aside.PropertiesUtil;
 
+import com.github.michaeldsa.aside.AsidePathElement.AbstractNote;
 import com.github.michaeldsa.aside.AsidePathElement.DiscardedElement;
 import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
 
@@ -19,11 +20,16 @@ public class PropUtils {
         discarded_r.read(de);
     }
 
-    // writers:
-    public static void writeNote(MutableNote mn) {
-        note_w.write(mn);
+    // writers (MetaPath):
+    public static void writeNote(AbstractNote abstractNote) {
+        note_w.write(abstractNote);
     }
     public static void writeDiscardedElement(DiscardedElement de) {
         discarded_w.write(de);
+    }
+
+    // writers (ViewPath):
+    public static void writeNoteViewPath(AbstractNote abstractNote) {
+        note_w.writeToViewPath(abstractNote);
     }
 }

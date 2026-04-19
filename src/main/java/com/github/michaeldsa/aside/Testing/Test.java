@@ -251,5 +251,9 @@ public class Test {
 //        System.out.println("origninal ViewPath: " + de.getNewLocationViewPath());
     }
 
+    public static void noteWriter() {
+
+    }
+
 
 }

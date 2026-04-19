@@ -1,5 +1,6 @@
 package com.github.michaeldsa.aside.PropertiesUtil;
 
+import com.github.michaeldsa.aside.AsidePathElement.AbstractNote;
 import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
 
 import java.util.Properties;
@@ -10,23 +11,42 @@ public class NoteWriter extends NotePropertiesUtil{
         properties = new Properties();
     }
 
-    private String emptyIfNull(String str) {
-        return str == null ? "" : str;
-    }
-    public void write(MutableNote mn) {
-        String title = emptyIfNull(mn.getTitle());
-        String content = emptyIfNull(mn.getContent());
-        String to = hashSetToString(mn.getTo());
-        String from = hashSetToString(mn.getFrom());
-        String tags = hashSetToString(mn.getTags());
+    // set properties:
+    private void setProperties(AbstractNote abstractNote) {
+        String filename = abstractNote.getMetaPath().getFileName().toString();
+        String title = emptyIfNull(abstractNote.getTitle());
+        String content = emptyIfNull(abstractNote.getContent());
+        String to = hashSetToString(abstractNote.getTo());
+        String from = hashSetToString(abstractNote.getFrom());
+        String tags = hashSetToString(abstractNote.getTags());
 
+        properties.clear();
+
+        properties.setProperty(filename_n, filename);
         properties.setProperty(title_n, title);
         properties.setProperty(content_n, content);
         properties.setProperty(to_n, to);
         properties.setProperty(from_n, from);
         properties.setProperty(tags_n, tags);
-        writeProperties(properties, mn.getMetaPath().getPath());
 
+    }
+    // write data from any AbstractNote subclass to file.
+    public void write(AbstractNote abstractNote) {
+
+        // set properties
+        setProperties(abstractNote);
+
+        // write to metapath
+        writeProperties(properties, abstractNote.getMetaPath().getPath());
+
+        // write to viewpath
+        writeViewPath(abstractNote.getMetaPath().getPath(), formatViewPathNote(properties));
+
+    }
+
+    public void writeToViewPath(AbstractNote abstractNote) {
+        setProperties(abstractNote);
+        writeViewPath(abstractNote.getMetaPath().getPath(), formatViewPathNote(properties));
     }
 
 
