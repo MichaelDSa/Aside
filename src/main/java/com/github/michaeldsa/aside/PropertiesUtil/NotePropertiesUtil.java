@@ -1,5 +1,6 @@
 package com.github.michaeldsa.aside.PropertiesUtil;
 
+import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.Pretty;
 
@@ -28,8 +29,8 @@ public abstract class NotePropertiesUtil {
     protected final String tags_n = "tags";
 
     // lists
-    protected ArrayList<String> noteProperties = new ArrayList<>(Arrays.asList(title_n, content_n, to_n, from_n, tags_n));
-    protected ArrayList<String> noteStringProperties = new ArrayList<>(Arrays.asList(title_n, content_n));
+    protected ArrayList<String> noteProperties = new ArrayList<>(Arrays.asList(filename_n, title_n, content_n, to_n, from_n, tags_n));
+    protected ArrayList<String> noteStringProperties = new ArrayList<>(Arrays.asList(filename_n, title_n, content_n));
     protected ArrayList<String> noteHashSetProperties = new ArrayList<>(Arrays.asList(to_n, from_n, tags_n));
 
     protected void loadPropertiesFile(Properties properties, Path path) {
@@ -59,23 +60,23 @@ public abstract class NotePropertiesUtil {
 
     // format string for AbstractNote subclass:
     protected String formatViewPathNote(Properties properties) {
-        String filename = getPropAsString(properties, filename_n);
+        String filename = getPropAsString(properties, filename_n).substring(1);
         String title = Pretty.format(getPropAsString(properties, title_n), 80);
         String content = Pretty.format(getPropAsString(properties, content_n), 80);
-        String to = Pretty.format(getPropAsString(properties, to_n), 80);
-        String from = Pretty.format(getPropAsString(properties, from_n), 80);
-        String tags = Pretty.format(getPropAsString(properties, tags_n), 80);
+        String to = Pretty.format(properties.getProperty(to_n), 80);
+        String from = Pretty.format(properties.getProperty(from_n), 80);
+        String tags = Pretty.format(properties.getProperty(tags_n), 80);
 
         String nl = "\n";
 
         if (!filename.isBlank()) {
-            filename += nl;
+            filename += nl + "-".repeat(80) + nl + nl ;
         }
         if (!title.isBlank()) {
             title = "TITLE:" + nl + title + nl;
         }
         if (!content.isBlank()) {
-            content = "CONTENT:" + nl + content + nl + ('-' * 80) + nl;
+            content = "CONTENT:" + nl + content + nl + "-".repeat(80) + nl;
         }
         if (!to.isBlank()) {
             to = "TO:" + nl + to + nl;
@@ -135,7 +136,7 @@ public abstract class NotePropertiesUtil {
 
     // write ViewPath file
     protected void writeViewPath(Path m_path, String formattedString) {
-        Path v_path = new ViewPath(m_path).getPath();
+        Path v_path = new ViewPath(new MetaPath(m_path)).getPath();
         try (OutputStream out = Files.newOutputStream(v_path)) {
             out.write(formattedString.getBytes());
         } catch (IOException e) {
@@ -144,7 +145,7 @@ public abstract class NotePropertiesUtil {
     }
 
     // remove characters typically found in stdout when printing a List or Set.
-    private String removeListChars(String str) {
+    protected String removeListChars(String str) {
         return str.replace("[", "")
                 .replace("]","")
                 .replace(",","");

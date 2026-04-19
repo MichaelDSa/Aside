@@ -36,8 +36,10 @@ public class DiscardedElement extends AsidePathElement {
     private HashSet<String> tags;
 
     private DiscardedElement() {
-        originalMetaPath = new MetaPath(Paths.get(RestrictedLists.getMetaPathDiscardedDirectoryName()));
-        originalViewPath = new ViewPath(Paths.get(RestrictedLists.getViewPathDiscardedDirectoryName()));
+        metaPath = new MetaPath(Paths.get(RestrictedLists.getMetaPathDiscardedDirectoryName()));
+        viewPath = new ViewPath(Paths.get(RestrictedLists.getViewPathDiscardedDirectoryName()));
+        originalMetaPath = metaPath;
+        originalViewPath = viewPath;
     }
 
     public DiscardedElement(MetaPath mp) {

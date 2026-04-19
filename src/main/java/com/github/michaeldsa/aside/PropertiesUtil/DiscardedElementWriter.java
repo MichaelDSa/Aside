@@ -11,7 +11,7 @@ public class DiscardedElementWriter extends DiscardedElementPropertiesUtil {
     }
 
     private void setProperties(DiscardedElement de) {
-        String filename = de.getMetaPath().getFileName().toString();
+        String filename = de.getMetaPath().getPath().getFileName().toString();
         String warning = emptyIfNull(de.getWarning());
         String message = emptyIfNull(de.getMessage());
         String title = emptyIfNull(de.getTitle());

@@ -13,7 +13,7 @@ public class NoteWriter extends NotePropertiesUtil{
 
     // set properties:
     private void setProperties(AbstractNote abstractNote) {
-        String filename = abstractNote.getMetaPath().getFileName().toString();
+        String filename = emptyIfNull(abstractNote.getMetaPath().getPath().getFileName().toString());
         String title = emptyIfNull(abstractNote.getTitle());
         String content = emptyIfNull(abstractNote.getContent());
         String to = hashSetToString(abstractNote.getTo());
@@ -40,7 +40,8 @@ public class NoteWriter extends NotePropertiesUtil{
         writeProperties(properties, abstractNote.getMetaPath().getPath());
 
         // write to viewpath
-        writeViewPath(abstractNote.getMetaPath().getPath(), formatViewPathNote(properties));
+//        writeViewPath(abstractNote.getMetaPath().getPath(), formatViewPathNote(properties));
+        writeToViewPath(abstractNote);
 
     }
 

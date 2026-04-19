@@ -65,7 +65,7 @@ public class TestRunner {
 //            Test.purgeViewPathOrphans();
 
             // Create.NEW_CATEGORY
-            Test.createCategory();
+//            Test.createCategory();
 
             // Create.createPermanentCategories()
 //            Test.createPermanentCategories();
@@ -78,24 +78,26 @@ public class TestRunner {
 
 
             // Testing HashSet<String>
-            HashSet<String> hs = new HashSet<>(Arrays.asList("260328_0130_33.txt", "260328_0130_52.txt", "260328_0131_17.txt", "260328_0131_28.txt" ));
-            String hs_string = hs.toString();
-            hs_string = hs_string.substring(1, hs_string.length()-1);
-            String[ ] hs_array = hs_string.split(", ");
-            HashSet<String> hs1 = new HashSet<>(List.of(hs_array));
+//            HashSet<String> hs = new HashSet<>(Arrays.asList("260328_0130_33.txt", "260328_0130_52.txt", "260328_0131_17.txt", "260328_0131_28.txt" ));
+//            String hs_string = hs.toString();
+//            hs_string = hs_string.substring(1, hs_string.length()-1);
+//            String[ ] hs_array = hs_string.split(", ");
+//            HashSet<String> hs1 = new HashSet<>(List.of(hs_array));
+//
+//            System.out.println();
+//            System.out.println(hs);
+//            System.out.println(hs1);
+//
+//            // Testing String.replace()
+//            String faux_array = "[string1, string2, string3, string4]";
+//            System.out.println("\n" + faux_array);
+//            faux_array = faux_array.replace("]", "");
+//            faux_array = faux_array.replace("[", "");
+//            faux_array = faux_array.replace(",", "");
+//            System.out.println(faux_array);
 
-            System.out.println();
-            System.out.println(hs);
-            System.out.println(hs1);
-
-            // Testing String.replace()
-            String faux_array = "[string1, string2, string3, string4]";
-            System.out.println("\n" + faux_array);
-            faux_array = faux_array.replace("]", "");
-            faux_array = faux_array.replace("[", "");
-            faux_array = faux_array.replace(",", "");
-            System.out.println(faux_array);
-
+            Test.propUtils_writeNote();
+            Test.propUtils_writeDiscardedElement();
 
 
 
