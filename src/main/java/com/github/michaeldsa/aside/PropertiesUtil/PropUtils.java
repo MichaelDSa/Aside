@@ -32,7 +32,7 @@ public class PropUtils {
     public static void writeNoteViewPath(AbstractNote abstractNote) {
         note_w.writeToViewPath(abstractNote);
     }
-    public static void writeDiescardedElementViewPath(DiscardedElement de) {
+    public static void writeDiscardedElementViewPath(DiscardedElement de) {
         discarded_w.writeToViewPath(de);
     }
 }

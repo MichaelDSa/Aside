@@ -269,5 +269,31 @@ public class Test {
         PropUtils.writeDiscardedElement(propUtils_de);
     }
 
+    public static void propUtils_writeNoteViewPath() {
+        MutableNote mn = new MutableNote(new MetaPath(Paths.get(".PropUtils", ".260420_1059_01.txt")))
+                .setTitle("Test.propUtils_writeNoteViewPath()")
+                .setContent("This is a test of propUtils.writeNoteViewPath(). The sonctent has to simulate the length a real user would write in the process of writing zettlekasten notes for a research paper or a thesis. Ideally a user would be using Aside while researching, and would not call this method, but a higher level abstraction in the form of a command-line UI system. I hope to provide an elegant yet evergreen and portable solution")
+                .setTo(new HashSet<>(Arrays.asList("260417_1723_00.txt", "260417_1724_00.txt", "260417_1725_00.txt", "260417_1726_00.txt", "260417_1727_00.txt", "260417_1728_00.txt", "260417_1729_00.txt")))
+                .setFrom(new HashSet<>(Arrays.asList("260417_1725_00.txt", "260417_1726_00.txt", "260417_1727_00.txt", "260417_1728_00.txt","260417_1729_00.txt", "260417_1730_00.txt", "260417_1731_00.txt", "260417_1732_00.txt")))
+                .setTags(new HashSet<>(Arrays.asList("tag1",  "tag2", "tag3")));
+
+        // mn should now be written to the the ViewPath, and not to the MetaPath.
+        PropUtils.writeNoteViewPath(mn);
+        // successful.
+    }
+
+    public static void propUtils_writeDiscardedElementViewPath() {
+        MutableNote mn = new MutableNote(new MetaPath(Paths.get(".PropUtils", ".260420_1059_02.txt")))
+                .setTitle("Test.propUtils_writeNoteViewPath()")
+                .setContent("This is a test of propUtils.writeNoteViewPath(). The sonctent has to simulate the length a real user would write in the process of writing zettlekasten notes for a research paper or a thesis. Ideally a user would be using Aside while researching, and would not call this method, but a higher level abstraction in the form of a command-line UI system. I hope to provide an elegant yet evergreen and portable solution")
+                .setTo(new HashSet<>(Arrays.asList("260417_1723_00.txt", "260417_1724_00.txt", "260417_1725_00.txt", "260417_1726_00.txt", "260417_1727_00.txt", "260417_1728_00.txt", "260417_1729_00.txt")))
+                .setFrom(new HashSet<>(Arrays.asList("260417_1725_00.txt", "260417_1726_00.txt", "260417_1727_00.txt", "260417_1728_00.txt","260417_1729_00.txt", "260417_1730_00.txt", "260417_1731_00.txt", "260417_1732_00.txt")))
+                .setTags(new HashSet<>(Arrays.asList("tag1",  "tag2", "tag3")));
+        DiscardedElement de = new DiscardedElement(mn).setMessage("This is a test of propUtils.writeDiscardedElementViewPath(). The intention is to test this method to see if MutableNote propUtils_mn can be converted into a discarded element, and written to the ViewPath.");
+        // write to ViewPath:
+        PropUtils.writeDiscardedElementViewPath(de);
+        // successful
+    }
+
 
 }

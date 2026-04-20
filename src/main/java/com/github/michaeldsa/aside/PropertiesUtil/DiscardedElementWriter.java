@@ -46,11 +46,12 @@ public class DiscardedElementWriter extends DiscardedElementPropertiesUtil {
         writeProperties(properties, de.getMetaPath().getPath());
 
         // write to viewpath
-        writeViewPath(de.getMetaPath().getPath(), formatViewPathDiscardedElement(properties));
+        writeToViewPath(de);
 
     }
 
     public void writeToViewPath(DiscardedElement de) {
+        setProperties(de);
         writeViewPath(de.getMetaPath().getPath(), formatViewPathDiscardedElement(properties));
     }
 

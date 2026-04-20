@@ -70,13 +70,13 @@ public abstract class NotePropertiesUtil {
         String nl = "\n";
 
         if (!filename.isBlank()) {
-            filename += nl + "-".repeat(80) + nl + nl ;
+            filename += nl + "-".repeat(80) + nl.repeat(2);
         }
         if (!title.isBlank()) {
             title = "TITLE:" + nl + title + nl;
         }
         if (!content.isBlank()) {
-            content = "CONTENT:" + nl + content + nl + "-".repeat(80) + nl;
+            content = "CONTENT:" + nl + content + "-".repeat(80) + nl.repeat(2);
         }
         if (!to.isBlank()) {
             to = "TO:" + nl + to + nl;
