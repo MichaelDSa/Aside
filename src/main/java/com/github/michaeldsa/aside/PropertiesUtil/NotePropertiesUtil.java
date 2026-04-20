@@ -115,14 +115,15 @@ public abstract class NotePropertiesUtil {
 
     // convert String objects retrieved from a Properties file to a HashSet<String>
     protected HashSet<String> stringToHashSet(String str) {
-        String[] sarr;
-        if (noteHashSetProperties.contains(str)) {
-            str = removeListChars(str);
-            sarr = str.split(" ");
-        } else {
+
+        if (str.isBlank()) {
             return new HashSet<>();
         }
-        return new HashSet<>(Arrays.asList(sarr));
+
+        str = removeListChars(str);
+        String[] str_arr = str.split(" ");
+
+        return new HashSet<>(Arrays.asList(str_arr));
     }
 
     // write a properties file

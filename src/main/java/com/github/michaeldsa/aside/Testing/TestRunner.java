@@ -99,7 +99,9 @@ public class TestRunner {
 //            Test.propUtils_writeNote();
 //            Test.propUtils_writeDiscardedElement();
 //            Test.propUtils_writeNoteViewPath();
-            Test.propUtils_writeDiscardedElementViewPath();
+//            Test.propUtils_writeDiscardedElementViewPath();
+//            Test.propUtils_readNote();
+            Test.propUtils_readDiscardedElement();
 
 
 

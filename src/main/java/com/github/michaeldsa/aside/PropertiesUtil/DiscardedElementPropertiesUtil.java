@@ -89,16 +89,4 @@ public abstract class DiscardedElementPropertiesUtil extends NotePropertiesUtil 
         }
         return val;
     }
-
-    // convert String objects retrieved from a Properties file to a HashSet<String>
-    protected HashSet<String> stringToHashSet(String str) {
-        String[] sarr;
-        if (discardedElementHashSetProperties.contains(str)) {
-            str = removeListChars(str);
-            sarr = str.split(" ");
-        } else {
-            return new HashSet<>();
-        }
-        return new HashSet<>(Arrays.asList(sarr));
-    }
 }

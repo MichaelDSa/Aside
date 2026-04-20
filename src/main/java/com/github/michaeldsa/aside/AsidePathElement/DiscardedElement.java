@@ -7,6 +7,7 @@ import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
+import java.util.Objects;
 
 public class DiscardedElement extends AsidePathElement {
     /*
@@ -23,8 +24,8 @@ public class DiscardedElement extends AsidePathElement {
     as well as an optional message for the user's useage.
      */
 
-    private final MetaPath originalMetaPath;
-    private final ViewPath originalViewPath;
+    private MetaPath originalMetaPath;
+    private ViewPath originalViewPath;
 
     // Note metadata:
     private String title;
@@ -122,6 +123,16 @@ public class DiscardedElement extends AsidePathElement {
     public MetaPath getOriginalMetaPath() { return originalMetaPath; }
     public ViewPath getOriginalViewPath() { return originalViewPath; }
 
+    // set original AsidePaths:
+    public DiscardedElement setOriginalMetaPath(MetaPath mp) {
+        originalMetaPath = mp;
+        return this;
+    }
+    public DiscardedElement setOriginalViewPath(ViewPath vp) {
+        originalViewPath = vp;
+        return this;
+    }
+
     // other metadata getters:
     public String getTitle() { return title; }
     public String getContent() { return content; }
@@ -181,4 +192,33 @@ public class DiscardedElement extends AsidePathElement {
 
 
     // set up object methods: toString, equals, hashCode.
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof DiscardedElement that)) return false;
+        if (!super.equals(o)) return false;
+        return Objects.equals(originalMetaPath, that.originalMetaPath) && Objects.equals(originalViewPath, that.originalViewPath) && Objects.equals(title, that.title) && Objects.equals(content, that.content) && Objects.equals(warning, that.warning) && Objects.equals(message, that.message) && Objects.equals(to, that.to) && Objects.equals(from, that.from) && Objects.equals(tags, that.tags);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), originalMetaPath, originalViewPath, title, content, warning, message, to, from, tags);
+    }
+
+    @Override
+    public String toString() {
+        return "DiscardedElement{" +
+                "metaPath=" + metaPath +
+                ", viewPath=" + viewPath +
+                ", originalMetaPath=" + originalMetaPath +
+                ", originalViewPath=" + originalViewPath +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", warning='" + warning + '\'' +
+                ", message='" + message + '\'' +
+                ", to=" + to +
+                ", from=" + from +
+                ", tags=" + tags +
+                '}';
+    }
 }

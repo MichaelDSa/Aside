@@ -20,7 +20,7 @@ public class PropUtils {
         discarded_r.read(de);
     }
 
-    // writers (MetaPath):
+    // writers (MetaPath & ViewPath):
     public static void writeNote(AbstractNote abstractNote) {
         note_w.write(abstractNote);
     }
@@ -28,11 +28,11 @@ public class PropUtils {
         discarded_w.write(de);
     }
 
-    // writers (ViewPath):
-    public static void writeNoteViewPath(AbstractNote abstractNote) {
+    // writers (ViewPath only):
+    public static void writeNote_ViewPath(AbstractNote abstractNote) {
         note_w.writeToViewPath(abstractNote);
     }
-    public static void writeDiscardedElementViewPath(DiscardedElement de) {
+    public static void writeDiscardedElement_ViewPath(DiscardedElement de) {
         discarded_w.writeToViewPath(de);
     }
 }
