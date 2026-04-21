@@ -192,17 +192,26 @@ public class Test {
 
     public static void createNote() {
         // define note
-        MutableNote note = new MutableNote(new MetaPath())
+        Category fictionalCategory = new Category(new MetaPath(Paths.get(".FictionalCategory")));
+        MutableNote note1 = new MutableNote(new MetaPath())
                 .setTitle("Test Create.NOTE & Update.WRITE_NOTE_METADATA")
                 .setContent(Pretty.format(
-                        "This is the content for my test of Create.NOTE & Update.WRITE_NOTE_METADATA. I am using Pretty to format this content to 80 ch width.",
+                        "This is a re-test of Create.NOTE. The strategy has been updated, and does not depend on Update.WRITE_NOTE_METADATA. A new package fulfills writing all Notes and DiscardedElements. It is called PropertiesUtil. Create.NOTE utilizes the factory method, ProUtils.writeNote().",
                         80 ))
                 .setTo(new HashSet<>(Arrays.asList("to1", "toJ", "to3")))
                 .setFrom(new HashSet<>(Arrays.asList("from1", "from2", "from3")))
                 .setTags(new HashSet<>(Arrays.asList("tag1", "tag2", "tag3")));
 
+        MutableNote note2 = new MutableNote(fictionalCategory) // should fail if .FictionalCategory does not exist.
+                .setTitle("Test Create.NOTE & Update.WRITE_NOTE_METADATA")
+                .setContent(Pretty.format(
+                        "This is a re-test of Create.NOTE. The strategy has been updated, and does not depend on Update.WRITE_NOTE_METADATA. A new package fulfills writing all Notes and DiscardedElements. It is called PropertiesUtil. Create.NOTE utilizes the factory method, ProUtils.writeNote().",
+                        80 ))
+                .setTo(new HashSet<>(Arrays.asList("to1", "toJ", "to3")))
+                .setFrom(new HashSet<>(Arrays.asList("from1", "from2", "from3")))
+                .setTags(new HashSet<>(Arrays.asList("tag1", "tag2", "tag3")));
         // create note. Create.NOTE depends on Update.WRITE_NOTE_METADATA.
-        Create.NOTE.execute(note);
+        Create.NOTE.execute(note2);
     }
 
     public static void discardedElement() {

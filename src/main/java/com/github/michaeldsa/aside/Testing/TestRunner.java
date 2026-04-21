@@ -101,7 +101,14 @@ public class TestRunner {
 //            Test.propUtils_writeNoteViewPath();
 //            Test.propUtils_writeDiscardedElementViewPath();
 //            Test.propUtils_readNote();
-            Test.propUtils_readDiscardedElement();
+//            Test.propUtils_readDiscardedElement();
+
+            // Test Create.NOTE... The strategy has been updated.
+//            Test.createNote();
+            // Create.NOTE works when creating a note in DEFAULT
+            // Create.NOTE fails when parent Category does not exist.
+            // Success.
+
 
 
 

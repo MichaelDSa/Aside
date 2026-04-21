@@ -3,6 +3,7 @@ package com.github.michaeldsa.aside.Ops;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsidePathElement.*;
+import com.github.michaeldsa.aside.PropertiesUtil.PropUtils;
 import com.github.michaeldsa.aside.RootPaths;
 
 import java.io.IOException;
@@ -67,21 +68,30 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
         // consider omitting this. It can be achieved
         // by the client with compound strategies. i.e.:
         // Create.CATEGORY.andThen(Create.NOTE).execute(ape)
-        Path m_category = m_note.getParent();
-        Create.CATEGORY.execute(new Category(new MetaPath(m_category)));
-
-        // touch file:
-        Path v_note = ape.getViewPath().getPath();
-        try {
-            Files.createFile(m_note);
-            Files.createFile(v_note);
-        } catch (IOException e) {
-            System.out.println("Create.NOTE failed: \n file exists: \n " + m_note + "\n" + v_note);
+//        Path m_category = m_note.getParent();
+//        Create.CATEGORY.execute(new Category(new MetaPath(m_category)));
+        // commented out. The client should ensure category exists before execution.
+        // if The category does not exist, abort.
+        if (!Files.exists(m_note.getParent())) {
+//            String cat_name = m_note.getParent().getFileName().toString();
+            String cat_name = new ViewPath(ape.getMetaPath()).getPath().getParent().getFileName().toString();
+            System.out.println("Category does not exist: " + cat_name);
+            return ape;
         }
 
-        // The note is empty. Update note with ape data:
-        Update.WRITE_NOTE_METADATA.execute(ape);
+//        Path v_note = ape.getViewPath().getPath();
+//        try {
+//            Files.createFile(m_note);
+//            Files.createFile(v_note);
+//        } catch (IOException e) {
+//            System.out.println("Create.NOTE failed: \n file exists: \n " + m_note + "\n" + v_note);
+//        }
 
+        // The note is empty. Update note with ape data:
+//        Update.WRITE_NOTE_METADATA.execute(ape);
+
+        // write note to MetaPath and ViewPath
+        PropUtils.writeNote((AbstractNote) ape);
 
         return ape;
     });

@@ -17,6 +17,10 @@ public enum Update implements CrudOps<AsidePathElement,AsidePathElement> {
     CATEGORY (ape -> {
         return ape;
     }),
+    NOTE (ape -> {
+        return ape;
+    }),
+    // deprecated.
     WRITE_NOTE_METADATA(ape -> {
         // prerequisite: must be AbstractNote subclass
         if (!(ape instanceof AbstractNote)) {
