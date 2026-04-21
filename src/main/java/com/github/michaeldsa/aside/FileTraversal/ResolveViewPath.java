@@ -3,8 +3,10 @@ package com.github.michaeldsa.aside.FileTraversal;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsidePathElement.DiscardedElement;
+import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
 import com.github.michaeldsa.aside.AsidePathElement.RestrictedLists;
 import com.github.michaeldsa.aside.Pretty;
+import com.github.michaeldsa.aside.PropertiesUtil.PropUtils;
 import com.github.michaeldsa.aside.RootPaths;
 import com.github.michaeldsa.aside.Validation.ValidatePath;
 
@@ -87,63 +89,27 @@ public class ResolveViewPath extends Traverser{
     }
 
     public FileVisitResult _visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-
         // early dismissal:
-        // valid files only. Text files in root path are not recognized
-        // Files that are descendants of DISCARDED are not recognized
-        Path discarded = RestrictedLists.getDiscardedElementDirectory().getMetaPath().getPath();
         if (
-                file.startsWith(discarded) ||
                 file.getParent().equals(RootPaths.INSTANCE.getMetapath()) ||
                 !Files.isRegularFile(file) ||
                 !ValidatePath.NOTE_NAME.test(file)
         ) {
             return FileVisitResult.CONTINUE;
         }
-        
-        // feed the file to a properties object
-        Properties properties = new Properties();
-        try (InputStream is = Files.newInputStream(file)) {
-            properties.load(is);
-        }
 
-        // This Traverser only traverses MetaPath paths, so we
-        // need a ViewPath path which is derived from file wrapped
-        // in a MetaPath. ViewPath will convert MetaPath paths.
-        Path vpath = new ViewPath(new MetaPath(file)).getPath();
+        // if the file parent is .DISCARDED:
+        Path discarded = RestrictedLists.getDiscardedElementDirectory().getMetaPath().getPath();
 
-        // format content and title of the ViewPath file
-
-        String title = properties.getProperty("title");
-        if (title == null) {
-            title = "";
+        if (file.startsWith(discarded)) {
+            DiscardedElement de = new DiscardedElement(new MetaPath(file));
+            PropUtils.readDiscardedElement(de);
+            PropUtils.writeDiscardedElement_ViewPath(de);
         } else {
-            title = Pretty.format(title, width);
-        }
-
-        String content = properties.getProperty("content");
-        if (content == null) {
-            content = "";
-        } else {
-            content = Pretty.format(content, width);
-        }
-
-        String file_contents = "";
-        if (content.isBlank() && title.isBlank()) {
-            file_contents = "";
-        }
-
-        if (!title.isBlank()) {
-            file_contents = Pretty.format(title, width) + "\n";
-        }
-
-        if (!content.isBlank()) {
-            file_contents += Pretty.format(content, width);
-        }
-
-        // write the content data to the new ViewPath file.
-        try (OutputStream os = Files.newOutputStream(vpath)) {
-            os.write(file_contents.getBytes());
+            // if the file parent is not .DISCARDED
+            MutableNote mn = new MutableNote(new MetaPath(file));
+            PropUtils.readNote(mn);
+            PropUtils.writeNote_ViewPath(mn);
         }
         return FileVisitResult.CONTINUE;
     }
