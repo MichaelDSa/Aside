@@ -7,16 +7,32 @@ import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
 
 public abstract class AsidePathElement {
     protected MetaPath metaPath;
     protected ViewPath viewPath;
+    protected List<AsidePathElement> nest;
+
     // public Category stepParent; // subclasses can optionally assign this field
 
     // getters:
     public MetaPath getMetaPath() {return this.metaPath;}
     public ViewPath getViewPath() {return this.viewPath;}
+
+    // nest getter
+    public List<AsidePathElement> getNest() {
+        return this.nest;
+    }
+
+    // nest convenience methods:
+    public void nestClear() {
+        this.nest.clear();
+    }
+    public void nestAdd(AsidePathElement element) {
+        this.nest.add(element);
+    }
 
     // abstract methods:
     // most of these methods are for subclasses that choose to include a Category stepParent field.
