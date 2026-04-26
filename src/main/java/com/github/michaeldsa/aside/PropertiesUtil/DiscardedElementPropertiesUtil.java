@@ -20,51 +20,7 @@ public abstract class DiscardedElementPropertiesUtil extends NotePropertiesUtil 
     protected ArrayList<String> discardedElementHashSetProperties = new ArrayList<>(Arrays.asList(to_n, from_n, tags_n));
 
 
-    protected String formatViewPathDiscardedElement(Properties properties) {
-        String filename = getPropAsString(properties, filename_n);
-        String warning = Pretty.format(getPropAsString(properties, warning_n), 80);
-        String message = Pretty.format(getPropAsString(properties, message_n), 80);
-        String title = Pretty.format(getPropAsString(properties, title_n), 80);
-        String content = Pretty.format(getPropAsString(properties, content_n), 80);
-        String originalMetaPath = Pretty.format(getPropAsString(properties, originalMetaPath_n), 80);
-        String originalViewPath = Pretty.format(getPropAsString(properties, originalViewPath_n), 80);
-        String to = Pretty.format(properties.getProperty(to_n), 80);
-        String from = Pretty.format(properties.getProperty(from_n), 80);
-        String tags = Pretty.format(properties.getProperty(tags_n), 80);
-
-
-        String nl = "\n";
-        filename += nl + warning + nl;
-
-        if(!message.isBlank()) {
-            message = "MESSAGE:" + nl + message + "-".repeat(80) + nl.repeat(2);
-        }
-        if(!title.isBlank()) {
-            title = "TITLE:" + nl + title + nl;
-        }
-        if(!content.isBlank()) {
-            content = "CONTENT:" + nl + content + "-".repeat(80) + nl.repeat(2);
-        }
-        if(!originalMetaPath.isBlank()) {
-            originalMetaPath = "ORIGINAL_METAPATH:" + nl + originalMetaPath + nl;
-        }
-        if(!originalViewPath.isBlank()) {
-            originalViewPath = "ORIGINAL_VIEWPATH:" + nl + originalViewPath + "-".repeat(80) + nl.repeat(2);
-        }
-        if(!to.isBlank()) {
-            to = "TO:" + nl + to + nl;
-        }
-        if(!from.isBlank()) {
-            from = "FROM:" + nl + from + nl;
-        }
-        if(!tags.isBlank()) {
-            tags = "TAGS:" + nl + tags + nl;
-        }
-
-        return filename + message + title + content + originalMetaPath + originalViewPath + to + from + tags;
-    }
-
-    // get properties that should be saved as String in a MutableNote or DiscardedElement
+     // get properties that should be saved as String in a MutableNote or DiscardedElement
     protected String getPropAsString(Properties properties, String prop) {
         String val = "";
         if (discardedElementStringProperties.contains(prop)) {

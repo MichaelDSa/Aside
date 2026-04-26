@@ -53,7 +53,6 @@ public class DiscardedElementWriter extends DiscardedElementPropertiesUtil {
 
     public void writeToViewPath(DiscardedElement de) {
         setProperties(de);
-//        writeViewPath(de.getMetaPath().getPath(), formatViewPathDiscardedElement(properties));
         writeViewPath(de.getMetaPath().getPath(), Pretty.formatDiscardedElement4ViewPath(de, 80));
     }
 

@@ -58,39 +58,6 @@ public abstract class NotePropertiesUtil {
         return val;
     }
 
-    // format string for AbstractNote subclass:
-    protected String formatViewPathNote(Properties properties) {
-        String filename = getPropAsString(properties, filename_n).substring(1);
-        String title = Pretty.format(getPropAsString(properties, title_n), 80);
-        String content = Pretty.format(getPropAsString(properties, content_n), 80);
-        String to = Pretty.format(properties.getProperty(to_n), 80);
-        String from = Pretty.format(properties.getProperty(from_n), 80);
-        String tags = Pretty.format(properties.getProperty(tags_n), 80);
-
-        String nl = "\n";
-
-        if (!filename.isBlank()) {
-            filename += nl + "-".repeat(80) + nl.repeat(2);
-        }
-        if (!title.isBlank()) {
-            title = "TITLE:" + nl + title + nl;
-        }
-        if (!content.isBlank()) {
-            content = "CONTENT:" + nl + content + "-".repeat(80) + nl.repeat(2);
-        }
-        if (!to.isBlank()) {
-            to = "TO:" + nl + to + nl;
-        }
-        if (!from.isBlank()) {
-            from = "FROM:" + nl + from + nl;
-        }
-        if (!tags.isBlank()) {
-            tags = "TAGS:" + nl + tags + nl;
-        }
-
-        return filename + title + content + to + from + tags;
-    }
-
     // get properties that should be saved as String in a MutableNote or DiscardedElement
     protected String getPropAsString(Properties properties, String prop) {
         String val = "";
