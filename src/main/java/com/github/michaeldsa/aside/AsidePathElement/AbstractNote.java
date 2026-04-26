@@ -50,7 +50,7 @@ public abstract class AbstractNote extends AsidePathElement {
         name = parent.resolve(name);
 
         // edge case: resolve naming conflict
-        if (Files.exists(name.getPath()) || anti_redundant_set.contains(note_name)) {
+        if (Files.exists(name.getPath()) || !anti_redundant_set.add(note_name)) {
             for (int i = 0; i < 60; i++) {
                 try {
                     Thread.sleep(1000);
@@ -58,7 +58,7 @@ public abstract class AbstractNote extends AsidePathElement {
                     note_name = name.getPath().getFileName().toString();
                     name = parent.resolve(name);
 
-                    if (Files.notExists(name.getPath()) && !anti_redundant_set.contains(note_name)) {
+                    if (Files.notExists(name.getPath()) && anti_redundant_set.add(note_name)) {
                         break;
                     } else {
                         System.out.print(".");
@@ -69,7 +69,6 @@ public abstract class AbstractNote extends AsidePathElement {
                 }
             }
         }
-        anti_redundant_set.add(note_name);
         return Objects.requireNonNull(name, "Create.newNoteName(): failed to generate unique file name");
     }
 
