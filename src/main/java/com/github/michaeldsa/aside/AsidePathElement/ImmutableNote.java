@@ -21,6 +21,7 @@ public class ImmutableNote extends AbstractNote{
     public ImmutableNote(MutableNote mn) {
         this.metaPath = mn.metaPath;
         this.viewPath = mn.viewPath;
+        this.nest = mn.getNest();
         this.stepParent = mn.getStepParentCategory();
         this.title = mn.getTitle();
         this.content = mn.getContent();

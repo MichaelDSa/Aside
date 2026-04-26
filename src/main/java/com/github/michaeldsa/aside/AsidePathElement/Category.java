@@ -6,6 +6,7 @@ import com.github.michaeldsa.aside.RootPaths;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Category extends AsidePathElement{
@@ -24,6 +25,7 @@ public class Category extends AsidePathElement{
         metaPath = AsidePathElement.filterMetaPathElements(metaPath);
         viewPath = new ViewPath(metaPath);
         stepParent = null;
+        nest = new ArrayList<>();
     }
     public Category(ViewPath vp) {
         if (AsidePathElement.endsWithNoteName(vp)) {
@@ -34,6 +36,7 @@ public class Category extends AsidePathElement{
         viewPath = AsidePathElement.filterViewPathElements(viewPath);
         metaPath = new MetaPath(viewPath);
         stepParent = null;
+        nest = new ArrayList<>();
     }
     public Category(Category c) {
         MetaPath mp = c.getMetaPath();
@@ -45,6 +48,7 @@ public class Category extends AsidePathElement{
         metaPath = AsidePathElement.filterMetaPathElements(metaPath);
         viewPath = new ViewPath(metaPath);
         stepParent = null;
+        nest = new ArrayList<>();
     }
 
     @Override

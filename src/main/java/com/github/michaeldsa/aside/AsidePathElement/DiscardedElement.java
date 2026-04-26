@@ -2,10 +2,10 @@ package com.github.michaeldsa.aside.AsidePathElement;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
-import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -41,6 +41,7 @@ public class DiscardedElement extends AsidePathElement {
         viewPath = new ViewPath(Paths.get(RestrictedLists.getViewPathDiscardedDirectoryName()));
         originalMetaPath = metaPath;
         originalViewPath = viewPath;
+        nest = new ArrayList<>();
     }
 
     public DiscardedElement(MetaPath mp) {
@@ -58,6 +59,7 @@ public class DiscardedElement extends AsidePathElement {
 
         originalMetaPath = mp;
         originalViewPath = new ViewPath(mp);
+        nest = new ArrayList<>();
 
         title = "";
         content = "";
@@ -82,6 +84,7 @@ public class DiscardedElement extends AsidePathElement {
 
         originalViewPath = vp;
         originalMetaPath = new MetaPath(vp);
+        nest = new ArrayList<>();
 
         title = "";
         content = "";
@@ -105,6 +108,7 @@ public class DiscardedElement extends AsidePathElement {
 
         originalMetaPath = mn.getMetaPath();
         originalViewPath = mn.getViewPath();
+        nest = new ArrayList<>();
 
         title = mn.getTitle();
         content = mn.getContent();

@@ -3,10 +3,7 @@ package com.github.michaeldsa.aside.AsidePathElement;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class MutableNote extends AbstractNote{
     private Category stepParent;
@@ -24,6 +21,7 @@ public class MutableNote extends AbstractNote{
 
         viewPath = new ViewPath(metaPath);
         stepParent = null;
+        nest = new ArrayList<>();
         previousState = null;
         to = new HashSet<>();
         from = new HashSet<>();
@@ -39,6 +37,7 @@ public class MutableNote extends AbstractNote{
 
         metaPath = new MetaPath(viewPath);
         stepParent = null;
+        nest = new ArrayList<>();
         previousState = null;
         to = new HashSet<>();
         from = new HashSet<>();
@@ -49,6 +48,7 @@ public class MutableNote extends AbstractNote{
         metaPath = AbstractNote.generateNewNoteName(c.getMetaPath());
         viewPath = new ViewPath(metaPath);
         stepParent = c.getStepParentCategory();
+        nest = new ArrayList<>();
         previousState = null;
         to = new HashSet<>();
         from = new HashSet<>();
@@ -58,6 +58,7 @@ public class MutableNote extends AbstractNote{
         metaPath = mn.getMetaPath();
         viewPath = new ViewPath(metaPath);
         stepParent = mn.getStepParentCategory();
+        nest = mn.getNest();
         previousState = new ImmutableNote(mn);
         title = mn.getTitle();
         content = mn.getContent();
