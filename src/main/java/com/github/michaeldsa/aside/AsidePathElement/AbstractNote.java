@@ -1,14 +1,18 @@
 package com.github.michaeldsa.aside.AsidePathElement;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
+import com.github.michaeldsa.aside.RootPaths;
 
+import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public abstract class AbstractNote extends AsidePathElement {
     // optional:
@@ -50,7 +54,7 @@ public abstract class AbstractNote extends AsidePathElement {
         name = parent.resolve(name);
 
         // edge case: resolve naming conflict
-        if (Files.exists(name.getPath()) || !anti_redundant_set.add(note_name)) {
+        if (Files.exists(name.getPath()) || !fileNameIsUnique(name)) {
             for (int i = 0; i < 60; i++) {
                 try {
                     Thread.sleep(1000);
@@ -58,7 +62,7 @@ public abstract class AbstractNote extends AsidePathElement {
                     note_name = name.getPath().getFileName().toString();
                     name = parent.resolve(name);
 
-                    if (Files.notExists(name.getPath()) && anti_redundant_set.add(note_name)) {
+                    if (Files.notExists(name.getPath()) && fileNameIsUnique(name)) {
                         break;
                     } else {
                         System.out.print(".");
@@ -76,6 +80,25 @@ public abstract class AbstractNote extends AsidePathElement {
         LocalDateTime now = LocalDateTime.now();
         return new MetaPath(Paths.get("." + now.format(formatter) + ".txt"));
 
+    }
+
+    private static boolean fileNameIsUnique(MetaPath fileName) {
+        // tests whether file name is unique amongst all files, including files not yet written
+        if (!anti_redundant_set.add(fileName.getPath().getFileName().toString())) {
+            return false;
+        }
+
+        String fileName_str = fileName.getPath().getFileName().toString();
+
+        try (Stream<Path> stream = Files.walk(RootPaths.INSTANCE.getMetapath())) {
+            return stream.parallel().noneMatch(
+                    path ->
+                            path.getFileName().toString().equals(fileName_str)
+            );
+        } catch (IOException e) {
+            System.out.println("AbstractNote.fileNameIsUnique(): IOException.\n" + fileName);
+            return false;
+        }
     }
 
     @Override
