@@ -110,7 +110,7 @@ public class TestRunner {
             // Success.
 
             // AbstractNote.generateNewNoteName()
-//            Test.abstractNote_anti_redundant_naming();
+            Test.abstractNote_anti_redundant_naming();
             // [x] Success: stage 1 - current session anti-redundant naming
             // [x] Success: stage 2 - persistent anti-redundant naming
             //                        - Whole sandbox is checked for duplicate file name.

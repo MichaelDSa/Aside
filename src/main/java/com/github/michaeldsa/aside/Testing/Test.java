@@ -328,11 +328,12 @@ public class Test {
         Create.CATEGORY.execute(anti_redundant);
         Create.CATEGORY.execute(anti_redundant2);
 
-        // write a note from the future:
-        MutableNote mn0 = new MutableNote(new MetaPath(Paths.get(".260426_1813_30.txt")))
+        /* Write a note from the future. generateNewNoteName() should
+        avoid duplicating these filenames: */
+        MutableNote mn0 = new MutableNote(new MetaPath(Paths.get(".260426_1822_00.txt")))
                 .setTitle("Note from future");
         PropUtils.writeNote(mn0);
-        MutableNote mn00 = new MutableNote(new MetaPath(Paths.get(".260426_1813_33.txt")))
+        MutableNote mn00 = new MutableNote(new MetaPath(Paths.get(".260426_1822_04.txt")))
                 .setTitle("Note from future");
         PropUtils.writeNote(mn00);
         MutableNote mn1 = new MutableNote(anti_redundant)

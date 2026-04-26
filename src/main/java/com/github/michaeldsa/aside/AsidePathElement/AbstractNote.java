@@ -47,9 +47,6 @@ public abstract class AbstractNote extends AsidePathElement {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd_HHmm_ss");
         MetaPath name = getTimeStampedFileName(formatter);
 
-        // this note name will be added to anti_redundant_set
-        String note_name = name.getPath().getFileName().toString();
-
         // resolve the filename to the parent
         name = parent.resolve(name);
 
@@ -59,7 +56,6 @@ public abstract class AbstractNote extends AsidePathElement {
                 try {
                     Thread.sleep(1000);
                     name = getTimeStampedFileName(formatter);
-                    note_name = name.getPath().getFileName().toString();
                     name = parent.resolve(name);
 
                     if (Files.notExists(name.getPath()) && fileNameIsUnique(name)) {
