@@ -96,8 +96,8 @@ public class TestRunner {
 //            faux_array = faux_array.replace(",", "");
 //            System.out.println(faux_array);
 
-//            Test.propUtils_writeNote();
-//            Test.propUtils_writeDiscardedElement();
+            Test.propUtils_writeNote();
+            Test.propUtils_writeDiscardedElement();
 //            Test.propUtils_writeNoteViewPath();
 //            Test.propUtils_writeDiscardedElementViewPath();
 //            Test.propUtils_readNote();

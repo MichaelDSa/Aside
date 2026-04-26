@@ -261,7 +261,7 @@ public class Test {
 //        System.out.println("origninal ViewPath: " + de.getNewLocationViewPath());
     }
 
-    public static MutableNote propUtils_mn = new MutableNote(new MetaPath(Paths.get(".PropUtils", ".260417_1722_20.txt")))
+    public static MutableNote propUtils_mn = new MutableNote(new MetaPath(Paths.get(".PropUtils", ".260426_1049_00.txt")))
         .setTitle("Test.propUtils_writeNote()")
         .setContent("This is the content of a MutableNote. The lenght of the comment must be long enough to simulate a real note. People who use Aside ntoes will be reasearching various disciplines and will be interested in the zettelkasten method of note taking and note organization. The software used must be reliable. It must made with care, and is to be used as a vehicle for the zettlekasten system of note taking")
         .setTo(new HashSet<>(Arrays.asList("260417_1723_00.txt", "260417_1724_00.txt", "260417_1725_00.txt", "260417_1726_00.txt", "260417_1727_00.txt", "260417_1728_00.txt", "260417_1729_00.txt")))
