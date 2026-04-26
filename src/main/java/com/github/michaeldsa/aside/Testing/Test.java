@@ -320,5 +320,38 @@ public class Test {
         System.out.println("AFTER:\n" + de);
     }
 
+    public static void abstractNote_anti_redundant_naming() {
+        // create several notes at once to see if names are duplicated:
+        System.out.println("ANTI-REDUNDANT SET:");
+        Category anti_redundant = new Category(new MetaPath(Paths.get(".anti_redundant")));
+        Category anti_redundant2 = new Category(new MetaPath(Paths.get(".anti_redundant2")));
+        Create.CATEGORY.execute(anti_redundant);
+        Create.CATEGORY.execute(anti_redundant2);
+        MutableNote mn1 = new MutableNote(anti_redundant)
+                .setTitle("Test.abstractNote_anti_redundant_naming() Note1")
+                .setContent("Testing AbstractNote.generateNoteName() redundancy");
+        System.out.println("mn1: " + mn1.getMetaPath());
+
+        MutableNote mn2 = new MutableNote(anti_redundant2)
+                .setTitle("Test.abstractNote_anti_redundant_naming() Note2")
+                .setContent("Testing AbstractNote.generateNoteName() redundancy");
+        System.out.println("mn2: " + mn2.getMetaPath());
+
+        MutableNote mn3 = new MutableNote(anti_redundant)
+                .setTitle("Test.abstractNote_anti_redundant_naming() Note3")
+                .setContent("Testing AbstractNote.generateNoteName() redundancy");
+        System.out.println("mn3: " + mn3.getMetaPath());
+
+        MutableNote mn4 = new MutableNote(anti_redundant2)
+                .setTitle("Test.abstractNote_anti_redundant_naming() Note4")
+                .setContent("Testing AbstractNote.generateNoteName() redundancy");
+        System.out.println("mn4: " + mn4.getMetaPath());
+        // its not necessary to create them.
+//        Create.NOTE.execute(mn1);
+//        Create.NOTE.execute(mn2);
+//        Create.NOTE.execute(mn3);
+//        Create.NOTE.execute(mn4);
+    }
+
 
 }

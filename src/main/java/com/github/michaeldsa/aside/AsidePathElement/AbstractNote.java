@@ -30,25 +30,35 @@ public abstract class AbstractNote extends AsidePathElement {
 
 
     // static methods:
+
+    /* anti-redundant-name set:
+    This anti-redundant-name set is meant to store names created in the current
+    session. When generateNewNoteName() creates notes in quick succession,
+    it checks the set for names already created. */
+    private static final Set<String> anti_redundant_set = new HashSet<>();
+
     // generate a MetaPath that ends with the unique file name formatted for notes.
     public static MetaPath generateNewNoteName(MetaPath parent) {
-        // generate date stamp String starting with `.` and ending with `.txt`.
-        LocalDateTime now = LocalDateTime.now();
+        // generate date stamp MetaPath ending with `.txt`.
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd_HHmm_ss");
-        String note_name = "." + now.format(formatter) + ".txt";
+        MetaPath name = getTimeStampedFileName(formatter);
 
-        // Make MetaPath of the note name resolved to parent
-        MetaPath name = new MetaPath(Paths.get(note_name));
+        // this note name will be added to anti_redundant_set
+        String note_name = name.getPath().getFileName().toString();
+
+        // resolve the filename to the parent
         name = parent.resolve(name);
 
         // edge case: resolve naming conflict
-        if (Files.exists(name.getPath())) {
+        if (Files.exists(name.getPath()) || anti_redundant_set.contains(note_name)) {
             for (int i = 0; i < 60; i++) {
                 try {
                     Thread.sleep(1000);
-                    name = generateNewNoteName(parent);
+                    name = getTimeStampedFileName(formatter);
+                    note_name = name.getPath().getFileName().toString();
+                    name = parent.resolve(name);
 
-                    if (Files.notExists(name.getPath())) {
+                    if (Files.notExists(name.getPath()) && !anti_redundant_set.contains(note_name)) {
                         break;
                     } else {
                         System.out.print(".");
@@ -59,7 +69,14 @@ public abstract class AbstractNote extends AsidePathElement {
                 }
             }
         }
+        anti_redundant_set.add(note_name);
         return Objects.requireNonNull(name, "Create.newNoteName(): failed to generate unique file name");
+    }
+
+    private static MetaPath getTimeStampedFileName(DateTimeFormatter formatter) {
+        LocalDateTime now = LocalDateTime.now();
+        return new MetaPath(Paths.get("." + now.format(formatter) + ".txt"));
+
     }
 
     @Override
