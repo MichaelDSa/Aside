@@ -1,4 +1,4 @@
-package com.github.michaeldsa.aside;
+package com.github.michaeldsa.aside.Initialization;
 
 import java.nio.file.Path;
 
@@ -9,10 +9,10 @@ public enum RootPaths {
     private final Path viewpath;
 
     RootPaths() {
-        Config config = Config.INSTANCE;
-        aside = config.getAside_root();
-        metapath = config.getMetapath();
-        viewpath = config.getViewpath();
+        Initialize initialize = Initialize.INSTANCE;
+        aside = initialize.getAside_root();
+        metapath = initialize.getMetapath();
+        viewpath = initialize.getViewpath();
     }
 
     public Path getAside() {return aside;}

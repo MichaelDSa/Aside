@@ -1,11 +1,8 @@
 package com.github.michaeldsa.aside.AsidePath;
 
 import com.github.michaeldsa.aside.AsidePathElement.RestrictedLists;
-import com.github.michaeldsa.aside.RootPaths;
 
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 

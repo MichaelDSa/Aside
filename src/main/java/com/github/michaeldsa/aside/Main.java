@@ -2,8 +2,8 @@ package com.github.michaeldsa.aside;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
-import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
-import com.github.michaeldsa.aside.Testing.Test;
+import com.github.michaeldsa.aside.Initialization.CurrentCategory;
+import com.github.michaeldsa.aside.Initialization.RootPaths;
 import com.github.michaeldsa.aside.Testing.TestRunner;
 
 import java.nio.file.Files;
@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 
 public class Main {
     public static void main(String[] args) {
+        // Use Config.INSTANCE to initialize the application. CurrentCategory calls this from its constructor.
         CurrentCategory cc = CurrentCategory.INSTANCE;
 //        UIScanner scannerUI = new UIScanner();
 //        scannerUI.start();

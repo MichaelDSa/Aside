@@ -2,14 +2,10 @@ package com.github.michaeldsa.aside.Testing;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
-import com.github.michaeldsa.aside.Config;
-import com.github.michaeldsa.aside.RootPaths;
+import com.github.michaeldsa.aside.Initialization.RootPaths;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
 
 public class TestRunner {
     public static class MutableNoteTests {

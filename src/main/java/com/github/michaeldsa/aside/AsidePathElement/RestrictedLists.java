@@ -1,7 +1,7 @@
 package com.github.michaeldsa.aside.AsidePathElement;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
-import com.github.michaeldsa.aside.RootPaths;
+import com.github.michaeldsa.aside.Initialization.RootPaths;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

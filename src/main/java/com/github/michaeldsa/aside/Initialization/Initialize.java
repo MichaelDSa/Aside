@@ -1,6 +1,4 @@
-package com.github.michaeldsa.aside;
-
-import com.github.michaeldsa.aside.AsidePath.MetaPath;
+package com.github.michaeldsa.aside.Initialization;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +21,7 @@ initialization process:
        sandbox.
     4) provides the data found in this config file to clients.
  */
-public enum Config {
+public enum Initialize {
     INSTANCE;
 
     // Paths to configuration directories & files:
@@ -46,7 +44,7 @@ public enum Config {
     private final String key_metapath_root = "metapath_root";
     private final String key_viewpath_root = "viewpath_root";
 
-    Config() {
+    Initialize() {
 
         // DETERMINE CONFIG PATH
 
@@ -189,7 +187,7 @@ public enum Config {
     private void configurePropertiesWithUser(String message) {
 
         // interact with user to get configura
-        UIConfig uiconfig = new UIConfig();
+        InitDialogue uiconfig = new InitDialogue();
         if(message == null){
             uiconfig.ui();
         } else {

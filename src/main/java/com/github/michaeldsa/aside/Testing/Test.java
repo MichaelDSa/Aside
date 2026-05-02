@@ -8,7 +8,7 @@ import com.github.michaeldsa.aside.AsidePathElement.AsidePathElement;
 import com.github.michaeldsa.aside.AsidePathElement.Category;
 import com.github.michaeldsa.aside.AsidePathElement.DiscardedElement;
 import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
-import com.github.michaeldsa.aside.CurrentCategory;
+import com.github.michaeldsa.aside.Initialization.CurrentCategory;
 import com.github.michaeldsa.aside.FileTraversal.Traversers;
 import com.github.michaeldsa.aside.Ops.Create;
 import com.github.michaeldsa.aside.PathKeeper;

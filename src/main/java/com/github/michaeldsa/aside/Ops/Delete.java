@@ -4,12 +4,12 @@ import com.github.michaeldsa.aside.AsidePathElement.AbstractNote;
 import com.github.michaeldsa.aside.AsidePathElement.Category;
 import com.github.michaeldsa.aside.AsidePathElement.DiscardedElement;
 import com.github.michaeldsa.aside.AsideUtils;
-import com.github.michaeldsa.aside.CurrentCategory;
+import com.github.michaeldsa.aside.Initialization.CurrentCategory;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsidePathElement.AsidePathElement;
 import com.github.michaeldsa.aside.FileTraversal.Traversers;
-import com.github.michaeldsa.aside.RootPaths;
+import com.github.michaeldsa.aside.Initialization.RootPaths;
 
 import java.io.IOException;
 import java.nio.file.Files;

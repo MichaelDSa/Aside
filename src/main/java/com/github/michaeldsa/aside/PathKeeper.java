@@ -1,5 +1,7 @@
 package com.github.michaeldsa.aside;
 
+import com.github.michaeldsa.aside.Initialization.Initialize;
+
 import java.nio.file.Path;
 
 // RENAME TO: PathTracker
@@ -12,8 +14,8 @@ public enum PathKeeper {
     public final PathCheck pathCheck;
 
     PathKeeper(){
-        Config config = Config.INSTANCE;
-        home_directory = config.getAside_root();
+        Initialize initialize = Initialize.INSTANCE;
+        home_directory = initialize.getAside_root();
         meta_home = home_directory.resolve(".meta");
         view_home = home_directory.resolve("view");
         current = home_directory;

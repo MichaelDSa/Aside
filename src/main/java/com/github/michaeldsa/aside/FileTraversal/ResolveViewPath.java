@@ -5,21 +5,17 @@ import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsidePathElement.DiscardedElement;
 import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
 import com.github.michaeldsa.aside.AsidePathElement.RestrictedLists;
-import com.github.michaeldsa.aside.Pretty;
 import com.github.michaeldsa.aside.PropertiesUtil.PropUtils;
-import com.github.michaeldsa.aside.RootPaths;
+import com.github.michaeldsa.aside.Initialization.RootPaths;
 import com.github.michaeldsa.aside.Validation.ValidatePath;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.FileVisitOption;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collections;
-import java.util.Properties;
 import java.util.Set;
 
 /*

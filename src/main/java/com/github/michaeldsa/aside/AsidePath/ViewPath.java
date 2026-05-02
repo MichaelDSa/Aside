@@ -1,13 +1,10 @@
 package com.github.michaeldsa.aside.AsidePath;
 
 import com.github.michaeldsa.aside.AsidePathElement.RestrictedLists;
-import com.github.michaeldsa.aside.RootPaths;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ViewPath extends AsidePath {

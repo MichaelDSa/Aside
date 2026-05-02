@@ -1,6 +1,6 @@
 package com.github.michaeldsa.aside.Validation;
 
-import com.github.michaeldsa.aside.RootPaths;
+import com.github.michaeldsa.aside.Initialization.RootPaths;
 
 import java.nio.file.Path;
 import java.util.function.Predicate;

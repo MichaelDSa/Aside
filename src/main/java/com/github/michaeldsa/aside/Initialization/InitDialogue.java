@@ -1,5 +1,6 @@
-package com.github.michaeldsa.aside;
+package com.github.michaeldsa.aside.Initialization;
 
+import com.github.michaeldsa.aside.Pretty;
 import com.github.michaeldsa.aside.Search.SearchFor;
 
 import java.io.Console;
@@ -10,11 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class UIConfig {
+public class InitDialogue {
     private Path aside_root_parent;
     private final List<Path> suggestions;
 
-    public UIConfig(){
+    public InitDialogue(){
 
         if(System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("mac")){
             // Avoid TCC nuisance on macOS.

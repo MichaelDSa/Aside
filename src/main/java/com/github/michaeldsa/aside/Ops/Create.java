@@ -4,7 +4,7 @@ import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsidePathElement.*;
 import com.github.michaeldsa.aside.PropertiesUtil.PropUtils;
-import com.github.michaeldsa.aside.RootPaths;
+import com.github.michaeldsa.aside.Initialization.RootPaths;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -3,7 +3,7 @@ package com.github.michaeldsa.aside.Ops;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsideUtils;
-import com.github.michaeldsa.aside.CurrentCategory;
+import com.github.michaeldsa.aside.Initialization.CurrentCategory;
 
 import java.io.IOException;
 import java.nio.file.Files;

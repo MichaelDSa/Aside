@@ -1,4 +1,4 @@
-package com.github.michaeldsa.aside;
+package com.github.michaeldsa.aside.Initialization;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
@@ -10,7 +10,7 @@ public enum CurrentCategory {
 
     CurrentCategory(){
         RootPaths rp = RootPaths.INSTANCE;
-        Config cfg = Config.INSTANCE;
+        Initialize cfg = Initialize.INSTANCE;
         MetaPath mp = new MetaPath(rp.getMetapath());
         currentCategory = new Category(mp);
         // If 'last_category' of .config has an entry, reassign above values
