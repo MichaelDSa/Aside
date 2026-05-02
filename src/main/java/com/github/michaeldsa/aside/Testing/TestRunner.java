@@ -2,6 +2,7 @@ package com.github.michaeldsa.aside.Testing;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.Config;
 import com.github.michaeldsa.aside.RootPaths;
 
 import java.nio.file.Path;
@@ -110,11 +111,14 @@ public class TestRunner {
             // Success.
 
             // AbstractNote.generateNewNoteName()
-            Test.abstractNote_anti_redundant_naming();
+//            Test.abstractNote_anti_redundant_naming();
             // [x] Success: stage 1 - current session anti-redundant naming
             // [x] Success: stage 2 - persistent anti-redundant naming
             //                        - Whole sandbox is checked for duplicate file name.
 
+            // Test Config.getConfigDirectory()
+//            System.out.println("\n" + Config.INSTANCE.getConfigDirectory());
+            // Success.
 
 
 

@@ -12,16 +12,17 @@ import java.util.*;
 
 import static java.nio.file.StandardOpenOption.*;
 
-// Config:
-// - is a Singleton
-// ** is used to initialize the application
-// - determines where config file will be stored based on os.
-// - validates the config file, or creates it if necessary.
-// - determines where the application will be sandboxed
-//   - this is done interactively if config file not found.
-// - creates, if necessary, fundamental directories in the sandbox.
-// ** is used to distribute configuration data to all backend clients,
-//   such as the fundamental directories, like sandbox root.
+/*
+Config.java is a Singleton used to initialize the application. The
+initialization process:
+    1) determines where the config file will be stored based
+       on the os,
+    2) determines what directory will store all notes - the sandbox. If a
+       config file does not yet exist, a dialogue will ask the user,
+    3) creates, if necessary, the fundamental directories of the
+       sandbox.
+    4) provides the data found in this config file to clients.
+ */
 public enum Config {
     INSTANCE;
 
@@ -32,10 +33,18 @@ public enum Config {
 
     private final boolean success_initialization;
 
+    // These values will be found in the config file
     private final Path aside_root;
     private final Path viewpath_root;
     private final Path metapath_root;
 
+    // names of files:
+//    private final
+
+    // names of keys:
+    private final String key_aside_root = "aside_root";
+    private final String key_metapath_root = "metapath_root";
+    private final String key_viewpath_root = "viewpath_root";
 
     Config() {
 
@@ -85,9 +94,9 @@ public enum Config {
         success_initialization = initialize();
 
         if (isSuccess_initialization() && validateConfigPaths()) {
-            aside_root = Paths.get(properties.getProperty("aside_root"));
-            metapath_root = Paths.get(properties.getProperty("metapath_root"));
-            viewpath_root = Paths.get(properties.getProperty("viewpath_root"));
+            aside_root = Paths.get(properties.getProperty(key_aside_root));
+            metapath_root = Paths.get(properties.getProperty(key_metapath_root));
+            viewpath_root = Paths.get(properties.getProperty(key_viewpath_root));
         } else {
             aside_root = null;
             metapath_root = null;
@@ -103,7 +112,7 @@ public enum Config {
     private boolean initialize(){
 
         // necessary keys:
-        Set<String> keys = new HashSet<>(Arrays.asList("aside_root", "metapath_root", "viewpath_root"));
+        Set<String> keys = new HashSet<>(Arrays.asList(key_aside_root, key_metapath_root, key_viewpath_root));
 
         // load properties; preserve success:
         boolean configured = loadProperties();
@@ -141,6 +150,11 @@ public enum Config {
 
     public Path getViewpath() {
         return viewpath_root;
+    }
+
+    // get config file parent:
+    public Path getConfigDirectory() {
+        return configPath_full.getParent();
     }
 
     public boolean isSuccess_initialization() {
@@ -188,12 +202,7 @@ public enum Config {
         // set the user data
         properties.setProperty("aside_root", value.toString());
     }
-    private void configure_last_category() {
-        configure_last_category(null);
-    }
-    private void configure_last_category(MetaPath metaPath) {
-        // not yet. First create a strategy or a method that creates a Category.
-    }
+
     private void configure_metapath_root(){
         configure_metapath_root(null);
     }
@@ -201,11 +210,11 @@ public enum Config {
         Path metapath;
         if(path == null) {
             // default metapath_root is aside_root/.meta
-            metapath = Paths.get(properties.getProperty("aside_root")).resolve(".meta");
+            metapath = Paths.get(properties.getProperty(key_aside_root)).resolve(".meta");
         } else {
             metapath = Paths.get(path);
         }
-        properties.setProperty("metapath_root", metapath.toString());
+        properties.setProperty(key_metapath_root, metapath.toString());
     }
 
     private void configure_viewpath_root() {configure_viewpath_root(null);}
@@ -213,26 +222,16 @@ public enum Config {
         Path viewpath;
         if(path == null) {
             // default viewpath_root is aside_root/vidw
-            viewpath = Paths.get(properties.getProperty("aside_root")).resolve("view");
+            viewpath = Paths.get(properties.getProperty(key_aside_root)).resolve("view");
         } else {
             viewpath = Paths.get(path);
         }
-        properties.setProperty("viewpath_root", viewpath.toString());
+        properties.setProperty(key_viewpath_root, viewpath.toString());
     }
 
     private boolean directoriesInPropertiesExist() {
-
-        // make a modifiable set of the keys:
-        Set<String> keys = new HashSet<>(properties.stringPropertyNames());
-
-        // make a set of keys associated with non-directory values:
-        Set<String> nonDirKeys = new HashSet<>(Arrays.asList("Some_nonDir_example", "another_nonDir_example"));
-
-        // remove all non-dirs from set:
-        keys.removeAll(nonDirKeys);
-
-        // traverse only the directory keys:
-        for(String key : keys) {
+        // traverse keys of properties file. All values should be Paths.
+        for(String key : properties.stringPropertyNames()) {
             String value = properties.getProperty(key);
             Path path = Paths.get(value);
             if(Files.notExists(path) || !Files.isDirectory(path) || value.isEmpty()){
@@ -256,12 +255,11 @@ public enum Config {
     private boolean setup(String message) {
 
         // first set the properties:
-        if(Files.notExists(configPath_full) || !validateFileSize(configPath_full) || properties.getProperty("aside_root").isEmpty()){
+        if(Files.notExists(configPath_full) || !validateFileSize(configPath_full) || properties.getProperty(key_aside_root).isEmpty()){
             configurePropertiesWithUser(message);
         }
         configure_metapath_root();
         configure_viewpath_root();
-        configure_last_category();
 
         // create the directories from the key values that are directories:
         Set<String> nonDirKeys = new HashSet<>(Arrays.asList("Non_directory_key_example", "another_example"));
@@ -292,9 +290,9 @@ public enum Config {
     }
 
     private boolean validateConfigPaths() {
-        Path root = Paths.get(properties.getProperty("aside_root"));
-        Path viewpath = Paths.get(properties.getProperty("viewpath_root"));
-        Path metapath = Paths.get(properties.getProperty("metapath_root"));
+        Path root = Paths.get(properties.getProperty(key_aside_root));
+        Path viewpath = Paths.get(properties.getProperty(key_viewpath_root));
+        Path metapath = Paths.get(properties.getProperty(key_metapath_root));
 
         return viewpath.getParent().equals(root) && metapath.getParent().equals(root);
     }
