@@ -116,6 +116,9 @@ public class TestRunner {
 //            System.out.println("\n" + Config.INSTANCE.getConfigDirectory());
             // Success.
 
+            // Test Settings.getLineWidth()
+//            Test.settings_LineWidth();
+
 
 
 

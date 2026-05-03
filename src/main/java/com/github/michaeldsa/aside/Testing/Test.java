@@ -15,6 +15,7 @@ import com.github.michaeldsa.aside.PathKeeper;
 import com.github.michaeldsa.aside.Pretty;
 import com.github.michaeldsa.aside.PropertiesUtil.PropUtils;
 import com.github.michaeldsa.aside.Search.Search;
+import com.github.michaeldsa.aside.Settings.Settings;
 import com.github.michaeldsa.aside.Validation.ValidatePath;
 
 import java.io.File;
@@ -390,6 +391,21 @@ public class Test {
 //        Create.NOTE.execute(mn2);
 //        Create.NOTE.execute(mn3);
 //        Create.NOTE.execute(mn4);
+    }
+
+    public static void settings_LineWidth() {
+        System.out.print("\nDefault Settings.getLineWidth().stdout(): ");
+        System.out.println(Settings.getLineWidth().stdout());
+        System.out.print("Default Settings.getLineWidth().file(): ");
+        System.out.println(Settings.getLineWidth().file());
+        System.out.println("Does the settings File exists? " + Settings.getLineWidth().settingsFileExists());
+        System.out.println("\nChanging settings...");
+        Settings.getLineWidth().setStdout(60);
+        System.out.println("new Settings.getLineWidth().stdout(): " + Settings.getLineWidth().stdout());
+        System.out.println("Settings file exists: " + Settings.getLineWidth().settingsFileExists());
+        Settings.getLineWidth().setFile(59);
+        System.out.println("new Settings.getLineWidth().file(): " + Settings.getLineWidth().file());
+        System.out.println("Settings file exists: " + Settings.getLineWidth().settingsFileExists());
     }
 
 
