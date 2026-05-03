@@ -21,12 +21,6 @@ public abstract class AbstractSettings {
     }
     public boolean settingsFileExists() {
         return Files.exists(settingsFile);
-    };
-    protected Path getSettingsDir() {
-        return settingsDir;
-    }
-    protected Path getSettingsFile() {
-        return settingsFile;
     }
     private boolean createDirAndFile() {
         if (!settingsDirExists() || !settingsFileExists()) {

@@ -1,6 +1,5 @@
 package com.github.michaeldsa.aside.Settings;
 
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
 
@@ -19,7 +18,7 @@ public class LineWidth extends AbstractSettings {
         settingsFile = settingsDir.resolve(Paths.get(settingsFileName));
 
         if (super.settingsFileExists()) {
-            readFile();
+            super.readFile();
             stdout = Integer.parseInt(properties.getProperty(key_stdout));
             file = Integer.parseInt(properties.getProperty(key_file));
         }
