@@ -2,6 +2,7 @@ package com.github.michaeldsa.aside.PropertiesUtil;
 
 import com.github.michaeldsa.aside.AsidePathElement.DiscardedElement;
 import com.github.michaeldsa.aside.Pretty;
+import com.github.michaeldsa.aside.Settings.Settings;
 
 import java.util.Properties;
 
@@ -53,7 +54,7 @@ public class DiscardedElementWriter extends DiscardedElementPropertiesUtil {
 
     public void writeToViewPath(DiscardedElement de) {
         setProperties(de);
-        writeViewPath(de.getMetaPath().getPath(), Pretty.formatDiscardedElement4ViewPath(de, 80));
+        writeViewPath(de.getMetaPath().getPath(), Pretty.formatDiscardedElement4ViewPath(de, Settings.getLineWidth().file()));
     }
 
 

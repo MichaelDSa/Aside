@@ -2,7 +2,6 @@ package com.github.michaeldsa.aside.PropertiesUtil;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
-import com.github.michaeldsa.aside.Pretty;
 
 import java.io.IOException;
 import java.io.InputStream;

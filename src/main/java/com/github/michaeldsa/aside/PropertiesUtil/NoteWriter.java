@@ -3,6 +3,7 @@ package com.github.michaeldsa.aside.PropertiesUtil;
 import com.github.michaeldsa.aside.AsidePathElement.AbstractNote;
 import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
 import com.github.michaeldsa.aside.Pretty;
+import com.github.michaeldsa.aside.Settings.Settings;
 
 import java.util.Properties;
 
@@ -48,7 +49,7 @@ public class NoteWriter extends NotePropertiesUtil{
 
     public void writeToViewPath(AbstractNote abstractNote) {
         setProperties(abstractNote);
-        writeViewPath(abstractNote.getMetaPath().getPath(), Pretty.formatNote4ViewPath(abstractNote, 80));
+        writeViewPath(abstractNote.getMetaPath().getPath(), Pretty.formatNote4ViewPath(abstractNote, Settings.getLineWidth().file()));
     }
 
 

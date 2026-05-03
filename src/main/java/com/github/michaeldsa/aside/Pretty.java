@@ -41,19 +41,19 @@ public class Pretty {
         filename += warning + nl;
 
         if(!message.isBlank()) {
-            message = "MESSAGE:" + nl + message + "-".repeat(80) + nl.repeat(2);
+            message = "MESSAGE:" + nl + message + "-".repeat(width) + nl.repeat(2);
         }
         if(!title.isBlank()) {
             title = "TITLE:" + nl + title + nl;
         }
         if(!content.isBlank()) {
-            content = "CONTENT:" + nl + content + "-".repeat(80) + nl.repeat(2);
+            content = "CONTENT:" + nl + content + "-".repeat(width) + nl.repeat(2);
         }
         if(!originalMetaPath.isBlank()) {
             originalMetaPath = "ORIGINAL_METAPATH:" + nl + originalMetaPath + nl;
         }
         if(!originalViewPath.isBlank()) {
-            originalViewPath = "ORIGINAL_VIEWPATH:" + nl + originalViewPath + "-".repeat(80) + nl.repeat(2);
+            originalViewPath = "ORIGINAL_VIEWPATH:" + nl + originalViewPath + "-".repeat(width) + nl.repeat(2);
         }
         if(!to.isBlank()) {
             to = "TO:" + nl + to + nl;
@@ -79,13 +79,13 @@ public class Pretty {
         String nl = "\n";
 
         if (!filename.isBlank()) {
-            filename += "-".repeat(80) + nl.repeat(2);
+            filename += "-".repeat(width) + nl.repeat(2);
         }
         if (!title.isBlank()) {
             title = "TITLE:" + nl + title + nl;
         }
         if (!content.isBlank()) {
-            content = "CONTENT:" + nl + content + "-".repeat(80) + nl.repeat(2);
+            content = "CONTENT:" + nl + content + "-".repeat(width) + nl.repeat(2);
         }
         if (!to.isBlank()) {
             to = "TO:" + nl + to + nl;

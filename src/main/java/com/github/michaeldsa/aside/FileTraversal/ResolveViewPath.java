@@ -24,25 +24,22 @@ all qualifying directories and .txt files to the ViewPath
 counterpart.
  */
 public class ResolveViewPath extends Traverser{
-    private int width; // set the width of the ViewPath .txt file
+    // set the width of the ViewPath .txt file
 
     public ResolveViewPath() {
         this.startingPoint = new MetaPath().getPath(); // root metapath
         this.options = Collections.emptySet();
         this.depth = Integer.MAX_VALUE;
-        this.width = 80;
     }
     public ResolveViewPath(MetaPath startingPoint) {
         this.startingPoint = startingPoint.getPath(); // root metapath
         this.options = Collections.emptySet();
         this.depth = Integer.MAX_VALUE;
-        this.width = 80;
     }
     public ResolveViewPath(ViewPath startingPoint) {
         this.startingPoint = new MetaPath(startingPoint).getPath();
         this.options = Collections.emptySet();
         this.depth = Integer.MAX_VALUE;
-        this.width = 80;
     }
     @Override
     public ResolveViewPath setStartingPoint(MetaPath startingPoint) {
@@ -65,7 +62,6 @@ public class ResolveViewPath extends Traverser{
         return this;
     }
     public ResolveViewPath setWidth(int width) {
-        this.width = width;
         return this;
     }
 

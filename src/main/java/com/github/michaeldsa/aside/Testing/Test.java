@@ -400,10 +400,10 @@ public class Test {
         System.out.println(Settings.getLineWidth().file());
         System.out.println("Does the settings File exists? " + Settings.getLineWidth().settingsFileExists());
         System.out.println("\nChanging settings...");
-        Settings.getLineWidth().setStdout(60);
+        Settings.getLineWidth().setStdout(80);
         System.out.println("new Settings.getLineWidth().stdout(): " + Settings.getLineWidth().stdout());
         System.out.println("Settings file exists: " + Settings.getLineWidth().settingsFileExists());
-        Settings.getLineWidth().setFile(59);
+        Settings.getLineWidth().setFile(80);
         System.out.println("new Settings.getLineWidth().file(): " + Settings.getLineWidth().file());
         System.out.println("Settings file exists: " + Settings.getLineWidth().settingsFileExists());
     }
