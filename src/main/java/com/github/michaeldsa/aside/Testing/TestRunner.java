@@ -119,7 +119,9 @@ public class TestRunner {
             // Test Settings.getLineWidth()
 //            Test.settings_LineWidth();
 
-
+            // Test TempSettings
+//            Test.setting_TempSettings();
+            // Success
 
 
         }

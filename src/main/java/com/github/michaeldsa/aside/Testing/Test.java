@@ -16,6 +16,7 @@ import com.github.michaeldsa.aside.Pretty;
 import com.github.michaeldsa.aside.PropertiesUtil.PropUtils;
 import com.github.michaeldsa.aside.Search.Search;
 import com.github.michaeldsa.aside.Settings.Settings;
+import com.github.michaeldsa.aside.Settings.TempSettings;
 import com.github.michaeldsa.aside.Validation.ValidatePath;
 
 import java.io.File;
@@ -406,6 +407,19 @@ public class Test {
         Settings.getLineWidth().setFile(80);
         System.out.println("new Settings.getLineWidth().file(): " + Settings.getLineWidth().file());
         System.out.println("Settings file exists: " + Settings.getLineWidth().settingsFileExists());
+    }
+
+    public static void setting_TempSettings() {
+        System.out.println("\nTempSettings Tests:");
+        System.out.println("create and set any property:");
+        TempSettings.set("favorite.note", "260503_2114_12.txt");
+        System.out.println("Set favorite.note to 260503_2114_12.txt " + TempSettings.get("favorite.note", null));
+        System.out.println("use .setInt()...");
+        TempSettings.setInt("linewidth", 81);
+        System.out.println("linewidth=" + TempSettings.get("linewidth"));
+        System.out.println("getInt(linewidth): " + TempSettings.getInt("linewidth"));
+//        TempSettings.setPersist("newkey", "miney");
+        TempSettings.persist();
     }
 
 
