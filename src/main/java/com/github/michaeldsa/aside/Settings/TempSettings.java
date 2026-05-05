@@ -23,7 +23,7 @@ public class TempSettings {
 
     // String getters:
     public static String get(String key) {
-        return get(key, null);
+        return get(key, "");
     }
     public static String get(String key, String defaultVal) {
         return settings.getProperty(key, defaultVal);

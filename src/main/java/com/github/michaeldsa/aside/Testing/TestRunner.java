@@ -2,6 +2,7 @@ package com.github.michaeldsa.aside.Testing;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.AsidePathElement.DiscardedElement;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
 
 import java.nio.file.Path;
@@ -122,6 +123,11 @@ public class TestRunner {
             // Test TempSettings
 //            Test.setting_TempSettings();
             // Success
+
+            // DiscardedElement: with metapathroot.
+            MetaPath today = new MetaPath(Paths.get(".260505_1600_02.txt"));
+            DiscardedElement tesde = new DiscardedElement(today);
+            System.out.println(tesde);
 
 
         }

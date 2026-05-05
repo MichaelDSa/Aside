@@ -2,6 +2,8 @@ package com.github.michaeldsa.aside.AsidePathElement;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
+import com.github.michaeldsa.aside.Validation.ValidateAsidePathElement;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -45,17 +47,16 @@ public class DiscardedElement extends AsidePathElement {
     }
 
     public DiscardedElement(MetaPath mp) {
-        Path m_default = Paths.get(RestrictedLists.getMetaPathDefaultDirectoryName());
         Path m_discarded = Paths.get(RestrictedLists.getMetaPathDiscardedDirectoryName());
-        // no metapath root or default (contents of default ok)
-        if (!mp.equals(new MetaPath())
-                || !mp.equals(new MetaPath(m_default))) {
-            metaPath = new MetaPath(m_discarded).resolve(mp.getFileName());
-            viewPath = new ViewPath(metaPath);
-        } else {
-            metaPath = new MetaPath(m_discarded);
-            viewPath = new ViewPath(metaPath);
+
+        // DiscardedElement must use an existing note
+        if(!ValidateAsidePath.NOTE_NAME.test(mp)) {
+            System.err.println("IllegalArgumentException: " + mp);
+            throw new IllegalArgumentException("Invalid Path argument " + mp);
         }
+        // DiscardedElement may only have parent .DISCARDED and DISCARDED.
+        metaPath = new MetaPath(m_discarded).resolve(mp.getFileName());
+        viewPath = new ViewPath(metaPath);
 
         originalMetaPath = mp;
         originalViewPath = new ViewPath(mp);
@@ -70,17 +71,17 @@ public class DiscardedElement extends AsidePathElement {
     }
 
     public DiscardedElement(ViewPath vp) {
-        Path v_default = Paths.get(RestrictedLists.getViewPathDefaultDirectoryName());
         Path v_discarded = Paths.get(RestrictedLists.getViewPathDiscardedDirectoryName());
-        // no viewpath root or default (contents of default ok)
-        if (!vp.equals(new ViewPath())
-                || !vp.equals(new ViewPath(v_default))) {
-            viewPath = new ViewPath(v_discarded).resolve(vp.getFileName());
-            metaPath = new MetaPath(viewPath);
-        } else {
-            viewPath = new ViewPath(v_discarded);
-            metaPath = new MetaPath(viewPath);
+
+        // DiscardedElement must use an existing note
+        if(!ValidateAsidePath.NOTE_NAME.test(vp)) {
+            System.err.println("IllegalArgumentException: " + vp);
+            throw new IllegalArgumentException("Invalid Path argument " + vp);
         }
+
+        // DiscardedElement may only have parent .DISCARDED and DISCARDED.
+        viewPath = new ViewPath(v_discarded).resolve(vp.getFileName());
+        metaPath = new MetaPath(viewPath);
 
         originalViewPath = vp;
         originalMetaPath = new MetaPath(vp);
@@ -95,16 +96,14 @@ public class DiscardedElement extends AsidePathElement {
     }
 
     public DiscardedElement(MutableNote mn) {
-        Path m_default = Paths.get(RestrictedLists.getMetaPathDefaultDirectoryName());
         Path m_discarded = Paths.get(RestrictedLists.getMetaPathDiscardedDirectoryName());
-        if (!mn.getMetaPath().equals(new MetaPath())
-                || !mn.getMetaPath().equals(new MetaPath(m_default))) {
-            metaPath = new MetaPath(m_discarded).resolve(mn.getMetaPath().getFileName());
-            viewPath = new ViewPath(metaPath);
-        } else {
-            metaPath = new MetaPath(m_discarded);
-            viewPath = new ViewPath(metaPath);
+
+        if(ValidateAsidePathElement.NOTE_NAME.test(mn)) {
+            System.err.println("IllegalArgumentException: " + mn);
+            throw new IllegalArgumentException("Invalid Path argument " + mn.getMetaPath());
         }
+        metaPath = new MetaPath(m_discarded).resolve(mn.getMetaPath().getFileName());
+        viewPath = new ViewPath(metaPath);
 
         originalMetaPath = mn.getMetaPath();
         originalViewPath = mn.getViewPath();
