@@ -10,7 +10,7 @@ import java.util.function.Predicate;
 // multiple elements, like so:
 //   `new_category1/new_category2/new_category3/note_name`
 public enum ValidatePath implements Predicate<Path> {
-    CATEGORY_OR_NOTE_NAME(p -> {
+    ALL_ELEMENTS(p -> {
         /*
         - Tests each element of the full path for
           correct naming, whether the path elements
@@ -47,7 +47,12 @@ public enum ValidatePath implements Predicate<Path> {
         if (pass) {
             boolean ends_with_note_name = ValidateString.NOTE_NAME.test(path.getFileName().toString());
             boolean ends_with_category_name = ValidateString.CATEGORY_NAME.test(path.getFileName().toString());
-            pass = ends_with_note_name || ends_with_category_name;
+            boolean ends_with_bibliography_name = ValidateString.BIBLIOGRAPHY_NAME.test(path.getFileName().toString());
+            boolean ends_with_discarded_element_name = ValidateString.DISCARDED_ELEMENT_NAME.test(path.getFileName().toString());
+            pass = ends_with_note_name
+                    || ends_with_category_name
+                    || ends_with_bibliography_name
+                    || ends_with_discarded_element_name;
         }
         return pass;
 
@@ -57,7 +62,7 @@ public enum ValidatePath implements Predicate<Path> {
         first test with CLIENT_PATH_NAME_SUBMISSION
         then, test last element with CATEGORY_NAME
          */
-        if (CATEGORY_OR_NOTE_NAME.test(p)) {
+        if (ALL_ELEMENTS.test(p)) {
             return ValidateString.CATEGORY_NAME.test(p.getFileName().toString());
         }
         return false;
@@ -67,8 +72,20 @@ public enum ValidatePath implements Predicate<Path> {
         first test with CLIENT_PATH_NAME_SUBMISSION
         then, test last element with NOTE_NAME
          */
-        if (CATEGORY_OR_NOTE_NAME.test(p)) {
+        if (ALL_ELEMENTS.test(p)) {
             return ValidateString.NOTE_NAME.test(p.getFileName().toString());
+        }
+        return false;
+    }),
+    BIBLIOGRAPHY_NAME(p -> {
+        if (ALL_ELEMENTS.test(p)) {
+            return ValidateString.BIBLIOGRAPHY_NAME.test(p.getFileName().toString());
+        }
+        return false;
+    }),
+    DISCARDED_ELEMENT_NAME(p -> {
+        if (ALL_ELEMENTS.test(p)) {
+            return ValidateString.DISCARDED_ELEMENT_NAME.test(p.getFileName().toString());
         }
         return false;
     });

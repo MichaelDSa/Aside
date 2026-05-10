@@ -23,12 +23,17 @@ public class RestrictedLists {
     private static final String viewPathDefaultDirectory = metaPathDefaultDirectory.substring(1);
     private static final String metaPathDiscardedDirectory = ".DISCARDED";
     private static final String viewPathDiscardedDirectory = metaPathDiscardedDirectory.substring(1);
+    private static final String metaPathBibliographyDirectory = ".BIBLIOGRAPHY";
+    private static final String viewPathBibliographyDirectory = metaPathBibliographyDirectory.substring(1);
     private static final ArrayList<String> permanentDirectories = new ArrayList<>(Arrays.asList(
-            metaPathDefaultDirectory, viewPathDefaultDirectory, metaPathDiscardedDirectory, viewPathDiscardedDirectory));
+            metaPathDefaultDirectory, viewPathDefaultDirectory,
+            metaPathDiscardedDirectory, viewPathDiscardedDirectory,
+            metaPathBibliographyDirectory, viewPathBibliographyDirectory));
 
     // Higher level dependencies (all classes that use AsidePath & AsidePathElement subclasses):
     private static final Category defaultCategory = new Category(new MetaPath(Paths.get(metaPathDefaultDirectory)));
     private static final DiscardedElement discardedElementDirectory = DiscardedElement.getEmptyDiscardedElement();
+    private static final Bibliography bibliographyDirectory = Bibliography.getEmptyBibliographyElement();
 
 
     // getters:
@@ -42,11 +47,14 @@ public class RestrictedLists {
     public static String getViewPathDefaultDirectoryName() { return viewPathDefaultDirectory; }
     public static String getMetaPathDiscardedDirectoryName() { return metaPathDiscardedDirectory; }
     public static String getViewPathDiscardedDirectoryName() { return viewPathDiscardedDirectory; }
+    public static String getMetaPathBibliographyDirectoryName() { return metaPathBibliographyDirectory; }
+    public static String getViewPathBibliographyDirectoryName() { return viewPathBibliographyDirectory; }
 
 
     // for higher level classes and interfaces:
     public static Category getDefaultCategory() {return defaultCategory;}
     public static DiscardedElement getDiscardedElementDirectory() {return discardedElementDirectory;}
+    public static AbstractBibliography getBibliographyDirectory() {return bibliographyDirectory;}
 
     // utility methods:
     public static boolean isPermanentDirectory(Path dir) {

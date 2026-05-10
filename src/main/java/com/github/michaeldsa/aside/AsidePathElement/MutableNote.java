@@ -6,12 +6,16 @@ import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import java.util.*;
 
 public class MutableNote extends AbstractNote{
-    private Category stepParent;
     private ImmutableNote previousState;
 
 
     // constructors:
     public MutableNote(MetaPath mp) {
+        // if filename belongs to bibliography or DiscardedElement:
+        if (hasIllegalArgument(mp)) {
+            System.err.println("IllegalArgumentException: " + mp);
+            throw new IllegalArgumentException("Invalid Path argument " + mp);
+        }
         if (AsidePathElement.endsWithNoteName(mp)) {
             metaPath = mp;
         } else {
@@ -28,6 +32,11 @@ public class MutableNote extends AbstractNote{
         tags = new HashSet<>();
     }
     public MutableNote(ViewPath vp) {
+        // if filename belongs to bibliography or DiscardedElement:
+        if (hasIllegalArgument(vp)) {
+            System.err.println("IllegalArgumentException: " + vp);
+            throw new IllegalArgumentException("Invalid Path argument " + vp);
+        }
         if (AsidePathElement.endsWithNoteName(vp)) {
             viewPath = vp;
         } else {
@@ -44,10 +53,15 @@ public class MutableNote extends AbstractNote{
         tags = new HashSet<>();
     }
     public MutableNote(Category c){
+        // if filename belongs to bibliography or DiscardedElement:
+        if (hasIllegalArgument(c.getMetaPath())) {
+            System.err.println("IllegalArgumentException: " + c.getMetaPath());
+            throw new IllegalArgumentException("Invalid Path argument " + c.getMetaPath());
+        }
         metaPath = AsidePathElement.filterMetaPathElements(c.getMetaPath());
         metaPath = AbstractNote.generateNewNoteName(c.getMetaPath());
         viewPath = new ViewPath(metaPath);
-        stepParent = c.getStepParentCategory();
+        stepParent = (Category) c.getStepParentCategory();
         nest = new ArrayList<>();
         previousState = null;
         to = new HashSet<>();
@@ -55,9 +69,14 @@ public class MutableNote extends AbstractNote{
         tags = new HashSet<>();
     }
     public MutableNote(MutableNote mn){
+        // if filename belongs to bibliography or DiscardedElement:
+        if (hasIllegalArgument(mn.getMetaPath())) {
+            System.err.println("IllegalArgumentException: " + mn.getMetaPath());
+            throw new IllegalArgumentException("Invalid Path argument " + mn.getMetaPath());
+        }
         metaPath = mn.getMetaPath();
         viewPath = new ViewPath(metaPath);
-        stepParent = mn.getStepParentCategory();
+        stepParent = (Category) mn.getStepParentCategory();
         nest = mn.getNest();
         previousState = new ImmutableNote(mn);
         title = mn.getTitle();
@@ -98,18 +117,18 @@ public class MutableNote extends AbstractNote{
     }
 
     @Override
-    public Category getParentCategory() {
+    public AbstractCategory getParentCategory() {
         return new Category(metaPath);
     }
 
     @Override
-    public Category getStepParentCategory() {
+    public AbstractCategory getStepParentCategory() {
         return stepParent;
     }
 
     @Override
-    public void setStepParentCategory(Category newStepParents) {
-        stepParent = newStepParents;
+    public void setStepParentCategory(AbstractCategory newStepParent) {
+        stepParent = (Category) newStepParent;
     }
 
     public MutableNote setPreviousState() {
@@ -118,7 +137,7 @@ public class MutableNote extends AbstractNote{
     }
 
     @Override
-    public boolean hasStepParents() {
+    public boolean hasStepParent() {
         return stepParent != null;
     }
 

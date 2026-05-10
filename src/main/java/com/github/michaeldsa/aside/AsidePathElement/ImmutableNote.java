@@ -6,7 +6,6 @@ import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 public class ImmutableNote extends AbstractNote{
     private final MetaPath metaPath;
@@ -19,15 +18,20 @@ public class ImmutableNote extends AbstractNote{
     private final Category stepParent;
     // ImmutableNote previousState;
     public ImmutableNote(MutableNote mn) {
+        // if somehow mn has wrong filename
+        if (hasIllegalArgument(mn.getMetaPath())) {
+            System.err.println("IllegalArgumentException: " + mn.getMetaPath());
+            throw new IllegalArgumentException("Invalid Path argument " + mn.getMetaPath());
+        }
         this.metaPath = mn.metaPath;
         this.viewPath = mn.viewPath;
         this.nest = mn.getNest();
-        this.stepParent = mn.getStepParentCategory();
+        this.stepParent = (Category) mn.getStepParentCategory();
         this.title = mn.getTitle();
         this.content = mn.getContent();
-        this.to = new HashSet<>(Collections.unmodifiableSet(getTo()));
-        this.from = new HashSet<>(Collections.unmodifiableSet(getFrom()));
-        this.tags = new HashSet<>(Collections.unmodifiableSet(getTags()));
+        this.to = new HashSet<>(Collections.unmodifiableSet(mn.getTo()));
+        this.from = new HashSet<>(Collections.unmodifiableSet(mn.getFrom()));
+        this.tags = new HashSet<>(Collections.unmodifiableSet(mn.getTags()));
     }
     @Override
     public String getTitle() {
@@ -55,17 +59,26 @@ public class ImmutableNote extends AbstractNote{
     }
 
     @Override
-    public Category getParentCategory() {
+    public MetaPath getMetaPath() {
+        return this.metaPath;
+    }
+    @Override
+    public ViewPath getViewPath() {
+        return this.viewPath;
+    }
+
+    @Override
+    public AbstractCategory getParentCategory() {
         return new Category(metaPath);
     }
 
     @Override
-    public Category getStepParentCategory() {
+    public AbstractCategory getStepParentCategory() {
         return this.stepParent;
     }
 
     @Override
-    public void setStepParentCategory(Category newStepParents) {
+    public void setStepParentCategory(AbstractCategory newStepParent) {
         return;
     }
 
@@ -75,7 +88,7 @@ public class ImmutableNote extends AbstractNote{
     }
 
     @Override
-    public boolean hasStepParents() {
+    public boolean hasStepParent() {
         return this.stepParent != null;
     }
 
@@ -89,7 +102,7 @@ public class ImmutableNote extends AbstractNote{
                 ", to=" + to +
                 ", from=" + from +
                 ", tags=" + tags +
-                ", stepParent=" + stepParent +
+                ", stepParent=" + this.stepParent +
                 '}';
     }
 

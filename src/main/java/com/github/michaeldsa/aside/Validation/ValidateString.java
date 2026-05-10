@@ -1,5 +1,7 @@
 package com.github.michaeldsa.aside.Validation;
 
+import com.github.michaeldsa.aside.AsidePathElement.RestrictedLists;
+
 import java.util.function.Predicate;
 
 public enum ValidateString implements Predicate<String> {
@@ -81,6 +83,40 @@ public enum ValidateString implements Predicate<String> {
         - Must not be in NOTE_NAME format
          */
         return !s.startsWith(".") && !ValidateString.NOTE_NAME.test(s);
+    }),
+    BIBLIOGRAPHY_NAME (s -> {
+        /*
+        A bibliography filename must start with '.b', or 'b'.  The
+        rest of the filename must be a valid note filename.
+
+        Bibliography filename format: `[.]bxxxxxx_xxxx_xx.txt`
+        */
+        String filename = "";
+        if(s.startsWith(".b")) {
+            filename = s.substring(2);
+        } else if(s.startsWith("b")) {
+            filename = s.substring(1);
+        } else {
+            return false;
+        }
+        return ValidateString.NOTE_NAME.test(filename);
+    }),
+    DISCARDED_ELEMENT_NAME (s -> {
+        /*
+        A DiscardedElement filename must start with '.d', or
+        'd'.  The rest of the filename must be a valid Note filename.
+
+        DiscardedElement filename format: `[.]dxxxxxx_xxxx_xx.txt`
+        */
+        String filename = "";
+        if(s.startsWith(".d")) {
+            filename = s.substring(2);
+        } else if(s.startsWith("d")) {
+            filename = s.substring(1);
+        } else {
+            return false;
+        }
+        return ValidateString.NOTE_NAME.test(filename);
     });
 
     // class boilerplate:

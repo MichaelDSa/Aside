@@ -104,7 +104,7 @@ public class Test {
     }
 
     public static boolean validatePath_CN(Path path) {
-        return ValidatePath.CATEGORY_OR_NOTE_NAME.test(path);
+        return ValidatePath.ALL_ELEMENTS.test(path);
     }
     public static boolean validatePath_C(Path path) {
         return ValidatePath.CATEGORY_NAME.test(path);

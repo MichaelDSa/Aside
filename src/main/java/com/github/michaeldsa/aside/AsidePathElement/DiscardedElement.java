@@ -1,9 +1,9 @@
 package com.github.michaeldsa.aside.AsidePathElement;
 
+import com.github.michaeldsa.aside.AsidePath.AsidePath;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
-import com.github.michaeldsa.aside.Validation.ValidateAsidePathElement;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,17 +13,17 @@ import java.util.Objects;
 
 public class DiscardedElement extends AsidePathElement {
     /*
-    DiscardedElement is meant to access the DISCARDED MetaPath &
-    ViewPath directories, which are otherwise inaccessible to other
-    AsidePathElements. DiscardedElement can either be a 'category'
-    or 'note' type of path. isCategory and isNote can distinguish
-    which kind of element the client is dealing with. This subclass
-    is meant to participate in handling files and directories in the
-    DISCARDED directory, for which each file and category should
-    exist a properties file with the extra properties, "isCategory",
-    "originalMetaPath" and "originalViewPath". Additionally,
-    DiscardedElements files will also have a human readable warning,
-    as well as an optional message for the user's useage.
+    DiscardedElement is meant to access the DISCARDED permanent Category, which
+    is otherwise inaccessible by Category or AbstractNote subclasses, and can
+    store only files that can be read by DiscardedElementReader. DISCARDED is
+    used when an the user is questioning whether to delete an AsidePathElement,
+    such as MutableNote, or Bibliography (MutableBib). Categories
+    cannot be 'discarded', or moved to DISCARDED, or be written by
+    DiscardedElementWriter. A DiscardedElement may be restored back to it's
+    original Category. If the original Category exist in the sandbox, it can
+    be re-written to its old Category. If the old urls no longer exist, they
+    may either be re-written, or a new url (within the AsidePath sandbox)
+    may be specified by the user.
      */
 
     private MetaPath originalMetaPath;
@@ -38,6 +38,14 @@ public class DiscardedElement extends AsidePathElement {
     private HashSet<String> from;
     private HashSet<String> tags;
 
+    // methods for constructor use:
+    private boolean hasIllegalArgument(AsidePath ap) {
+        return !ValidateAsidePath.NOTE_NAME.test(ap)
+                && !ValidateAsidePath.BIBLIOGRAPHY_NAME.test(ap)
+                && !ValidateAsidePath.DISCARDED_ELEMENT_NAME.test(ap);
+    }
+
+    // constructors:
     private DiscardedElement() {
         metaPath = new MetaPath(Paths.get(RestrictedLists.getMetaPathDiscardedDirectoryName()));
         viewPath = new ViewPath(Paths.get(RestrictedLists.getViewPathDiscardedDirectoryName()));
@@ -47,15 +55,16 @@ public class DiscardedElement extends AsidePathElement {
     }
 
     public DiscardedElement(MetaPath mp) {
-        Path m_discarded = Paths.get(RestrictedLists.getMetaPathDiscardedDirectoryName());
-
-        // DiscardedElement must use an existing note
-        if(!ValidateAsidePath.NOTE_NAME.test(mp)) {
+        // if mp has wrong filename:
+        if(hasIllegalArgument(mp)) {
             System.err.println("IllegalArgumentException: " + mp);
             throw new IllegalArgumentException("Invalid Path argument " + mp);
         }
+        Path m_discarded = Paths.get(RestrictedLists.getMetaPathDiscardedDirectoryName());
+
+        // reformat filename
         // DiscardedElement may only have parent .DISCARDED and DISCARDED.
-        metaPath = new MetaPath(m_discarded).resolve(mp.getFileName());
+        metaPath = new MetaPath(m_discarded).resolve(renameMetaPathFileName(mp));
         viewPath = new ViewPath(metaPath);
 
         originalMetaPath = mp;
@@ -71,16 +80,22 @@ public class DiscardedElement extends AsidePathElement {
     }
 
     public DiscardedElement(ViewPath vp) {
+        // if vp has wrong filename
+        if(hasIllegalArgument(vp)) {
+            System.err.println("IllegalArgumentException: " + vp);
+            throw new IllegalArgumentException("Invalid Path argument " + vp);
+        }
         Path v_discarded = Paths.get(RestrictedLists.getViewPathDiscardedDirectoryName());
 
         // DiscardedElement must use an existing note
-        if(!ValidateAsidePath.NOTE_NAME.test(vp)) {
+        if(!ValidateAsidePath.NOTE_NAME.test(vp) && !ValidateAsidePath.BIBLIOGRAPHY_NAME.test(vp)) {
             System.err.println("IllegalArgumentException: " + vp);
             throw new IllegalArgumentException("Invalid Path argument " + vp);
         }
 
+        // FileName must be reformatted
         // DiscardedElement may only have parent .DISCARDED and DISCARDED.
-        viewPath = new ViewPath(v_discarded).resolve(vp.getFileName());
+        viewPath = new ViewPath(v_discarded).resolve(renameViewPathFileName(vp));
         metaPath = new MetaPath(viewPath);
 
         originalViewPath = vp;
@@ -96,13 +111,18 @@ public class DiscardedElement extends AsidePathElement {
     }
 
     public DiscardedElement(MutableNote mn) {
+        // if somehow mn has wrong filename:
+        if(hasIllegalArgument(mn.getMetaPath())) {
+            System.err.println("IllegalArgumentException: " + mn.getMetaPath());
+            throw new IllegalArgumentException("Invalid Path argument " + mn.getMetaPath());
+        }
         Path m_discarded = Paths.get(RestrictedLists.getMetaPathDiscardedDirectoryName());
 
-        if(ValidateAsidePathElement.NOTE_NAME.test(mn)) {
+        if(!ValidateAsidePath.NOTE_NAME.test(mn.getMetaPath())) {
             System.err.println("IllegalArgumentException: " + mn);
             throw new IllegalArgumentException("Invalid Path argument " + mn.getMetaPath());
         }
-        metaPath = new MetaPath(m_discarded).resolve(mn.getMetaPath().getFileName());
+        metaPath = new MetaPath(m_discarded).resolve(renameMetaPathFileName(mn.getMetaPath().getFileName()));
         viewPath = new ViewPath(metaPath);
 
         originalMetaPath = mn.getMetaPath();
@@ -117,10 +137,31 @@ public class DiscardedElement extends AsidePathElement {
         tags = mn.getTags();
     }
 
+    // Methods for constructor use:
+    // return a filename that conforms to DiscardedElement filename format
+    private MetaPath renameMetaPathFileName(MetaPath mp) {
+        // format to: `.dxxxxxx_xxxx_xx.txt`
+        String prefix = ".d";
+        String remainder = mp.getPath().getFileName().toString().substring(1);
+        String fileName = prefix + remainder;
+        return new MetaPath(Paths.get(fileName));
+    }
+    private ViewPath renameViewPathFileName(ViewPath viewPath) {
+        // format to:  `dxxxxxx_xxxx_xx.txt`
+        String prefix = "d";
+        String remainder = viewPath.getPath().getFileName().toString();
+        String fileName = prefix + remainder;
+        return new ViewPath(Paths.get(fileName));
+    }
+
     // get empty final DiscardedElement:
     public static DiscardedElement getEmptyDiscardedElement() {
         return new DiscardedElement();
     }
+
+
+
+    // getters & setters:
 
     // get original AsidePaths:
     public MetaPath getOriginalMetaPath() { return originalMetaPath; }
@@ -180,16 +221,16 @@ public class DiscardedElement extends AsidePathElement {
     }
 
     @Override
-    public Category getParentCategory() { return null; }
+    public AbstractCategory getParentCategory() { return null; }
 
     @Override
-    public Category getStepParentCategory() { return null; }
+    public AbstractCategory getStepParentCategory() { return null; }
 
     @Override
-    public void setStepParentCategory(Category newStepParents) { }
+    public void setStepParentCategory(AbstractCategory newStepParent) { }
 
     @Override
-    public boolean hasStepParents() {
+    public boolean hasStepParent() {
         return false;
     }
 

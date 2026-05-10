@@ -1,7 +1,9 @@
 package com.github.michaeldsa.aside.AsidePathElement;
 
+import com.github.michaeldsa.aside.AsidePath.AsidePath;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
+import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,7 +18,7 @@ import java.util.stream.Stream;
 
 public abstract class AbstractNote extends AsidePathElement {
     // optional:
-    // Category stepParent;
+    protected Category stepParent;
 
     protected String title;
     protected String content;
@@ -71,6 +73,12 @@ public abstract class AbstractNote extends AsidePathElement {
         }
         return Objects.requireNonNull(name, "Create.newNoteName(): failed to generate unique file name");
     }
+
+    // methods for constructor use:
+    protected boolean hasIllegalArgument(AsidePath ap) {
+        return ValidateAsidePath.BIBLIOGRAPHY_NAME.test(ap) || ValidateAsidePath.DISCARDED_ELEMENT_NAME.test(ap);
+    }
+
 
     private static MetaPath getTimeStampedFileName(DateTimeFormatter formatter) {
         LocalDateTime now = LocalDateTime.now();

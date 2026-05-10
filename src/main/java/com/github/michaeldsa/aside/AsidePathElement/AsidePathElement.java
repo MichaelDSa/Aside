@@ -36,12 +36,17 @@ public abstract class AsidePathElement {
 
     // abstract methods:
     // most of these methods are for subclasses that choose to include a Category stepParent field.
-    public abstract Category getParentCategory();
-    public abstract Category getStepParentCategory();
-    public abstract void setStepParentCategory(Category newStepParents);
-    public abstract boolean hasStepParents();
+    public abstract AbstractCategory getParentCategory();
+    public abstract AbstractCategory getStepParentCategory();
+    public abstract void setStepParentCategory(AbstractCategory newStepParent);
+    public abstract boolean hasStepParent();
 
     // static methods:
+    protected static boolean endsWithFileName(AsidePath ap) {
+        return ValidateAsidePath.NOTE_NAME.test(ap)
+                || ValidateAsidePath.BIBLIOGRAPHY_NAME.test(ap)
+                || ValidateAsidePath.DISCARDED_ELEMENT_NAME.test(ap)
+                || ap.getPath().getFileName().endsWith(".txt");}
     protected static boolean endsWithNoteName(AsidePath ap) {return ValidateAsidePath.NOTE_NAME.test(ap);}
     protected static boolean endsWithCategoryName(AsidePath ap) {return ValidateAsidePath.CATEGORY_NAME.test(ap);}
 
