@@ -12,14 +12,14 @@ public class MutableNote extends AbstractNote{
     // constructors:
     public MutableNote(MetaPath mp) {
         // if filename belongs to bibliography or DiscardedElement:
-        if (hasIllegalArgument(mp)) {
+        if (argumentIsInvalid(mp)) {
             System.err.println("IllegalArgumentException: " + mp);
-            throw new IllegalArgumentException("Invalid Path argument " + mp);
+            throw new IllegalArgumentException("Invalid Path argument (This is either a DiscardedElement or a Bibliography filename): " + mp);
         }
         if (AsidePathElement.endsWithNoteName(mp)) {
             metaPath = mp;
         } else {
-            metaPath = AbstractNote.generateNewNoteName(mp);
+            metaPath = AsidePathElement.generateUniqueFileName(mp);
         }
         metaPath = AsidePathElement.filterMetaPathElements(metaPath);
 
@@ -33,14 +33,14 @@ public class MutableNote extends AbstractNote{
     }
     public MutableNote(ViewPath vp) {
         // if filename belongs to bibliography or DiscardedElement:
-        if (hasIllegalArgument(vp)) {
+        if (argumentIsInvalid(vp)) {
             System.err.println("IllegalArgumentException: " + vp);
-            throw new IllegalArgumentException("Invalid Path argument " + vp);
+            throw new IllegalArgumentException("Invalid Path argument (This is either a DiscardedElement or a Bibliography filename):  " + vp);
         }
         if (AsidePathElement.endsWithNoteName(vp)) {
             viewPath = vp;
         } else {
-            viewPath = new ViewPath(AbstractNote.generateNewNoteName(new MetaPath(vp)));
+            viewPath = new ViewPath(AsidePathElement.generateUniqueFileName(new MetaPath(vp)));
         }
         viewPath = AsidePathElement.filterViewPathElements(viewPath);
 
@@ -54,12 +54,12 @@ public class MutableNote extends AbstractNote{
     }
     public MutableNote(Category c){
         // if filename belongs to bibliography or DiscardedElement:
-        if (hasIllegalArgument(c.getMetaPath())) {
+        if (argumentIsInvalid(c.getMetaPath())) {
             System.err.println("IllegalArgumentException: " + c.getMetaPath());
-            throw new IllegalArgumentException("Invalid Path argument " + c.getMetaPath());
+            throw new IllegalArgumentException("Invalid Path argument (This is either a DiscardedElement or a Bibliography filename):  " + c.getMetaPath());
         }
         metaPath = AsidePathElement.filterMetaPathElements(c.getMetaPath());
-        metaPath = AbstractNote.generateNewNoteName(c.getMetaPath());
+        metaPath = AsidePathElement.generateUniqueFileName(c.getMetaPath());
         viewPath = new ViewPath(metaPath);
         stepParent = (Category) c.getStepParentCategory();
         nest = new ArrayList<>();
@@ -70,7 +70,7 @@ public class MutableNote extends AbstractNote{
     }
     public MutableNote(MutableNote mn){
         // if filename belongs to bibliography or DiscardedElement:
-        if (hasIllegalArgument(mn.getMetaPath())) {
+        if (argumentIsInvalid(mn.getMetaPath())) {
             System.err.println("IllegalArgumentException: " + mn.getMetaPath());
             throw new IllegalArgumentException("Invalid Path argument " + mn.getMetaPath());
         }

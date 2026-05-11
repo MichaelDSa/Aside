@@ -19,7 +19,7 @@ public class ImmutableNote extends AbstractNote{
     // ImmutableNote previousState;
     public ImmutableNote(MutableNote mn) {
         // if somehow mn has wrong filename
-        if (hasIllegalArgument(mn.getMetaPath())) {
+        if (argumentIsInvalid(mn.getMetaPath())) {
             System.err.println("IllegalArgumentException: " + mn.getMetaPath());
             throw new IllegalArgumentException("Invalid Path argument " + mn.getMetaPath());
         }

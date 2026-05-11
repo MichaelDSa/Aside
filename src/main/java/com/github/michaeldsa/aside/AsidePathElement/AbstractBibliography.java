@@ -3,7 +3,6 @@ package com.github.michaeldsa.aside.AsidePathElement;
 import com.github.michaeldsa.aside.AsidePath.AsidePath;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
-import com.github.michaeldsa.aside.Initialization.RootPaths;
 import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
 import java.nio.file.Path;
@@ -74,13 +73,13 @@ public abstract class AbstractBibliography extends AsidePathElement {
     }
 
     protected static MetaPath generateNewBibliographyFileName(MetaPath parent) {
-        String filename = AbstractNote.generateNewNoteName(new MetaPath()).getPath().getFileName().toString();
+        String filename = AsidePathElement.generateUniqueFileName(new MetaPath()).getPath().getFileName().toString();
         String bibFilename = m_prefix + filename.substring(1);
         return parent.resolve(new MetaPath(Paths.get(bibFilename)));
     }
 
     protected static ViewPath generateNewBibliographyFileName(ViewPath parent) {
-        String filename = AbstractNote.generateNewNoteName(new MetaPath()).getPath().getFileName().toString();
+        String filename = AsidePathElement.generateUniqueFileName(new MetaPath()).getPath().getFileName().toString();
         String bibFilename = v_prefix + filename;
         return parent.resolve(new ViewPath(Paths.get(bibFilename)));
     }
