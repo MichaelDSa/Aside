@@ -6,7 +6,7 @@ import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import java.util.*;
 
 public class MutableNote extends AbstractNote{
-    private ImmutableNote previousState;
+    private Note previousState;
 
 
     // constructors:
@@ -78,7 +78,7 @@ public class MutableNote extends AbstractNote{
         viewPath = new ViewPath(metaPath);
         stepParent = (Category) mn.getStepParentCategory();
         nest = mn.getNest();
-        previousState = new ImmutableNote(mn);
+        previousState = new Note(mn);
         title = mn.getTitle();
         content = mn.getContent();
         to = mn.getTo();
@@ -112,7 +112,7 @@ public class MutableNote extends AbstractNote{
     }
 
     @Override
-    public ImmutableNote getPreviousState() {
+    public Note getPreviousState() {
         return previousState;
     }
 
@@ -132,7 +132,7 @@ public class MutableNote extends AbstractNote{
     }
 
     public MutableNote setPreviousState() {
-        previousState = new ImmutableNote(this);
+        previousState = new Note(this);
         return this;
     }
 

@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 
-public class ImmutableNote extends AbstractNote{
+public class Note extends AbstractNote{
     private final MetaPath metaPath;
     private final ViewPath viewPath;
     private final String title;
@@ -17,7 +17,7 @@ public class ImmutableNote extends AbstractNote{
     private final HashSet<String> tags;
     private final Category stepParent;
     // ImmutableNote previousState;
-    public ImmutableNote(MutableNote mn) {
+    public Note(MutableNote mn) {
         // if somehow mn has wrong filename
         if (argumentIsInvalid(mn.getMetaPath())) {
             System.err.println("IllegalArgumentException: " + mn.getMetaPath());
@@ -83,7 +83,7 @@ public class ImmutableNote extends AbstractNote{
     }
 
     @Override
-    public ImmutableNote getPreviousState() {
+    public Note getPreviousState() {
         return this;
     }
 
@@ -108,7 +108,7 @@ public class ImmutableNote extends AbstractNote{
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof ImmutableNote that)) return false;
+        if (!(o instanceof Note that)) return false;
         if (!super.equals(o)) return false;
         return Objects.equals(metaPath, that.metaPath) && Objects.equals(viewPath, that.viewPath) && Objects.equals(title, that.title) && Objects.equals(content, that.content) && Objects.equals(to, that.to) && Objects.equals(from, that.from) && Objects.equals(tags, that.tags) && Objects.equals(stepParent, that.stepParent);
     }
