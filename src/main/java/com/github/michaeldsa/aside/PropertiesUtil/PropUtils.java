@@ -6,18 +6,18 @@ import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
 
 public class PropUtils {
     // reader classes
-    private static final NoteReader note_r = new NoteReader();
-    private static final DiscardedElementReader discarded_r = new DiscardedElementReader();
+    private static final NoteRetriever note_r = new NoteRetriever();
+    private static final DiscardedElementRetriever discarded_r = new DiscardedElementRetriever();
     // writer classes
     private static final NoteWriter note_w = new NoteWriter();
     private static final DiscardedElementWriter discarded_w = new DiscardedElementWriter();
 
     // readers:
-    public static void readNote(MutableNote mn) {
-        note_r.read(mn);
+    public static void retrieveNote(MutableNote mn) {
+        note_r.retrieve(mn);
     }
-    public static void readDiscardedElement(DiscardedElement de) {
-        discarded_r.read(de);
+    public static void retrieveDiscardedElement(DiscardedElement de) {
+        discarded_r.retrieve(de);
     }
 
     // writers (MetaPath & ViewPath):

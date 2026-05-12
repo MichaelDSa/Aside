@@ -8,9 +8,9 @@ import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Properties;
 
-public class DiscardedElementReader extends DiscardedElementPropertiesUtil{
+public class DiscardedElementRetriever extends DiscardedElementPropertiesUtil{
 
-    public DiscardedElementReader() {
+    public DiscardedElementRetriever() {
         properties = new Properties();
     }
 
@@ -40,7 +40,7 @@ public class DiscardedElementReader extends DiscardedElementPropertiesUtil{
         return getPropAsHashSet(properties,tags_n);
     }
 
-    public void read(DiscardedElement de) {
+    public void retrieve(DiscardedElement de) {
 
         loadPropertiesFile(properties, de.getMetaPath().getPath());
 

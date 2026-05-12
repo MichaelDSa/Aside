@@ -5,14 +5,14 @@ import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
 import java.util.HashSet;
 import java.util.Properties;
 
-public class NoteReader extends NotePropertiesUtil{
+public class NoteRetriever extends NotePropertiesUtil{
     /*
     NoteReader reads from an existing properties file whose parent
     is a MetaPath directory. It assigns all found values to the
     MutableNote in the constructor parameter.
      */
 
-    public NoteReader() {
+    public NoteRetriever() {
         properties = new Properties();
     }
 
@@ -32,7 +32,7 @@ public class NoteReader extends NotePropertiesUtil{
         return getPropAsHashSet(properties, tags_n);
     }
 
-    public void read(MutableNote mn) {
+    public void retrieve(MutableNote mn) {
         loadPropertiesFile(properties, mn.getMetaPath().getPath());
         mn.setTitle(getTitleProp(properties))
                 .setContent(getContentProp(properties))

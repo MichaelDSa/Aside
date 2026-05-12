@@ -1,6 +1,5 @@
 package com.github.michaeldsa.aside.PropertiesUtil;
 
-import com.github.michaeldsa.aside.Pretty;
 
 import java.util.ArrayList;
 import java.util.Arrays;

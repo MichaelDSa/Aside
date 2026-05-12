@@ -310,7 +310,7 @@ public class Test {
         MutableNote mn = new MutableNote(new MetaPath(Paths.get(".PropUtils", ".260417_1722_20.txt")));
         // stdout before PropUtils.readNote(mn):
         System.out.println("BEFORE:\n" + mn);
-        PropUtils.readNote(mn);
+        PropUtils.retrieveNote(mn);
         System.out.println("AFTER:\n" + mn);
     }
 
@@ -318,7 +318,7 @@ public class Test {
         MutableNote mn = new MutableNote(new MetaPath(Paths.get(".PropUtils", ".260417_1722_20.txt")));
         DiscardedElement de = new DiscardedElement(mn).setMessage("This is a test of propUtils_readDiscardedElement()");
         System.out.println("BEFORE:\n" + de);
-        PropUtils.readDiscardedElement(de);
+        PropUtils.retrieveDiscardedElement(de);
         System.out.println("AFTER:\n" + de);
     }
 

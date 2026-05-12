@@ -95,12 +95,12 @@ public class ResolveViewPath extends Traverser{
 
         if (file.startsWith(discarded)) {
             DiscardedElement de = new DiscardedElement(new MetaPath(file));
-            PropUtils.readDiscardedElement(de);
+            PropUtils.retrieveDiscardedElement(de);
             PropUtils.writeDiscardedElement_ViewPath(de);
         } else {
             // if the file parent is not .DISCARDED
             MutableNote mn = new MutableNote(new MetaPath(file));
-            PropUtils.readNote(mn);
+            PropUtils.retrieveNote(mn);
             PropUtils.writeNote_ViewPath(mn);
         }
         return FileVisitResult.CONTINUE;
