@@ -21,7 +21,7 @@ initialization process:
        sandbox.
     4) provides the data found in this config file to clients.
  */
-public enum Initialize {
+public enum Initializer {
     INSTANCE;
 
     // Paths to configuration directories & files:
@@ -44,7 +44,7 @@ public enum Initialize {
     private final String key_metapath_root = "metapath_root";
     private final String key_viewpath_root = "viewpath_root";
 
-    Initialize() {
+    Initializer() {
 
         // DETERMINE CONFIG PATH
 

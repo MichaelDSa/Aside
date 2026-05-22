@@ -4,6 +4,7 @@ import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -14,8 +15,10 @@ public class Bibliography extends AbstractBibliography {
 
     // this should move to BibCat.
     private Bibliography() {
-        metaPath = RestrictedLists.getBibliographyDirectory().getMetaPath();
-        viewPath = RestrictedLists.getBibliographyDirectory().getViewPath();
+//        metaPath = RestrictedLists.getBibliographyDirectory().getMetaPath();
+//        viewPath = RestrictedLists.getBibliographyDirectory().getViewPath();
+        metaPath = new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName()));
+        viewPath = new ViewPath(metaPath);
         stepParent = null;
         previousState = null;
     }
@@ -29,9 +32,9 @@ public class Bibliography extends AbstractBibliography {
         setFieldsToEmpty();
 
         // ensure that metaPath starts with the defined Bibliography directory.
-        metaPath = mp.startsWith(RestrictedLists.getBibliographyDirectory().getMetaPath())
+        metaPath = mp.startsWith(RestrictedLists.getBibliographyCategory().getMetaPath())
                 ? mp
-                : RestrictedLists.getBibliographyDirectory().getMetaPath().resolve(mp);
+                : RestrictedLists.getBibliographyCategory().getMetaPath().resolve(mp);
 
         // ensure that metaPath ends with a Bibliography filename.
         metaPath = ValidateAsidePath.CATEGORY_NAME.test(metaPath)
@@ -51,9 +54,9 @@ public class Bibliography extends AbstractBibliography {
         setFieldsToEmpty();
 
         // ensure that viewPath starts with the defined Bibliography directgory
-        viewPath = vp.startsWith(RestrictedLists.getBibliographyDirectory().getViewPath())
+        viewPath = vp.startsWith(RestrictedLists.getBibliographyCategory().getViewPath())
                 ? vp
-                : RestrictedLists.getBibliographyDirectory().getViewPath().resolve(vp);
+                : RestrictedLists.getBibliographyCategory().getViewPath().resolve(vp);
 
         // ensure that viewPath ends with a Bibliography filename
         viewPath = ValidateAsidePath.CATEGORY_NAME.test(viewPath)
@@ -64,7 +67,7 @@ public class Bibliography extends AbstractBibliography {
         this.title = title;
         stepParent = null;
     }
-    public Bibliography(BibCat bc, String title) {
+    public Bibliography(BibliographyCategory bc, String title) {
         if (argumentIsInvalid(bc.getMetaPath())) {
             System.err.println("InvalidArgumentException");
             throw new IllegalArgumentException("Invalid Path argument: " + bc.getMetaPath());
@@ -73,9 +76,9 @@ public class Bibliography extends AbstractBibliography {
         setFieldsToEmpty();
 
         // ensure (redundantly, i know.) that metaPath startw with defined Bibliography directory
-        metaPath = bc.getMetaPath().startsWith(RestrictedLists.getBibliographyDirectory().getMetaPath())
+        metaPath = bc.getMetaPath().startsWith(RestrictedLists.getBibliographyCategory().getMetaPath())
                 ? bc.getMetaPath()
-                : RestrictedLists.getBibliographyDirectory().getMetaPath().resolve(bc.getMetaPath());
+                : RestrictedLists.getBibliographyCategory().getMetaPath().resolve(bc.getMetaPath());
 
         // ensure that metaPath ends with a Bibliography filename.
         metaPath = ValidateAsidePath.CATEGORY_NAME.test(metaPath)
@@ -84,7 +87,7 @@ public class Bibliography extends AbstractBibliography {
 
         viewPath = new ViewPath(bc.getMetaPath());
         this.title = title;
-        stepParent = (BibCat) bc.getStepParentCategory();
+        stepParent = (BibliographyCategory) bc.getStepParentCategory();
     }
     public Bibliography(Bibliography bb) {
         if (argumentIsInvalid(bb.getMetaPath())) {
@@ -94,7 +97,7 @@ public class Bibliography extends AbstractBibliography {
 
         metaPath = bb.getMetaPath();
         viewPath = bb.getViewPath();
-        stepParent = (BibCat) bb.getStepParentCategory();
+        stepParent = (BibliographyCategory) bb.getStepParentCategory();
 
         authors = bb.getAuthors();
         title = bb.getTitle();

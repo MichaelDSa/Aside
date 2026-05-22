@@ -101,7 +101,7 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
 
     // default category metapath:
     private static final Category defaultCategory = RestrictedLists.getDefaultCategory();
-    private static final DiscardedElement discardedElementDirectory = RestrictedLists.getDiscardedElementDirectory();
+    private static final DiscardedCategory discardedCategory = RestrictedLists.getDiscardedCategory();
 
     Create(CrudOps<AsidePathElement,AsidePathElement> fops) {
         this.fops = fops;
@@ -116,8 +116,8 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
         return mpisdir && vpisdir;
     }
     public static boolean discardedElementDirectoryExists() {
-        boolean mpisdir = Files.isDirectory(discardedElementDirectory.getMetaPath().getPath());
-        boolean vpisdir = Files.isDirectory(discardedElementDirectory.getViewPath().getPath());
+        boolean mpisdir = Files.isDirectory(discardedCategory.getMetaPath().getPath());
+        boolean vpisdir = Files.isDirectory(discardedCategory.getViewPath().getPath());
         return mpisdir && vpisdir;
     }
 
@@ -136,8 +136,8 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
     }
     public static void createDiscardedCategory() {
         if (!discardedElementDirectoryExists()) {
-            Path mpath = discardedElementDirectory.getMetaPath().getPath();
-            Path vpath  = discardedElementDirectory.getViewPath().getPath();
+            Path mpath = discardedCategory.getMetaPath().getPath();
+            Path vpath  = discardedCategory.getViewPath().getPath();
             try {
                 Files.createDirectories(mpath);
                 Files.createDirectories(vpath);

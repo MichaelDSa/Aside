@@ -9,10 +9,10 @@ public enum RootPaths {
     private final Path viewpath;
 
     RootPaths() {
-        Initialize initialize = Initialize.INSTANCE;
-        aside = initialize.getAside_root();
-        metapath = initialize.getMetapath();
-        viewpath = initialize.getViewpath();
+        Initializer initializer = Initializer.INSTANCE;
+        aside = initializer.getAside_root();
+        metapath = initializer.getMetapath();
+        viewpath = initializer.getViewpath();
     }
 
     public Path getAside() {return aside;}

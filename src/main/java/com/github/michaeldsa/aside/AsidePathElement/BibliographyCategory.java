@@ -3,15 +3,16 @@ package com.github.michaeldsa.aside.AsidePathElement;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /* Bibliography Category:
 To handle subdirectories of BIBLIOGRAPHY AsidePath elements */
-public class BibCat extends AbstractCategory {
+public class BibliographyCategory extends AbstractCategory {
 
-    protected BibCat stepParent;
+    protected BibliographyCategory stepParent;
 
-    public BibCat(MetaPath mp) {
+    public BibliographyCategory(MetaPath mp) {
         if (AbstractBibliography.argumentIsInvalid(mp)) {
             System.err.println("IllegalArgumentException");
             throw new IllegalArgumentException("Invalid Path argument BibCat(MetaPath mp): " + mp);
@@ -23,15 +24,15 @@ public class BibCat extends AbstractCategory {
                 : mp;
 
         // must start with correct dir.
-        metaPath = metaPath.startsWith(RestrictedLists.getBibliographyDirectory().getMetaPath())
+        metaPath = metaPath.startsWith(new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName())))
                 ? metaPath
-                : RestrictedLists.getBibliographyDirectory().getMetaPath().resolve(metaPath);
+                : new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName())).resolve(metaPath);
 
         viewPath = new ViewPath(metaPath);
         stepParent = null;
         nest = new ArrayList<>();
     }
-    public BibCat(ViewPath vp) {
+    public BibliographyCategory(ViewPath vp) {
         if (AbstractBibliography.argumentIsInvalid(vp)) {
             System.err.println("IllegalArgumentException");
             throw new IllegalArgumentException("Invalid Path argument BibCat(ViewPath vp): " + vp);
@@ -43,16 +44,16 @@ public class BibCat extends AbstractCategory {
                 : vp;
 
         // must start with correct dir
-        viewPath = viewPath.startsWith(RestrictedLists.getBibliographyDirectory().getViewPath())
+        viewPath = viewPath.startsWith(new ViewPath(Paths.get(RestrictedLists.getViewPathBibliographyDirectoryName())))
                 ? viewPath
-                : RestrictedLists.getBibliographyDirectory().getViewPath().resolve(viewPath);
+                : new ViewPath(Paths.get(RestrictedLists.getViewPathBibliographyDirectoryName())).resolve(viewPath);
 
         metaPath = new MetaPath(viewPath);
         stepParent = null;
         nest = new ArrayList<>();
     }
 
-    public BibCat(BibCat bc) {
+    public BibliographyCategory(BibliographyCategory bc) {
         MetaPath mp = bc.getMetaPath();
         if (AbstractBibliography.argumentIsInvalid(mp)) {
             System.err.println("IllegalArgumentException");
@@ -65,13 +66,22 @@ public class BibCat extends AbstractCategory {
                 : mp;
 
         // must start with correct dir
-        metaPath = metaPath.startsWith(RestrictedLists.getBibliographyDirectory().getMetaPath())
+        metaPath = metaPath.startsWith(new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName())))
                 ? metaPath
-                : RestrictedLists.getBibliographyDirectory().getMetaPath().resolve(metaPath);
+                : new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName())).resolve(metaPath);
 
         viewPath = new ViewPath(metaPath);
         stepParent = null;
         nest = new ArrayList<>();
+    }
+
+    // static singleton BibliographyCategory that holds the root bib category;
+    private static class BibliographyCategoryHolder {
+        private static final BibliographyCategory bc = new BibliographyCategory(new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName())));
+    }
+
+    public static BibliographyCategory getRootCategory() {
+        return BibliographyCategoryHolder.bc;
     }
 
 
@@ -79,7 +89,7 @@ public class BibCat extends AbstractCategory {
     change this to BibCat, MutableBib, ImmutableBib */
     @Override
     public void nestAdd(AsidePathElement ap) {
-        if ((ap instanceof BibCat) || (ap instanceof AbstractBibliography)) {
+        if ((ap instanceof BibliographyCategory) || (ap instanceof AbstractBibliography)) {
             nest.add(ap);
         }
     }
@@ -87,7 +97,7 @@ public class BibCat extends AbstractCategory {
     // inherited methods:
     @Override
     public AbstractCategory getParentCategory() {
-        return new BibCat(metaPath.getParent());
+        return new BibliographyCategory(metaPath.getParent());
     }
     @Override
     public AbstractCategory getStepParentCategory() {
@@ -95,7 +105,7 @@ public class BibCat extends AbstractCategory {
     }
     @Override
     public void setStepParentCategory(AbstractCategory newStepParent) {
-        this.stepParent = (BibCat) newStepParent;
+        this.stepParent = (BibliographyCategory) newStepParent;
 
     }
     @Override

@@ -1,6 +1,6 @@
 package com.github.michaeldsa.aside.Settings;
 
-import com.github.michaeldsa.aside.Initialization.Initialize;
+import com.github.michaeldsa.aside.Initialization.Initializer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +13,7 @@ import java.util.Properties;
 public abstract class AbstractSettings {
     protected Properties properties;
     protected String settingsFileName; // each subclass will manage its own file
-    protected Path settingsDir = Initialize.INSTANCE.getConfigDirectory().resolve(Paths.get("settings")); // default settings dir
+    protected Path settingsDir = Initializer.INSTANCE.getConfigDirectory().resolve(Paths.get("settings")); // default settings dir
     protected Path settingsFile;
 
     public boolean settingsDirExists() {

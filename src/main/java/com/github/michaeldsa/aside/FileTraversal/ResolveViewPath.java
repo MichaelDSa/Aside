@@ -91,7 +91,7 @@ public class ResolveViewPath extends Traverser{
         }
 
         // if the file parent is .DISCARDED:
-        Path discarded = RestrictedLists.getDiscardedElementDirectory().getMetaPath().getPath();
+        Path discarded = RestrictedLists.getDiscardedCategory().getMetaPath().getPath();
 
         if (file.startsWith(discarded)) {
             DiscardedElement de = new DiscardedElement(new MetaPath(file));

@@ -1,6 +1,6 @@
 package com.github.michaeldsa.aside.Settings;
 
-import com.github.michaeldsa.aside.Initialization.Initialize;
+import com.github.michaeldsa.aside.Initialization.Initializer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +12,7 @@ import java.util.Properties;
 
 public class TempSettings {
     private static final Properties settings = new Properties();
-    private static final Path settingsFile = Initialize.INSTANCE.getConfigDirectory().resolve(Paths.get("settings"));
+    private static final Path settingsFile = Initializer.INSTANCE.getConfigDirectory().resolve(Paths.get("settings"));
 
 
     static {

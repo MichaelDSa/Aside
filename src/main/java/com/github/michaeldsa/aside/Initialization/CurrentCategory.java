@@ -10,7 +10,7 @@ public enum CurrentCategory {
 
     CurrentCategory(){
         RootPaths rp = RootPaths.INSTANCE;
-        Initialize cfg = Initialize.INSTANCE;
+        Initializer cfg = Initializer.INSTANCE;
         MetaPath mp = new MetaPath(rp.getMetapath());
         currentCategory = new Category(mp);
         // If 'last_category' of .config has an entry, reassign above values

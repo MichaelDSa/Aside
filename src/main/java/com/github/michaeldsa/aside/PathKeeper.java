@@ -1,6 +1,6 @@
 package com.github.michaeldsa.aside;
 
-import com.github.michaeldsa.aside.Initialization.Initialize;
+import com.github.michaeldsa.aside.Initialization.Initializer;
 
 import java.nio.file.Path;
 
@@ -14,8 +14,8 @@ public enum PathKeeper {
     public final PathCheck pathCheck;
 
     PathKeeper(){
-        Initialize initialize = Initialize.INSTANCE;
-        home_directory = initialize.getAside_root();
+        Initializer initializer = Initializer.INSTANCE;
+        home_directory = initializer.getAside_root();
         meta_home = home_directory.resolve(".meta");
         view_home = home_directory.resolve("view");
         current = home_directory;

@@ -61,8 +61,8 @@ public class DeleteCategory extends Traverser {
     // traversal methods:
     @Override
     public FileVisitResult _visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        Path de_mpath = RestrictedLists.getDiscardedElementDirectory().getMetaPath().getPath();
-        Path de_vpath = RestrictedLists.getDiscardedElementDirectory().getViewPath().getPath();
+        Path de_mpath = RestrictedLists.getDiscardedCategory().getMetaPath().getPath();
+        Path de_vpath = RestrictedLists.getDiscardedCategory().getViewPath().getPath();
         Path parent = file.getParent();
         if (!parent.equals(de_mpath) && !parent.equals(de_vpath)) {
             Files.delete(file);

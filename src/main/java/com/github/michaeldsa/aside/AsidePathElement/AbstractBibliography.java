@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 import java.util.HashSet;
 
 public abstract class AbstractBibliography extends AsidePathElement {
-    protected BibCat stepParent;
+    protected BibliographyCategory stepParent;
 
     private static final String m_prefix = ".b";
     private static final String v_prefix = "b";
@@ -50,8 +50,8 @@ public abstract class AbstractBibliography extends AsidePathElement {
             v_string = vp.getPath().toString();
             m_string = new MetaPath(vp).getPath().toString();
         }
-        Path m_dis = RestrictedLists.getDiscardedElementDirectory().getMetaPath().getPath();
-        Path v_dis = RestrictedLists.getDiscardedElementDirectory().getViewPath().getPath();
+        Path m_dis = RestrictedLists.getDiscardedCategory().getMetaPath().getPath();
+        Path v_dis = RestrictedLists.getDiscardedCategory().getViewPath().getPath();
         Path m_def = RestrictedLists.getDefaultCategory().getMetaPath().getPath();
         Path v_def = RestrictedLists.getDefaultCategory().getViewPath().getPath();
         Path m_path = Paths.get(m_string);
@@ -87,7 +87,7 @@ public abstract class AbstractBibliography extends AsidePathElement {
     // inherited from AsidePathElement
     @Override
     public AbstractCategory getParentCategory() {
-        return new BibCat(metaPath.getParent());
+        return new BibliographyCategory(metaPath.getParent());
     }
 
     @Override
@@ -97,7 +97,7 @@ public abstract class AbstractBibliography extends AsidePathElement {
 
     @Override
     public void setStepParentCategory(AbstractCategory newStepParent) {
-        this.stepParent = (BibCat) newStepParent;
+        this.stepParent = (BibliographyCategory) newStepParent;
     }
 
     @Override

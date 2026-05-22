@@ -9,7 +9,7 @@ import java.util.HashSet;
 public class ImmutableBibliography extends AbstractBibliography {
     private final MetaPath metaPath;
     private final ViewPath viewPath;
-    private final BibCat stepParent;
+    private final BibliographyCategory stepParent;
     private final String authors;
     private final String title;
     private final int yearPublished;
@@ -24,7 +24,7 @@ public class ImmutableBibliography extends AbstractBibliography {
     public ImmutableBibliography(Bibliography bib) {
         this.metaPath = bib.getMetaPath();
         this.viewPath = bib.getViewPath();
-        this.stepParent = (BibCat)bib.getStepParentCategory();
+        this.stepParent = (BibliographyCategory)bib.getStepParentCategory();
 
         this.authors = bib.getAuthors();
         this.title = bib.getTitle();
@@ -98,7 +98,7 @@ public class ImmutableBibliography extends AbstractBibliography {
     }
     @Override
     public AbstractCategory getParentCategory() {
-        return new BibCat(this.metaPath);
+        return new BibliographyCategory(this.metaPath);
     }
     @Override
     public AbstractCategory getStepParentCategory() {

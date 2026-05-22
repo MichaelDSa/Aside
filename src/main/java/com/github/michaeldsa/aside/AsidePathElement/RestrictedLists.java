@@ -53,8 +53,8 @@ public class RestrictedLists {
 
     // for higher level classes and interfaces:
     public static Category getDefaultCategory() {return defaultCategory;}
-    public static DiscardedElement getDiscardedElementDirectory() {return discardedElementDirectory;}
-    public static AbstractBibliography getBibliographyDirectory() {return bibliographyDirectory;}
+    public static DiscardedCategory getDiscardedCategory() {return DiscardedCategory.getInstance();}
+    public static BibliographyCategory getBibliographyCategory() {return BibliographyCategory.getRootCategory();}
 
     // utility methods:
     public static boolean isPermanentDirectory(Path dir) {
