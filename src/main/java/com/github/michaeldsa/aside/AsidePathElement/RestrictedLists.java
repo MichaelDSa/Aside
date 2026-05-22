@@ -32,8 +32,6 @@ public class RestrictedLists {
 
     // Higher level dependencies (all classes that use AsidePath & AsidePathElement subclasses):
     private static final Category defaultCategory = new Category(new MetaPath(Paths.get(metaPathDefaultDirectory)));
-    private static final DiscardedElement discardedElementDirectory = DiscardedElement.getEmptyDiscardedElement();
-    private static final Bibliography bibliographyDirectory = Bibliography.getEmptyBibliographyElement();
 
 
     // getters:

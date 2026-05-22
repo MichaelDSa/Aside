@@ -13,16 +13,6 @@ public class Bibliography extends AbstractBibliography {
     private ImmutableBibliography previousState;
 
 
-    // this should move to BibCat.
-    private Bibliography() {
-//        metaPath = RestrictedLists.getBibliographyDirectory().getMetaPath();
-//        viewPath = RestrictedLists.getBibliographyDirectory().getViewPath();
-        metaPath = new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName()));
-        viewPath = new ViewPath(metaPath);
-        stepParent = null;
-        previousState = null;
-    }
-
     public Bibliography(MetaPath mp, String title) {
         if (argumentIsInvalid(mp)) {
             System.err.println("InvalidArgumentException");
@@ -128,9 +118,6 @@ public class Bibliography extends AbstractBibliography {
 
     // getters:
 
-    public static Bibliography getEmptyBibliographyElement() {
-        return new Bibliography();
-    }
     @Override
     public String getAuthors() {
         return authors;

@@ -46,14 +46,6 @@ public class DiscardedElement extends AsidePathElement {
     }
 
     // constructors:
-    private DiscardedElement() {
-        metaPath = new MetaPath(Paths.get(RestrictedLists.getMetaPathDiscardedDirectoryName()));
-        viewPath = new ViewPath(Paths.get(RestrictedLists.getViewPathDiscardedDirectoryName()));
-        originalMetaPath = metaPath;
-        originalViewPath = viewPath;
-        nest = new ArrayList<>();
-    }
-
     public DiscardedElement(MetaPath mp) {
         // if mp has wrong filename:
         if(hasIllegalArgument(mp)) {
@@ -153,12 +145,6 @@ public class DiscardedElement extends AsidePathElement {
         String fileName = prefix + remainder;
         return new ViewPath(Paths.get(fileName));
     }
-
-    // get empty final DiscardedElement:
-    public static DiscardedElement getEmptyDiscardedElement() {
-        return new DiscardedElement();
-    }
-
 
 
     // getters & setters:
