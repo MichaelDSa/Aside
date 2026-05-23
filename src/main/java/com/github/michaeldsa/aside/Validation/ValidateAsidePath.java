@@ -50,6 +50,17 @@ public enum ValidateAsidePath implements Predicate<AsidePath> {
             vname = vp.getPath().getFileName().toString();
         }
         return ValidateString.DISCARDED_NOTE_NAME.test(mname) && ValidateString.DISCARDED_NOTE_NAME.test(vname);
+    }),
+    DISCARDED_BIBLIOGRAPHY_NAME(ap -> {
+        String mname = "", vname = "";
+        if (ap instanceof MetaPath mp) {
+            mname = mp.getPath().getFileName().toString();
+            vname = new ViewPath(mp).getPath().getFileName().toString();
+        } else if (ap instanceof ViewPath vp) {
+            mname = new MetaPath(vp).getPath().getFileName().toString();
+            vname = vp.getPath().getFileName().toString();
+        }
+        return ValidateString.DISCARDED_BIBLIOGRAPHY_NAME.test(mname) && ValidateString.DISCARDED_BIBLIOGRAPHY_NAME.test(vname);
     });
 
     // class boilerplate:

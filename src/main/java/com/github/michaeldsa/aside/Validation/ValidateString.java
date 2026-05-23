@@ -115,6 +115,24 @@ public enum ValidateString implements Predicate<String> {
             return false;
         }
         return ValidateString.NOTE_NAME.test(filename);
+    }),
+    DISCARDED_BIBLIOGRAPHY_NAME(s -> {
+        /*
+        A DiscardedBibliography filename must start with '.db', or
+        'db'. The rest of the filename must be a valid Bibliography
+        filename.
+
+        Discardedbibliography filename format: `[.]dbxxxxxx_xxxx_xx.txt`
+         */
+        String filename = "";
+        if (s.startsWith(".d")) {
+            filename = s.substring(3);
+        } else if (s.startsWith("d")) {
+            filename = s.substring(2);
+        } else {
+            return false;
+        }
+        return ValidateString.BIBLIOGRAPHY_NAME.test(filename);
     });
 
     // class boilerplate:

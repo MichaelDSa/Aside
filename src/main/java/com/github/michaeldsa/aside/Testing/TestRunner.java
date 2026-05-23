@@ -125,9 +125,11 @@ public class TestRunner {
             // Success
 
             // DiscardedElement: with metapathroot.
-            MetaPath today = new MetaPath(Paths.get(".260505_1600_02.txt"));
+            MetaPath today = new MetaPath(Paths.get(".DISCARDED/.d260505_1600_02.txt"));
             DiscardedNote tesde = new DiscardedNote(today);
             System.out.println(tesde);
+
+
 
 
         }

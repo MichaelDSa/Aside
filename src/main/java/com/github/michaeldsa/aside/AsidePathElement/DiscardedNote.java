@@ -1,5 +1,6 @@
 package com.github.michaeldsa.aside.AsidePathElement;
 
+import com.github.michaeldsa.aside.AsidePath.AsidePath;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
@@ -31,23 +32,30 @@ public class DiscardedNote extends AbstractDiscardedElement {
     private HashSet<String> from;
     private HashSet<String> tags;
 
+
+    // constructor validation method(s):
+    private boolean invalidConstructorArg(AsidePath ap) {
+        return !ValidateAsidePath.DISCARDED_NOTE_NAME.test(ap) || !startsWithDiscardedCategory(ap);
+    }
+
     // constructors:
+
+    // AsidePath constructor args must end with DiscardedNote filenames.
     public DiscardedNote(MetaPath mp) {
         // mp must end with a DiscardedNote filename.
-        if(!ValidateAsidePath.DISCARDED_NOTE_NAME.test(mp)) {
-            System.err.println("IllegalArgumentException: " + mp);
-            throw new IllegalArgumentException("Invalid Path argument " + mp);
+        if(invalidConstructorArg(mp)) {
+            System.err.println("IllegalArgumentException. Path must start with '.DISCARDED' MetaPath Category, and end with DiscardedNote filename.");
+            throw new IllegalArgumentException("Invalid Path argument: " + mp);
         }
         fileTypeName = fileTypeName_note;
         fileNamePrefix = fileNamePrefix_discardedNote;
 
-        // reformat filename
         // DiscardedElement may only have parent .DISCARDED and DISCARDED.
-        metaPath = discardedCategory.getMetaPath().resolve(renameMetaPathFileName(mp));
+        metaPath = mp;
         viewPath = new ViewPath(metaPath);
 
-        originalMetaPath = mp;
-        originalViewPath = new ViewPath(mp);
+        originalMetaPath = null;
+        originalViewPath = null;
         nest = new ArrayList<>();
 
         title = "";
@@ -60,40 +68,37 @@ public class DiscardedNote extends AbstractDiscardedElement {
 
     public DiscardedNote(ViewPath vp) {
         // if vp has wrong filename
-        if(argumentIsInvalid(vp)) {
-            System.err.println("IllegalArgumentException: " + vp);
-            throw new IllegalArgumentException("Invalid Path argument " + vp);
+        if(invalidConstructorArg(vp)) {
+            System.err.println("IllegalArgumentException. Path must start with 'DISCARDED' ViewPath Category, and end with DiscardedNote filename.");
+            throw new IllegalArgumentException("Invalid Path argument: " + vp);
         }
         fileTypeName = fileTypeName_note;
         fileNamePrefix = fileNamePrefix_discardedNote;
 
         // FileName must be reformatted
         // DiscardedElement may only have parent .DISCARDED and DISCARDED.
-        viewPath = discardedCategory.getViewPath().resolve(renameViewPathFileName(vp));
+        viewPath = vp;
         metaPath = new MetaPath(viewPath);
 
-        originalViewPath = vp;
-        originalMetaPath = new MetaPath(vp);
+        originalViewPath = null;
+        originalMetaPath = null;
         nest = new ArrayList<>();
 
         title = "";
         content = "";
         message = "";
-        to = new HashSet<>();
-        from = new HashSet<>();
+        to = new HashSet<>(); from = new HashSet<>();
         tags = new HashSet<>();
     }
 
     public DiscardedNote(MutableNote mn) {
-        // if somehow mn has bad filename:
-        if(argumentIsInvalid(mn.getMetaPath())) {
-            System.err.println("IllegalArgumentException: " + mn.getMetaPath());
-            throw new IllegalArgumentException("Invalid Path argument " + mn.getMetaPath());
-        }
+        // validation not necessary, since MutableNote filename is regulated.
+
         fileTypeName = fileTypeName_note;
         fileNamePrefix = fileNamePrefix_discardedNote;
 
-        metaPath = discardedCategory.getMetaPath().resolve(renameMetaPathFileName(mn.getMetaPath().getFileName()));
+        // convert AsidePath
+        metaPath = discardedCategory.getMetaPath().resolve(renameMetaPathFileName(mn.getMetaPath()));
         viewPath = new ViewPath(metaPath);
 
         originalMetaPath = mn.getMetaPath();

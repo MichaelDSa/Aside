@@ -49,10 +49,14 @@ public abstract class AbstractDiscardedElement extends AsidePathElement {
 
     // methods for subclass constructor use:
 
-    protected boolean argumentIsInvalid(AsidePath ap) {
-        return !ValidateAsidePath.NOTE_NAME.test(ap)
-                && !ValidateAsidePath.BIBLIOGRAPHY_NAME.test(ap)
-                && !ValidateAsidePath.DISCARDED_NOTE_NAME.test(ap);
+    protected boolean startsWithDiscardedCategory(AsidePath ap) {
+        boolean success = false;
+        if (ap instanceof MetaPath mp) {
+            success = mp.startsWith(discardedCategory.getMetaPath());
+        } else if (ap instanceof ViewPath vp) {
+            success = vp.startsWith(discardedCategory.getViewPath());
+        }
+        return success;
     }
 
     // return a filename that conforms to DiscardedElement filename format
@@ -60,18 +64,20 @@ public abstract class AbstractDiscardedElement extends AsidePathElement {
     protected MetaPath renameMetaPathFileName(MetaPath mp) {
         // format to: `.dxxxxxx_xxxx_xx.txt`
         String prefix = fileNamePrefix;
-        String remainder = mp.getPath().getFileName().toString().substring(1);
-        String fileName = prefix + remainder;
-        return new MetaPath(Paths.get(fileName));
+        String fileName = mp.getPath().getFileName().toString();
+        String remainder = fileName.substring(fileName.length() - 18); // 18: length of date stamp
+        String newFileName = prefix + remainder;
+        return new MetaPath(Paths.get(newFileName));
     }
 
     // fileNamePrefix must be assigned to preset var by each subclass!
     protected ViewPath renameViewPathFileName(ViewPath viewPath) {
         // format to:  `dxxxxxx_xxxx_xx.txt`
-        String prefix = fileNamePrefix.substring(1);
-        String remainder = viewPath.getPath().getFileName().toString();
-        String fileName = prefix + remainder;
-        return new ViewPath(Paths.get(fileName));
+        String prefix = fileNamePrefix.substring(1); // remove dot
+        String fileName = viewPath.getPath().getFileName().toString();
+        String remainder = fileName.substring(fileName.length() - 18); // 18: length of date stamp
+        String newFileName = prefix + remainder;
+        return new ViewPath(Paths.get(newFileName));
     }
 
 
