@@ -2,6 +2,7 @@ package com.github.michaeldsa.aside.AsidePathElement;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -32,8 +33,8 @@ public class DiscardedNote extends AbstractDiscardedElement {
 
     // constructors:
     public DiscardedNote(MetaPath mp) {
-        // if mp has wrong filename:
-        if(argumentIsInvalid(mp)) {
+        // mp must end with a DiscardedNote filename.
+        if(!ValidateAsidePath.DISCARDED_NOTE_NAME.test(mp)) {
             System.err.println("IllegalArgumentException: " + mp);
             throw new IllegalArgumentException("Invalid Path argument " + mp);
         }

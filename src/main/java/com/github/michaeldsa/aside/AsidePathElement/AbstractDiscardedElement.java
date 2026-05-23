@@ -32,7 +32,7 @@ public abstract class AbstractDiscardedElement extends AsidePathElement {
 
 
 
-    // inherited methods:
+    // bequeathed methods:
 
     public MetaPath getOriginalMetaPath() {
         return originalMetaPath;
@@ -52,7 +52,7 @@ public abstract class AbstractDiscardedElement extends AsidePathElement {
     protected boolean argumentIsInvalid(AsidePath ap) {
         return !ValidateAsidePath.NOTE_NAME.test(ap)
                 && !ValidateAsidePath.BIBLIOGRAPHY_NAME.test(ap)
-                && !ValidateAsidePath.DISCARDED_ELEMENT_NAME.test(ap);
+                && !ValidateAsidePath.DISCARDED_NOTE_NAME.test(ap);
     }
 
     // return a filename that conforms to DiscardedElement filename format

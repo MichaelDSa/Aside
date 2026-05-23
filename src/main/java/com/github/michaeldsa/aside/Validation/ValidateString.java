@@ -1,7 +1,5 @@
 package com.github.michaeldsa.aside.Validation;
 
-import com.github.michaeldsa.aside.AsidePathElement.RestrictedLists;
-
 import java.util.function.Predicate;
 
 public enum ValidateString implements Predicate<String> {
@@ -101,12 +99,12 @@ public enum ValidateString implements Predicate<String> {
         }
         return ValidateString.NOTE_NAME.test(filename);
     }),
-    DISCARDED_ELEMENT_NAME (s -> {
+    DISCARDED_NOTE_NAME(s -> {
         /*
-        A DiscardedElement filename must start with '.d', or
+        A DiscardedNote filename must start with '.d', or
         'd'.  The rest of the filename must be a valid Note filename.
 
-        DiscardedElement filename format: `[.]dxxxxxx_xxxx_xx.txt`
+        DiscardedNote filename format: `[.]dxxxxxx_xxxx_xx.txt`
         */
         String filename = "";
         if(s.startsWith(".d")) {

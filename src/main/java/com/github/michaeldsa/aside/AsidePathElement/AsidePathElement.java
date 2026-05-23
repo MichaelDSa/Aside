@@ -55,7 +55,7 @@ public abstract class AsidePathElement {
     protected static boolean endsWithFileName(AsidePath ap) {
         return ValidateAsidePath.NOTE_NAME.test(ap)
                 || ValidateAsidePath.BIBLIOGRAPHY_NAME.test(ap)
-                || ValidateAsidePath.DISCARDED_ELEMENT_NAME.test(ap)
+                || ValidateAsidePath.DISCARDED_NOTE_NAME.test(ap)
                 || ap.getPath().getFileName().endsWith(".txt");}
     protected static boolean endsWithNoteName(AsidePath ap) {return ValidateAsidePath.NOTE_NAME.test(ap);}
     protected static boolean endsWithCategoryName(AsidePath ap) {return ValidateAsidePath.CATEGORY_NAME.test(ap);}
@@ -189,7 +189,7 @@ public abstract class AsidePathElement {
                     path -> {
                         String fn = path.getFileName().toString();
                         if (ValidateString.BIBLIOGRAPHY_NAME.test(fn)
-                                || ValidateString.DISCARDED_ELEMENT_NAME.test(fn)) {
+                                || ValidateString.DISCARDED_NOTE_NAME.test(fn)) {
 
                             fn = "." + fn.substring(2);
                         }

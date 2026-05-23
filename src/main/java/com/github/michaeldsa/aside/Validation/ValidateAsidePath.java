@@ -40,7 +40,7 @@ public enum ValidateAsidePath implements Predicate<AsidePath> {
         }
         return ValidateString.BIBLIOGRAPHY_NAME.test(mname) && ValidateString.BIBLIOGRAPHY_NAME.test(vname);
     }),
-    DISCARDED_ELEMENT_NAME (ap -> {
+    DISCARDED_NOTE_NAME(ap -> {
         String mname = "", vname = "";
         if (ap instanceof MetaPath mp) {
             mname = mp.getPath().getFileName().toString();
@@ -49,7 +49,7 @@ public enum ValidateAsidePath implements Predicate<AsidePath> {
             mname = new MetaPath(vp).getPath().getFileName().toString();
             vname = vp.getPath().getFileName().toString();
         }
-        return ValidateString.DISCARDED_ELEMENT_NAME.test(mname) && ValidateString.DISCARDED_ELEMENT_NAME.test(vname);
+        return ValidateString.DISCARDED_NOTE_NAME.test(mname) && ValidateString.DISCARDED_NOTE_NAME.test(vname);
     });
 
     // class boilerplate:

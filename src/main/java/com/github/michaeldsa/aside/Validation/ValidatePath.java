@@ -48,11 +48,11 @@ public enum ValidatePath implements Predicate<Path> {
             boolean ends_with_note_name = ValidateString.NOTE_NAME.test(path.getFileName().toString());
             boolean ends_with_category_name = ValidateString.CATEGORY_NAME.test(path.getFileName().toString());
             boolean ends_with_bibliography_name = ValidateString.BIBLIOGRAPHY_NAME.test(path.getFileName().toString());
-            boolean ends_with_discarded_element_name = ValidateString.DISCARDED_ELEMENT_NAME.test(path.getFileName().toString());
+            boolean ends_with_discarded_note_name = ValidateString.DISCARDED_NOTE_NAME.test(path.getFileName().toString());
             pass = ends_with_note_name
                     || ends_with_category_name
                     || ends_with_bibliography_name
-                    || ends_with_discarded_element_name;
+                    || ends_with_discarded_note_name;
         }
         return pass;
 
@@ -83,9 +83,9 @@ public enum ValidatePath implements Predicate<Path> {
         }
         return false;
     }),
-    DISCARDED_ELEMENT_NAME(p -> {
+    DISCARDED_NOTE_NAME(p -> {
         if (ALL_ELEMENTS.test(p)) {
-            return ValidateString.DISCARDED_ELEMENT_NAME.test(p.getFileName().toString());
+            return ValidateString.DISCARDED_NOTE_NAME.test(p.getFileName().toString());
         }
         return false;
     });
