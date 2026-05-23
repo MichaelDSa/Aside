@@ -1,7 +1,7 @@
 package com.github.michaeldsa.aside;
 
 import com.github.michaeldsa.aside.AsidePathElement.AbstractNote;
-import com.github.michaeldsa.aside.AsidePathElement.DiscardedElement;
+import com.github.michaeldsa.aside.AsidePathElement.DiscardedNote;
 
 import java.util.HashSet;
 
@@ -24,7 +24,7 @@ public class Pretty {
         }
         return "";
     }
-    public static String formatDiscardedElement4ViewPath(DiscardedElement de, int width) {
+    public static String formatDiscardedElement4ViewPath(DiscardedNote de, int width) {
         String filename = format(de.getMetaPath().getPath().getFileName().toString(), width);
         String warning = format(de.getWarning(), width);
         String message = format(de.getMessage(), width);

@@ -6,7 +6,7 @@ import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsidePathElement.AsidePathElement;
 import com.github.michaeldsa.aside.AsidePathElement.Category;
-import com.github.michaeldsa.aside.AsidePathElement.DiscardedElement;
+import com.github.michaeldsa.aside.AsidePathElement.DiscardedNote;
 import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
 import com.github.michaeldsa.aside.Initialization.CurrentCategory;
 import com.github.michaeldsa.aside.FileTraversal.Traversers;
@@ -231,11 +231,11 @@ public class Test {
 
         // Constructor test: MetaPath
         System.out.println("\nDiscardedElement m_discard = new DiscardedElement(new MetaPath(Paths.get(\".cat1\", \".cat2\", \".260322_0100_00.txt\"));");
-        discardedElementHelper(new DiscardedElement(new MetaPath(Paths.get(".cat1", ".cat2", ".260322_0100_00.txt"))));
+        discardedElementHelper(new DiscardedNote(new MetaPath(Paths.get(".cat1", ".cat2", ".260322_0100_00.txt"))));
 
         // Constructor test: ViewPath
         System.out.println("\nDiscardedElement m_discard = new DiscardedElement(new ViewPath(Pathsget(\"cat1\", \"cat2\", \"260322_0100_00.txt\"));");
-        discardedElementHelper(new DiscardedElement(new ViewPath(Paths.get("cat1", "cat2", "260322_0100_00.txt"))));
+        discardedElementHelper(new DiscardedNote(new ViewPath(Paths.get("cat1", "cat2", "260322_0100_00.txt"))));
 
         // Constructor test: MutableNote
         System.out.println("\nDiscardedElement mn = new DiscardedElement new MutableNote...");
@@ -243,13 +243,13 @@ public class Test {
                 .setTitle("DiscardedElement test MutableNote constructor")
                 .setContent("some content")
                 .setTo(new HashSet<>(Arrays.asList("to1", "to2", "to3")));
-        discardedElementHelper(new DiscardedElement(mn));
+        discardedElementHelper(new DiscardedNote(mn));
 
 
 
 
     }
-    private static void discardedElementHelper(DiscardedElement de) {
+    private static void discardedElementHelper(DiscardedNote de) {
         // test booleans (should both be false)
         // these boolean methods have been removed
 //        System.out.println("isCategory: " + de.isCategory());
@@ -275,7 +275,7 @@ public class Test {
 //        Create.CATEGORY.execute(c);
         PropUtils.writeNote(propUtils_mn);
     }
-    public static DiscardedElement propUtils_de = new DiscardedElement(propUtils_mn).setMessage("this is a test of the DiscardedElement message");
+    public static DiscardedNote propUtils_de = new DiscardedNote(propUtils_mn).setMessage("this is a test of the DiscardedElement message");
     public static void propUtils_writeDiscardedElement() {
         PropUtils.writeDiscardedElement(propUtils_de);
     }
@@ -300,7 +300,7 @@ public class Test {
                 .setTo(new HashSet<>(Arrays.asList("260417_1723_00.txt", "260417_1724_00.txt", "260417_1725_00.txt", "260417_1726_00.txt", "260417_1727_00.txt", "260417_1728_00.txt", "260417_1729_00.txt")))
                 .setFrom(new HashSet<>(Arrays.asList("260417_1725_00.txt", "260417_1726_00.txt", "260417_1727_00.txt", "260417_1728_00.txt","260417_1729_00.txt", "260417_1730_00.txt", "260417_1731_00.txt", "260417_1732_00.txt")))
                 .setTags(new HashSet<>(Arrays.asList("tag1",  "tag2", "tag3")));
-        DiscardedElement de = new DiscardedElement(mn).setMessage("This is a test of propUtils.writeDiscardedElement_ViewPath(). The intention is to test this method to see if MutableNote propUtils_mn can be converted into a discarded element, and written to the ViewPath.");
+        DiscardedNote de = new DiscardedNote(mn).setMessage("This is a test of propUtils.writeDiscardedElement_ViewPath(). The intention is to test this method to see if MutableNote propUtils_mn can be converted into a discarded element, and written to the ViewPath.");
         // write to ViewPath:
         PropUtils.writeDiscardedElement_ViewPath(de);
         // successful
@@ -316,7 +316,7 @@ public class Test {
 
     public static void propUtils_readDiscardedElement() {
         MutableNote mn = new MutableNote(new MetaPath(Paths.get(".PropUtils", ".260417_1722_20.txt")));
-        DiscardedElement de = new DiscardedElement(mn).setMessage("This is a test of propUtils_readDiscardedElement()");
+        DiscardedNote de = new DiscardedNote(mn).setMessage("This is a test of propUtils_readDiscardedElement()");
         System.out.println("BEFORE:\n" + de);
         PropUtils.retrieveDiscardedElement(de);
         System.out.println("AFTER:\n" + de);

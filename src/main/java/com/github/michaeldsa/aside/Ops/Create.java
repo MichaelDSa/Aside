@@ -14,7 +14,7 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
 
     CATEGORY(ape-> {
         // prerequisite: no DiscardedElement objects
-        if (ape instanceof DiscardedElement) {
+        if (ape instanceof DiscardedNote) {
             System.err.println("Create.CATEGORY: Cannot operate on DiscardedElement objects.");
             return ape;
         }

@@ -1,19 +1,78 @@
 package com.github.michaeldsa.aside.AsidePathElement;
 
+import com.github.michaeldsa.aside.AsidePath.AsidePath;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
-public class AbstractDiscardedElement extends AsidePathElement {
+import java.nio.file.Paths;
+import java.util.Objects;
+
+public abstract class AbstractDiscardedElement extends AsidePathElement {
+
+    protected final DiscardedCategory discardedCategory = RestrictedLists.getDiscardedCategory();
+
+
+    // warning should go in all discarded element properties files
+    protected final String warning = "THIS IS A DISCARDED ELEMENT";
+
+    // original paths of discarded elements:
     protected MetaPath originalMetaPath;
     protected ViewPath originalViewPath;
 
     // filetype name property values:
+    protected String fileTypeName; // subclasses assign preset below:
     protected final String fileTypeName_note = "note";
     protected final String fileTypeName_bibliography = "bibliography";
 
     // filename prefixes:
+    protected String fileNamePrefix;
     protected final String fileNamePrefix_discardedNote = ".d";
     protected final String fileNamePrefix_discardedBibliography = ".db";
+
+
+
+    // inherited methods:
+
+    public MetaPath getOriginalMetaPath() {
+        return originalMetaPath;
+    }
+    public ViewPath getOriginalViewPath() {
+        return originalViewPath;
+    }
+
+    // abstract methods:
+
+    public abstract AbstractDiscardedElement setOriginalMetaPath(MetaPath original);
+    public abstract AbstractDiscardedElement setOriginalViewPath(ViewPath original);
+
+
+    // methods for subclass constructor use:
+
+    protected boolean argumentIsInvalid(AsidePath ap) {
+        return !ValidateAsidePath.NOTE_NAME.test(ap)
+                && !ValidateAsidePath.BIBLIOGRAPHY_NAME.test(ap)
+                && !ValidateAsidePath.DISCARDED_ELEMENT_NAME.test(ap);
+    }
+
+    // return a filename that conforms to DiscardedElement filename format
+    // fileNamePrefix must be assigned to preset var by each subclass!
+    protected MetaPath renameMetaPathFileName(MetaPath mp) {
+        // format to: `.dxxxxxx_xxxx_xx.txt`
+        String prefix = fileNamePrefix;
+        String remainder = mp.getPath().getFileName().toString().substring(1);
+        String fileName = prefix + remainder;
+        return new MetaPath(Paths.get(fileName));
+    }
+
+    // fileNamePrefix must be assigned to preset var by each subclass!
+    protected ViewPath renameViewPathFileName(ViewPath viewPath) {
+        // format to:  `dxxxxxx_xxxx_xx.txt`
+        String prefix = fileNamePrefix.substring(1);
+        String remainder = viewPath.getPath().getFileName().toString();
+        String fileName = prefix + remainder;
+        return new ViewPath(Paths.get(fileName));
+    }
 
 
     // inherited, but not used.
@@ -25,4 +84,28 @@ public class AbstractDiscardedElement extends AsidePathElement {
     public void setStepParentCategory(AbstractCategory newStepParent) { }
     @Override
     public boolean hasStepParent() { return false; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof AbstractDiscardedElement that)) return false;
+        if (!super.equals(o)) return false;
+        return Objects.equals(originalMetaPath, that.originalMetaPath) && Objects.equals(originalViewPath, that.originalViewPath) && Objects.equals(fileTypeName, that.fileTypeName) && Objects.equals(fileNamePrefix, that.fileNamePrefix);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), originalMetaPath, originalViewPath, fileTypeName, fileNamePrefix);
+    }
+
+    @Override
+    public String toString() {
+        return "AbstractDiscardedElement{" +
+                "discardedCategory=" + discardedCategory +
+                ", fileTypeName='" + fileTypeName + '\'' +
+                ", fileNamePrefix='" + fileNamePrefix + '\'' +
+                ", metaPath=" + metaPath +
+                ", viewPath=" + viewPath +
+                ", nest=" + nest +
+                '}';
+    }
 }

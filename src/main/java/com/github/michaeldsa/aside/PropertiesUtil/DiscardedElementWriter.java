@@ -1,6 +1,6 @@
 package com.github.michaeldsa.aside.PropertiesUtil;
 
-import com.github.michaeldsa.aside.AsidePathElement.DiscardedElement;
+import com.github.michaeldsa.aside.AsidePathElement.DiscardedNote;
 import com.github.michaeldsa.aside.Pretty;
 import com.github.michaeldsa.aside.Settings.Settings;
 
@@ -12,7 +12,7 @@ public class DiscardedElementWriter extends DiscardedElementPropertiesUtil {
         properties = new Properties();
     }
 
-    private void setProperties(DiscardedElement de) {
+    private void setProperties(DiscardedNote de) {
         String filename = de.getMetaPath().getPath().getFileName().toString();
         String warning = emptyIfNull(de.getWarning());
         String message = emptyIfNull(de.getMessage());
@@ -39,7 +39,7 @@ public class DiscardedElementWriter extends DiscardedElementPropertiesUtil {
 
     }
 
-    public void write(DiscardedElement de) {
+    public void write(DiscardedNote de) {
 
         // set properties
         setProperties(de);
@@ -52,7 +52,7 @@ public class DiscardedElementWriter extends DiscardedElementPropertiesUtil {
 
     }
 
-    public void writeToViewPath(DiscardedElement de) {
+    public void writeToViewPath(DiscardedNote de) {
         setProperties(de);
         writeViewPath(de.getMetaPath().getPath(), Pretty.formatDiscardedElement4ViewPath(de, Settings.getLineWidth().file()));
     }

@@ -2,7 +2,7 @@ package com.github.michaeldsa.aside.FileTraversal;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
-import com.github.michaeldsa.aside.AsidePathElement.DiscardedElement;
+import com.github.michaeldsa.aside.AsidePathElement.DiscardedNote;
 import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
 import com.github.michaeldsa.aside.AsidePathElement.RestrictedLists;
 import com.github.michaeldsa.aside.PropertiesUtil.PropUtils;
@@ -94,7 +94,7 @@ public class ResolveViewPath extends Traverser{
         Path discarded = RestrictedLists.getDiscardedCategory().getMetaPath().getPath();
 
         if (file.startsWith(discarded)) {
-            DiscardedElement de = new DiscardedElement(new MetaPath(file));
+            DiscardedNote de = new DiscardedNote(new MetaPath(file));
             PropUtils.retrieveDiscardedElement(de);
             PropUtils.writeDiscardedElement_ViewPath(de);
         } else {

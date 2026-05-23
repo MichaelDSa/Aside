@@ -2,7 +2,7 @@ package com.github.michaeldsa.aside.PropertiesUtil;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
-import com.github.michaeldsa.aside.AsidePathElement.DiscardedElement;
+import com.github.michaeldsa.aside.AsidePathElement.DiscardedNote;
 
 import java.nio.file.Paths;
 import java.util.HashSet;
@@ -40,7 +40,7 @@ public class DiscardedElementRetriever extends DiscardedElementPropertiesUtil{
         return getPropAsHashSet(properties,tags_n);
     }
 
-    public void retrieve(DiscardedElement de) {
+    public void retrieve(DiscardedNote de) {
 
         loadPropertiesFile(properties, de.getMetaPath().getPath());
 
