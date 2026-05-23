@@ -3,7 +3,6 @@ package com.github.michaeldsa.aside.AsidePathElement;
 import com.github.michaeldsa.aside.AsidePath.AsidePath;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
-import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
 import java.nio.file.Paths;
 import java.util.Objects;

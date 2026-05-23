@@ -40,7 +40,7 @@ public class DiscardedNote extends AbstractDiscardedElement {
 
     // constructors:
 
-    // AsidePath constructor args must end with DiscardedNote filenames.
+    // Arg should be DiscardedNote MetaPath url
     public DiscardedNote(MetaPath mp) {
         // mp must end with a DiscardedNote filename.
         if(invalidConstructorArg(mp)) {
@@ -66,6 +66,7 @@ public class DiscardedNote extends AbstractDiscardedElement {
         tags = new HashSet<>();
     }
 
+    // Arg should be DiscardedNote ViewPath url
     public DiscardedNote(ViewPath vp) {
         // if vp has wrong filename
         if(invalidConstructorArg(vp)) {

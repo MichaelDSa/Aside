@@ -5,8 +5,10 @@ import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 
 public class DiscardedBibliography extends AbstractDiscardedElement{
 
@@ -26,13 +28,71 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
         return !ValidateAsidePath.DISCARDED_BIBLIOGRAPHY_NAME.test(ap) || !startsWithDiscardedCategory(ap);
     }
 
-    public DiscardedBibliography(MetaPath mp) {
+    // constructors:
 
+    // arg should be DiscardedBibliography MetaPath url
+    public DiscardedBibliography(MetaPath mp) {
+        if (invalidConstructorArg(mp)) {
+            System.err.println("IllegalArgumentException.  Path must start with '.DISCARDED' MetaPath Category and end with DiscardedBibilography filename.");
+            throw new IllegalArgumentException("Invalid Path argument: " + mp);
+        }
+        setBiliographyFieldsToEmpty();
+        metaPath = mp;
+        viewPath = new ViewPath(mp);
+        fileTypeName = fileTypeName_bibliography;
+        fileNamePrefix = fileNamePrefix_discardedBibliography;
+        originalMetaPath = null;
+        originalViewPath = null;
+    }
+
+    // arg should be DiscardedBibliography ViewPath url
+    public DiscardedBibliography(ViewPath vp) {
+        if (invalidConstructorArg(vp)) {
+            System.err.println("IllegalArgumentException.  Path must start with 'DISCARDED' ViewPath Category and end with DiscardedBibilography filename.");
+            throw new IllegalArgumentException("Invalid Path argument: " + vp);
+        }
+        setBiliographyFieldsToEmpty();
+        viewPath = vp;
+        metaPath = new MetaPath(vp);
+        originalMetaPath = null;
+        originalViewPath = null;
+        fileTypeName = fileTypeName_bibliography;
+        fileNamePrefix = fileNamePrefix_discardedBibliography;
+        originalMetaPath = null;
+        originalViewPath = null;
 
     }
 
+    // arg should be a Bibliography
+    public DiscardedBibliography(Bibliography bb) {
+
+        setBiliographyFieldsToEmpty(); // in case bb fields are null
+
+        fileTypeName = fileTypeName_bibliography;
+        fileNamePrefix = fileNamePrefix_discardedBibliography;
+
+        metaPath = discardedCategory.getMetaPath().resolve(renameMetaPathFileName(bb.getMetaPath()));
+        viewPath = new ViewPath(metaPath);
+
+        originalMetaPath = bb.getMetaPath();
+        originalViewPath = bb.getViewPath();
+
+        nest = new ArrayList<>();
+
+        authors = bb.getAuthors();
+        title = bb.getTitle();
+        yearPublished = bb.getYearPublished();
+        comment = bb.getComment();
+        references = bb.getReferences();
+        isbn = bb.getIsbn();
+        doi = bb.getDoi();
+        url = bb.getUrl();
+        arXiv_ID = bb.getArXiv_ID();
+        ads_Bibcode = bb.getAds_Bibcode();
+    }
+
     // Constructor helper methods:
-    private void setFieldsToEmpty() {
+    private void setBiliographyFieldsToEmpty() {
         authors = "";
         title = "";
         yearPublished = -1;
@@ -80,63 +140,63 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
 
     // setters:
 
-    public DiscardedBibliograhy setAuthors(String authors) {
+    public DiscardedBibliography setAuthors(String authors) {
         this.authors = authors;
         return this;
     }
-    public DiscardedBibliograhy setTitle(String title) {
+    public DiscardedBibliography setTitle(String title) {
         this.title = title;
         return this;
     }
-    public DiscardedBibliograhy setYearPublished(int yearPublished) {
+    public DiscardedBibliography setYearPublished(int yearPublished) {
         this.yearPublished = yearPublished;
         return this;
     }
-    public DiscardedBibliograhy setComment(String comment) {
+    public DiscardedBibliography setComment(String comment) {
         this.comment = comment;
         return this;
     }
-    public DiscardedBibliograhy prependToComment(String comment) {
+    public DiscardedBibliography prependToComment(String comment) {
         this.comment = comment + " " + this.comment;
         return this;
     }
-    public DiscardedBibliograhy appendToComment(String comment) {
+    public DiscardedBibliography appendToComment(String comment) {
         this.comment += " " + comment;
         return this;
     }
-    public DiscardedBibliograhy setReferences(HashSet<String> references) {
+    public DiscardedBibliography setReferences(HashSet<String> references) {
         this.references = references;
         return this;
     }
-    public DiscardedBibliograhy addReferences(String ...references) {
+    public DiscardedBibliography addReferences(String ...references) {
         this.references.addAll(Arrays.asList(references));
         return this;
     }
-    public DiscardedBibliograhy removeReferences(String ...references) {
+    public DiscardedBibliography removeReferences(String ...references) {
         Arrays.asList(references).forEach(this.references::remove);
         return this;
     }
-    public DiscardedBibliograhy clearReferences() {
+    public DiscardedBibliography clearReferences() {
         this.references.clear();
         return this;
     }
-    public DiscardedBibliograhy setIsbn(String isbn) {
+    public DiscardedBibliography setIsbn(String isbn) {
         this.isbn = isbn;
         return this;
     }
-    public DiscardedBibliograhy setDoi(String doi) {
+    public DiscardedBibliography setDoi(String doi) {
         this.doi = doi;
         return this;
     }
-    public DiscardedBibliograhy setUrl(String url) {
+    public DiscardedBibliography setUrl(String url) {
         this.url = url;
         return this;
     }
-    public DiscardedBibliograhy setArXiv_ID(String arXiv_ID) {
+    public DiscardedBibliography setArXiv_ID(String arXiv_ID) {
         this.arXiv_ID = arXiv_ID;
         return this;
     }
-    public DiscardedBibliograhy setAds_Bibcode(String ads_Bibcode) {
+    public DiscardedBibliography setAds_Bibcode(String ads_Bibcode) {
         this.ads_Bibcode = ads_Bibcode;
         return this;
     }
@@ -153,5 +213,36 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
         this.originalViewPath = original;
         this.originalMetaPath = new MetaPath(originalViewPath);
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof DiscardedBibliography that)) return false;
+        if (!super.equals(o)) return false;
+        return yearPublished == that.yearPublished && Objects.equals(authors, that.authors) && Objects.equals(title, that.title) && Objects.equals(comment, that.comment) && Objects.equals(references, that.references) && Objects.equals(isbn, that.isbn) && Objects.equals(doi, that.doi) && Objects.equals(url, that.url) && Objects.equals(arXiv_ID, that.arXiv_ID) && Objects.equals(ads_Bibcode, that.ads_Bibcode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), authors, title, yearPublished, comment, references, isbn, doi, url, arXiv_ID, ads_Bibcode);
+    }
+
+    @Override
+    public String toString() {
+        return "DiscardedBibliography{" +
+                "authors='" + authors + '\'' +
+                ", title='" + title + '\'' +
+                ", yearPublished=" + yearPublished +
+                ", comment='" + comment + '\'' +
+                ", references=" + references +
+                ", isbn='" + isbn + '\'' +
+                ", doi='" + doi + '\'' +
+                ", url='" + url + '\'' +
+                ", arXiv_ID='" + arXiv_ID + '\'' +
+                ", ads_Bibcode='" + ads_Bibcode + '\'' +
+                ", metaPath=" + metaPath +
+                ", viewPath=" + viewPath +
+                ", nest=" + nest +
+                '}';
     }
 }
