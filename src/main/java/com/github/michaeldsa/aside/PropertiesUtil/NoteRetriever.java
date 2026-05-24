@@ -1,6 +1,6 @@
 package com.github.michaeldsa.aside.PropertiesUtil;
 
-import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
+import com.github.michaeldsa.aside.AsidePathElement.Note;
 
 import java.util.HashSet;
 import java.util.Properties;
@@ -32,7 +32,7 @@ public class NoteRetriever extends NotePropertiesUtil{
         return getPropAsHashSet(properties, tags_n);
     }
 
-    public void retrieve(MutableNote mn) {
+    public void retrieve(Note mn) {
         loadPropertiesFile(properties, mn.getMetaPath().getPath());
         mn.setTitle(getTitleProp(properties))
                 .setContent(getContentProp(properties))

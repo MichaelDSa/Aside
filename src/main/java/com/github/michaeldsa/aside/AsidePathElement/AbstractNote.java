@@ -22,7 +22,7 @@ public abstract class AbstractNote extends AsidePathElement {
     public abstract HashSet<String> getTo();
     public abstract HashSet<String> getFrom();
     public abstract HashSet<String> getTags();
-    public abstract Note getPreviousState();
+    public abstract ImmutableNote getPreviousState();
 
 
     // static methods:

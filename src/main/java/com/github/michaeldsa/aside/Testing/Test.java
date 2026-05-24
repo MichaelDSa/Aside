@@ -7,7 +7,7 @@ import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsidePathElement.AsidePathElement;
 import com.github.michaeldsa.aside.AsidePathElement.Category;
 import com.github.michaeldsa.aside.AsidePathElement.DiscardedNote;
-import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
+import com.github.michaeldsa.aside.AsidePathElement.Note;
 import com.github.michaeldsa.aside.Initialization.CurrentCategory;
 import com.github.michaeldsa.aside.FileTraversal.Traversers;
 import com.github.michaeldsa.aside.Ops.Create;
@@ -181,11 +181,11 @@ public class Test {
     }
 
     public static void createCategory() {
-        MutableNote in1 = new MutableNote(new MetaPath(Paths.get(".Default", ".one", ".two")));
-        MutableNote in2 = new MutableNote(new MetaPath(Paths.get(".zero",".one", ".two", ".three")));
+        Note in1 = new Note(new MetaPath(Paths.get(".Default", ".one", ".two")));
+        Note in2 = new Note(new MetaPath(Paths.get(".zero",".one", ".two", ".three")));
         Category c1 = new Category(new MetaPath(Paths.get(".Discarded", ".one", ".two", ".three")));
         Category c2 = new Category(new MetaPath(Paths.get(".zero", ".one", ".two", ".three")));
-        MutableNote noCat = new MutableNote(new MetaPath());
+        Note noCat = new Note(new MetaPath());
         AsidePathElement[] array = {in1, in2, c1, c2, noCat};
         for (AsidePathElement ape : array) {
             Create.CATEGORY.execute(ape);
@@ -195,7 +195,7 @@ public class Test {
     public static void createNote() {
         // define note
         Category fictionalCategory = new Category(new MetaPath(Paths.get(".FictionalCategory")));
-        MutableNote note1 = new MutableNote(new MetaPath())
+        Note note1 = new Note(new MetaPath())
                 .setTitle("Test Create.NOTE & Update.WRITE_NOTE_METADATA")
                 .setContent(Pretty.format(
                         "This is a re-test of Create.NOTE. The strategy has been updated, and does not depend on Update.WRITE_NOTE_METADATA. A new package fulfills writing all Notes and DiscardedElements. It is called PropertiesUtil. Create.NOTE utilizes the factory method, ProUtils.writeNote().",
@@ -204,7 +204,7 @@ public class Test {
                 .setFrom(new HashSet<>(Arrays.asList("from1", "from2", "from3")))
                 .setTags(new HashSet<>(Arrays.asList("tag1", "tag2", "tag3")));
 
-        MutableNote note2 = new MutableNote(fictionalCategory) // should fail if .FictionalCategory does not exist.
+        Note note2 = new Note(fictionalCategory) // should fail if .FictionalCategory does not exist.
                 .setTitle("Test Create.NOTE & Update.WRITE_NOTE_METADATA")
                 .setContent(Pretty.format(
                         "This is a re-test of Create.NOTE. The strategy has been updated, and does not depend on Update.WRITE_NOTE_METADATA. A new package fulfills writing all Notes and DiscardedElements. It is called PropertiesUtil. Create.NOTE utilizes the factory method, ProUtils.writeNote().",
@@ -239,7 +239,7 @@ public class Test {
 
         // Constructor test: MutableNote
         System.out.println("\nDiscardedElement mn = new DiscardedElement new MutableNote...");
-        MutableNote mn = new MutableNote(new MetaPath(Paths.get(".cat1", ".cat2", ".260322_0100_00.txt")))
+        Note mn = new Note(new MetaPath(Paths.get(".cat1", ".cat2", ".260322_0100_00.txt")))
                 .setTitle("DiscardedElement test MutableNote constructor")
                 .setContent("some content")
                 .setTo(new HashSet<>(Arrays.asList("to1", "to2", "to3")));
@@ -263,7 +263,7 @@ public class Test {
 //        System.out.println("origninal ViewPath: " + de.getNewLocationViewPath());
     }
 
-    public static MutableNote propUtils_mn = new MutableNote(new MetaPath(Paths.get(".PropUtils", ".260426_1049_00.txt")))
+    public static Note propUtils_mn = new Note(new MetaPath(Paths.get(".PropUtils", ".260426_1049_00.txt")))
         .setTitle("Test.propUtils_writeNote()")
         .setContent("This is the content of a MutableNote. The lenght of the comment must be long enough to simulate a real note. People who use Aside ntoes will be reasearching various disciplines and will be interested in the zettelkasten method of note taking and note organization. The software used must be reliable. It must made with care, and is to be used as a vehicle for the zettlekasten system of note taking")
         .setTo(new HashSet<>(Arrays.asList("260417_1723_00.txt", "260417_1724_00.txt", "260417_1725_00.txt", "260417_1726_00.txt", "260417_1727_00.txt", "260417_1728_00.txt", "260417_1729_00.txt")))
@@ -281,7 +281,7 @@ public class Test {
     }
 
     public static void propUtils_writeNoteViewPath() {
-        MutableNote mn = new MutableNote(new MetaPath(Paths.get(".PropUtils", ".260420_1059_01.txt")))
+        Note mn = new Note(new MetaPath(Paths.get(".PropUtils", ".260420_1059_01.txt")))
                 .setTitle("Test.propUtils_writeNoteViewPath()")
                 .setContent("This is a test of propUtils.writeNote_ViewPath(). The sonctent has to simulate the length a real user would write in the process of writing zettlekasten notes for a research paper or a thesis. Ideally a user would be using Aside while researching, and would not call this method, but a higher level abstraction in the form of a command-line UI system. I hope to provide an elegant yet evergreen and portable solution")
                 .setTo(new HashSet<>(Arrays.asList("260417_1723_00.txt", "260417_1724_00.txt", "260417_1725_00.txt", "260417_1726_00.txt", "260417_1727_00.txt", "260417_1728_00.txt", "260417_1729_00.txt")))
@@ -294,7 +294,7 @@ public class Test {
     }
 
     public static void propUtils_writeDiscardedElementViewPath() {
-        MutableNote mn = new MutableNote(new MetaPath(Paths.get(".PropUtils", ".260420_1059_02.txt")))
+        Note mn = new Note(new MetaPath(Paths.get(".PropUtils", ".260420_1059_02.txt")))
                 .setTitle("Test.propUtils_writeNoteViewPath()")
                 .setContent("This is a test of propUtils.writeNote_ViewPath(). The sonctent has to simulate the length a real user would write in the process of writing zettlekasten notes for a research paper or a thesis. Ideally a user would be using Aside while researching, and would not call this method, but a higher level abstraction in the form of a command-line UI system. I hope to provide an elegant yet evergreen and portable solution")
                 .setTo(new HashSet<>(Arrays.asList("260417_1723_00.txt", "260417_1724_00.txt", "260417_1725_00.txt", "260417_1726_00.txt", "260417_1727_00.txt", "260417_1728_00.txt", "260417_1729_00.txt")))
@@ -307,7 +307,7 @@ public class Test {
     }
 
     public static void propUtils_readNote() {
-        MutableNote mn = new MutableNote(new MetaPath(Paths.get(".PropUtils", ".260417_1722_20.txt")));
+        Note mn = new Note(new MetaPath(Paths.get(".PropUtils", ".260417_1722_20.txt")));
         // stdout before PropUtils.readNote(mn):
         System.out.println("BEFORE:\n" + mn);
         PropUtils.retrieveNote(mn);
@@ -315,7 +315,7 @@ public class Test {
     }
 
     public static void propUtils_readDiscardedElement() {
-        MutableNote mn = new MutableNote(new MetaPath(Paths.get(".PropUtils", ".260417_1722_20.txt")));
+        Note mn = new Note(new MetaPath(Paths.get(".PropUtils", ".260417_1722_20.txt")));
         DiscardedNote de = new DiscardedNote(mn).setMessage("This is a test of propUtils_readDiscardedElement()");
         System.out.println("BEFORE:\n" + de);
         PropUtils.retrieveDiscardedElement(de);
@@ -332,58 +332,58 @@ public class Test {
 
         /* Write a note from the future. generateNewNoteName() should
         avoid duplicating these filenames: */
-        MutableNote mn0 = new MutableNote(new MetaPath(Paths.get(".260426_1822_00.txt")))
+        Note mn0 = new Note(new MetaPath(Paths.get(".260426_1822_00.txt")))
                 .setTitle("Note from future");
         PropUtils.writeNote(mn0);
-        MutableNote mn00 = new MutableNote(new MetaPath(Paths.get(".260426_1822_04.txt")))
+        Note mn00 = new Note(new MetaPath(Paths.get(".260426_1822_04.txt")))
                 .setTitle("Note from future");
         PropUtils.writeNote(mn00);
-        MutableNote mn1 = new MutableNote(anti_redundant)
+        Note mn1 = new Note(anti_redundant)
                 .setTitle("Test.abstractNote_anti_redundant_naming() Note1")
                 .setContent("Testing AbstractNote.generateNoteName() redundancy");
         System.out.println("mn1: " + mn1.getMetaPath());
 
-        MutableNote mn2 = new MutableNote(anti_redundant2)
+        Note mn2 = new Note(anti_redundant2)
                 .setTitle("Test.abstractNote_anti_redundant_naming() Note2")
                 .setContent("Testing AbstractNote.generateNoteName() redundancy");
         System.out.println("mn2: " + mn2.getMetaPath());
 
-        MutableNote mn3 = new MutableNote(anti_redundant)
+        Note mn3 = new Note(anti_redundant)
                 .setTitle("Test.abstractNote_anti_redundant_naming() Note3")
                 .setContent("Testing AbstractNote.generateNoteName() redundancy");
         System.out.println("mn3: " + mn3.getMetaPath());
 
-        MutableNote mn4 = new MutableNote(anti_redundant2)
+        Note mn4 = new Note(anti_redundant2)
                 .setTitle("Test.abstractNote_anti_redundant_naming() Note4")
                 .setContent("Testing AbstractNote.generateNoteName() redundancy");
         System.out.println("mn4: " + mn4.getMetaPath());
 
-        MutableNote mn5 = new MutableNote(anti_redundant)
+        Note mn5 = new Note(anti_redundant)
                 .setTitle("Test.abstractNote_anti_redundant_naming() Note5")
                 .setContent("Testing AbstractNote.generateNoteName() redundancy");
         System.out.println("mn5: " + mn5.getMetaPath());
 
-        MutableNote mn6 = new MutableNote(anti_redundant)
+        Note mn6 = new Note(anti_redundant)
                 .setTitle("Test.abstractNote_anti_redundant_naming() Note6")
                 .setContent("Testing AbstractNote.generateNoteName() redundancy");
         System.out.println("mn6: " + mn6.getMetaPath());
 
-        MutableNote mn7 = new MutableNote(anti_redundant)
+        Note mn7 = new Note(anti_redundant)
                 .setTitle("Test.abstractNote_anti_redundant_naming() Note7")
                 .setContent("Testing AbstractNote.generateNoteName() redundancy");
         System.out.println("mn7: " + mn7.getMetaPath());
 
-        MutableNote mn8 = new MutableNote(anti_redundant)
+        Note mn8 = new Note(anti_redundant)
                 .setTitle("Test.abstractNote_anti_redundant_naming() Note8")
                 .setContent("Testing AbstractNote.generateNoteName() redundancy");
         System.out.println("mn8: " + mn8.getMetaPath());
 
-        MutableNote mn9 = new MutableNote(anti_redundant)
+        Note mn9 = new Note(anti_redundant)
                 .setTitle("Test.abstractNote_anti_redundant_naming() Note9")
                 .setContent("Testing AbstractNote.generateNoteName() redundancy");
         System.out.println("mn9: " + mn9.getMetaPath());
 
-        MutableNote mn10 = new MutableNote(anti_redundant)
+        Note mn10 = new Note(anti_redundant)
                 .setTitle("Test.abstractNote_anti_redundant_naming() Note10")
                 .setContent("Testing AbstractNote.generateNoteName() redundancy");
         System.out.println("mn10: " + mn10.getMetaPath());

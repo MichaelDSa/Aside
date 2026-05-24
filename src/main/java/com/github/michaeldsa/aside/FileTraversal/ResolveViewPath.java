@@ -3,7 +3,7 @@ package com.github.michaeldsa.aside.FileTraversal;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsidePathElement.DiscardedNote;
-import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
+import com.github.michaeldsa.aside.AsidePathElement.Note;
 import com.github.michaeldsa.aside.AsidePathElement.RestrictedLists;
 import com.github.michaeldsa.aside.PropertiesUtil.PropUtils;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
@@ -99,7 +99,7 @@ public class ResolveViewPath extends Traverser{
             PropUtils.writeDiscardedElement_ViewPath(de);
         } else {
             // if the file parent is not .DISCARDED
-            MutableNote mn = new MutableNote(new MetaPath(file));
+            Note mn = new Note(new MetaPath(file));
             PropUtils.retrieveNote(mn);
             PropUtils.writeNote_ViewPath(mn);
         }

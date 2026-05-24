@@ -92,7 +92,7 @@ public class DiscardedNote extends AbstractDiscardedElement {
         tags = new HashSet<>();
     }
 
-    public DiscardedNote(MutableNote mn) {
+    public DiscardedNote(Note mn) {
         // validation not necessary, since MutableNote filename is regulated.
 
         fileTypeName = fileTypeName_note;

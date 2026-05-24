@@ -2,7 +2,7 @@ package com.github.michaeldsa.aside.PropertiesUtil;
 
 import com.github.michaeldsa.aside.AsidePathElement.AbstractNote;
 import com.github.michaeldsa.aside.AsidePathElement.DiscardedNote;
-import com.github.michaeldsa.aside.AsidePathElement.MutableNote;
+import com.github.michaeldsa.aside.AsidePathElement.Note;
 
 public class PropUtils {
     // reader classes
@@ -13,7 +13,7 @@ public class PropUtils {
     private static final DiscardedElementWriter discarded_w = new DiscardedElementWriter();
 
     // readers:
-    public static void retrieveNote(MutableNote mn) {
+    public static void retrieveNote(Note mn) {
         note_r.retrieve(mn);
     }
     public static void retrieveDiscardedElement(DiscardedNote de) {

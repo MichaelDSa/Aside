@@ -3,68 +3,117 @@ package com.github.michaeldsa.aside.AsidePathElement;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
+import java.util.*;
 
 public class Note extends AbstractNote{
-    private final MetaPath metaPath;
-    private final ViewPath viewPath;
-    private final String title;
-    private final String content;
-    private final HashSet<String> to;
-    private final HashSet<String> from;
-    private final HashSet<String> tags;
-    private final Category stepParent;
-    // ImmutableNote previousState;
-    public Note(MutableNote mn) {
-        // if somehow mn has wrong filename
+    private ImmutableNote previousState;
+
+
+    // constructors:
+    public Note(MetaPath mp) {
+        // if filename belongs to bibliography or DiscardedElement:
+        if (argumentIsInvalid(mp)) {
+            System.err.println("IllegalArgumentException: " + mp);
+            throw new IllegalArgumentException("Invalid Path argument (This is either a DiscardedElement or a Bibliography filename): " + mp);
+        }
+        if (AsidePathElement.endsWithNoteName(mp)) {
+            metaPath = mp;
+        } else {
+            metaPath = AsidePathElement.generateUniqueFileName(mp);
+        }
+        metaPath = AsidePathElement.filterMetaPathElements(metaPath);
+
+        viewPath = new ViewPath(metaPath);
+        stepParent = null;
+        nest = new ArrayList<>();
+        previousState = null;
+        to = new HashSet<>();
+        from = new HashSet<>();
+        tags = new HashSet<>();
+    }
+    public Note(ViewPath vp) {
+        // if filename belongs to bibliography or DiscardedElement:
+        if (argumentIsInvalid(vp)) {
+            System.err.println("IllegalArgumentException: " + vp);
+            throw new IllegalArgumentException("Invalid Path argument (This is either a DiscardedElement or a Bibliography filename):  " + vp);
+        }
+        if (AsidePathElement.endsWithNoteName(vp)) {
+            viewPath = vp;
+        } else {
+            viewPath = new ViewPath(AsidePathElement.generateUniqueFileName(new MetaPath(vp)));
+        }
+        viewPath = AsidePathElement.filterViewPathElements(viewPath);
+
+        metaPath = new MetaPath(viewPath);
+        stepParent = null;
+        nest = new ArrayList<>();
+        previousState = null;
+        to = new HashSet<>();
+        from = new HashSet<>();
+        tags = new HashSet<>();
+    }
+    public Note(Category c){
+        // if filename belongs to bibliography or DiscardedElement:
+        if (argumentIsInvalid(c.getMetaPath())) {
+            System.err.println("IllegalArgumentException: " + c.getMetaPath());
+            throw new IllegalArgumentException("Invalid Path argument (This is either a DiscardedElement or a Bibliography filename):  " + c.getMetaPath());
+        }
+        metaPath = AsidePathElement.filterMetaPathElements(c.getMetaPath());
+        metaPath = AsidePathElement.generateUniqueFileName(c.getMetaPath());
+        viewPath = new ViewPath(metaPath);
+        stepParent = (Category) c.getStepParentCategory();
+        nest = new ArrayList<>();
+        previousState = null;
+        to = new HashSet<>();
+        from = new HashSet<>();
+        tags = new HashSet<>();
+    }
+    public Note(Note mn){
+        // if filename belongs to bibliography or DiscardedElement:
         if (argumentIsInvalid(mn.getMetaPath())) {
             System.err.println("IllegalArgumentException: " + mn.getMetaPath());
             throw new IllegalArgumentException("Invalid Path argument " + mn.getMetaPath());
         }
-        this.metaPath = mn.metaPath;
-        this.viewPath = mn.viewPath;
-        this.nest = mn.getNest();
-        this.stepParent = (Category) mn.getStepParentCategory();
-        this.title = mn.getTitle();
-        this.content = mn.getContent();
-        this.to = new HashSet<>(Collections.unmodifiableSet(mn.getTo()));
-        this.from = new HashSet<>(Collections.unmodifiableSet(mn.getFrom()));
-        this.tags = new HashSet<>(Collections.unmodifiableSet(mn.getTags()));
+        metaPath = mn.getMetaPath();
+        viewPath = new ViewPath(metaPath);
+        stepParent = (Category) mn.getStepParentCategory();
+        nest = mn.getNest();
+        previousState = new ImmutableNote(mn);
+        title = mn.getTitle();
+        content = mn.getContent();
+        to = mn.getTo();
+        from = mn.getFrom();
+        tags = mn.getTags();
     }
+
     @Override
     public String getTitle() {
-        return this.title;
+        return title;
     }
 
     @Override
     public String getContent() {
-        return this.content;
+        return content;
     }
 
     @Override
     public HashSet<String> getTo() {
-        return this.to;
+        return to;
     }
 
     @Override
     public HashSet<String> getFrom() {
-        return this.from;
+        return from;
     }
 
     @Override
     public HashSet<String> getTags() {
-        return this.tags;
+        return tags;
     }
 
     @Override
-    public MetaPath getMetaPath() {
-        return this.metaPath;
-    }
-    @Override
-    public ViewPath getViewPath() {
-        return this.viewPath;
+    public ImmutableNote getPreviousState() {
+        return previousState;
     }
 
     @Override
@@ -74,35 +123,128 @@ public class Note extends AbstractNote{
 
     @Override
     public AbstractCategory getStepParentCategory() {
-        return this.stepParent;
+        return stepParent;
     }
 
     @Override
     public void setStepParentCategory(AbstractCategory newStepParent) {
-        return;
+        stepParent = (Category) newStepParent;
     }
 
-    @Override
-    public Note getPreviousState() {
+    public Note setPreviousState() {
+        previousState = new ImmutableNote(this);
         return this;
     }
 
     @Override
     public boolean hasStepParent() {
-        return this.stepParent != null;
+        return stepParent != null;
+    }
+
+    // setters that replace existing values
+    public Note setStepParents(Category stepParent) {
+        setStepParentCategory(stepParent);
+        return this;
+    }
+    public Note setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+    public Note setContent(String content) {
+        this.content = content;
+        return this;
+    }
+    public Note setTo(HashSet<String> to) {
+        this.to = to;
+        return this;
+    }
+    public Note setFrom(HashSet<String> from) {
+        this.from = from;
+        return this;
+    }
+    public Note setTags(HashSet<String> tags) {
+        this.tags = tags;
+        return this;
+    }
+    // setters that add to existing values
+    public Note appendToTitle(String title) {
+        this.title += " " + title;
+        return this;
+    }
+    public Note prependToTitle(String title) {
+        this.title = title + " " + this.title;
+        return this;
+    }
+    public Note appendToContent(String content) {
+        this.content += " " + content;
+        return this;
+    }
+    public Note prependToContent(String content) {
+        this.content = content + " " + this.content;
+        return this;
+    }
+    public Note addTo(String ... to) {
+        this.to.addAll(Arrays.asList(to));
+        return this;
+    }
+    public Note addTo(HashSet<String> to) {
+        this.to.addAll(to);
+        return this;
+    }
+    public Note addFrom(String ... from) {
+        this.from.addAll(Arrays.asList(from));
+        return this;
+    }
+    public Note addFrom(HashSet<String> from) {
+        this.from.addAll(from);
+        return this;
+    }
+    public Note addTags(String ... tags) {
+        this.tags.addAll(Arrays.asList(tags));
+        return this;
+    }
+    public Note addTags(HashSet<String> tags) {
+        this.tags.addAll(tags);
+        return this;
+    }
+    // setters that remove from existing values
+    public Note removeTo(String ... to) {
+        Arrays.asList(to).forEach(this.to::remove);
+        return this;
+    }
+    public Note removeTo(HashSet<String> to) {
+        this.to.removeAll(to);
+        return this;
+    }
+    public Note removeFrom(String ... from) {
+        Arrays.asList(from).forEach(this.from::remove);
+        return this;
+    }
+    public Note removeFrom(HashSet<String> from) {
+        this.from.removeAll(from);
+        return this;
+    }
+    public Note removeTags(String ... tags) {
+        Arrays.asList(tags).forEach(this.tags::remove);
+        return this;
+    }
+    public Note removeTags(HashSet<String> tags) {
+        this.tags.removeAll(tags);
+        return this;
     }
 
     @Override
     public String toString() {
-        return "ImmutableNote{" +
-                "metaPath=" + metaPath +
+        return "MutableNote{" +
+                "stepParent=" + stepParent +
+                ", previousState=" + previousState +
                 ", viewPath=" + viewPath +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", to=" + to +
-                ", from=" + from +
+                ", metaPath=" + metaPath +
                 ", tags=" + tags +
-                ", stepParent=" + this.stepParent +
+                ", from=" + from +
+                ", to=" + to +
+                ", content='" + content + '\'' +
+                ", title='" + title + '\'' +
                 '}';
     }
 
@@ -110,11 +252,11 @@ public class Note extends AbstractNote{
     public boolean equals(Object o) {
         if (!(o instanceof Note that)) return false;
         if (!super.equals(o)) return false;
-        return Objects.equals(metaPath, that.metaPath) && Objects.equals(viewPath, that.viewPath) && Objects.equals(title, that.title) && Objects.equals(content, that.content) && Objects.equals(to, that.to) && Objects.equals(from, that.from) && Objects.equals(tags, that.tags) && Objects.equals(stepParent, that.stepParent);
+        return Objects.equals(stepParent, that.stepParent) && Objects.equals(previousState, that.previousState);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), metaPath, viewPath, title, content, to, from, tags, stepParent);
+        return Objects.hash(super.hashCode(), stepParent, previousState);
     }
 }
