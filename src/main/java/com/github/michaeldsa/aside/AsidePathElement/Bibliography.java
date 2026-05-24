@@ -4,89 +4,110 @@ import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
-import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 
 public class Bibliography extends AbstractBibliography {
 
     private ImmutableBibliography previousState;
 
 
-    public Bibliography(MetaPath mp, String title) {
-        if (argumentIsInvalid(mp)) {
+    public Bibliography(MetaPath mp) {
+        /* client can use metaPath_root to create a new bibliography
+        in the default bibliography category. */
+        if (mp.equals(new MetaPath())) {
+            mp = bibliographyCategory.getMetaPath().resolve(mp);
+        }
+        /* mp must start with BIBLIOGRAPHY category and must end
+        with either a bibliography filename or no filename. */
+        if (AbstractBibliography.argumentIsInvalid(mp)) {
             System.err.println("InvalidArgumentException");
             throw new IllegalArgumentException("Invalid Path argument: " + mp);
         }
 
-        setFieldsToEmpty();
-
-        // ensure that metaPath starts with the defined Bibliography directory.
-        metaPath = mp.startsWith(RestrictedLists.getBibliographyCategory().getMetaPath())
-                ? mp
-                : RestrictedLists.getBibliographyCategory().getMetaPath().resolve(mp);
-
-        // ensure that metaPath ends with a Bibliography filename.
+        // AsidePathElement fields:
+        /* generate bibliography filename is necessary */
         metaPath = ValidateAsidePath.CATEGORY_NAME.test(metaPath)
                 ? AbstractBibliography.generateNewBibliographyFileName(metaPath)
                 : metaPath;
-
         viewPath = new ViewPath(mp);
-        this.title = title;
+        nest = new ArrayList<>();
+
+
+        // AbstractBibliography fields:
         stepParent = null;
+        setBibFieldsToEmpty();
+
+        // this class' fields:
+        previousState = null;
+
     }
-    public Bibliography(ViewPath vp, String title) {
-        if (argumentIsInvalid(vp)) {
+    public Bibliography(ViewPath vp) {
+        /* client can use viewPath_root to create a new bibliography
+        in the default bibliography category. */
+        if (vp.equals(new ViewPath())) {
+            vp = bibliographyCategory.getViewPath().resolve(vp);
+        }
+        /* vp must start with BIBLIOGRAPHY category and must end
+        with either a bibliography filename or no filename. */
+        if (AbstractBibliography.argumentIsInvalid(vp)) {
             System.err.println("InvalidArgumentException");
             throw new IllegalArgumentException("Invalid Path argument: " + vp);
         }
 
-        setFieldsToEmpty();
-
-        // ensure that viewPath starts with the defined Bibliography directgory
-        viewPath = vp.startsWith(RestrictedLists.getBibliographyCategory().getViewPath())
-                ? vp
-                : RestrictedLists.getBibliographyCategory().getViewPath().resolve(vp);
-
-        // ensure that viewPath ends with a Bibliography filename
+        // AsidePathElement fields:
+        /* ensure that viewPath ends with a Bibliography filename */
         viewPath = ValidateAsidePath.CATEGORY_NAME.test(viewPath)
                 ? AbstractBibliography.generateNewBibliographyFileName(viewPath)
                 : viewPath;
-
         metaPath = new MetaPath(vp);
-        this.title = title;
+        nest = new ArrayList<>();
+
+        // AbstractBibliography fields:
         stepParent = null;
+        setBibFieldsToEmpty();
+
+        // this class' fields:
+        previousState = null;
+
     }
-    public Bibliography(BibliographyCategory bc, String title) {
-        if (argumentIsInvalid(bc.getMetaPath())) {
+    public Bibliography(BibliographyCategory bc) {
+        /* unlikely, but arg can fail if cast to BibliographyCategory */
+        if (AbstractBibliography.argumentIsInvalid(bc.getMetaPath())) {
             System.err.println("InvalidArgumentException");
             throw new IllegalArgumentException("Invalid Path argument: " + bc.getMetaPath());
         }
 
-        setFieldsToEmpty();
-
-        // ensure (redundantly, i know.) that metaPath startw with defined Bibliography directory
-        metaPath = bc.getMetaPath().startsWith(RestrictedLists.getBibliographyCategory().getMetaPath())
-                ? bc.getMetaPath()
-                : RestrictedLists.getBibliographyCategory().getMetaPath().resolve(bc.getMetaPath());
-
-        // ensure that metaPath ends with a Bibliography filename.
+        // AsidePathElement fields:
+        /* ensure that metaPath ends with a Bibliography filename.*/
         metaPath = ValidateAsidePath.CATEGORY_NAME.test(metaPath)
                 ? AbstractBibliography.generateNewBibliographyFileName(metaPath)
                 : metaPath;
-
         viewPath = new ViewPath(bc.getMetaPath());
-        this.title = title;
+        nest = new ArrayList<>();
+
+        // AbstractBibliography fields:
         stepParent = (BibliographyCategory) bc.getStepParentCategory();
+        setBibFieldsToEmpty();
+
+        // this class' fields:
+        previousState = null;
     }
     public Bibliography(Bibliography bb) {
-        if (argumentIsInvalid(bb.getMetaPath())) {
+        /* unlikely, but arg can fail if cast to Bibliography */
+        if (AbstractBibliography.argumentIsInvalid(bb.getMetaPath())) {
             System.err.println("InvalidArgumentException");
             throw new IllegalArgumentException("Invalid Path argument: " + bb.getMetaPath());
         }
 
+        // AsidePathElement fields:
         metaPath = bb.getMetaPath();
         viewPath = bb.getViewPath();
+        nest = bb.getNest();
+
+        // AbstractBibliography fields:
         stepParent = (BibliographyCategory) bb.getStepParentCategory();
 
         authors = bb.getAuthors();
@@ -99,11 +120,14 @@ public class Bibliography extends AbstractBibliography {
         url = bb.getUrl();
         arXiv_ID = bb.getArXiv_ID();
         ads_Bibcode = bb.getAds_Bibcode();
+
+        // this class' fields:
+        previousState = new ImmutableBibliography(bb);
     }
 
 
     // Constructor helper methods:
-    private void setFieldsToEmpty() {
+    private void setBibFieldsToEmpty() {
         authors = "";
         title = "";
         yearPublished = -1;
@@ -168,6 +192,11 @@ public class Bibliography extends AbstractBibliography {
         return ads_Bibcode;
     }
 
+    public Bibliography setPreviousState() {
+        previousState = new ImmutableBibliography(this);
+        return this;
+    }
+
     // setters:
     public Bibliography setAuthors(String authors) {
         this.authors = authors;
@@ -230,5 +259,31 @@ public class Bibliography extends AbstractBibliography {
         return this;
     }
 
+    public ImmutableBibliography getPreviousState() {
+        return previousState;
+    }
 
+    // booleans:
+    public boolean hasPreviousState() {
+        return previousState != null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Bibliography that)) return false;
+        if (!super.equals(o)) return false;
+        return Objects.equals(previousState, that.previousState);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), previousState);
+    }
+
+    @Override
+    public String toString() {
+        return "Bibliography{" +
+                "previousState=" + previousState +
+                '}';
+    }
 }

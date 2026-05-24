@@ -8,8 +8,12 @@ import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
+import java.util.Objects;
 
 public abstract class AbstractBibliography extends AsidePathElement {
+
+    protected static BibliographyCategory bibliographyCategory = RestrictedLists.getBibliographyCategory();
+
     protected BibliographyCategory stepParent;
 
     private static final String m_prefix = ".b";
@@ -40,36 +44,26 @@ public abstract class AbstractBibliography extends AsidePathElement {
 
 
     // static methods:
-    /* AsidePath cannot start with DISCARDED or DEFAULT. */
-    private static boolean startsWithWrongDir(AsidePath ap) {
-        String m_string = "", v_string = "";
-        if(ap instanceof MetaPath mp) {
-            m_string = mp.getPath().toString();
-            v_string = new ViewPath(mp).getPath().toString();
-        } else if (ap instanceof ViewPath vp) {
-            v_string = vp.getPath().toString();
-            m_string = new MetaPath(vp).getPath().toString();
-        }
-        Path m_dis = RestrictedLists.getDiscardedCategory().getMetaPath().getPath();
-        Path v_dis = RestrictedLists.getDiscardedCategory().getViewPath().getPath();
-        Path m_def = RestrictedLists.getDefaultCategory().getMetaPath().getPath();
-        Path v_def = RestrictedLists.getDefaultCategory().getViewPath().getPath();
-        Path m_path = Paths.get(m_string);
-        Path v_path = Paths.get(v_string);
 
-        return m_path.startsWith(m_dis)
-                || v_path.startsWith(v_dis)
-                || m_path.startsWith(m_def)
-                || v_path.startsWith(v_def);
+    // AsidePath must start with bibliographyCategory.
+    private static boolean startsWithBibliographyCategory(AsidePath ap) {
+        boolean success = false;
+        if(ap instanceof MetaPath mp) {
+            success = mp.startsWith(bibliographyCategory.getMetaPath());
+        } else if (ap instanceof ViewPath vp) {
+            success = vp.startsWith(bibliographyCategory.getMetaPath());
+        }
+        return success;
     }
 
     // must end with a valid category filename, or a valid bibliography filename
     private static boolean noFileNameOrHasBibFileName(AsidePath ap) {
         return ValidateAsidePath.CATEGORY_NAME.test(ap) || ValidateAsidePath.BIBLIOGRAPHY_NAME.test(ap);
     }
+
     // determine if constructor should throw an IllegalArgumentException.
     protected static boolean argumentIsInvalid(AsidePath ap) {
-        return startsWithWrongDir(ap) || !noFileNameOrHasBibFileName(ap);
+        return startsWithBibliographyCategory(ap) || !noFileNameOrHasBibFileName(ap);
     }
 
     protected static MetaPath generateNewBibliographyFileName(MetaPath parent) {
@@ -103,5 +97,38 @@ public abstract class AbstractBibliography extends AsidePathElement {
     @Override
     public boolean hasStepParent() {
         return stepParent != null;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof AbstractBibliography that)) return false;
+        if (!super.equals(o)) return false;
+        return yearPublished == that.yearPublished && Objects.equals(stepParent, that.stepParent) && Objects.equals(authors, that.authors) && Objects.equals(title, that.title) && Objects.equals(comment, that.comment) && Objects.equals(references, that.references) && Objects.equals(isbn, that.isbn) && Objects.equals(doi, that.doi) && Objects.equals(url, that.url) && Objects.equals(arXiv_ID, that.arXiv_ID) && Objects.equals(ads_Bibcode, that.ads_Bibcode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), stepParent, authors, title, yearPublished, comment, references, isbn, doi, url, arXiv_ID, ads_Bibcode);
+    }
+
+    @Override
+    public String toString() {
+        return "AbstractBibliography{" +
+                "stepParent=" + stepParent +
+                ", authors='" + authors + '\'' +
+                ", title='" + title + '\'' +
+                ", yearPublished=" + yearPublished +
+                ", comment='" + comment + '\'' +
+                ", references=" + references +
+                ", isbn='" + isbn + '\'' +
+                ", doi='" + doi + '\'' +
+                ", url='" + url + '\'' +
+                ", arXiv_ID='" + arXiv_ID + '\'' +
+                ", ads_Bibcode='" + ads_Bibcode + '\'' +
+                ", metaPath=" + metaPath +
+                ", viewPath=" + viewPath +
+                ", nest=" + nest +
+                '}';
     }
 }
