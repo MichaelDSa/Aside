@@ -36,13 +36,20 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
             System.err.println("IllegalArgumentException.  Path must start with '.DISCARDED' MetaPath Category and end with DiscardedBibilography filename.");
             throw new IllegalArgumentException("Invalid Path argument: " + mp);
         }
-        setBiliographyFieldsToEmpty();
+
+        // AsidePathElement fields:
         metaPath = mp;
         viewPath = new ViewPath(mp);
+        nest = new ArrayList<>();
+
+        // AbstractDiscardedElement fields:
         fileTypeName = fileTypeName_bibliography;
         fileNamePrefix = fileNamePrefix_discardedBibliography;
         originalMetaPath = null;
         originalViewPath = null;
+
+        // This class' fields:
+        setBiliographyFieldsToEmpty();
     }
 
     // arg should be DiscardedBibliography ViewPath url
@@ -51,34 +58,43 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
             System.err.println("IllegalArgumentException.  Path must start with 'DISCARDED' ViewPath Category and end with DiscardedBibilography filename.");
             throw new IllegalArgumentException("Invalid Path argument: " + vp);
         }
-        setBiliographyFieldsToEmpty();
+
+        // AsidePathElement fields:
         viewPath = vp;
         metaPath = new MetaPath(vp);
+        nest = new ArrayList<>();
+
+        // AbstractDiscardedElement fields:
         originalMetaPath = null;
         originalViewPath = null;
         fileTypeName = fileTypeName_bibliography;
         fileNamePrefix = fileNamePrefix_discardedBibliography;
-        originalMetaPath = null;
-        originalViewPath = null;
 
+        // This class' fileds:
+        setBiliographyFieldsToEmpty();
     }
 
     // arg should be a Bibliography
     public DiscardedBibliography(Bibliography bb) {
+        /* unlikely, but arg can fail if cast to Bibliography */
+        if (invalidConstructorArg(bb.getMetaPath())) {
+            System.err.println("IllegalArgumentException.  Path must start with 'DISCARDED' ViewPath Category and end with DiscardedBibilography filename.");
+            throw new IllegalArgumentException("Invalid Path argument: " + bb.getMetaPath());
+        }
 
-        setBiliographyFieldsToEmpty(); // in case bb fields are null
-
-        fileTypeName = fileTypeName_bibliography;
-        fileNamePrefix = fileNamePrefix_discardedBibliography;
-
+        // AsidePathElement fields:
         metaPath = discardedCategory.getMetaPath().resolve(renameMetaPathFileName(bb.getMetaPath()));
         viewPath = new ViewPath(metaPath);
+        nest = new ArrayList<>();
 
+        // AbstractDiscardedElement fields:
+        fileTypeName = fileTypeName_bibliography;
+        fileNamePrefix = fileNamePrefix_discardedBibliography;
         originalMetaPath = bb.getMetaPath();
         originalViewPath = bb.getViewPath();
 
-        nest = new ArrayList<>();
-
+        // This class' fields:
+        setBiliographyFieldsToEmpty(); // in case bb fields are null
         authors = bb.getAuthors();
         title = bb.getTitle();
         yearPublished = bb.getYearPublished();
