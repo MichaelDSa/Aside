@@ -95,8 +95,8 @@ public class ResolveViewPath extends Traverser{
 
         if (file.startsWith(discarded)) {
             DiscardedNote de = new DiscardedNote(new MetaPath(file));
-            PropUtils.retrieveDiscardedElement(de);
-            PropUtils.writeDiscardedElement_ViewPath(de);
+            PropUtils.retrieveDiscardedNote(de);
+            PropUtils.writeDiscardedNote_ViewPath(de);
         } else {
             // if the file parent is not .DISCARDED
             Note mn = new Note(new MetaPath(file));

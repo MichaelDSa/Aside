@@ -18,7 +18,7 @@ public class Bibliography extends AbstractBibliography {
         /* client can use metaPath_root to create a new bibliography
         in the default bibliography category. */
         if (mp.equals(new MetaPath())) {
-            mp = bibliographyCategory.getMetaPath().resolve(mp);
+            mp = bibliographyCategory_MetaPath.resolve(mp);
         }
         /* mp must start with BIBLIOGRAPHY category and must end
         with either a bibliography filename or no filename. */
@@ -29,10 +29,10 @@ public class Bibliography extends AbstractBibliography {
 
         // AsidePathElement fields:
         /* generate bibliography filename is necessary */
-        metaPath = ValidateAsidePath.CATEGORY_NAME.test(metaPath)
-                ? AbstractBibliography.generateNewBibliographyFileName(metaPath)
-                : metaPath;
-        viewPath = new ViewPath(mp);
+        metaPath = ValidateAsidePath.CATEGORY_NAME.test(mp)
+                ? AbstractBibliography.generateNewBibliographyFileName(mp)
+                : mp;
+        viewPath = new ViewPath(metaPath);
         nest = new ArrayList<>();
 
 
@@ -48,7 +48,7 @@ public class Bibliography extends AbstractBibliography {
         /* client can use viewPath_root to create a new bibliography
         in the default bibliography category. */
         if (vp.equals(new ViewPath())) {
-            vp = bibliographyCategory.getViewPath().resolve(vp);
+            vp = bibliographyCategory_ViewPath.resolve(vp);
         }
         /* vp must start with BIBLIOGRAPHY category and must end
         with either a bibliography filename or no filename. */
@@ -59,10 +59,10 @@ public class Bibliography extends AbstractBibliography {
 
         // AsidePathElement fields:
         /* ensure that viewPath ends with a Bibliography filename */
-        viewPath = ValidateAsidePath.CATEGORY_NAME.test(viewPath)
-                ? AbstractBibliography.generateNewBibliographyFileName(viewPath)
-                : viewPath;
-        metaPath = new MetaPath(vp);
+        viewPath = ValidateAsidePath.CATEGORY_NAME.test(vp)
+                ? AbstractBibliography.generateNewBibliographyFileName(vp)
+                : vp;
+        metaPath = new MetaPath(viewPath);
         nest = new ArrayList<>();
 
         // AbstractBibliography fields:

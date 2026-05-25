@@ -2,6 +2,8 @@ package com.github.michaeldsa.aside.Testing;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.AsidePathElement.Bibliography;
+import com.github.michaeldsa.aside.AsidePathElement.DiscardedBibliography;
 import com.github.michaeldsa.aside.AsidePathElement.DiscardedNote;
 import com.github.michaeldsa.aside.AsidePathElement.Note;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
@@ -131,13 +133,15 @@ public class TestRunner {
             System.out.println(tesde);
 
 
-            Note n__ = new Note(new MetaPath()).setTitle("A title for n__")
-                    .setContent("some content for n__")
-                    .addTo("260524_2222_02.txt","260524_2224_32.txt")
-                    .addFrom("260524_2222_02.txt", "260524_2224_32.txt")
-                    .addTags("Dune", "Dune_pg.133")
-                    .addBibliographies(".b260524_2229_43.txt");
-            System.out.println("NOTE TO STRING LOOKS LIKE THIS:\n" + n__);
+            DiscardedBibliography db = new DiscardedBibliography(new Bibliography(new MetaPath())
+                    .setTitle("Dune by F.Herbert")
+                    .setYearPublished(1975)
+                    .setAuthors("Frank Herbert")
+                    .addReferences(".260524_2338_07.txt")
+            );
+
+            System.out.println("\n" + db);
+
 
 
 

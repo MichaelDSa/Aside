@@ -240,9 +240,11 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
                 ", url='" + url + '\'' +
                 ", arXiv_ID='" + arXiv_ID + '\'' +
                 ", ads_Bibcode='" + ads_Bibcode + '\'' +
+                ", discardedCategory=" + discardedCategory +
+                ", originalMetaPath=" + originalMetaPath +
+                ", originalViewPath=" + originalViewPath +
                 ", metaPath=" + metaPath +
                 ", viewPath=" + viewPath +
-                ", nest=" + nest +
                 '}';
     }
 }

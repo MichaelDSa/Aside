@@ -277,7 +277,7 @@ public class Test {
     }
     public static DiscardedNote propUtils_de = new DiscardedNote(propUtils_mn).setMessage("this is a test of the DiscardedElement message");
     public static void propUtils_writeDiscardedElement() {
-        PropUtils.writeDiscardedElement(propUtils_de);
+        PropUtils.writeDiscardedNote(propUtils_de);
     }
 
     public static void propUtils_writeNoteViewPath() {
@@ -300,9 +300,9 @@ public class Test {
                 .setTo(new HashSet<>(Arrays.asList("260417_1723_00.txt", "260417_1724_00.txt", "260417_1725_00.txt", "260417_1726_00.txt", "260417_1727_00.txt", "260417_1728_00.txt", "260417_1729_00.txt")))
                 .setFrom(new HashSet<>(Arrays.asList("260417_1725_00.txt", "260417_1726_00.txt", "260417_1727_00.txt", "260417_1728_00.txt","260417_1729_00.txt", "260417_1730_00.txt", "260417_1731_00.txt", "260417_1732_00.txt")))
                 .setTags(new HashSet<>(Arrays.asList("tag1",  "tag2", "tag3")));
-        DiscardedNote de = new DiscardedNote(mn).setMessage("This is a test of propUtils.writeDiscardedElement_ViewPath(). The intention is to test this method to see if MutableNote propUtils_mn can be converted into a discarded element, and written to the ViewPath.");
+        DiscardedNote de = new DiscardedNote(mn).setMessage("This is a test of propUtils.writeDiscardedNote_ViewPath(). The intention is to test this method to see if MutableNote propUtils_mn can be converted into a discarded element, and written to the ViewPath.");
         // write to ViewPath:
-        PropUtils.writeDiscardedElement_ViewPath(de);
+        PropUtils.writeDiscardedNote_ViewPath(de);
         // successful
     }
 
@@ -318,7 +318,7 @@ public class Test {
         Note mn = new Note(new MetaPath(Paths.get(".PropUtils", ".260417_1722_20.txt")));
         DiscardedNote de = new DiscardedNote(mn).setMessage("This is a test of propUtils_readDiscardedElement()");
         System.out.println("BEFORE:\n" + de);
-        PropUtils.retrieveDiscardedElement(de);
+        PropUtils.retrieveDiscardedNote(de);
         System.out.println("AFTER:\n" + de);
     }
 

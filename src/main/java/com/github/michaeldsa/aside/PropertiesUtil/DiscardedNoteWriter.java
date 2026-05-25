@@ -6,9 +6,9 @@ import com.github.michaeldsa.aside.Settings.Settings;
 
 import java.util.Properties;
 
-public class DiscardedElementWriter extends DiscardedElementPropertiesUtil {
+public class DiscardedNoteWriter extends DiscardedNotePropertiesUtil {
 
-    public DiscardedElementWriter() {
+    public DiscardedNoteWriter() {
         properties = new Properties();
     }
 

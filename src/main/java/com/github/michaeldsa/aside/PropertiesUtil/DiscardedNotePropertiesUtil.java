@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Properties;
 
-public abstract class DiscardedElementPropertiesUtil extends NotePropertiesUtil {
+public abstract class DiscardedNotePropertiesUtil extends NotePropertiesUtil {
     // property names:
     protected final String warning_n = "warning";
     protected final String message_n = "message";

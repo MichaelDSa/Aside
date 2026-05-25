@@ -5,14 +5,14 @@ import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Objects;
 
 public abstract class AbstractBibliography extends AsidePathElement {
 
-    protected static BibliographyCategory bibliographyCategory = RestrictedLists.getBibliographyCategory();
+    protected static MetaPath bibliographyCategory_MetaPath = new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName()));
+    protected static ViewPath bibliographyCategory_ViewPath = new ViewPath(Paths.get(RestrictedLists.getViewPathBibliographyDirectoryName()));
 
     protected BibliographyCategory stepParent;
 
@@ -49,9 +49,11 @@ public abstract class AbstractBibliography extends AsidePathElement {
     private static boolean startsWithBibliographyCategory(AsidePath ap) {
         boolean success = false;
         if(ap instanceof MetaPath mp) {
-            success = mp.startsWith(bibliographyCategory.getMetaPath());
+            success = mp.startsWith(bibliographyCategory_MetaPath);
+            System.out.println("instance of mp: " + success);
         } else if (ap instanceof ViewPath vp) {
-            success = vp.startsWith(bibliographyCategory.getMetaPath());
+            success = vp.startsWith(bibliographyCategory_ViewPath);
+            System.out.println("instance of vp: " + success);
         }
         return success;
     }
@@ -63,7 +65,7 @@ public abstract class AbstractBibliography extends AsidePathElement {
 
     // determine if constructor should throw an IllegalArgumentException.
     protected static boolean argumentIsInvalid(AsidePath ap) {
-        return startsWithBibliographyCategory(ap) || !noFileNameOrHasBibFileName(ap);
+        return !startsWithBibliographyCategory(ap) || !noFileNameOrHasBibFileName(ap);
     }
 
     protected static MetaPath generateNewBibliographyFileName(MetaPath parent) {

@@ -8,9 +8,9 @@ import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Properties;
 
-public class DiscardedElementRetriever extends DiscardedElementPropertiesUtil{
+public class DiscardedNoteRetriever extends DiscardedNotePropertiesUtil {
 
-    public DiscardedElementRetriever() {
+    public DiscardedNoteRetriever() {
         properties = new Properties();
     }
 
