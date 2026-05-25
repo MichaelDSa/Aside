@@ -14,66 +14,70 @@ public class BibliographyCategory extends AbstractCategory {
     protected BibliographyCategory stepParent;
 
     public BibliographyCategory(MetaPath mp) {
-        if (AbstractBibliography.argumentIsInvalid(mp)) {
+        if (AbstractBibliography.constructorArgIsInvalid(mp)) {
             System.err.println("IllegalArgumentException");
             throw new IllegalArgumentException("Invalid Path argument BibCat(MetaPath mp): " + mp);
         }
 
-        // must not end with filename.
+        // AsidePathElement fields:
+        /* must not end with filename. */
         metaPath = AsidePathElement.endsWithFileName(mp)
                 ? mp.getParent()
                 : mp;
-
-        // must start with correct dir.
+        /* must start with correct dir. */
         metaPath = metaPath.startsWith(new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName())))
                 ? metaPath
                 : new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName())).resolve(metaPath);
-
         viewPath = new ViewPath(metaPath);
-        stepParent = null;
         nest = new ArrayList<>();
+
+        // This class' fields:
+        this.stepParent = null;
     }
     public BibliographyCategory(ViewPath vp) {
-        if (AbstractBibliography.argumentIsInvalid(vp)) {
+        if (AbstractBibliography.constructorArgIsInvalid(vp)) {
             System.err.println("IllegalArgumentException");
             throw new IllegalArgumentException("Invalid Path argument BibCat(ViewPath vp): " + vp);
         }
 
-        // must not end with filename.
+        // AsidePathElement fields:
+        /* must not end with filename. */
         viewPath = AsidePathElement.endsWithFileName(vp)
                 ? vp.getParent()
                 : vp;
-
-        // must start with correct dir
+        /* must start with correct dir */
         viewPath = viewPath.startsWith(new ViewPath(Paths.get(RestrictedLists.getViewPathBibliographyDirectoryName())))
                 ? viewPath
                 : new ViewPath(Paths.get(RestrictedLists.getViewPathBibliographyDirectoryName())).resolve(viewPath);
-
         metaPath = new MetaPath(viewPath);
-        stepParent = null;
         nest = new ArrayList<>();
+
+        // This class' fields:
+        this.stepParent = null;
     }
 
     public BibliographyCategory(BibliographyCategory bc) {
         MetaPath mp = bc.getMetaPath();
-        if (AbstractBibliography.argumentIsInvalid(mp)) {
+        /* unlikely, but can fail if cast to BibliographyCategory */
+        if (AbstractBibliography.constructorArgIsInvalid(mp)) {
             System.err.println("IllegalArgumentException");
             throw new IllegalArgumentException("Invalid Path argument BibCat(MetaPath mp): " + mp);
         }
 
-        // must not end with filename
+        // AsidePathElement fields:
+        /* must not end with filename */
         metaPath = AsidePathElement.endsWithFileName(mp)
                 ? mp.getParent()
                 : mp;
-
-        // must start with correct dir
+        /* must start with correct dir */
         metaPath = metaPath.startsWith(new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName())))
                 ? metaPath
                 : new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName())).resolve(metaPath);
-
         viewPath = new ViewPath(metaPath);
-        stepParent = null;
         nest = new ArrayList<>();
+
+        // This class' fields:
+        this.stepParent = null;
     }
 
     // static singleton BibliographyCategory that holds the root bib category;

@@ -64,7 +64,7 @@ public abstract class AbstractBibliography extends AsidePathElement {
     }
 
     // determine if constructor should throw an IllegalArgumentException.
-    protected static boolean argumentIsInvalid(AsidePath ap) {
+    protected static boolean constructorArgIsInvalid(AsidePath ap) {
         return !startsWithBibliographyCategory(ap) || !noFileNameOrHasBibFileName(ap);
     }
 

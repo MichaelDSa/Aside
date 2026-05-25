@@ -3,13 +3,12 @@ package com.github.michaeldsa.aside.AsidePathElement;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
+import java.util.*;
 
 public class ImmutableNote extends AbstractNote{
     private final MetaPath metaPath;
     private final ViewPath viewPath;
+    private final List<AsidePathElement> nest;
     private final String title;
     private final String content;
     private final HashSet<String> to;
@@ -20,20 +19,20 @@ public class ImmutableNote extends AbstractNote{
     // ImmutableNote previousState;
     public ImmutableNote(Note mn) {
         // if somehow mn has wrong filename
-        if (argumentIsInvalid(mn.getMetaPath())) {
+        if (constructorArgIsInvalid(mn.getMetaPath())) {
             System.err.println("IllegalArgumentException: " + mn.getMetaPath());
             throw new IllegalArgumentException("Invalid Path argument " + mn.getMetaPath());
         }
         this.metaPath = mn.metaPath;
         this.viewPath = mn.viewPath;
-        this.nest = mn.getNest();
-        this.stepParent = (Category) mn.getStepParentCategory();
+        this.nest = new ArrayList<>(Collections.unmodifiableList(mn.getNest()));
         this.title = mn.getTitle();
         this.content = mn.getContent();
         this.to = new HashSet<>(Collections.unmodifiableSet(mn.getTo()));
         this.from = new HashSet<>(Collections.unmodifiableSet(mn.getFrom()));
-        this.bibliographies = new HashSet<>(Collections.unmodifiableSet(mn.getBibliographies()));
         this.tags = new HashSet<>(Collections.unmodifiableSet(mn.getTags()));
+        this.bibliographies = new HashSet<>(Collections.unmodifiableSet(mn.getBibliographies()));
+        this.stepParent = (Category) mn.getStepParentCategory();
     }
     @Override
     public String getTitle() { return this.title; }
@@ -57,6 +56,9 @@ public class ImmutableNote extends AbstractNote{
     public MetaPath getMetaPath() { return this.metaPath; }
     @Override
     public ViewPath getViewPath() { return this.viewPath; }
+
+    @Override
+    public List<AsidePathElement> getNest() { return this.nest; }
 
     @Override
     public AbstractCategory getParentCategory() { return new Category(metaPath); }

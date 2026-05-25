@@ -12,82 +12,102 @@ public class Note extends AbstractNote{
     // constructors:
     public Note(MetaPath mp) {
         // if filename belongs to bibliography or DiscardedElement:
-        if (argumentIsInvalid(mp)) {
+        if (constructorArgIsInvalid(mp)) {
             System.err.println("IllegalArgumentException: " + mp);
             throw new IllegalArgumentException("Invalid Path argument (This is either a DiscardedElement or a Bibliography filename): " + mp);
         }
-        if (AsidePathElement.endsWithNoteName(mp)) {
-            metaPath = mp;
-        } else {
-            metaPath = AsidePathElement.generateUniqueFileName(mp);
-        }
-        metaPath = AsidePathElement.filterMetaPathElements(metaPath);
 
+        // AsidePathElement fields:
+        /* filename assignment if necessary: */
+        metaPath = AsidePathElement.endsWithNoteName(mp) ? mp : AsidePathElement.generateUniqueFileName(mp);
+        /* correct if starts with wrong category/directory: */
+        metaPath = AsidePathElement.filterMetaPathElements(metaPath);
         viewPath = new ViewPath(metaPath);
-        stepParent = null;
         nest = new ArrayList<>();
-        previousState = null;
+
+        // AbstractNote fields:
+        stepParent = null;
         to = new HashSet<>();
         from = new HashSet<>();
         tags = new HashSet<>();
         bibliographies = new HashSet<>();
+
+        // This class' fields:
+        previousState = null;
     }
     public Note(ViewPath vp) {
         // if filename belongs to bibliography or DiscardedElement:
-        if (argumentIsInvalid(vp)) {
+        if (constructorArgIsInvalid(vp)) {
             System.err.println("IllegalArgumentException: " + vp);
             throw new IllegalArgumentException("Invalid Path argument (This is either a DiscardedElement or a Bibliography filename):  " + vp);
         }
-        if (AsidePathElement.endsWithNoteName(vp)) {
-            viewPath = vp;
-        } else {
-            viewPath = new ViewPath(AsidePathElement.generateUniqueFileName(new MetaPath(vp)));
-        }
-        viewPath = AsidePathElement.filterViewPathElements(viewPath);
 
+        // AsidePathElement fields:
+        /* filename assignment if necessary: */
+        viewPath = AsidePathElement.endsWithNoteName(vp) ? vp : new ViewPath(AsidePathElement.generateUniqueFileName(new MetaPath(vp)));
+        /* correct if starts with wrong category/directory: */
+        viewPath = AsidePathElement.filterViewPathElements(viewPath);
         metaPath = new MetaPath(viewPath);
-        stepParent = null;
         nest = new ArrayList<>();
-        previousState = null;
+
+        // AbstractNote fields:
+        stepParent = null;
         to = new HashSet<>();
         from = new HashSet<>();
         tags = new HashSet<>();
         bibliographies = new HashSet<>();
+
+        // This class' fields:
+        previousState = null;
     }
     public Note(Category c){
-        // if filename belongs to bibliography or DiscardedElement:
-        if (argumentIsInvalid(c.getMetaPath())) {
+        /* unlikely, but can fail if cast to Category */
+        if (constructorArgIsInvalid(c.getMetaPath())) {
             System.err.println("IllegalArgumentException: " + c.getMetaPath());
             throw new IllegalArgumentException("Invalid Path argument (This is either a DiscardedElement or a Bibliography filename):  " + c.getMetaPath());
         }
+
+        // AsidePathElement fields:
+        /* filename assignment if necessary: */
         metaPath = AsidePathElement.filterMetaPathElements(c.getMetaPath());
+        /* correct if starts with wrong category/directory: */
         metaPath = AsidePathElement.generateUniqueFileName(c.getMetaPath());
         viewPath = new ViewPath(metaPath);
-        stepParent = (Category) c.getStepParentCategory();
         nest = new ArrayList<>();
-        previousState = null;
+
+        // AbstractNote fields:
+        stepParent = (Category) c.getStepParentCategory();
         to = new HashSet<>();
         from = new HashSet<>();
         tags = new HashSet<>();
         bibliographies = new HashSet<>();
+
+        // This class' fields:
+        previousState = null;
     }
     public Note(Note mn){
-        // if filename belongs to bibliography or DiscardedElement:
-        if (argumentIsInvalid(mn.getMetaPath())) {
+        /* unlikely, but can fail if cast to Note */
+        if (constructorArgIsInvalid(mn.getMetaPath())) {
             System.err.println("IllegalArgumentException: " + mn.getMetaPath());
             throw new IllegalArgumentException("Invalid Path argument " + mn.getMetaPath());
         }
+
+        // AsidepathElement fields:
         metaPath = mn.getMetaPath();
         viewPath = new ViewPath(metaPath);
-        stepParent = (Category) mn.getStepParentCategory();
         nest = mn.getNest();
-        previousState = new ImmutableNote(mn);
+
+        // AbstractNote fields:
+        stepParent = (Category) mn.getStepParentCategory();
         title = mn.getTitle();
         content = mn.getContent();
         to = mn.getTo();
         from = mn.getFrom();
         tags = mn.getTags();
         bibliographies = mn.getBibliographies();
+
+        // This class' fields:
+        previousState = new ImmutableNote(mn);
     }
 
     @Override

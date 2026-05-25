@@ -34,7 +34,7 @@ public class DiscardedNote extends AbstractDiscardedElement {
 
 
     // constructor validation method(s):
-    private boolean invalidConstructorArg(AsidePath ap) {
+    private boolean constructorArgIsInvalid(AsidePath ap) {
         return !ValidateAsidePath.DISCARDED_NOTE_NAME.test(ap) || !startsWithDiscardedCategory(ap);
     }
 
@@ -43,20 +43,21 @@ public class DiscardedNote extends AbstractDiscardedElement {
     // Arg should be DiscardedNote MetaPath url
     public DiscardedNote(MetaPath mp) {
         // mp must end with a DiscardedNote filename.
-        if(invalidConstructorArg(mp)) {
+        if(constructorArgIsInvalid(mp)) {
             System.err.println("IllegalArgumentException. Path must start with '.DISCARDED' MetaPath Category, and end with DiscardedNote filename.");
             throw new IllegalArgumentException("Invalid Path argument: " + mp);
         }
-        fileTypeName = fileTypeName_note;
-        fileNamePrefix = fileNamePrefix_discardedNote;
+
 
         // DiscardedElement may only have parent .DISCARDED and DISCARDED.
         metaPath = mp;
         viewPath = new ViewPath(metaPath);
+        nest = new ArrayList<>();
 
+        fileTypeName = fileTypeName_note;
+        fileNamePrefix = fileNamePrefix_discardedNote;
         originalMetaPath = null;
         originalViewPath = null;
-        nest = new ArrayList<>();
 
         title = "";
         content = "";
@@ -69,7 +70,7 @@ public class DiscardedNote extends AbstractDiscardedElement {
     // Arg should be DiscardedNote ViewPath url
     public DiscardedNote(ViewPath vp) {
         // if vp has wrong filename
-        if(invalidConstructorArg(vp)) {
+        if(constructorArgIsInvalid(vp)) {
             System.err.println("IllegalArgumentException. Path must start with 'DISCARDED' ViewPath Category, and end with DiscardedNote filename.");
             throw new IllegalArgumentException("Invalid Path argument: " + vp);
         }

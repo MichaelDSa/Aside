@@ -24,7 +24,7 @@ public class ImmutableBibliography extends AbstractBibliography {
 
     public ImmutableBibliography(Bibliography bb) {
         /* unlikely, but arg can fail if cast to Bibliography*/
-        if (AbstractBibliography.argumentIsInvalid(bb.getMetaPath())) {
+        if (AbstractBibliography.constructorArgIsInvalid(bb.getMetaPath())) {
             System.err.println("InvalidArgumentException");
             throw new IllegalArgumentException("Invalid Path argument: " + bb.getMetaPath());
         }

@@ -30,7 +30,7 @@ public abstract class AbstractNote extends AsidePathElement {
     // static methods:
 
     // methods for constructor use:
-    protected boolean argumentIsInvalid(AsidePath ap) {
+    protected boolean constructorArgIsInvalid(AsidePath ap) {
         return ValidateAsidePath.BIBLIOGRAPHY_NAME.test(ap) || ValidateAsidePath.DISCARDED_NOTE_NAME.test(ap);
     }
 
