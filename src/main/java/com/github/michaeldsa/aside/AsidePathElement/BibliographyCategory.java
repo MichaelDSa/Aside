@@ -5,6 +5,7 @@ import com.github.michaeldsa.aside.AsidePath.ViewPath;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /* Bibliography Category:
 To handle subdirectories of BIBLIOGRAPHY AsidePath elements */
@@ -114,4 +115,25 @@ public class BibliographyCategory extends AbstractCategory {
     }
 
     // Now write toString, equals & hashcode.
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof BibliographyCategory that)) return false;
+        if (!super.equals(o)) return false;
+        return Objects.equals(stepParent, that.stepParent);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), stepParent);
+    }
+
+    @Override
+    public String toString() {
+        return "BibliographyCategory{" +
+                "stepParent=" + stepParent +
+                ", metaPath=" + metaPath +
+                ", viewPath=" + viewPath +
+                '}';
+    }
 }

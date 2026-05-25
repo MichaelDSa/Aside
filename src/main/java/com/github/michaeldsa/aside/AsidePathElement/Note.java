@@ -30,6 +30,7 @@ public class Note extends AbstractNote{
         to = new HashSet<>();
         from = new HashSet<>();
         tags = new HashSet<>();
+        bibliographies = new HashSet<>();
     }
     public Note(ViewPath vp) {
         // if filename belongs to bibliography or DiscardedElement:
@@ -51,6 +52,7 @@ public class Note extends AbstractNote{
         to = new HashSet<>();
         from = new HashSet<>();
         tags = new HashSet<>();
+        bibliographies = new HashSet<>();
     }
     public Note(Category c){
         // if filename belongs to bibliography or DiscardedElement:
@@ -67,6 +69,7 @@ public class Note extends AbstractNote{
         to = new HashSet<>();
         from = new HashSet<>();
         tags = new HashSet<>();
+        bibliographies = new HashSet<>();
     }
     public Note(Note mn){
         // if filename belongs to bibliography or DiscardedElement:
@@ -84,52 +87,38 @@ public class Note extends AbstractNote{
         to = mn.getTo();
         from = mn.getFrom();
         tags = mn.getTags();
+        bibliographies = mn.getBibliographies();
     }
 
     @Override
-    public String getTitle() {
-        return title;
-    }
+    public String getTitle() { return title; }
 
     @Override
-    public String getContent() {
-        return content;
-    }
+    public String getContent() { return content; }
 
     @Override
-    public HashSet<String> getTo() {
-        return to;
-    }
+    public HashSet<String> getTo() { return to; }
 
     @Override
-    public HashSet<String> getFrom() {
-        return from;
-    }
+    public HashSet<String> getFrom() { return from; }
 
     @Override
-    public HashSet<String> getTags() {
-        return tags;
-    }
+    public HashSet<String> getTags() { return tags; }
 
     @Override
-    public ImmutableNote getPreviousState() {
-        return previousState;
-    }
+    public HashSet<String> getBibliographies() { return bibliographies; }
 
     @Override
-    public AbstractCategory getParentCategory() {
-        return new Category(metaPath);
-    }
+    public ImmutableNote getPreviousState() { return previousState; }
 
     @Override
-    public AbstractCategory getStepParentCategory() {
-        return stepParent;
-    }
+    public AbstractCategory getParentCategory() { return new Category(metaPath); }
 
     @Override
-    public void setStepParentCategory(AbstractCategory newStepParent) {
-        stepParent = (Category) newStepParent;
-    }
+    public AbstractCategory getStepParentCategory() { return stepParent; }
+
+    @Override
+    public void setStepParentCategory(AbstractCategory newStepParent) { stepParent = (Category) newStepParent; }
 
     public Note setPreviousState() {
         previousState = new ImmutableNote(this);
@@ -137,9 +126,7 @@ public class Note extends AbstractNote{
     }
 
     @Override
-    public boolean hasStepParent() {
-        return stepParent != null;
-    }
+    public boolean hasStepParent() { return stepParent != null; }
 
     // setters that replace existing values
     public Note setStepParents(Category stepParent) {
@@ -164,6 +151,10 @@ public class Note extends AbstractNote{
     }
     public Note setTags(HashSet<String> tags) {
         this.tags = tags;
+        return this;
+    }
+    public Note setBibliographies(HashSet<String> bibliographies) {
+        this.bibliographies = bibliographies;
         return this;
     }
     // setters that add to existing values
@@ -207,6 +198,14 @@ public class Note extends AbstractNote{
         this.tags.addAll(tags);
         return this;
     }
+    public Note addBibliographies(String ... bibliographies) {
+        this.bibliographies.addAll(Arrays.asList(bibliographies));
+        return this;
+    }
+    public Note addBibliographies(HashSet<String> bibliographies) {
+        this.bibliographies.addAll(bibliographies);
+        return this;
+    }
     // setters that remove from existing values
     public Note removeTo(String ... to) {
         Arrays.asList(to).forEach(this.to::remove);
@@ -234,29 +233,30 @@ public class Note extends AbstractNote{
     }
 
     @Override
-    public String toString() {
-        return "MutableNote{" +
-                "stepParent=" + stepParent +
-                ", previousState=" + previousState +
-                ", viewPath=" + viewPath +
-                ", metaPath=" + metaPath +
-                ", tags=" + tags +
-                ", from=" + from +
-                ", to=" + to +
-                ", content='" + content + '\'' +
-                ", title='" + title + '\'' +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Note that)) return false;
+        if (!(o instanceof Note note)) return false;
         if (!super.equals(o)) return false;
-        return Objects.equals(stepParent, that.stepParent) && Objects.equals(previousState, that.previousState);
+        return Objects.equals(previousState, note.previousState);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), stepParent, previousState);
+        return Objects.hash(super.hashCode(), previousState);
+    }
+
+    @Override
+    public String toString() {
+        return "Note{" +
+                "previousState=" + previousState +
+                ", metaPath=" + metaPath +
+                ", viewPath=" + viewPath +
+                ", stepParent=" + stepParent +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", to=" + to +
+                ", from=" + from +
+                ", tags=" + tags +
+                ", bibliographies=" + bibliographies +
+                '}';
     }
 }

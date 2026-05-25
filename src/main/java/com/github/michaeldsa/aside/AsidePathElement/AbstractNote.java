@@ -15,6 +15,7 @@ public abstract class AbstractNote extends AsidePathElement {
     protected HashSet<String> to;
     protected HashSet<String> from;
     protected HashSet<String> tags;
+    protected HashSet<String> bibliographies;
 
     // getters:
     public abstract String getTitle();
@@ -22,6 +23,7 @@ public abstract class AbstractNote extends AsidePathElement {
     public abstract HashSet<String> getTo();
     public abstract HashSet<String> getFrom();
     public abstract HashSet<String> getTags();
+    public abstract HashSet<String> getBibliographies();
     public abstract ImmutableNote getPreviousState();
 
 
@@ -40,6 +42,7 @@ public abstract class AbstractNote extends AsidePathElement {
                 ", to=" + to +
                 ", from=" + from +
                 ", tags=" + tags +
+                ", bibliographies=" + bibliographies +
                 ", metaPath=" + metaPath +
                 ", viewPath=" + viewPath +
                 '}';
@@ -49,11 +52,11 @@ public abstract class AbstractNote extends AsidePathElement {
     public boolean equals(Object o) {
         if (!(o instanceof AbstractNote that)) return false;
         if (!super.equals(o)) return false;
-        return Objects.equals(title, that.title) && Objects.equals(content, that.content) && Objects.equals(to, that.to) && Objects.equals(from, that.from) && Objects.equals(tags, that.tags);
+        return Objects.equals(stepParent, that.stepParent) && Objects.equals(title, that.title) && Objects.equals(content, that.content) && Objects.equals(to, that.to) && Objects.equals(from, that.from) && Objects.equals(tags, that.tags) && Objects.equals(bibliographies, that.bibliographies);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), title, content, to, from, tags);
+        return Objects.hash(super.hashCode(), stepParent, title, content, to, from, tags, bibliographies);
     }
 }

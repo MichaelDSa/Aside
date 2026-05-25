@@ -81,8 +81,12 @@ public class Category extends AbstractCategory {
     }
 
     @Override
-    public String toString() { return "Category{" +
-                "stepParent=" + this.stepParent +
+    public String toString() {
+        return "Category{" +
+                "stepParent=" + stepParent +
+                ", stepParent=" + stepParent +
+                ", metaPath=" + metaPath +
+                ", viewPath=" + viewPath +
                 '}';
     }
 

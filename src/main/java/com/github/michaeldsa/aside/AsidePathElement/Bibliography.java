@@ -284,6 +284,19 @@ public class Bibliography extends AbstractBibliography {
     public String toString() {
         return "Bibliography{" +
                 "previousState=" + previousState +
+                ", stepParent=" + stepParent +
+                ", authors='" + authors + '\'' +
+                ", title='" + title + '\'' +
+                ", yearPublished=" + yearPublished +
+                ", comment='" + comment + '\'' +
+                ", references=" + references +
+                ", isbn='" + isbn + '\'' +
+                ", doi='" + doi + '\'' +
+                ", url='" + url + '\'' +
+                ", arXiv_ID='" + arXiv_ID + '\'' +
+                ", ads_Bibcode='" + ads_Bibcode + '\'' +
+                ", metaPath=" + metaPath +
+                ", viewPath=" + viewPath +
                 '}';
     }
 }

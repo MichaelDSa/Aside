@@ -20,7 +20,7 @@ public class DiscardedCategory extends AbstractCategory{
     }
 
     private static class DiscardedCategoryHolder {
-        private static DiscardedCategory dc = new DiscardedCategory(new MetaPath(Paths.get(RestrictedLists.getMetaPathDiscardedDirectoryName())));
+        private static final DiscardedCategory dc = new DiscardedCategory(new MetaPath(Paths.get(RestrictedLists.getMetaPathDiscardedDirectoryName())));
     }
     public static DiscardedCategory getInstance() {
         return DiscardedCategoryHolder.dc;
@@ -38,5 +38,13 @@ public class DiscardedCategory extends AbstractCategory{
     @Override
     public boolean hasStepParent() {
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "DiscardedCategory{" +
+                "metaPath=" + metaPath +
+                ", viewPath=" + viewPath +
+                '}';
     }
 }

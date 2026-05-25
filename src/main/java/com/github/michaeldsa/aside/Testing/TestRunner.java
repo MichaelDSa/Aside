@@ -3,6 +3,7 @@ package com.github.michaeldsa.aside.Testing;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsidePathElement.DiscardedNote;
+import com.github.michaeldsa.aside.AsidePathElement.Note;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
 
 import java.nio.file.Path;
@@ -129,6 +130,14 @@ public class TestRunner {
             DiscardedNote tesde = new DiscardedNote(today);
             System.out.println(tesde);
 
+
+            Note n__ = new Note(new MetaPath()).setTitle("A title for n__")
+                    .setContent("some content for n__")
+                    .addTo("260524_2222_02.txt","260524_2224_32.txt")
+                    .addFrom("260524_2222_02.txt", "260524_2224_32.txt")
+                    .addTags("Dune", "Dune_pg.133")
+                    .addBibliographies(".b260524_2229_43.txt");
+            System.out.println("NOTE TO STRING LOOKS LIKE THIS:\n" + n__);
 
 
 
