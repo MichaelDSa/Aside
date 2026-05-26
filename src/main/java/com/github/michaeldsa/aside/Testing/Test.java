@@ -13,6 +13,8 @@ import com.github.michaeldsa.aside.FileTraversal.Traversers;
 import com.github.michaeldsa.aside.Ops.Create;
 import com.github.michaeldsa.aside.PathKeeper;
 import com.github.michaeldsa.aside.Pretty;
+import com.github.michaeldsa.aside.PropertiesUtil.NotePropsRetriever;
+import com.github.michaeldsa.aside.PropertiesUtil.NotePropsWriter;
 import com.github.michaeldsa.aside.PropertiesUtil.PropUtils;
 import com.github.michaeldsa.aside.Search.Search;
 import com.github.michaeldsa.aside.Settings.Settings;
@@ -420,6 +422,26 @@ public class Test {
         System.out.println("getInt(linewidth): " + TempSettings.getInt("linewidth"));
 //        TempSettings.setPersist("newkey", "miney");
         TempSettings.persist();
+    }
+
+    public static void notePropsWriterTest() {
+        Note n = new Note(new MetaPath(Paths.get(".PropUtils")))
+                .setTitle("test noteProprsWriterTest. May 26, 2026")
+                .setContent("This is supposed to be a test for the new note writer, called 'NotePropsWriter', which will be changed to 'NoteWriter', The old NoteWriter will be deleted.")
+                .addTo(".260526_1830_26.txt",".260526_1830_27.txt",".260526_1830_28.txt" )
+                .addFrom(".260526_1830_33.txt",".260526_1830_34.txt",".260526_1830_35.txt")
+                .addTags("Dune", "Harry Potter", "Fux.25")
+                .addBibliographies(".b260526_1830_39.txt");
+        NotePropsWriter npr = new NotePropsWriter();
+        npr.write(n);
+    }
+
+    public static void notePropsRetrieverTest() {
+        Note n = new Note(new MetaPath(Paths.get(".PropUtils", ".260426_1049_00.txt")));
+        NotePropsRetriever npr = new NotePropsRetriever();
+        npr.retrieve(n);
+        System.out.println(Pretty.formatNote4ViewPath(n, Settings.getLineWidth().file()));
+        System.out.println(n);
     }
 
 

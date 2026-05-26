@@ -8,65 +8,54 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Properties;
 
-public abstract class NotePropertiesUtil {
-
-    // properties object
-    // note: is this necessary? can it just be passed as method parameter?
+public abstract class PropertiesUtil {
     protected Properties properties;
 
-    // property names:
-    protected final String filename_n = "filename";
-    protected final String title_n = "title";
-    protected final String content_n = "content";
-    protected final String to_n = "to";
-    protected final String from_n = "from";
-    protected final String tags_n = "tags";
+    // Control Sets. To be assigned in abstract sub-classes.
+    protected HashSet<String> allPropertiesKeySet;
+    protected HashSet<String> stringPropertiesKeysSubset;
+    protected HashSet<String> hashSetPropertiesKeysSubset;
 
-    // lists (should be HashSet).
-    protected ArrayList<String> noteProperties = new ArrayList<>(Arrays.asList(filename_n, title_n, content_n, to_n, from_n, tags_n));
-    protected ArrayList<String> noteStringProperties = new ArrayList<>(Arrays.asList(filename_n, title_n, content_n));
-    protected ArrayList<String> noteHashSetProperties = new ArrayList<>(Arrays.asList(to_n, from_n, tags_n));
+    protected PropertiesUtil() {
+        properties = new Properties();
+    }
 
-    protected void loadPropertiesFile(Properties properties, Path path) {
+    protected void loadPropertiesFile(Path path) {
         if (Files.exists(path)) {
             try (InputStream is = Files.newInputStream(path)) {
                 properties.load(is);
             } catch (IOException e) {
-                System.err.println("NotePropertiesUtil.loadPropertiesFile(): IOException: " + path);
+                System.err.println("PropertiesUtil.loadPropertiesFile(): IOException: " + path);
             }
         }
     }
 
-     protected static String emptyIfNull(String str) {
+    protected static String emptyIfNull(String str) {
         return str == null ? "" : str;
     }
+
     // get properties that should be saved as HashSet<String> in a MutableNote or DiscardedElement
-    protected HashSet<String> getPropAsHashSet(Properties properties, String prop) {
+    protected HashSet<String> getPropAsHashSet(String prop) {
         HashSet<String> val = new HashSet<>();
-        if (noteHashSetProperties.contains(prop)) {
-            HashSet<String> test = stringToHashSet(properties.getProperty(prop));
-            if (test != null) {
-                val = test;
-            }
+        if (hashSetPropertiesKeysSubset.contains(prop)) {
+            val = stringToHashSet(properties.getProperty(prop, ""));
+        } else {
+            System.err.println("PropertiesUtil.getPropAsString(): prop parameter not found in hashSetPropertiesKeysSubset: " + prop);
         }
         return val;
     }
 
     // get properties that should be saved as String in a MutableNote or DiscardedElement
-    protected String getPropAsString(Properties properties, String prop) {
+    protected String getPropAsString(String prop) {
         String val = "";
-        if (noteStringProperties.contains(prop)) {
-            String test = properties.getProperty(prop);
-            if (test != null) {
-                val = test;
-            }
+        if (stringPropertiesKeysSubset.contains(prop)) {
+            val = properties.getProperty(prop, "");
         } else {
-            System.err.println("NotePropertiesUtil.getPropAsString(): prop parameter not found in noteStringProperties: " + prop);
+            System.err.println("PropertiesUtil.getPropAsString(): prop parameter not found in stringPropertiesKeysSubset: " + prop);
         }
         return val;
     }
@@ -82,6 +71,8 @@ public abstract class NotePropertiesUtil {
     // convert String objects retrieved from a Properties file to a HashSet<String>
     protected HashSet<String> stringToHashSet(String str) {
 
+        // will fail if not all properties exist in file. if so, use:
+        // if (str == null || str.isBlank()) { ...
         if (str.isBlank()) {
             return new HashSet<>();
         }
@@ -93,11 +84,11 @@ public abstract class NotePropertiesUtil {
     }
 
     // write a properties file
-    protected void writeProperties(Properties properties, Path m_path) {
+    protected void writeProperties(Path m_path) {
         try (OutputStream out = Files.newOutputStream(m_path)) {
             properties.store(out, "");
         } catch (IOException e) {
-            System.err.println("NotePropertiesUtil.writeProperties(): IOException. path: " + m_path);
+            System.err.println("PropertiesUtil.writeProperties(): IOException. path: " + m_path);
         }
     }
 
@@ -107,7 +98,7 @@ public abstract class NotePropertiesUtil {
         try (OutputStream out = Files.newOutputStream(v_path)) {
             out.write(formattedString.getBytes());
         } catch (IOException e) {
-            System.err.println("NotePropertiesUtil.writeViewPath(): caught IOException. path: " + v_path);
+            System.err.println("PropertiesUtil.writeViewPath(): caught IOException. path: " + v_path);
         }
     }
 

@@ -7,6 +7,8 @@ import com.github.michaeldsa.aside.AsidePathElement.DiscardedBibliography;
 import com.github.michaeldsa.aside.AsidePathElement.DiscardedNote;
 import com.github.michaeldsa.aside.AsidePathElement.Note;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
+import com.github.michaeldsa.aside.Pretty;
+import com.github.michaeldsa.aside.PropertiesUtil.NotePropsRetriever;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -128,19 +130,34 @@ public class TestRunner {
             // Success
 
             // DiscardedElement: with metapathroot.
-            MetaPath today = new MetaPath(Paths.get(".DISCARDED/.d260505_1600_02.txt"));
-            DiscardedNote tesde = new DiscardedNote(today);
-            System.out.println(tesde);
+//            MetaPath today = new MetaPath(Paths.get(".DISCARDED/.d260505_1600_02.txt"));
+//            DiscardedNote tesde = new DiscardedNote(today);
+//            System.out.println(tesde);
+//
+//
+//            DiscardedBibliography db = new DiscardedBibliography(new Bibliography(new MetaPath())
+//                    .setTitle("Dune by F.Herbert")
+//                    .setYearPublished(1975)
+//                    .setAuthors("Frank Herbert")
+//                    .addReferences(".260524_2338_07.txt")
+//            );
+//
+//            System.out.println("\n" + db);
+            // ABOVE SUCCESSFUL.
 
+            // Quick Test NotePropsRetriever:
+//            NotePropsRetriever npr = new NotePropsRetriever();
+//            Note npr_note = new Note(new MetaPath(Paths.get(".PropUtils", ".260417_1722_20.txt")));
+//            npr.retrieve(npr_note);
+//            System.out.println(Pretty.formatNote4ViewPath(npr_note, 80));
 
-            DiscardedBibliography db = new DiscardedBibliography(new Bibliography(new MetaPath())
-                    .setTitle("Dune by F.Herbert")
-                    .setYearPublished(1975)
-                    .setAuthors("Frank Herbert")
-                    .addReferences(".260524_2338_07.txt")
-            );
+            // NotePropsWriter Test:
+//            Test.notePropsWriterTest();
+            // SUCCESS
 
-            System.out.println("\n" + db);
+            // NotePropsRetriever Test:
+//            Test.notePropsRetrieverTest();
+            // SUCCESS
 
 
 
