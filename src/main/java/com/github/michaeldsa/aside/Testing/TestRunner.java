@@ -156,7 +156,7 @@ public class TestRunner {
             // SUCCESS
 
             // NotePropsRetriever Test:
-//            Test.notePropsRetrieverTest();
+            Test.notePropsRetrieverTest();
             // SUCCESS
 
 

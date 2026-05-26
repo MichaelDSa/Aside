@@ -35,6 +35,7 @@ public class Pretty {
         String to = format(hashSet2String(de.getTo()), width);
         String from = format(hashSet2String(de.getFrom()), width);
         String tags = format(hashSet2String(de.getTags()), width);
+        String bibliographies = format(hashSet2String(de.getBibliographies()), width);
 
 
         String nl = "\n";
@@ -55,6 +56,9 @@ public class Pretty {
         if(!originalViewPath.isBlank()) {
             originalViewPath = "ORIGINAL_VIEWPATH:" + nl + originalViewPath + "-".repeat(width) + nl.repeat(2);
         }
+        if(!bibliographies.isBlank()) {
+            bibliographies = "BIBLIOGRAPHY:" + nl + bibliographies + nl;
+        }
         if(!to.isBlank()) {
             to = "TO:" + nl + to + nl;
         }
@@ -65,7 +69,7 @@ public class Pretty {
             tags = "TAGS:" + nl + tags + nl;
         }
 
-        return filename + message + title + content + originalMetaPath + originalViewPath + to + from + tags;
+        return filename + message + title + content + originalMetaPath + originalViewPath + bibliographies + to + from + tags;
     }
     public static String formatNote4ViewPath(AbstractNote note, int width) {
         // get all metadata as String via format().
@@ -75,6 +79,7 @@ public class Pretty {
         String to = format(hashSet2String(note.getTo()), width);
         String from = format(hashSet2String(note.getFrom()), width);
         String tags = format(hashSet2String(note.getTags()), width);
+        String bibliographies = format(hashSet2String(note.getBibliographies()), width);
 
         String nl = "\n";
 
@@ -87,6 +92,9 @@ public class Pretty {
         if (!content.isBlank()) {
             content = "CONTENT:" + nl + content + "-".repeat(width) + nl.repeat(2);
         }
+        if (!bibliographies.isBlank()) {
+            bibliographies = "BIBLIOGRAPHY:" + nl + bibliographies + nl;
+        }
         if (!to.isBlank()) {
             to = "TO:" + nl + to + nl;
         }
@@ -97,7 +105,7 @@ public class Pretty {
             tags = "TAGS:" + nl + tags + nl;
         }
 
-        return filename + title + content + to + from + tags;
+        return filename + title + content + bibliographies + to + from + tags;
     }
 
     public static String hashSet2String(HashSet<String> hashSet) {

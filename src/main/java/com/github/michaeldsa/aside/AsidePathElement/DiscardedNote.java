@@ -31,6 +31,7 @@ public class DiscardedNote extends AbstractDiscardedElement {
     private HashSet<String> to;
     private HashSet<String> from;
     private HashSet<String> tags;
+    private HashSet<String> bibliographies;
 
 
     // constructor validation method(s):
@@ -65,6 +66,7 @@ public class DiscardedNote extends AbstractDiscardedElement {
         to = new HashSet<>();
         from = new HashSet<>();
         tags = new HashSet<>();
+        bibliographies = new HashSet<>();
     }
 
     // Arg should be DiscardedNote ViewPath url
@@ -91,6 +93,7 @@ public class DiscardedNote extends AbstractDiscardedElement {
         message = "";
         to = new HashSet<>(); from = new HashSet<>();
         tags = new HashSet<>();
+        bibliographies = new HashSet<>();
     }
 
     public DiscardedNote(Note mn) {
@@ -113,6 +116,7 @@ public class DiscardedNote extends AbstractDiscardedElement {
         to = mn.getTo();
         from = mn.getFrom();
         tags = mn.getTags();
+        bibliographies = mn.getBibliographies();
     }
 
     // getters & setters:
@@ -136,6 +140,7 @@ public class DiscardedNote extends AbstractDiscardedElement {
     public HashSet<String> getTo() { return to;}
     public HashSet<String> getFrom() { return from; }
     public HashSet<String> getTags() { return tags; }
+    public HashSet<String> getBibliographies() { return bibliographies;}
 
     // metadata setters:
     public DiscardedNote setTitle(String title) {
@@ -170,17 +175,21 @@ public class DiscardedNote extends AbstractDiscardedElement {
         this.tags = tags;
         return this;
     }
+    public DiscardedNote setBibliographies(HashSet<String> bibliographies) {
+        this.bibliographies = bibliographies;
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof DiscardedNote that)) return false;
         if (!super.equals(o)) return false;
-        return Objects.equals(title, that.title) && Objects.equals(content, that.content) && Objects.equals(message, that.message) && Objects.equals(to, that.to) && Objects.equals(from, that.from) && Objects.equals(tags, that.tags);
+        return Objects.equals(title, that.title) && Objects.equals(content, that.content) && Objects.equals(message, that.message) && Objects.equals(to, that.to) && Objects.equals(from, that.from) && Objects.equals(tags, that.tags) && Objects.equals(bibliographies, that.bibliographies);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), title, content, message, to, from, tags);
+        return Objects.hash(super.hashCode(), title, content, message, to, from, tags, bibliographies);
     }
 
     @Override
@@ -190,6 +199,7 @@ public class DiscardedNote extends AbstractDiscardedElement {
                 ", tags=" + tags +
                 ", from=" + from +
                 ", to=" + to +
+                ", bibliographies=" + bibliographies +
                 ", message='" + message + '\'' +
                 ", content='" + content + '\'' +
                 ", title='" + title + '\'' +

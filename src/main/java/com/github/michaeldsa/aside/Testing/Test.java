@@ -437,7 +437,7 @@ public class Test {
     }
 
     public static void notePropsRetrieverTest() {
-        Note n = new Note(new MetaPath(Paths.get(".PropUtils", ".260426_1049_00.txt")));
+        Note n = new Note(new MetaPath(Paths.get(".PropUtils", ".260526_1834_59.txt")));
         NotePropsRetriever npr = new NotePropsRetriever();
         npr.retrieve(n);
         System.out.println(Pretty.formatNote4ViewPath(n, Settings.getLineWidth().file()));
