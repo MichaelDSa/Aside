@@ -5,7 +5,7 @@ import com.github.michaeldsa.aside.AsidePathElement.Note;
 
 public class NoteRetriever extends NotePropertiesUtil {
 
-    public NoteRetriever() {
+    protected NoteRetriever() {
         super();
     }
 

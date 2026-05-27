@@ -425,6 +425,7 @@ public class Test {
     }
 
     public static void notePropsWriterTest() {
+        // test the new class, NotePropsWriter
         Note n = new Note(new MetaPath(Paths.get(".PropUtils")))
                 .setTitle("test noteProprsWriterTest. May 26, 2026")
                 .setContent("This is supposed to be a test for the new note writer, called 'NotePropsWriter', which will be changed to 'NoteWriter', The old NoteWriter will be deleted.")
@@ -432,14 +433,19 @@ public class Test {
                 .addFrom(".260526_1830_33.txt",".260526_1830_34.txt",".260526_1830_35.txt")
                 .addTags("Dune", "Harry Potter", "Fux.25")
                 .addBibliographies(".b260526_1830_39.txt");
-        NoteWriter npr = new NoteWriter();
-        npr.write(n);
+//        NoteWriter npr = new NoteWriter();
+        /* update: PropsUtils now uses NotePropsWriter;
+        NotePropsWriter has been renamed to NoteWriter. */
+        PropUtils.writeNote(n);
     }
 
     public static void notePropsRetrieverTest() {
+        // Test the new class, NotePropsRetriever
         Note n = new Note(new MetaPath(Paths.get(".PropUtils", ".260526_1834_59.txt")));
-        NoteRetriever npr = new NoteRetriever();
-        npr.retrieve(n);
+//        NoteRetriever npr = new NoteRetriever();
+        /* updated: PropUtils now uses NotePropsRetriever;
+        NotePropsRetriever has been renamed to NoteRetriever. */
+        PropUtils.retrieveNote(n);
         System.out.println(Pretty.formatNote4ViewPath(n, Settings.getLineWidth().file()));
         System.out.println(n);
     }

@@ -6,7 +6,7 @@ import com.github.michaeldsa.aside.Settings.Settings;
 
 public class NoteWriter extends NotePropertiesUtil {
 
-    public NoteWriter() {
+    protected NoteWriter() {
         super();
     }
 

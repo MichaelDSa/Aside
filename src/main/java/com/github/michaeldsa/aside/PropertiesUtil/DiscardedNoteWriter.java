@@ -6,7 +6,7 @@ import com.github.michaeldsa.aside.Settings.Settings;
 
 public class DiscardedNoteWriter extends DiscardedNotePropertiesUtil {
 
-    public DiscardedNoteWriter() {
+    protected DiscardedNoteWriter() {
         super();
     }
 

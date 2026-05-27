@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 
 public class DiscardedNoteRetriever extends DiscardedNotePropertiesUtil {
 
-    public DiscardedNoteRetriever() {
+    protected DiscardedNoteRetriever() {
         super();
     }
 
