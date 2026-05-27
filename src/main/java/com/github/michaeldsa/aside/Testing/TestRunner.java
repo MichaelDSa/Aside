@@ -152,11 +152,11 @@ public class TestRunner {
 //            System.out.println(Pretty.formatNote4ViewPath(npr_note, 80));
 
             // NotePropsWriter Test:
-//            Test.notePropsWriterTest();
+            Test.notePropsWriterTest();
             // SUCCESS
 
             // NotePropsRetriever Test:
-            Test.notePropsRetrieverTest();
+//            Test.notePropsRetrieverTest();
             // SUCCESS
 
 
