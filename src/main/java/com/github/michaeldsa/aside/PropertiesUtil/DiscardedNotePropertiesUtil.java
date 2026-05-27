@@ -1,47 +1,47 @@
 package com.github.michaeldsa.aside.PropertiesUtil;
 
+import com.github.michaeldsa.aside.AsidePathElement.DiscardedNote;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Properties;
 
-public abstract class DiscardedNotePropertiesUtil extends NotePropertiesUtil {
-    // property names:
-    protected final String warning_n = "warning";
-    protected final String message_n = "message";
-    protected final String originalMetaPath_n = "original_metapath";
-    protected final String originalViewPath_n = "original_viewPath";
+public class DiscardedNotePropertiesUtil extends PropertiesUtil {
+    // all property key names:
+    protected final String warning_k = "warning";
+    protected final String message_k = "message";
+    protected final String originalMetaPath_k = "original_metaPath";
+    protected final String originalViewPath_k = "original_viewPath";
+    protected final String title_k = "title";
+    protected final String content_k = "content";
+    protected final String to_k = "to";
+    protected final String from_k = "from";
+    protected final String tags_k = "tags";
+    protected final String bibliographies_k = "bib";
 
-    // lists
-    protected ArrayList<String> discardedElementProperties = new ArrayList<>(Arrays.asList(filename_n, warning_n, message_n, originalMetaPath_n, originalViewPath_n, title_n, content_n, to_n, from_n, tags_n));
-    protected ArrayList<String> discardedElementStringProperties = new ArrayList<>(Arrays.asList(filename_n, warning_n, message_n, originalMetaPath_n, originalViewPath_n, title_n, content_n));
-    protected ArrayList<String> discardedElementHashSetProperties = new ArrayList<>(Arrays.asList(to_n, from_n, tags_n));
-
-
-     // get properties that should be saved as String in a MutableNote or DiscardedElement
-    protected String getPropAsString(Properties properties, String prop) {
-        String val = "";
-        if (discardedElementStringProperties.contains(prop)) {
-            String test = properties.getProperty(prop);
-            if (test != null) {
-                val = test;
-            }
-        } else {
-            System.err.println("NotePropertiesUtil.getPropAsString(): prop parameter not found in noteStringProperties: " + prop);
-        }
-        return val;
+    protected DiscardedNotePropertiesUtil() {
+        super();
+        // control sets:
+        stringPropertiesKeysSubset = new HashSet<>(Arrays.asList(warning_k, message_k, originalMetaPath_k, originalViewPath_k, title_k, content_k));
+        hashSetPropertiesKeysSubset = new HashSet<>(Arrays.asList(to_k, from_k, tags_k, bibliographies_k));
     }
 
-    // get properties that should be saved as HashSet<String> in a MutableNote or DiscardedElement
-    protected HashSet<String> getPropAsHashSet(Properties properties, String prop) {
-        HashSet<String> val = new HashSet<>();
-        if (discardedElementHashSetProperties.contains(prop)) {
-            HashSet<String> test = stringToHashSet(properties.getProperty(prop));
-            if (test != null) {
-                val = test;
-            }
-        }
-        return val;
+    protected void setProperties(DiscardedNote dn) {
+
+        properties.clear();
+
+        // define propertiesMap keys & values:
+        properties.setProperty(warning_k, dn.getWarning());
+        properties.setProperty(message_k, emptyIfNull(dn.getMessage()));
+        properties.setProperty(originalMetaPath_k, emptyIfNull(dn.getOriginalMetaPath().toString()));
+        properties.setProperty(originalViewPath_k, emptyIfNull(dn.getOriginalViewPath().toString()));
+        properties.setProperty(title_k, emptyIfNull(dn.getTitle()));
+        properties.setProperty(content_k, emptyIfNull(dn.getContent()));
+        properties.setProperty(to_k, hashSetToString(dn.getTo()));
+        properties.setProperty(from_k, hashSetToString(dn.getFrom()));
+        properties.setProperty(tags_k, hashSetToString(dn.getTags()));
+        properties.setProperty(bibliographies_k, hashSetToString(dn.getBibliographies()));
+
+
     }
+
 }

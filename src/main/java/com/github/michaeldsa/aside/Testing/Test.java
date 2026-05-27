@@ -13,8 +13,8 @@ import com.github.michaeldsa.aside.FileTraversal.Traversers;
 import com.github.michaeldsa.aside.Ops.Create;
 import com.github.michaeldsa.aside.PathKeeper;
 import com.github.michaeldsa.aside.Pretty;
-import com.github.michaeldsa.aside.PropertiesUtil.NotePropsRetriever;
-import com.github.michaeldsa.aside.PropertiesUtil.NotePropsWriter;
+import com.github.michaeldsa.aside.PropertiesUtil.NoteRetriever;
+import com.github.michaeldsa.aside.PropertiesUtil.NoteWriter;
 import com.github.michaeldsa.aside.PropertiesUtil.PropUtils;
 import com.github.michaeldsa.aside.Search.Search;
 import com.github.michaeldsa.aside.Settings.Settings;
@@ -432,13 +432,13 @@ public class Test {
                 .addFrom(".260526_1830_33.txt",".260526_1830_34.txt",".260526_1830_35.txt")
                 .addTags("Dune", "Harry Potter", "Fux.25")
                 .addBibliographies(".b260526_1830_39.txt");
-        NotePropsWriter npr = new NotePropsWriter();
+        NoteWriter npr = new NoteWriter();
         npr.write(n);
     }
 
     public static void notePropsRetrieverTest() {
         Note n = new Note(new MetaPath(Paths.get(".PropUtils", ".260526_1834_59.txt")));
-        NotePropsRetriever npr = new NotePropsRetriever();
+        NoteRetriever npr = new NoteRetriever();
         npr.retrieve(n);
         System.out.println(Pretty.formatNote4ViewPath(n, Settings.getLineWidth().file()));
         System.out.println(n);

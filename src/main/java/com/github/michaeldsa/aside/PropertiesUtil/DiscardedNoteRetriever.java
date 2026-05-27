@@ -5,54 +5,30 @@ import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsidePathElement.DiscardedNote;
 
 import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.Properties;
 
 public class DiscardedNoteRetriever extends DiscardedNotePropertiesUtil {
 
     public DiscardedNoteRetriever() {
-        properties = new Properties();
+        super();
     }
 
+    public void retrieve(DiscardedNote dn) {
+        properties.clear();
 
-    private MetaPath getOriginalMetaPathProp(Properties properties) {
-        return new MetaPath(Paths.get(getPropAsString(properties, originalMetaPath_n)));
-    }
-    private ViewPath getOriginalViewPathProp(Properties properties) {
-        return new ViewPath(Paths.get(getPropAsString(properties, originalViewPath_n)));
-    }
-    private String getTitleProp(Properties properties) {
-        return getPropAsString(properties, title_n);
-    }
-    private String getContentProp(Properties properties) {
-        return getPropAsString(properties,content_n);
-    }
-    private String getMessageProp(Properties properties) {
-        return getPropAsString(properties,message_n);
-    }
-    private HashSet<String> getToProp(Properties properties) {
-        return getPropAsHashSet(properties,to_n);
-    }
-    private HashSet<String> getFromProp(Properties properties) {
-        return getPropAsHashSet(properties,from_n);
-    }
-    private HashSet<String> getTagsProp(Properties properties) {
-        return getPropAsHashSet(properties,tags_n);
-    }
+        // load properties file into properties field
+        loadPropertiesFile(dn.getMetaPath().getPath());
 
-    public void retrieve(DiscardedNote de) {
-
-        loadPropertiesFile(properties, de.getMetaPath().getPath());
-
-        // assign all fields from properties
-        de.setOriginalMetaPath(getOriginalMetaPathProp(properties))
-                .setOriginalViewPath(getOriginalViewPathProp(properties))
-                .setMessage(getMessageProp(properties))
-                .setTitle(getTitleProp(properties))
-                .setContent(getContentProp(properties))
-                .setTo(getToProp(properties))
-                .setFrom(getFromProp(properties))
-                .setTags(getTagsProp(properties));
+        // assign DiscardedNote fields from properties data
+        dn.setOriginalMetaPath(new MetaPath(Paths.get(getPropAsString(originalMetaPath_k))))
+                .setOriginalViewPath(new ViewPath(Paths.get(getPropAsString(originalViewPath_k))))
+                .setMessage(getPropAsString(message_k))
+                .setTitle(getPropAsString(title_k))
+                .setContent(getPropAsString(content_k))
+                .setTo(getPropAsHashSet(to_k))
+                .setFrom(getPropAsHashSet(from_k))
+                .setTags(getPropAsHashSet(tags_k))
+                .setBibliographies(getPropAsHashSet(bibliographies_k));
 
     }
+
 }

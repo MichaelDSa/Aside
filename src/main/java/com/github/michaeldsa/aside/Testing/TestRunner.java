@@ -2,13 +2,7 @@ package com.github.michaeldsa.aside.Testing;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
-import com.github.michaeldsa.aside.AsidePathElement.Bibliography;
-import com.github.michaeldsa.aside.AsidePathElement.DiscardedBibliography;
-import com.github.michaeldsa.aside.AsidePathElement.DiscardedNote;
-import com.github.michaeldsa.aside.AsidePathElement.Note;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
-import com.github.michaeldsa.aside.Pretty;
-import com.github.michaeldsa.aside.PropertiesUtil.NotePropsRetriever;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

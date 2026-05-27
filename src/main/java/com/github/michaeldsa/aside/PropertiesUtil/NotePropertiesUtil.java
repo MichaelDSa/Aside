@@ -1,121 +1,39 @@
 package com.github.michaeldsa.aside.PropertiesUtil;
 
-import com.github.michaeldsa.aside.AsidePath.MetaPath;
-import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.AsidePathElement.AbstractNote;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Properties;
 
-public abstract class NotePropertiesUtil {
+public abstract class NotePropertiesUtil extends PropertiesUtil{
+    // all property key names:
+    protected final String filename_k = "filename";
+    protected final String title_k = "title";
+    protected final String content_k = "content";
+    protected final String to_k = "to";
+    protected final String from_k = "from";
+    protected final String tags_k = "tags";
+    protected final String bibliographies_k = "bib";
 
-    // properties object
-    // note: is this necessary? can it just be passed as method parameter?
-    protected Properties properties;
 
-    // property names:
-    protected final String filename_n = "filename";
-    protected final String title_n = "title";
-    protected final String content_n = "content";
-    protected final String to_n = "to";
-    protected final String from_n = "from";
-    protected final String tags_n = "tags";
-
-    // lists (should be HashSet).
-    protected ArrayList<String> noteProperties = new ArrayList<>(Arrays.asList(filename_n, title_n, content_n, to_n, from_n, tags_n));
-    protected ArrayList<String> noteStringProperties = new ArrayList<>(Arrays.asList(filename_n, title_n, content_n));
-    protected ArrayList<String> noteHashSetProperties = new ArrayList<>(Arrays.asList(to_n, from_n, tags_n));
-
-    protected void loadPropertiesFile(Properties properties, Path path) {
-        if (Files.exists(path)) {
-            try (InputStream is = Files.newInputStream(path)) {
-                properties.load(is);
-            } catch (IOException e) {
-                System.err.println("NotePropertiesUtil.loadPropertiesFile(): IOException: " + path);
-            }
-        }
+    protected NotePropertiesUtil() {
+        super();
+        // control sets:
+        stringPropertiesKeysSubset = new HashSet<>(Arrays.asList(filename_k, title_k, content_k));
+        hashSetPropertiesKeysSubset = new HashSet<>(Arrays.asList(to_k, from_k, tags_k, bibliographies_k));
     }
 
-     protected static String emptyIfNull(String str) {
-        return str == null ? "" : str;
+    protected void setProperties(AbstractNote note) {
+
+        properties.clear();
+
+        // define propertiesMap keys and values:
+        properties.setProperty(filename_k, emptyIfNull(note.getMetaPath().getPath().getFileName().toString()));
+        properties.setProperty(title_k, emptyIfNull(note.getTitle()));
+        properties.setProperty(content_k, emptyIfNull(note.getContent()));
+        properties.setProperty(to_k, hashSetToString(note.getTo()));
+        properties.setProperty(from_k, hashSetToString(note.getFrom()));
+        properties.setProperty(tags_k, hashSetToString(note.getTags()));
+        properties.setProperty(bibliographies_k, hashSetToString(note.getBibliographies()));
     }
-    // get properties that should be saved as HashSet<String> in a MutableNote or DiscardedElement
-    protected HashSet<String> getPropAsHashSet(Properties properties, String prop) {
-        HashSet<String> val = new HashSet<>();
-        if (noteHashSetProperties.contains(prop)) {
-            HashSet<String> test = stringToHashSet(properties.getProperty(prop));
-            if (test != null) {
-                val = test;
-            }
-        }
-        return val;
-    }
-
-    // get properties that should be saved as String in a MutableNote or DiscardedElement
-    protected String getPropAsString(Properties properties, String prop) {
-        String val = "";
-        if (noteStringProperties.contains(prop)) {
-            String test = properties.getProperty(prop);
-            if (test != null) {
-                val = test;
-            }
-        } else {
-            System.err.println("NotePropertiesUtil.getPropAsString(): prop parameter not found in noteStringProperties: " + prop);
-        }
-        return val;
-    }
-
-    // format a HashSet<String> to be saved in a properties file
-    protected String hashSetToString(HashSet<String> hs) {
-        if (hs == null) {
-            return "";
-        }
-        return removeListChars(hs.toString());
-    }
-
-    // convert String objects retrieved from a Properties file to a HashSet<String>
-    protected HashSet<String> stringToHashSet(String str) {
-
-        if (str.isBlank()) {
-            return new HashSet<>();
-        }
-
-        str = removeListChars(str);
-        String[] str_arr = str.split(" ");
-
-        return new HashSet<>(Arrays.asList(str_arr));
-    }
-
-    // write a properties file
-    protected void writeProperties(Properties properties, Path m_path) {
-        try (OutputStream out = Files.newOutputStream(m_path)) {
-            properties.store(out, "");
-        } catch (IOException e) {
-            System.err.println("NotePropertiesUtil.writeProperties(): IOException. path: " + m_path);
-        }
-    }
-
-    // write ViewPath file
-    protected void writeViewPath(Path m_path, String formattedString) {
-        Path v_path = new ViewPath(new MetaPath(m_path)).getPath();
-        try (OutputStream out = Files.newOutputStream(v_path)) {
-            out.write(formattedString.getBytes());
-        } catch (IOException e) {
-            System.err.println("NotePropertiesUtil.writeViewPath(): caught IOException. path: " + v_path);
-        }
-    }
-
-    // remove characters typically found in stdout when printing a List or Set.
-    protected String removeListChars(String str) {
-        return str.replace("[", "")
-                .replace("]","")
-                .replace(",","");
-    }
-
 }
