@@ -3,7 +3,6 @@ package com.github.michaeldsa.aside.PropertiesUtil;
 import com.github.michaeldsa.aside.AsidePathElement.AbstractNote;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 
 public abstract class NotePropsUtil extends PropertiesUtil{
@@ -19,9 +18,6 @@ public abstract class NotePropsUtil extends PropertiesUtil{
 
     protected NotePropsUtil() {
         super();
-        // assignment map:
-        propertiesMap = new HashMap<>();
-
         // control sets:
         stringPropertiesKeysSubset = new HashSet<>(Arrays.asList(filename_k, title_k, content_k));
         hashSetPropertiesKeysSubset = new HashSet<>(Arrays.asList(to_k, from_k, tags_k, bibliographies_k));
@@ -29,19 +25,15 @@ public abstract class NotePropsUtil extends PropertiesUtil{
 
     protected void setProperties(AbstractNote note) {
 
-        // define propertiesMap keys and values:
-        propertiesMap.put(filename_k, emptyIfNull(note.getMetaPath().getPath().getFileName().toString()));
-        propertiesMap.put(title_k, emptyIfNull(note.getTitle()));
-        propertiesMap.put(content_k, emptyIfNull(note.getContent()));
-        propertiesMap.put(to_k, hashSetToString(note.getTo()));
-        propertiesMap.put(from_k, hashSetToString(note.getFrom()));
-        propertiesMap.put(tags_k, hashSetToString(note.getTags()));
-        propertiesMap.put(bibliographies_k, hashSetToString(note.getBibliographies()));
-
         properties.clear();
 
-        for(String key : propertiesMap.keySet()) {
-            properties.setProperty(key, propertiesMap.get(key));
-        }
+        // define propertiesMap keys and values:
+        properties.setProperty(filename_k, emptyIfNull(note.getMetaPath().getPath().getFileName().toString()));
+        properties.setProperty(title_k, emptyIfNull(note.getTitle()));
+        properties.setProperty(content_k, emptyIfNull(note.getContent()));
+        properties.setProperty(to_k, hashSetToString(note.getTo()));
+        properties.setProperty(from_k, hashSetToString(note.getFrom()));
+        properties.setProperty(tags_k, hashSetToString(note.getTags()));
+        properties.setProperty(bibliographies_k, hashSetToString(note.getBibliographies()));
     }
 }

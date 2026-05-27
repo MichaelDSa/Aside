@@ -16,9 +16,6 @@ import java.util.Properties;
 public abstract class PropertiesUtil {
     protected Properties properties;
 
-    // assignment map:
-    protected HashMap<String, String> propertiesMap;
-
     // Control Sets. To be assigned in abstract sub-classes.
     protected HashSet<String> stringPropertiesKeysSubset;
     protected HashSet<String> hashSetPropertiesKeysSubset;

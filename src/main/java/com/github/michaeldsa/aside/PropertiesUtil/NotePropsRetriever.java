@@ -11,6 +11,8 @@ public class NotePropsRetriever extends NotePropsUtil {
 
 
     public void retrieve(Note note) {
+        properties.clear();
+
         // load file data into properties
         loadPropertiesFile(note.getMetaPath().getPath());
 
@@ -22,8 +24,6 @@ public class NotePropsRetriever extends NotePropsUtil {
                 .setTags(getPropAsHashSet(tags_k))
                 .setBibliographies(getPropAsHashSet(bibliographies_k));
 
-        // clear properties, because access point is a static instance of this.
-        properties.clear();
     }
 
 }
