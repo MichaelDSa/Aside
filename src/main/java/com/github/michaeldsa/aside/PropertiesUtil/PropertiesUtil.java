@@ -3,9 +3,8 @@ package com.github.michaeldsa.aside.PropertiesUtil;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -14,6 +13,8 @@ import java.util.HashSet;
 import java.util.Properties;
 
 public abstract class PropertiesUtil {
+    /* I wanted to use a visually distinct, legible delimiter, so I chose \u220E (tombstone: ∎). */
+    public static String delimiter = "\u220e"; // looks like: ∎
     protected Properties properties;
 
     // Control Sets. To be assigned in abstract sub-classes.
@@ -24,15 +25,15 @@ public abstract class PropertiesUtil {
         properties = new Properties();
     }
 
-    protected void loadPropertiesFile(Path path) {
-        if (Files.exists(path)) {
-            try (InputStream is = Files.newInputStream(path)) {
-                properties.load(is);
-            } catch (IOException e) {
-                System.err.println("PropertiesUtil.loadPropertiesFile(): IOException: " + path);
-            }
+protected void loadPropertiesFile(Path path) {
+    if (Files.exists(path)) {
+        try (BufferedReader is = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+            properties.load(is);
+        } catch (IOException e) {
+            System.err.println("PropertiesUtil.loadPropertiesFile(): IOException: " + path);
         }
     }
+}
 
     protected static String emptyIfNull(String str) {
         return str == null ? "" : str;
@@ -62,10 +63,10 @@ public abstract class PropertiesUtil {
 
     // format a HashSet<String> to be saved in a properties file
     protected String hashSetToString(HashSet<String> hs) {
-        if (hs == null) {
+        if (hs == null || hs.isEmpty()) {
             return "";
         }
-        return removeListChars(hs.toString());
+        return String.join(delimiter, hs);
     }
 
     // convert String objects retrieved from a Properties file to a HashSet<String>
@@ -77,15 +78,14 @@ public abstract class PropertiesUtil {
             return new HashSet<>();
         }
 
-        str = removeListChars(str);
-        String[] str_arr = str.split(" ");
+        String[] str_arr = str.split(delimiter);
 
         return new HashSet<>(Arrays.asList(str_arr));
     }
 
     // write a properties file
     protected void writeProperties(Path m_path) {
-        try (OutputStream out = Files.newOutputStream(m_path)) {
+        try (BufferedWriter out = Files.newBufferedWriter(m_path, StandardCharsets.UTF_8)) {
             properties.store(out, "");
         } catch (IOException e) {
             System.err.println("PropertiesUtil.writeProperties(): IOException. path: " + m_path);
@@ -102,11 +102,5 @@ public abstract class PropertiesUtil {
         }
     }
 
-    // remove characters typically found in stdout when printing a List or Set.
-    protected String removeListChars(String str) {
-        return str.replace("[", "")
-                .replace("]","")
-                .replace(",","");
-    }
 
 }

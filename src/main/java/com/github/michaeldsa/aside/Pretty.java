@@ -112,9 +112,6 @@ public class Pretty {
         if (hashSet == null || hashSet.isEmpty()) {
             return "";
         }
-        return hashSet.toString()
-                .replace("[", "")
-                .replace("]", "")
-                .replace(",", "");
+        return String.join(",  ", hashSet);
     }
 }

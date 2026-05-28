@@ -441,7 +441,7 @@ public class Test {
 
     public static void notePropsRetrieverTest() {
         // Test the new class, NotePropsRetriever
-        Note n = new Note(new MetaPath(Paths.get(".PropUtils", ".260526_1834_59.txt")));
+        Note n = new Note(new MetaPath(Paths.get(".PropUtils", ".260528_0009_26.txt")));
 //        NoteRetriever npr = new NoteRetriever();
         /* updated: PropUtils now uses NotePropsRetriever;
         NotePropsRetriever has been renamed to NoteRetriever. */
