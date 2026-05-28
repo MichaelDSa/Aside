@@ -13,8 +13,7 @@ import java.util.HashSet;
 import java.util.Properties;
 
 public abstract class PropertiesUtil {
-    /* I wanted to use a visually distinct, legible delimiter, so I chose \u220E (tombstone: ∎). */
-    public static String delimiter = "\u220e"; // looks like: ∎
+    public static String delimiter = "\u001f"; // looks like: ^_ or: US
     protected Properties properties;
 
     // Control Sets. To be assigned in abstract sub-classes.

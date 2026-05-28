@@ -429,8 +429,8 @@ public class Test {
         Note n = new Note(new MetaPath(Paths.get(".PropUtils")))
                 .setTitle("test noteProprsWriterTest. May 26, 2026")
                 .setContent("This is supposed to be a test for the new note writer, called 'NotePropsWriter', which will be changed to 'NoteWriter', The old NoteWriter will be deleted.")
-                .addTo(".260526_1830_26.txt",".260526_1830_27.txt",".260526_1830_28.txt" )
-                .addFrom(".260526_1830_33.txt",".260526_1830_34.txt",".260526_1830_35.txt")
+                .addTo(".260526_1830_26.txt",".260526_1830_27.txt",".260526_1830_28.txt",".260526_1830_29.txt",".260526_1830_30.txt",".260526_1830_31.txt",".260526_1830_32.txt",".260526_1830_33.txt",".260526_1830_34.txt")
+                .addFrom(".260526_1830_33.txt",".260526_1830_34.txt",".260526_1830_35.txt",".260526_1830_26.txt",".260526_1830_27.txt",".260526_1830_28.txt")
                 .addTags("Dune", "Harry Potter", "Fux.25")
                 .addBibliographies(".b260526_1830_39.txt");
 //        NoteWriter npr = new NoteWriter();

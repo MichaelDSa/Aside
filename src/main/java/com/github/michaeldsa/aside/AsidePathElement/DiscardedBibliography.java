@@ -12,16 +12,16 @@ import java.util.Objects;
 
 public class DiscardedBibliography extends AbstractDiscardedElement{
 
-    private String authors;
+    private HashSet<String> authors;
     private String title;
-    private int yearPublished;
+    private HashSet<Integer> yearPublished;
     private String comment;
     private HashSet<String> references;
-    private String isbn;
-    private String doi;
-    private String url;
-    private String arXiv_ID;
-    private String ads_Bibcode;
+    private HashSet<String> isbn;
+    private HashSet<String> doi;
+    private HashSet<String> url;
+    private HashSet<String> arXiv_ID;
+    private HashSet<String> ads_Bibcode;
 
     // Validation: Must start with DISCARDED. Must end with DiscardedBibliography filename.
     private boolean invalidConstructorArg(AsidePath ap) {
@@ -109,27 +109,27 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
 
     // Constructor helper methods:
     private void setBiliographyFieldsToEmpty() {
-        authors = "";
+        authors = new HashSet<>();
         title = "";
-        yearPublished = -1;
+        yearPublished = new HashSet<>();
         comment = "";
         references = new HashSet<>();
-        isbn = "";
-        doi = "";
-        url = "";
-        arXiv_ID = "";
-        ads_Bibcode = "";
+        isbn = new HashSet<>();
+        doi = new HashSet<>();
+        url = new HashSet<>();
+        arXiv_ID = new HashSet<>();
+        ads_Bibcode = new HashSet<>();
     }
 
     // getters:
 
-    public String getAuthors() {
+    public HashSet<String> getAuthors() {
         return authors;
     }
     public String getTitle() {
         return title;
     }
-    public int getYearPublished() {
+    public HashSet<Integer> getYearPublished() {
         return yearPublished;
     }
     public String getComment() {
@@ -138,25 +138,25 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
     public HashSet<String> getReferences() {
         return references;
     }
-    public String getIsbn() {
+    public HashSet<String> getIsbn() {
         return isbn;
     }
-    public String getDoi() {
+    public HashSet<String> getDoi() {
         return doi;
     }
-    public String getUrl() {
+    public HashSet<String> getUrl() {
         return url;
     }
-    public String getArXiv_ID() {
+    public HashSet<String> getArXiv_ID() {
         return  arXiv_ID;
     }
-    public String getAds_Bibcode() {
+    public HashSet<String> getAds_Bibcode() {
         return ads_Bibcode;
     }
 
     // setters:
 
-    public DiscardedBibliography setAuthors(String authors) {
+    public DiscardedBibliography setAuthors(HashSet<String> authors) {
         this.authors = authors;
         return this;
     }
@@ -164,7 +164,7 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
         this.title = title;
         return this;
     }
-    public DiscardedBibliography setYearPublished(int yearPublished) {
+    public DiscardedBibliography setYearPublished(HashSet<Integer> yearPublished) {
         this.yearPublished = yearPublished;
         return this;
     }
@@ -172,47 +172,27 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
         this.comment = comment;
         return this;
     }
-    public DiscardedBibliography prependToComment(String comment) {
-        this.comment = comment + " " + this.comment;
-        return this;
-    }
-    public DiscardedBibliography appendToComment(String comment) {
-        this.comment += " " + comment;
-        return this;
-    }
     public DiscardedBibliography setReferences(HashSet<String> references) {
         this.references = references;
         return this;
     }
-    public DiscardedBibliography addReferences(String ...references) {
-        this.references.addAll(Arrays.asList(references));
-        return this;
-    }
-    public DiscardedBibliography removeReferences(String ...references) {
-        Arrays.asList(references).forEach(this.references::remove);
-        return this;
-    }
-    public DiscardedBibliography clearReferences() {
-        this.references.clear();
-        return this;
-    }
-    public DiscardedBibliography setIsbn(String isbn) {
+    public DiscardedBibliography setIsbn(HashSet<String> isbn) {
         this.isbn = isbn;
         return this;
     }
-    public DiscardedBibliography setDoi(String doi) {
+    public DiscardedBibliography setDoi(HashSet<String> doi) {
         this.doi = doi;
         return this;
     }
-    public DiscardedBibliography setUrl(String url) {
+    public DiscardedBibliography setUrl(HashSet<String> url) {
         this.url = url;
         return this;
     }
-    public DiscardedBibliography setArXiv_ID(String arXiv_ID) {
+    public DiscardedBibliography setArXiv_ID(HashSet<String> arXiv_ID) {
         this.arXiv_ID = arXiv_ID;
         return this;
     }
-    public DiscardedBibliography setAds_Bibcode(String ads_Bibcode) {
+    public DiscardedBibliography setAds_Bibcode(HashSet<String> ads_Bibcode) {
         this.ads_Bibcode = ads_Bibcode;
         return this;
     }

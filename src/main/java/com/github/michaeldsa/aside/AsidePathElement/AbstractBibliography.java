@@ -19,28 +19,28 @@ public abstract class AbstractBibliography extends AsidePathElement {
     private static final String m_prefix = ".b";
     private static final String v_prefix = "b";
 
-    protected String authors;
+    protected HashSet<String> authors;
     protected String title;
-    protected int yearPublished;
+    protected HashSet<Integer> yearPublished;
     protected String comment;
     protected HashSet<String> references;
-    protected String isbn;
-    protected String doi;
-    protected String url;
-    protected String arXiv_ID;
-    protected String ads_Bibcode;
+    protected HashSet<String> isbn;
+    protected HashSet<String> doi;
+    protected HashSet<String> url;
+    protected HashSet<String> arXiv_ID;
+    protected HashSet<String> ads_Bibcode;
 
 
-    public abstract String getAuthors();
+    public abstract HashSet<String> getAuthors();
     public abstract String getTitle();
-    public abstract int getYearPublished();
+    public abstract HashSet<Integer> getYearPublished();
     public abstract String getComment();
     public abstract HashSet<String> getReferences();
-    public abstract String getIsbn();
-    public abstract String getDoi();
-    public abstract String getUrl();
-    public abstract String getArXiv_ID();
-    public abstract String getAds_Bibcode();
+    public abstract HashSet<String> getIsbn();
+    public abstract HashSet<String> getDoi();
+    public abstract HashSet<String> getUrl();
+    public abstract HashSet<String> getArXiv_ID();
+    public abstract HashSet<String> getAds_Bibcode();
 
 
     // static methods:

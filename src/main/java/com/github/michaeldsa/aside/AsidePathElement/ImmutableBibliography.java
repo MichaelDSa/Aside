@@ -11,16 +11,16 @@ public class ImmutableBibliography extends AbstractBibliography {
     private final MetaPath metaPath;
     private final ViewPath viewPath;
     private final BibliographyCategory stepParent;
-    private final String authors;
+    private final HashSet<String> authors;
     private final String title;
-    private final int yearPublished;
+    private final HashSet<Integer> yearPublished;
     private final String comment;
     private final HashSet<String> references;
-    private final String isbn;
-    private final String doi;
-    private final String url;
-    private final String arXiv_ID;
-    private final String ads_Bibcode;
+    private final HashSet<String> isbn;
+    private final HashSet<String> doi;
+    private final HashSet<String> url;
+    private final HashSet<String> arXiv_ID;
+    private final HashSet<String> ads_Bibcode;
 
     public ImmutableBibliography(Bibliography bb) {
         /* unlikely, but arg can fail if cast to Bibliography*/
@@ -45,7 +45,7 @@ public class ImmutableBibliography extends AbstractBibliography {
     }
 
     @Override
-    public String getAuthors() {
+    public HashSet<String> getAuthors() {
         return authors;
     }
 
@@ -55,7 +55,7 @@ public class ImmutableBibliography extends AbstractBibliography {
     }
 
     @Override
-    public int getYearPublished() {
+    public HashSet<Integer> getYearPublished() {
         return yearPublished;
     }
 
@@ -70,27 +70,27 @@ public class ImmutableBibliography extends AbstractBibliography {
     }
 
     @Override
-    public String getIsbn() {
+    public HashSet<String> getIsbn() {
         return isbn;
     }
 
     @Override
-    public String getDoi() {
+    public HashSet<String> getDoi() {
         return doi;
     }
 
     @Override
-    public String getUrl() {
+    public HashSet<String> getUrl() {
         return url;
     }
 
     @Override
-    public String getArXiv_ID() {
+    public HashSet<String> getArXiv_ID() {
         return arXiv_ID;
     }
 
     @Override
-    public String getAds_Bibcode() {
+    public HashSet<String> getAds_Bibcode() {
         return ads_Bibcode;
     }
 

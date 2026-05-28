@@ -128,22 +128,22 @@ public class Bibliography extends AbstractBibliography {
 
     // Constructor helper methods:
     private void setBibFieldsToEmpty() {
-        authors = "";
+        authors = new HashSet<>();
         title = "";
-        yearPublished = -1;
+        yearPublished = new HashSet<>();
         comment = "";
         references = new HashSet<>();
-        isbn = "";
-        doi = "";
-        url = "";
-        arXiv_ID = "";
-        ads_Bibcode = "";
+        isbn = new HashSet<>();
+        doi = new HashSet<>();
+        url = new HashSet<>();
+        arXiv_ID = new HashSet<>();
+        ads_Bibcode = new HashSet<>();
     }
 
     // getters:
 
     @Override
-    public String getAuthors() {
+    public HashSet<String> getAuthors() {
         return authors;
     }
 
@@ -153,7 +153,7 @@ public class Bibliography extends AbstractBibliography {
     }
 
     @Override
-    public int getYearPublished() {
+    public HashSet<Integer> getYearPublished() {
         return yearPublished;
     }
 
@@ -168,37 +168,37 @@ public class Bibliography extends AbstractBibliography {
     }
 
     @Override
-    public String getIsbn() {
+    public HashSet<String> getIsbn() {
         return isbn;
     }
 
     @Override
-    public String getDoi() {
+    public HashSet<String> getDoi() {
         return doi;
     }
 
     @Override
-    public String getUrl() {
+    public HashSet<String> getUrl() {
         return url;
     }
 
     @Override
-    public String getArXiv_ID() {
+    public HashSet<String> getArXiv_ID() {
         return arXiv_ID;
     }
 
     @Override
-    public String getAds_Bibcode() {
+    public HashSet<String> getAds_Bibcode() {
         return ads_Bibcode;
     }
 
-    public Bibliography setPreviousState() {
-        previousState = new ImmutableBibliography(this);
-        return this;
+    public ImmutableBibliography getPreviousState() {
+        return previousState;
     }
 
-    // setters:
-    public Bibliography setAuthors(String authors) {
+
+    // setters and field modifiers:
+    public Bibliography setAuthors(HashSet<String> authors) {
         this.authors = authors;
         return this;
     }
@@ -206,8 +206,20 @@ public class Bibliography extends AbstractBibliography {
         this.title = title;
         return this;
     }
-    public Bibliography setYearPublished(int yearPublished) {
+    public Bibliography setYearPublished(HashSet<Integer> yearPublished) {
         this.yearPublished = yearPublished;
+        return this;
+    }
+    public Bibliography addYearPublished(Integer ...yearPublished) {
+        this.yearPublished.addAll(Arrays.asList(yearPublished));
+        return this;
+    }
+    public Bibliography removeYearPublished(Integer ...yearPublished) {
+        Arrays.asList(yearPublished).forEach(this.yearPublished::remove);
+        return this;
+    }
+    public Bibliography clearYearPublished() {
+        this.yearPublished.clear();
         return this;
     }
     public Bibliography setComment(String comment) {
@@ -238,29 +250,89 @@ public class Bibliography extends AbstractBibliography {
         this.references.clear();
         return this;
     }
-    public Bibliography setIsbn(String isbn) {
+    public Bibliography setIsbn(HashSet<String> isbn) {
         this.isbn = isbn;
         return this;
     }
-    public Bibliography setDoi(String doi) {
+    public Bibliography addIsbn(String ...isbn) {
+        this.isbn.addAll(Arrays.asList(isbn));
+        return this;
+    }
+    public Bibliography removeIsbn(String ...isbn) {
+        Arrays.asList(isbn).forEach(this.isbn::remove);
+        return this;
+    }
+    public Bibliography clearIsbn() {
+        this.isbn.clear();
+        return this;
+    }
+    public Bibliography setDoi(HashSet<String> doi) {
         this.doi = doi;
         return this;
     }
-    public Bibliography setUrl(String url) {
+    public Bibliography addDoi(String ... doi) {
+        this.doi.addAll(Arrays.asList(doi));
+        return this;
+    }
+    public Bibliography removeDoi(String ... doi) {
+        Arrays.asList(doi).forEach(this.doi::remove);
+        return this;
+    }
+    public Bibliography clearDoi() {
+        this.doi.clear();
+        return this;
+    }
+    public Bibliography setUrl(HashSet<String> url) {
         this.url = url;
         return this;
     }
-    public Bibliography setArXiv_ID(String arXiv_ID) {
+    public Bibliography addUrl(String ...url) {
+        this.url.addAll(Arrays.asList(url));
+        return this;
+    }
+    public Bibliography removeUrl(String ...url) {
+        Arrays.asList(url).forEach(this.url::remove);
+        return this;
+    }
+    public Bibliography clearUrl() {
+        this.url.clear();
+        return this;
+    }
+    public Bibliography setArXiv_ID(HashSet<String> arXiv_ID) {
         this.arXiv_ID = arXiv_ID;
         return this;
     }
-    public Bibliography setAds_Bibcode(String ads_Bibcode) {
+    public Bibliography addArXiv_ID(String ...arXiv_ID) {
+        this.arXiv_ID.addAll(Arrays.asList(arXiv_ID));
+        return this;
+    }
+    public Bibliography removeArXiv_ID(String ...arXiv_ID) {
+        Arrays.asList(arXiv_ID).forEach(this.arXiv_ID::remove);
+        return this;
+    }
+    public Bibliography clearArXiv_ID() {
+        this.arXiv_ID.clear();
+        return this;
+    }
+    public Bibliography setAds_Bibcode(HashSet<String> ads_Bibcode) {
         this.ads_Bibcode = ads_Bibcode;
         return this;
     }
-
-    public ImmutableBibliography getPreviousState() {
-        return previousState;
+    public Bibliography addAds_Bibcode(String ...ads_Bibcode) {
+        this.ads_Bibcode.addAll(Arrays.asList(ads_Bibcode));
+        return this;
+    }
+    public Bibliography removeAds_Bibcode(String ...ads_Bibcode) {
+        Arrays.asList(ads_Bibcode).forEach(this.ads_Bibcode::remove);
+        return this;
+    }
+    public Bibliography clearAds_Bibcode() {
+        this.ads_Bibcode.clear();
+        return this;
+    }
+    public Bibliography setPreviousState() {
+        previousState = new ImmutableBibliography(this);
+        return this;
     }
 
     // booleans:
