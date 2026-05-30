@@ -2,6 +2,7 @@ package com.github.michaeldsa.aside.Testing;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.AsidePathElement.Author;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
 
 import java.nio.file.Path;
@@ -153,21 +154,14 @@ public class TestRunner {
 //            Test.notePropsRetrieverTest();
             // SUCCESS
 
-            // testing how \u220e and \u001f look:
-            System.out.println("\nUTF CHARACTERS: ");
-            System.out.println("\\u220e: ∎");
-            System.out.println("\\u001f: \u001f");
-            System.out.println("\\u2591: \u2591");
-            System.out.println("\\u2592: \u2592");
-            System.out.println("\\u2593: \u2593");
-            System.out.println("\\u2588: \u2588");
-            System.out.println("\\u2584: \u2584");
-            System.out.println("\\u2580: \u2580");
-            System.out.println("\\u25A0: \u25A0");
-            System.out.println("\\u2AD8: \u2AD8");
-            System.out.println("\\u25FC: \u25FC");
-            System.out.println("\\u2663: \u2663");
-            System.out.println("\\u2580: \u2580");
+            // Author test
+//            Test.authorTest();
+            // SUCCESS
+
+
+
+
+
 
 
 

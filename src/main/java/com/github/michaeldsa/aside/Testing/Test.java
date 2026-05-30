@@ -4,10 +4,7 @@ package com.github.michaeldsa.aside.Testing;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
-import com.github.michaeldsa.aside.AsidePathElement.AsidePathElement;
-import com.github.michaeldsa.aside.AsidePathElement.Category;
-import com.github.michaeldsa.aside.AsidePathElement.DiscardedNote;
-import com.github.michaeldsa.aside.AsidePathElement.Note;
+import com.github.michaeldsa.aside.AsidePathElement.*;
 import com.github.michaeldsa.aside.Initialization.CurrentCategory;
 import com.github.michaeldsa.aside.FileTraversal.Traversers;
 import com.github.michaeldsa.aside.Ops.Create;
@@ -448,6 +445,48 @@ public class Test {
         PropUtils.retrieveNote(n);
         System.out.println(Pretty.formatNote4ViewPath(n, Settings.getLineWidth().file()));
         System.out.println(n);
+    }
+
+    public static void utfTest() {
+        // testing how \u220e and \u001f look:
+        System.out.println("\nUTF CHARACTERS: ");
+        System.out.println("\\u220e: ∎");
+        System.out.println("\\u001f: \u001f");
+        System.out.println("\\u2591: \u2591"); // ░
+        System.out.println("\\u2592: \u2592"); // ▒
+        System.out.println("\\u2593: \u2593"); // ▓
+        System.out.println("\\u2588: \u2588"); // █
+        System.out.println("\\u2584: \u2584"); // ▄
+        System.out.println("\\u2580: \u2580"); // ▀
+        System.out.println("\\u25A0: \u25A0"); // ■
+        System.out.println("\\u2AD8: \u2AD8"); // ⫘
+        System.out.println("\\u25FC: \u25FC"); // ◼
+        System.out.println("\\u2663: \u2663"); // ♣
+        System.out.println("\\u2580: \u2580"); // ▀
+
+    }
+
+    public static void authorTest() {
+        Author author1 = new Author("lastName", "prefix", "firstName", "middlename1 middlename2", "initials", "postNominals");
+        System.out.println("Author1: " + author1.getDisplayName());
+        System.out.println("Author1, propertiesFormattedString: " + author1.getPropertiesDelimitedString());
+
+        Author author2 = new Author("Osho", "", "", "", "", "");
+        System.out.println("Author2: " + author2.getDisplayName());
+        System.out.println("Author2, propertiesFormattedString: " + author2.getPropertiesDelimitedString());
+
+        Author author3 = new Author("Barathian", "King", "Geoffery", "", "", "The Cruel");
+        System.out.println("Author3: " + author3.getDisplayName());
+        System.out.println("Author3, propertiesFormattedString: " + author3.getPropertiesDelimitedString());
+
+        Author kingGeoffery = new Author(author3.getPropertiesDelimitedString());
+        System.out.println("kingGeoffery: " + kingGeoffery.getDisplayName());
+        System.out.println("kingGeoffery, propertiesFormattedString: " + kingGeoffery.getPropertiesDelimitedString());
+
+        Author tombstone = new Author("tombstone");
+        System.out.println("tombstone: " + tombstone.getDisplayName());
+        System.out.println("tombstone, propertiesFormattedString: " + tombstone.getPropertiesDelimitedString());
+
     }
 
 
