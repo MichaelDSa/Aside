@@ -112,6 +112,7 @@ public class Bibliography extends AbstractBibliography {
 
         authors = bb.getAuthors();
         title = bb.getTitle();
+        publishers = bb.getPublishers();
         yearPublished = bb.getYearPublished();
         comment = bb.getComment();
         references = bb.getReferences();
@@ -128,8 +129,9 @@ public class Bibliography extends AbstractBibliography {
 
     // Constructor helper methods:
     private void setBibFieldsToEmpty() {
-        authors = new HashSet<>();
+        authors = new ArrayList<>();
         title = "";
+        publishers = new HashSet<>();
         yearPublished = new HashSet<>();
         comment = "";
         references = new HashSet<>();
@@ -143,13 +145,18 @@ public class Bibliography extends AbstractBibliography {
     // getters:
 
     @Override
-    public HashSet<String> getAuthors() {
+    public ArrayList<Author> getAuthors() {
         return authors;
     }
 
     @Override
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public HashSet<String> getPublishers() {
+        return publishers;
     }
 
     @Override
@@ -198,12 +205,52 @@ public class Bibliography extends AbstractBibliography {
 
 
     // setters and field modifiers:
-    public Bibliography setAuthors(HashSet<String> authors) {
+    public Bibliography setAuthors(ArrayList<Author> authors) {
         this.authors = authors;
+        return this;
+    }
+    public Bibliography addNewAuthor(Author ...authors) {
+        this.authors.addAll(Arrays.asList(authors));
+        return this;
+    }
+    public Bibliography addNewAuthor(String propertiesFormattedAuthorString) {
+        this.authors.add(new Author(propertiesFormattedAuthorString));
+        return this;
+    }
+    public Bibliography addNewAuthor(String lastName, String firstName) {
+        this.authors.add(new Author(lastName, "", firstName, "", "", ""));
+        return this;
+    }
+    public Bibliography addNewAuthor(String lastName, String firstName, String initials) {
+        this.authors.add(new Author(lastName, "", firstName, "", initials, ""));
+        return this;
+    }
+    public Bibliography addNewAuthor(String lastName, String prefix, String firstName, String middleNames, String initials, String postNominals) {
+        this.authors.add(new Author(lastName, prefix, firstName, middleNames, initials, postNominals));
+        return this;
+    }
+    public Bibliography clearAuthors() {
+        this.authors.clear();
         return this;
     }
     public Bibliography setTitle(String title) {
         this.title = title;
+        return this;
+    }
+    public Bibliography setPublishers(HashSet<String> publishers) {
+        this.publishers = publishers;
+        return this;
+    }
+    public Bibliography addNewPublisher(String ... publishers) {
+        this.publishers.addAll(Arrays.asList(publishers));
+        return this;
+    }
+    public Bibliography removePublisher(String ... publishers) {
+        Arrays.asList(publishers).forEach(this.publishers::remove);
+        return this;
+    }
+    public Bibliography clearPublishers() {
+        this.publishers.clear();
         return this;
     }
     public Bibliography setYearPublished(HashSet<Integer> yearPublished) {

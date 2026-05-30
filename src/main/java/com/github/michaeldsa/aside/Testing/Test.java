@@ -10,8 +10,6 @@ import com.github.michaeldsa.aside.FileTraversal.Traversers;
 import com.github.michaeldsa.aside.Ops.Create;
 import com.github.michaeldsa.aside.PathKeeper;
 import com.github.michaeldsa.aside.Pretty;
-import com.github.michaeldsa.aside.PropertiesUtil.NoteRetriever;
-import com.github.michaeldsa.aside.PropertiesUtil.NoteWriter;
 import com.github.michaeldsa.aside.PropertiesUtil.PropUtils;
 import com.github.michaeldsa.aside.Search.Search;
 import com.github.michaeldsa.aside.Settings.Settings;
@@ -469,23 +467,62 @@ public class Test {
     public static void authorTest() {
         Author author1 = new Author("lastName", "prefix", "firstName", "middlename1 middlename2", "initials", "postNominals");
         System.out.println("Author1: " + author1.getDisplayName());
-        System.out.println("Author1, propertiesFormattedString: " + author1.getPropertiesDelimitedString());
+        System.out.println("Author1, propertiesFormattedString: " + author1.getConfigFormattedString());
 
         Author author2 = new Author("Osho", "", "", "", "", "");
         System.out.println("Author2: " + author2.getDisplayName());
-        System.out.println("Author2, propertiesFormattedString: " + author2.getPropertiesDelimitedString());
+        System.out.println("Author2, propertiesFormattedString: " + author2.getConfigFormattedString());
 
         Author author3 = new Author("Barathian", "King", "Geoffery", "", "", "The Cruel");
         System.out.println("Author3: " + author3.getDisplayName());
-        System.out.println("Author3, propertiesFormattedString: " + author3.getPropertiesDelimitedString());
+        System.out.println("Author3, propertiesFormattedString: " + author3.getConfigFormattedString());
 
-        Author kingGeoffery = new Author(author3.getPropertiesDelimitedString());
+        Author kingGeoffery = new Author(author3.getConfigFormattedString() + "\u2591");
         System.out.println("kingGeoffery: " + kingGeoffery.getDisplayName());
-        System.out.println("kingGeoffery, propertiesFormattedString: " + kingGeoffery.getPropertiesDelimitedString());
+        System.out.println("kingGeoffery, propertiesFormattedString: " + kingGeoffery.getConfigFormattedString());
 
         Author tombstone = new Author("tombstone");
         System.out.println("tombstone: " + tombstone.getDisplayName());
-        System.out.println("tombstone, propertiesFormattedString: " + tombstone.getPropertiesDelimitedString());
+        System.out.println("tombstone, propertiesFormattedString: " + tombstone.getConfigFormattedString());
+
+    }
+
+    public static void nullValuePropsWriterTest() {
+        Note n = new Note(new MetaPath()).setTitle("only one non null value");
+        PropUtils.writeNote(n);
+    }
+
+    public static void bibliography_PropUtils_writeBibliography() {
+        Create.createPermanentCategories();
+        Bibliography bib = new Bibliography(new MetaPath())
+                .setTitle("1984")
+                .addNewAuthor("Orwell", "George")
+                .addNewAuthor("Jackson", "Michael")
+                .addNewAuthor("Sting", "")
+                .addNewAuthor("Hemmingway", "ernest", "F. O.")
+                .addNewAuthor("gurdjieff", "Georges", "I.")
+                .setComment("forgot to add `publishedBy` field")
+                .addNewPublisher("Secker & Warburg", "Harcourt, Brace & Company")
+                .addYearPublished(1944, 1950, 1977, 1984, 2000)
+                .addIsbn("978-0-7334-2609-4", "9780151660346", "9780198829195", "9783886191055")
+                .addUrl("George-Orwell.com");
+        PropUtils.writeBibliography(bib);
+    }
+
+    public static void bibliography_PropUtils_writeBibliography_ViewPath() {
+        Bibliography bib = new Bibliography(new MetaPath())
+                .setTitle("1984")
+                .addNewAuthor("Orwell", "George")
+                .addNewAuthor("Jackson", "Michael")
+                .addNewAuthor("Sting", "")
+                .addNewAuthor("Hemmingway", "ernest", "F. O.")
+                .addNewAuthor("gurdjieff", "Georges", "I.")
+                .setComment("forgot to add `publishedBy` field")
+                .addNewPublisher("Secker & Warburg", "Harcourt, Brace & Company")
+                .addYearPublished(1944, 1950, 1977, 1984, 2000)
+                .addIsbn("978-0-7334-2609-4", "9780151660346", "9780198829195", "9783886191055")
+                .addUrl("George-Orwell.com");
+        System.out.println(Pretty.formatBibliography4ViewPath(bib, Settings.getLineWidth().file()));
 
     }
 

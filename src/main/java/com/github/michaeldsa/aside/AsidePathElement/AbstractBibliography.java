@@ -6,6 +6,7 @@ import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -19,8 +20,9 @@ public abstract class AbstractBibliography extends AsidePathElement {
     private static final String m_prefix = ".b";
     private static final String v_prefix = "b";
 
-    protected HashSet<String> authors;
+    protected ArrayList<Author> authors;
     protected String title;
+    protected HashSet<String> publishers;
     protected HashSet<Integer> yearPublished;
     protected String comment;
     protected HashSet<String> references;
@@ -31,8 +33,9 @@ public abstract class AbstractBibliography extends AsidePathElement {
     protected HashSet<String> ads_Bibcode;
 
 
-    public abstract HashSet<String> getAuthors();
+    public abstract ArrayList<Author> getAuthors();
     public abstract String getTitle();
+    public abstract HashSet<String> getPublishers();
     public abstract HashSet<Integer> getYearPublished();
     public abstract String getComment();
     public abstract HashSet<String> getReferences();

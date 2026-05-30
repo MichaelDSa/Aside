@@ -3,8 +3,10 @@ package com.github.michaeldsa.aside.AsidePathElement;
 import java.util.Objects;
 
 public class Author {
-    private final String delimiter = "\u001f";
+    private final String delimiter = "\u2591"; // (light shade character) looks like: ░
     private final String placeMarker = "\u220e"; // (tombstone character) looks like: ∎
+
+    private boolean configFormatOK = true;
 
     private String lastName;
     private String prefix;
@@ -21,10 +23,10 @@ public class Author {
         this.initials  = initials.isBlank() ? placeMarker : initials;
         this.postNominals = postNominals.isBlank() ? placeMarker : postNominals;
     }
-    public Author(String propertiesFormattedString) {
+    public Author(String configFormattedString) {
         // formatted string must have 5 delimiter characters.
-        if (propertiesFormattedString.length() - propertiesFormattedString.replace(delimiter, "").length() == 5) {
-            String[] fields = propertiesFormattedString.split(delimiter);
+        if (configFormattedString.length() - configFormattedString.replace(delimiter, "").length() == 5) {
+            String[] fields = configFormattedString.split(delimiter);
             this.lastName = fields[0];
             this.prefix = fields[1];
             this.firstName = fields[2];
@@ -32,7 +34,11 @@ public class Author {
             this.initials = fields[4];
             this.postNominals = fields[5];
         } else {
-            this.lastName = placeMarker;
+            /* If we have the wrong number of delimiters, it means
+            the user may have modified the properties file, so
+            preserve the mod. */
+            configFormatOK = false;
+            this.lastName = configFormattedString;
             this.prefix = placeMarker;
             this.firstName = placeMarker;
             this.middleNames = placeMarker;
@@ -89,16 +95,24 @@ public class Author {
 
         String comma = honorific.isBlank() && first.isBlank() && middle.isBlank() && initial.isBlank() && suffix.isBlank() ? " " : ", ";
 
-        return last + comma + honorific + first + middle + initial + suffix;
+        String result = last + comma + honorific + first + middle + initial + suffix;
+
+        return result;
     }
 
-    public String getPropertiesDelimitedString() {
-        return lastName + delimiter
-                + prefix + delimiter
-                + firstName + delimiter
-                + middleNames + delimiter
-                + initials + delimiter
-                + postNominals;
+    public String getConfigFormattedString() {
+        /* if propFormatStringOK is false, it means user may have
+        modified properties file, so preserve the mod. */
+        return configFormatOK
+                ?
+                lastName + delimiter +
+                prefix + delimiter +
+                firstName + delimiter +
+                middleNames + delimiter +
+                initials + delimiter +
+                postNominals
+                :
+                lastName;
     }
 
     @Override

@@ -158,6 +158,18 @@ public class TestRunner {
 //            Test.authorTest();
             // SUCCESS
 
+            // null values written to properties test:
+//            Test.nullValuePropsWriterTest();
+            // SUCCESS/UNDERSTOOD
+
+            // Test Pretty.formatBibliography4ViewPath
+//            Test.bibliography_PropUtils_writeBibliography_ViewPath();
+            // SUCCESS
+
+            // Test PropsUtil.writeBibliography
+//            Test.bibliography_PropUtils_writeBibliography();
+            // SUCCESS
+
 
 
 

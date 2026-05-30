@@ -3,6 +3,8 @@ package com.github.michaeldsa.aside.AsidePathElement;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
@@ -11,8 +13,9 @@ public class ImmutableBibliography extends AbstractBibliography {
     private final MetaPath metaPath;
     private final ViewPath viewPath;
     private final BibliographyCategory stepParent;
-    private final HashSet<String> authors;
+    private final ArrayList<Author> authors;
     private final String title;
+    private final HashSet<String> publishers;
     private final HashSet<Integer> yearPublished;
     private final String comment;
     private final HashSet<String> references;
@@ -34,6 +37,8 @@ public class ImmutableBibliography extends AbstractBibliography {
 
         this.authors = bb.getAuthors();
         this.title = bb.getTitle();
+
+        this.publishers = bb.getPublishers();
         this.yearPublished = bb.getYearPublished();
         this.comment = bb.getComment();
         this.references = new HashSet<>(Collections.unmodifiableSet(bb.getReferences()));
@@ -45,13 +50,18 @@ public class ImmutableBibliography extends AbstractBibliography {
     }
 
     @Override
-    public HashSet<String> getAuthors() {
+    public ArrayList<Author> getAuthors() {
         return authors;
     }
 
     @Override
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public HashSet<String> getPublishers() {
+        return this.publishers;
     }
 
     @Override

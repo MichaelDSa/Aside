@@ -22,7 +22,7 @@ public class DiscardedNotePropertiesUtil extends PropertiesUtil {
         super();
         // control sets:
         stringPropertiesKeysSubset = new HashSet<>(Arrays.asList(warning_k, message_k, originalMetaPath_k, originalViewPath_k, title_k, content_k));
-        hashSetPropertiesKeysSubset = new HashSet<>(Arrays.asList(to_k, from_k, tags_k, bibliographies_k));
+        hashSetStringPropertiesKeysSubset = new HashSet<>(Arrays.asList(to_k, from_k, tags_k, bibliographies_k));
     }
 
     protected void setProperties(DiscardedNote dn) {

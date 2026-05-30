@@ -102,6 +102,7 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
     // default category metapath:
     private static final Category defaultCategory = RestrictedLists.getDefaultCategory();
     private static final DiscardedCategory discardedCategory = RestrictedLists.getDiscardedCategory();
+    private static final BibliographyCategory bibliographyCategory = RestrictedLists.getBibliographyCategory();
 
     Create(CrudOps<AsidePathElement,AsidePathElement> fops) {
         this.fops = fops;
@@ -109,6 +110,11 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
 
     public AsidePathElement execute(AsidePathElement ape) {
         return fops.execute(ape);
+    }
+    public static boolean bibliographyCategoryExists() {
+        boolean mpisdir = Files.isDirectory(bibliographyCategory.getMetaPath().getPath());
+        boolean vpisdir = Files.isDirectory(bibliographyCategory.getViewPath().getPath());
+        return mpisdir && vpisdir;
     }
     public static boolean defaultCategoryExists() {
         boolean mpisdir = Files.isDirectory(defaultCategory.getMetaPath().getPath());
@@ -142,12 +148,25 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
                 Files.createDirectories(mpath);
                 Files.createDirectories(vpath);
             } catch (IOException e) {
-                System.err.println("IOException in Create.createTrashCategory().\n" + e.getMessage());
+                System.err.println("IOException in Create.createDiscardedCategory().\n" + e.getMessage());
+            }
+        }
+    }
+    public static void createBibliographyCategory() {
+        if (!bibliographyCategoryExists()) {
+            Path mpath = bibliographyCategory.getMetaPath().getPath();
+            Path vpath  = bibliographyCategory.getViewPath().getPath();
+            try {
+                Files.createDirectories(mpath);
+                Files.createDirectories(vpath);
+            } catch (IOException e) {
+                System.err.println("IOException in Create.createBibliographyCategory().\n" + e.getMessage());
             }
         }
     }
     public static void createPermanentCategories() {
         createDefaultCategory();
         createDiscardedCategory();
+        createBibliographyCategory();
     }
 }

@@ -6,14 +6,14 @@ import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 
 public class DiscardedBibliography extends AbstractDiscardedElement{
 
-    private HashSet<String> authors;
+    private ArrayList<Author> authors;
     private String title;
+    private HashSet<String> publishers;
     private HashSet<Integer> yearPublished;
     private String comment;
     private HashSet<String> references;
@@ -97,6 +97,7 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
         setBiliographyFieldsToEmpty(); // in case bb fields are null
         authors = bb.getAuthors();
         title = bb.getTitle();
+        publishers = bb.getPublishers();
         yearPublished = bb.getYearPublished();
         comment = bb.getComment();
         references = bb.getReferences();
@@ -109,8 +110,9 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
 
     // Constructor helper methods:
     private void setBiliographyFieldsToEmpty() {
-        authors = new HashSet<>();
+        authors = new ArrayList<>();
         title = "";
+        publishers = new HashSet<>();
         yearPublished = new HashSet<>();
         comment = "";
         references = new HashSet<>();
@@ -123,11 +125,14 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
 
     // getters:
 
-    public HashSet<String> getAuthors() {
+    public ArrayList<Author> getAuthors() {
         return authors;
     }
     public String getTitle() {
         return title;
+    }
+    public HashSet<String> getPublishers() {
+        return publishers;
     }
     public HashSet<Integer> getYearPublished() {
         return yearPublished;
@@ -156,7 +161,7 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
 
     // setters:
 
-    public DiscardedBibliography setAuthors(HashSet<String> authors) {
+    public DiscardedBibliography setAuthors(ArrayList<Author> authors) {
         this.authors = authors;
         return this;
     }

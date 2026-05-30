@@ -8,7 +8,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Properties;
 
@@ -18,7 +17,8 @@ public abstract class PropertiesUtil {
 
     // Control Sets. To be assigned in abstract sub-classes.
     protected HashSet<String> stringPropertiesKeysSubset;
-    protected HashSet<String> hashSetPropertiesKeysSubset;
+    protected HashSet<String> hashSetStringPropertiesKeysSubset;
+    protected HashSet<String> hashSetIntegerPropertiesKeysSubset;
 
     protected PropertiesUtil() {
         properties = new Properties();
@@ -41,12 +41,24 @@ protected void loadPropertiesFile(Path path) {
     // get properties that should be saved as HashSet<String> in a MutableNote or DiscardedElement
     protected HashSet<String> getPropAsHashSet(String prop) {
         HashSet<String> val = new HashSet<>();
-        if (hashSetPropertiesKeysSubset.contains(prop)) {
+        if (hashSetStringPropertiesKeysSubset.contains(prop)) {
             val = stringToHashSet(properties.getProperty(prop, ""));
         } else {
             System.err.println("PropertiesUtil.getPropAsString(): prop parameter not found in hashSetPropertiesKeysSubset: " + prop);
         }
         return val;
+    }
+
+    // get properties that should be saved as HashSet<Integer> from a Bibliography
+    protected HashSet<Integer> getPropAsIntegerHashSet(String prop) {
+        HashSet<Integer> integers = new HashSet<>();
+        if(hashSetIntegerPropertiesKeysSubset.contains(prop)) {
+            HashSet<String> strings = stringToHashSet(properties.getProperty(prop, ""));
+            for(String s : strings) {
+                integers.add(Integer.parseInt(s));
+            }
+        }
+        return integers;
     }
 
     // get properties that should be saved as String in a MutableNote or DiscardedElement
