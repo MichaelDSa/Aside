@@ -523,7 +523,12 @@ public class Test {
                 .addIsbn("978-0-7334-2609-4", "9780151660346", "9780198829195", "9783886191055")
                 .addUrl("George-Orwell.com");
         System.out.println(Pretty.formatBibliography4ViewPath(bib, Settings.getLineWidth().file()));
+    }
 
+    public static void bibliography_PropUtils_readBibliography() {
+        Bibliography bib = new Bibliography(new MetaPath(Paths.get(".BIBLIOGRAPHY", ".b260530_1727_25.txt")));
+        PropUtils.retrieveBibliography(bib);
+        System.out.println(Pretty.formatBibliography4ViewPath(bib, Settings.getLineWidth().file()));
     }
 
 

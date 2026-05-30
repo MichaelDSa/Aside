@@ -25,7 +25,7 @@ public class BibliographyPropertiesUtil extends PropertiesUtil{
     protected BibliographyPropertiesUtil() {
         super();
         stringPropertiesKeysSubset = new HashSet<>(Arrays.asList(title_k, comment_k));
-        hashSetStringPropertiesKeysSubset = new HashSet<>(Arrays.asList(authors_k, references_k, isbn_k, doi_k, url_k, arXiv_ID_k, ads_Bibcode_k));
+        hashSetStringPropertiesKeysSubset = new HashSet<>(Arrays.asList(authors_k, publishers_k, references_k, isbn_k, doi_k, url_k, arXiv_ID_k, ads_Bibcode_k));
         hashSetIntegerPropertiesKeysSubset = new HashSet<>(Arrays.asList(yearPublished_k));
     }
 
@@ -36,7 +36,7 @@ public class BibliographyPropertiesUtil extends PropertiesUtil{
         properties.setProperty(authors_k, emptyIfNull(authorsArrayFormattedString(bib.getAuthors())));
         properties.setProperty(title_k, emptyIfNull(bib.getTitle()));
         properties.setProperty(publishers_k, hashSetToString(bib.getPublishers()));
-        properties.setProperty(yearPublished_k, emptyIfNull(String.valueOf(bib.getYearPublished())));
+        properties.setProperty(yearPublished_k, hashSetIntegerToString(bib.getYearPublished()));
         properties.setProperty(comment_k, emptyIfNull(bib.getComment()));
         properties.setProperty(references_k, hashSetToString(bib.getReferences()));
         properties.setProperty(isbn_k, hashSetToString(bib.getIsbn()));

@@ -166,9 +166,12 @@ public class TestRunner {
 //            Test.bibliography_PropUtils_writeBibliography_ViewPath();
             // SUCCESS
 
-            // Test PropsUtil.writeBibliography
+            // Test PropUtils.writeBibliography
 //            Test.bibliography_PropUtils_writeBibliography();
             // SUCCESS
+
+            // Test PropUtils.retrieveBibliography
+            Test.bibliography_PropUtils_readBibliography();
 
 
 

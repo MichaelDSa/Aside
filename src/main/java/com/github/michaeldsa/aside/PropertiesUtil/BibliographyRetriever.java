@@ -6,6 +6,7 @@ public class BibliographyRetriever extends BibliographyPropertiesUtil {
 
     public BibliographyRetriever() {
         super();
+
     }
 
     public void retrieve(Bibliography bib) {
@@ -13,17 +14,17 @@ public class BibliographyRetriever extends BibliographyPropertiesUtil {
 
         loadPropertiesFile(bib.getMetaPath().getPath());
 
-        bib.setTitle(emptyIfNull(properties.getProperty(title_k)))
-                .setAuthors(parseAuthorsToList(properties.getProperty(authors_k)))
-                .setPublishers(getPropAsHashSet(properties.getProperty(publishers_k)))
-                .setYearPublished(getPropAsIntegerHashSet(properties.getProperty(yearPublished_k))) // create public int stringToIntegerHashSet();
-                .setComment(emptyIfNull(properties.getProperty(comment_k)))
-                .setReferences(getPropAsHashSet(properties.getProperty(references_k)))
-                .setIsbn(getPropAsHashSet(properties.getProperty(isbn_k)))
-                .setDoi(getPropAsHashSet(properties.getProperty(doi_k)))
-                .setUrl(getPropAsHashSet(properties.getProperty(url_k)))
-                .setArXiv_ID(getPropAsHashSet(properties.getProperty(arXiv_ID_k)))
-                .setAds_Bibcode(getPropAsHashSet(properties.getProperty(ads_Bibcode_k)));
+        bib.setTitle(properties.getProperty(title_k, ""))
+                .setAuthors(parseAuthorsToList(properties.getProperty(authors_k, "")))
+                .setPublishers(getPropAsHashSet(publishers_k))
+                .setYearPublished(getPropAsIntegerHashSet(yearPublished_k))
+                .setComment(properties.getProperty(comment_k, ""))
+                .setReferences(getPropAsHashSet(references_k))
+                .setIsbn(getPropAsHashSet(isbn_k))
+                .setDoi(getPropAsHashSet(doi_k))
+                .setUrl(getPropAsHashSet(url_k))
+                .setArXiv_ID(getPropAsHashSet(arXiv_ID_k))
+                .setAds_Bibcode(getPropAsHashSet(ads_Bibcode_k));
 
     }
 }

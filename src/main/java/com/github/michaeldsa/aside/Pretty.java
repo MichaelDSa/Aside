@@ -40,7 +40,7 @@ public class Pretty {
 
     public static String formatBibliography4ViewPath(AbstractBibliography bib, int width) {
 
-        String filename = format(bib.getMetaPath().getPath().getFileName().toString(), width);
+        String filename = format(bib.getViewPath().getPath().getFileName().toString(), width);
         String authors = format(authorCollection2String(bib.getAuthors()), width);
         String title = format(bib.getTitle(), width);
         String publishers = format(collections2String(bib.getPublishers()), width);
@@ -95,7 +95,7 @@ public class Pretty {
         return filename + title + authors + publishers + yearPublished + comment + references + isbn + doi + url + arXiv_ID + adsBibcode;
     }
     public static String formatDiscardedElement4ViewPath(DiscardedNote de, int width) {
-        String filename = format(de.getMetaPath().getPath().getFileName().toString(), width);
+        String filename = format(de.getViewPath().getPath().getFileName().toString(), width);
         String warning = format(de.getWarning(), width);
         String message = format(de.getMessage(), width);
         String title = format(de.getTitle(), width);

@@ -44,7 +44,7 @@ protected void loadPropertiesFile(Path path) {
         if (hashSetStringPropertiesKeysSubset.contains(prop)) {
             val = stringToHashSet(properties.getProperty(prop, ""));
         } else {
-            System.err.println("PropertiesUtil.getPropAsString(): prop parameter not found in hashSetPropertiesKeysSubset: " + prop);
+            System.err.println("PropertiesUtil.getPropAsHashSet(): prop parameter not found in hashSetStringPropertiesKeysSubset: " + prop);
         }
         return val;
     }
@@ -78,6 +78,13 @@ protected void loadPropertiesFile(Path path) {
             return "";
         }
         return String.join(delimiter, hs);
+    }
+    protected String hashSetIntegerToString(HashSet<Integer> hs) {
+        HashSet<String> strings = new HashSet<>();
+        for (Integer i : hs) {
+            strings.add(i.toString());
+        }
+        return hashSetToString(strings);
     }
 
     // convert String objects retrieved from a Properties file to a HashSet<String>
