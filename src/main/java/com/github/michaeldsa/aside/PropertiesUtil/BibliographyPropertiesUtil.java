@@ -10,21 +10,21 @@ import java.util.HashSet;
 
 public class BibliographyPropertiesUtil extends PropertiesUtil{
     // all property key names:
-    protected String authors_k = "authors";
-    protected String title_k = "title";
-    protected String publishers_k = "publishers";
-    protected String yearPublished_k = "year_published";
-    protected String comment_k = "comment";
-    protected String references_k = "references";
-    protected String isbn_k = "isbn";
-    protected String doi_k = "doi";
-    protected String url_k = "url";
-    protected String arXiv_ID_k = "arXivID";
-    protected String ads_Bibcode_k = "adsBibCode";
+    protected final String authors_k = "authors";
+    protected final String title_k = "title";
+    protected final String publishers_k = "publishers";
+    protected final String yearPublished_k = "year_published";
+    protected final String comment_k = "comment";
+    protected final String references_k = "references";
+    protected final String isbn_k = "isbn";
+    protected final String doi_k = "doi";
+    protected final String url_k = "url";
+    protected final String arXiv_ID_k = "arXivID";
+    protected final String ads_Bibcode_k = "adsBibCode";
 
     protected BibliographyPropertiesUtil() {
         super();
-        // authors_k is included in this subset because Author constructs using special config-formatted strings.
+        // authors_k is included in this subset because Author constructs using special config-formatted strings, which is saved to properties.
         stringPropertiesKeysSubset = new HashSet<>(Arrays.asList(authors_k, title_k, comment_k));
         hashSetStringPropertiesKeysSubset = new HashSet<>(Arrays.asList(publishers_k, references_k, isbn_k, doi_k, url_k, arXiv_ID_k, ads_Bibcode_k));
         hashSetIntegerPropertiesKeysSubset = new HashSet<>(Arrays.asList(yearPublished_k));
@@ -47,26 +47,4 @@ public class BibliographyPropertiesUtil extends PropertiesUtil{
         properties.setProperty(ads_Bibcode_k, hashSetToString(bib.getAds_Bibcode()));
 
     }
-
-    private String authorsArrayFormattedString(ArrayList<Author> authors) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < authors.size(); i++) {
-            if (i < authors.size() - 1) {
-                sb.append(authors.get(i).getConfigFormattedString()).append(delimiter);
-            } else {
-                sb.append(authors.get(i).getConfigFormattedString());
-            }
-        }
-        return sb.toString();
-    }
-
-    protected ArrayList<Author> parseAuthorsToList(String configFormattedString) {
-        String[] formattedStrings = configFormattedString.split(delimiter);
-        ArrayList<Author> authors = new ArrayList<>();
-        for (String s : formattedStrings) {
-            authors.add(new Author(s));
-        }
-       return authors;
-    }
-
 }

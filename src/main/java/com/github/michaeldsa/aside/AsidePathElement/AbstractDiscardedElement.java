@@ -39,6 +39,7 @@ public abstract class AbstractDiscardedElement extends AsidePathElement {
     public ViewPath getOriginalViewPath() {
         return originalViewPath;
     }
+    public String getWarning() { return warning; }
 
     // abstract methods:
 

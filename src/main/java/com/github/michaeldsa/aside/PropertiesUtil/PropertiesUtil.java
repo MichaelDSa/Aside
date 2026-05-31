@@ -2,11 +2,13 @@ package com.github.michaeldsa.aside.PropertiesUtil;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.AsidePathElement.Author;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Properties;
@@ -24,15 +26,27 @@ public abstract class PropertiesUtil {
         properties = new Properties();
     }
 
-protected void loadPropertiesFile(Path path) {
-    if (Files.exists(path)) {
-        try (BufferedReader is = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
-            properties.load(is);
-        } catch (IOException e) {
-            System.err.println("PropertiesUtil.loadPropertiesFile(): IOException: " + path);
+    protected String authorsArrayFormattedString(ArrayList<Author> authors) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < authors.size(); i++) {
+            if (i < authors.size() - 1) {
+                sb.append(authors.get(i).getConfigFormattedString()).append(delimiter);
+            } else {
+                sb.append(authors.get(i).getConfigFormattedString());
+            }
+        }
+        return sb.toString();
+    }
+
+    protected void loadPropertiesFile(Path path) {
+        if (Files.exists(path)) {
+            try (BufferedReader is = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+                properties.load(is);
+            } catch (IOException e) {
+                System.err.println("PropertiesUtil.loadPropertiesFile(): IOException: " + path);
+            }
         }
     }
-}
 
     protected static String emptyIfNull(String str) {
         return str == null ? "" : str;
@@ -85,6 +99,15 @@ protected void loadPropertiesFile(Path path) {
             strings.add(i.toString());
         }
         return hashSetToString(strings);
+    }
+
+    protected ArrayList<Author> parseAuthorsToList(String configFormattedString) {
+        String[] formattedStrings = configFormattedString.split(delimiter);
+        ArrayList<Author> authors = new ArrayList<>();
+        for (String s : formattedStrings) {
+            authors.add(new Author(s));
+        }
+        return authors;
     }
 
     // convert String objects retrieved from a Properties file to a HashSet<String>

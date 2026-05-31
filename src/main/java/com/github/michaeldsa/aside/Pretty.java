@@ -1,9 +1,6 @@
 package com.github.michaeldsa.aside;
 
-import com.github.michaeldsa.aside.AsidePathElement.AbstractBibliography;
-import com.github.michaeldsa.aside.AsidePathElement.AbstractNote;
-import com.github.michaeldsa.aside.AsidePathElement.Author;
-import com.github.michaeldsa.aside.AsidePathElement.DiscardedNote;
+import com.github.michaeldsa.aside.AsidePathElement.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,6 +35,29 @@ public class Pretty {
         return sb.toString();
     }
 
+    public static String collections2String(HashSet<String> hashSet) {
+        if (hashSet == null || hashSet.isEmpty()) {
+            return "";
+        }
+        return String.join(comma, hashSet);
+    }
+
+    public static String collection2String(HashSet<Integer> hashSet) {
+        HashSet<String> strings = new HashSet<>();
+        for (Integer i : hashSet) {
+            strings.add(String.valueOf(i));
+        }
+        return collections2String(strings);
+    }
+
+    public static String collection2String(ArrayList<String> arrayList) {
+        if (arrayList == null || arrayList.isEmpty()) {
+            return "";
+        }
+
+        return String.join(comma, arrayList);
+    }
+
     public static String formatBibliography4ViewPath(AbstractBibliography bib, int width) {
 
         String filename = format(bib.getViewPath().getPath().getFileName().toString(), width);
@@ -68,13 +88,13 @@ public class Pretty {
             publishers = "PUBLISHERS:" + nl + publishers + nl;
         }
         if (!yearPublished.isBlank()) {
-            yearPublished = "YEAR PUBLISHED:" + nl + yearPublished + nl;
+            yearPublished = "YEAR_PUBLISHED:" + nl + yearPublished + nl;
         }
         if (!comment.isBlank()) {
             comment = "COMMENT:" + nl + comment + nl;
         }
         if (!references.isBlank()) {
-            references = "REFERENCED BY:" + nl + references + nl;
+            references = "REFERENCED_BY:" + nl + references + nl;
         }
         if (!isbn.isBlank()) {
             isbn = "ISBN:" + nl + isbn + nl;
@@ -86,15 +106,103 @@ public class Pretty {
             url = "URL:" + nl + url + nl;
         }
         if (!arXiv_ID.isBlank()) {
-            arXiv_ID = "ARXIV ID:" + nl + arXiv_ID + nl;
+            arXiv_ID = "ARXIV_ID:" + nl + arXiv_ID + nl;
         }
         if (!adsBibcode.isBlank()) {
-            adsBibcode = "ADS BIBCODE:" + nl + adsBibcode + nl;
+            adsBibcode = "ADS_BIBCODE:" + nl + adsBibcode + nl;
         }
 
         return filename + title + authors + publishers + yearPublished + comment + references + isbn + doi + url + arXiv_ID + adsBibcode;
     }
-    public static String formatDiscardedElement4ViewPath(DiscardedNote de, int width) {
+    public static String formatDiscardedBibliography4ViewPath(DiscardedBibliography db, int width) {
+        String filename = format(db.getViewPath().getPath().getFileName().toString(), width);
+        String warning = format(db.getWarning(), width);
+        String message = format(db.getMessage(), width);
+        String title = format(db.getTitle(), width);
+        String authors = format(authorCollection2String(db.getAuthors()), width);
+        String publishers = format(collections2String(db.getPublishers()), width);
+        String yearPublished = format(collection2String(db.getYearPublished()), width);
+        String comment = format(db.getComment(), width);
+        String references = format(collections2String(db.getReferences()), width);
+        String isbn  = format(collections2String(db.getIsbn()), width);
+        String doi  = format(collections2String(db.getDoi()), width);
+        String url = format(collections2String(db.getUrl()), width);
+        String arXiv_ID = format(collections2String(db.getArXiv_ID()), width);
+        String adsBibcode = format(collections2String(db.getAds_Bibcode()), width);
+        String originalMetaPath = format(db.getOriginalMetaPath().getPath().toString(), width);
+        String originalViewPath = format(db.getOriginalMetaPath().getPath().toString(), width);
+
+        String nl = "\n";
+        String result = "";
+        if (!filename.isBlank()) {
+            filename += "-".repeat(width) + nl.repeat(2);
+            result += filename;
+        }
+        if (!warning.isBlank()) {
+            warning = "WARNING:" + nl + warning + nl;
+            result += warning;
+        }
+        if (!message.isBlank()) {
+            message = "MESSAGE:" + nl + message + nl;
+            result += message;
+        }
+        if (!title.isBlank()) {
+            title = "TITLE:" + nl + title + nl;
+            result += title;
+        }
+        if (!authors.isBlank()) {
+            authors = "AUTHORS:" + nl + authors + nl;
+            result += authors;
+        }
+        if (!publishers.isBlank()) {
+            publishers = "PUBLISHERS:" + nl + publishers + nl;
+            result += publishers;
+        }
+        if (!yearPublished.isBlank()) {
+            yearPublished = "YEAR_PUBLISHED:" + nl + yearPublished + nl;
+            result += yearPublished;
+        }
+        if (!comment.isBlank()) {
+            comment = "COMMENT:" + nl + comment + nl;
+            result += comment;
+        }
+        if (!references.isBlank()) {
+            references = "REFERENCED_BY:" + nl + references + nl;
+            result += references;
+        }
+        if (!isbn.isBlank()) {
+            isbn = "ISBN:" + nl + isbn + nl;
+            result += isbn;
+        }
+        if (!doi.isBlank()) {
+            doi = "DOI:" + nl + doi + nl;
+            result += doi;
+        }
+        if (!url.isBlank()) {
+            url = "URL:" + nl + url + nl;
+            result += url;
+        }
+        if (!arXiv_ID.isBlank()) {
+            arXiv_ID = "ARXIV_ID:" + nl + arXiv_ID + nl;
+            result += arXiv_ID;
+        }
+        if (!adsBibcode.isBlank()) {
+            adsBibcode = "ADS_BIBCODE:" + nl + adsBibcode + nl;
+            result += adsBibcode;
+        }
+        if (!originalMetaPath.isBlank()) {
+            originalMetaPath = "ORIGINAL_METAPATH:" + nl + originalMetaPath + nl;
+            result += originalMetaPath;
+        }
+        if (!originalViewPath.isBlank()) {
+            originalViewPath = "ORIGINAL_VIEWPATH:" + nl + originalViewPath + nl;
+            result += originalViewPath;
+        }
+
+        return result;
+
+    }
+    public static String formatDiscardedNote4ViewPath(DiscardedNote de, int width) {
         String filename = format(de.getViewPath().getPath().getFileName().toString(), width);
         String warning = format(de.getWarning(), width);
         String message = format(de.getMessage(), width);
@@ -178,26 +286,4 @@ public class Pretty {
         return filename + title + content + bibliographies + to + from + tags;
     }
 
-    public static String collections2String(HashSet<String> hashSet) {
-        if (hashSet == null || hashSet.isEmpty()) {
-            return "";
-        }
-        return String.join(comma, hashSet);
-    }
-
-    public static String collection2String(HashSet<Integer> hashSet) {
-        HashSet<String> strings = new HashSet<>();
-        for (Integer i : hashSet) {
-            strings.add(String.valueOf(i));
-        }
-        return collections2String(strings);
-    }
-
-    public static String collection2String(ArrayList<String> arrayList) {
-        if (arrayList == null || arrayList.isEmpty()) {
-            return "";
-        }
-
-        return String.join(comma, arrayList);
-    }
 }

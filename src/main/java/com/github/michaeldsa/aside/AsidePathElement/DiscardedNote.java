@@ -135,7 +135,6 @@ public class DiscardedNote extends AbstractDiscardedElement {
     // metadata getters:
     public String getTitle() { return title; }
     public String getContent() { return content; }
-    public String getWarning() { return warning;}
     public String getMessage() { return message; }
     public HashSet<String> getTo() { return to;}
     public HashSet<String> getFrom() { return from; }

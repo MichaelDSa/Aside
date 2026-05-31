@@ -13,9 +13,10 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
 
     private ArrayList<Author> authors;
     private String title;
+    private String message; // a message about this discareded element
     private HashSet<String> publishers;
     private HashSet<Integer> yearPublished;
-    private String comment;
+    private String comment; // a comment included with original Bibliography file.
     private HashSet<String> references;
     private HashSet<String> isbn;
     private HashSet<String> doi;
@@ -112,6 +113,7 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
     private void setBiliographyFieldsToEmpty() {
         authors = new ArrayList<>();
         title = "";
+        message = "";
         publishers = new HashSet<>();
         yearPublished = new HashSet<>();
         comment = "";
@@ -130,6 +132,9 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
     }
     public String getTitle() {
         return title;
+    }
+    public String getMessage() {
+        return message;
     }
     public HashSet<String> getPublishers() {
         return publishers;
@@ -167,6 +172,14 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
     }
     public DiscardedBibliography setTitle(String title) {
         this.title = title;
+        return this;
+    }
+    public DiscardedBibliography setMessage(String message) {
+        this.message = message;
+        return this;
+    }
+    public DiscardedBibliography setPublishers(HashSet<String> publishers) {
+        this.publishers = publishers;
         return this;
     }
     public DiscardedBibliography setYearPublished(HashSet<Integer> yearPublished) {
