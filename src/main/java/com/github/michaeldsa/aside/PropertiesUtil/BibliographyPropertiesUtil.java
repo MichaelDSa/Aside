@@ -24,8 +24,9 @@ public class BibliographyPropertiesUtil extends PropertiesUtil{
 
     protected BibliographyPropertiesUtil() {
         super();
-        stringPropertiesKeysSubset = new HashSet<>(Arrays.asList(title_k, comment_k));
-        hashSetStringPropertiesKeysSubset = new HashSet<>(Arrays.asList(authors_k, publishers_k, references_k, isbn_k, doi_k, url_k, arXiv_ID_k, ads_Bibcode_k));
+        // authors_k is included in this subset because Author constructs using special config-formatted strings.
+        stringPropertiesKeysSubset = new HashSet<>(Arrays.asList(authors_k, title_k, comment_k));
+        hashSetStringPropertiesKeysSubset = new HashSet<>(Arrays.asList(publishers_k, references_k, isbn_k, doi_k, url_k, arXiv_ID_k, ads_Bibcode_k));
         hashSetIntegerPropertiesKeysSubset = new HashSet<>(Arrays.asList(yearPublished_k));
     }
 

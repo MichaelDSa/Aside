@@ -14,11 +14,11 @@ public class BibliographyRetriever extends BibliographyPropertiesUtil {
 
         loadPropertiesFile(bib.getMetaPath().getPath());
 
-        bib.setTitle(properties.getProperty(title_k, ""))
-                .setAuthors(parseAuthorsToList(properties.getProperty(authors_k, "")))
+        bib.setTitle(getPropAsString(title_k))
+                .setAuthors(parseAuthorsToList(getPropAsString(authors_k)))
                 .setPublishers(getPropAsHashSet(publishers_k))
                 .setYearPublished(getPropAsIntegerHashSet(yearPublished_k))
-                .setComment(properties.getProperty(comment_k, ""))
+                .setComment(getPropAsString(comment_k))
                 .setReferences(getPropAsHashSet(references_k))
                 .setIsbn(getPropAsHashSet(isbn_k))
                 .setDoi(getPropAsHashSet(doi_k))
