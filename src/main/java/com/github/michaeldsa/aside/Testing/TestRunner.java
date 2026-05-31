@@ -176,6 +176,10 @@ public class TestRunner {
 
             // Test PropUtils.writeDiscardedBibliography
             Test.discardedBibliography_PropUtils_writeDiscardedBibliograhy();
+            // SUCCESS
+
+            // Test PropUtils.writeDiscardedNote
+//            Test.propUtils_writeDiscardedNote();
 
 
 

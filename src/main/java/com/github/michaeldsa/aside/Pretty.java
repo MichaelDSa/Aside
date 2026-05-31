@@ -133,73 +133,56 @@ public class Pretty {
         String originalViewPath = format(db.getOriginalViewPath().getPath().toString(), width);
 
         String nl = "\n";
-        String result = "";
         if (!filename.isBlank()) {
-            filename += "-".repeat(width) + nl.repeat(2);
-            result += filename;
+            filename = filename;
         }
         if (!warning.isBlank()) {
-            warning = "WARNING:" + nl + warning + nl;
-            result += warning;
+            warning += nl;
+        }
+        if (!originalMetaPath.isBlank()) {
+            originalMetaPath = "ORIGINAL_METAPATH:" + nl + originalMetaPath;
+        }
+        if (!originalViewPath.isBlank()) {
+            originalViewPath = "ORIGINAL_VIEWPATH:" + nl + originalViewPath;
         }
         if (!message.isBlank()) {
-            message = "MESSAGE:" + nl + message + nl;
-            result += message;
+            message = nl + "MESSAGE:" + nl + message;
         }
         if (!title.isBlank()) {
-            title = "TITLE:" + nl + title + nl;
-            result += title;
+            title = "-".repeat(width) + nl + "TITLE:" + nl + title + nl;
         }
         if (!authors.isBlank()) {
             authors = "AUTHORS:" + nl + authors + nl;
-            result += authors;
         }
         if (!publishers.isBlank()) {
             publishers = "PUBLISHERS:" + nl + publishers + nl;
-            result += publishers;
         }
         if (!yearPublished.isBlank()) {
             yearPublished = "YEAR_PUBLISHED:" + nl + yearPublished + nl;
-            result += yearPublished;
         }
         if (!comment.isBlank()) {
             comment = "COMMENT:" + nl + comment + nl;
-            result += comment;
         }
         if (!references.isBlank()) {
             references = "REFERENCED_BY:" + nl + references + nl;
-            result += references;
         }
         if (!isbn.isBlank()) {
             isbn = "ISBN:" + nl + isbn + nl;
-            result += isbn;
         }
         if (!doi.isBlank()) {
             doi = "DOI:" + nl + doi + nl;
-            result += doi;
         }
         if (!url.isBlank()) {
             url = "URL:" + nl + url + nl;
-            result += url;
         }
         if (!arXiv_ID.isBlank()) {
             arXiv_ID = "ARXIV_ID:" + nl + arXiv_ID + nl;
-            result += arXiv_ID;
         }
         if (!adsBibcode.isBlank()) {
             adsBibcode = "ADS_BIBCODE:" + nl + adsBibcode + nl;
-            result += adsBibcode;
-        }
-        if (!originalMetaPath.isBlank()) {
-            originalMetaPath = "ORIGINAL_METAPATH:" + nl + originalMetaPath + nl;
-            result += originalMetaPath;
-        }
-        if (!originalViewPath.isBlank()) {
-            originalViewPath = "ORIGINAL_VIEWPATH:" + nl + originalViewPath + nl;
-            result += originalViewPath;
         }
 
-        return result;
+return filename + warning + originalMetaPath + originalViewPath + message + title + authors + publishers + yearPublished + comment + references + isbn + doi + url + arXiv_ID + adsBibcode;
 
     }
     public static String formatDiscardedNote4ViewPath(DiscardedNote de, int width) {

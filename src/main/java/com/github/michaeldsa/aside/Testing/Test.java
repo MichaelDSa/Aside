@@ -544,9 +544,18 @@ public class Test {
                 .addYearPublished(1944, 1950, 1977, 1984, 2000)
                 .addIsbn("978-0-7334-2609-4", "9780151660346", "9780198829195", "9783886191055")
                 .addUrl("George-Orwell.com");
-        DiscardedBibliography db = new DiscardedBibliography(bib);
+        DiscardedBibliography db = new DiscardedBibliography(bib)
+                .setMessage("This bibliography was discarded because it has the wrong authors, it also may be a duplicate.");
         PropUtils.writeDiscardedBibliography(db);
+    }
 
+    public static void propUtils_writeDiscardedNote() {
+        Note n = new Note(new MetaPath())
+                .setTitle("Green Eggs and Ham")
+                .setContent("This is the content I'm supposed to write about Green eggs and Ham. Don't give a damn, I am.")
+                .addTags("eggs", "ham", "Dr. Seuss");
+        DiscardedNote dn = new DiscardedNote(n);
+        PropUtils.writeDiscardedNote(dn);
     }
 
 

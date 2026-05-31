@@ -5,13 +5,8 @@ import com.github.michaeldsa.aside.AsidePathElement.DiscardedNote;
 import java.util.Arrays;
 import java.util.HashSet;
 
-public class DiscardedNotePropertiesUtil extends PropertiesUtil {
+public class DiscardedNotePropertiesUtil extends DiscardedElementPropertiesUtil {
     // all property key names:
-    protected final String warning_k = "warning";
-    protected final String message_k = "message";
-    protected final String originalFileType_k = "original_filetype";
-    protected final String originalMetaPath_k = "original_metaPath";
-    protected final String originalViewPath_k = "original_viewPath";
     protected final String title_k = "title";
     protected final String content_k = "content";
     protected final String to_k = "to";
@@ -30,20 +25,20 @@ public class DiscardedNotePropertiesUtil extends PropertiesUtil {
 
         properties.clear();
 
-        // define propertiesMap keys & values:
+        // assign keys from DiscardedElementPropertiesUtil:
         properties.setProperty(warning_k, emptyIfNull(dn.getWarning()));
         properties.setProperty(message_k, emptyIfNull(dn.getMessage()));
         properties.setProperty(originalFileType_k, emptyIfNull(dn.getFileTypeName()));
         properties.setProperty(originalMetaPath_k, emptyIfNull(dn.getOriginalMetaPath().toString()));
         properties.setProperty(originalViewPath_k, emptyIfNull(dn.getOriginalViewPath().toString()));
+
+        // assign keys from this class:
         properties.setProperty(title_k, emptyIfNull(dn.getTitle()));
         properties.setProperty(content_k, emptyIfNull(dn.getContent()));
         properties.setProperty(to_k, hashSetToString(dn.getTo()));
         properties.setProperty(from_k, hashSetToString(dn.getFrom()));
         properties.setProperty(tags_k, hashSetToString(dn.getTags()));
         properties.setProperty(bibliographies_k, hashSetToString(dn.getBibliographies()));
-
-
     }
 
 }

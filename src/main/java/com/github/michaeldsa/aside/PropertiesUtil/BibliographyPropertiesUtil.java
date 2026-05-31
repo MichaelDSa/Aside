@@ -1,10 +1,7 @@
 package com.github.michaeldsa.aside.PropertiesUtil;
 
 import com.github.michaeldsa.aside.AsidePathElement.AbstractBibliography;
-import com.github.michaeldsa.aside.AsidePathElement.Author;
-import com.github.michaeldsa.aside.AsidePathElement.Bibliography;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -34,7 +31,7 @@ public class BibliographyPropertiesUtil extends PropertiesUtil{
 
         properties.clear();
 
-        properties.setProperty(authors_k, emptyIfNull(authorsArrayFormattedString(bib.getAuthors())));
+        properties.setProperty(authors_k, emptyIfNull(authorsListToConfigFormattedString(bib.getAuthors())));
         properties.setProperty(title_k, emptyIfNull(bib.getTitle()));
         properties.setProperty(publishers_k, hashSetToString(bib.getPublishers()));
         properties.setProperty(yearPublished_k, hashSetIntegerToString(bib.getYearPublished()));

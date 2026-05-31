@@ -15,7 +15,7 @@ public class BibliographyRetriever extends BibliographyPropertiesUtil {
         loadPropertiesFile(bib.getMetaPath().getPath());
 
         bib.setTitle(getPropAsString(title_k))
-                .setAuthors(parseAuthorsToList(getPropAsString(authors_k)))
+                .setAuthors(configFormattedStringToAuthorsList(getPropAsString(authors_k)))
                 .setPublishers(getPropAsHashSet(publishers_k))
                 .setYearPublished(getPropAsIntegerHashSet(yearPublished_k))
                 .setComment(getPropAsString(comment_k))

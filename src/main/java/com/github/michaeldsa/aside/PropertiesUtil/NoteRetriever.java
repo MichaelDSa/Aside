@@ -11,6 +11,7 @@ public class NoteRetriever extends NotePropertiesUtil {
 
 
     public void retrieve(Note note) {
+        // clear properties because object used is pretty much a singleton
         properties.clear();
 
         // load file data into properties

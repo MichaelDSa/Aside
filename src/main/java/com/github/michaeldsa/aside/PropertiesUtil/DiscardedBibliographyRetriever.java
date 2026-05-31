@@ -16,7 +16,7 @@ public class DiscardedBibliographyRetriever extends DiscardedBibliographyPropert
         db.setMessage(getPropAsString(message_k))
                 .setOriginalMetaPath(new MetaPath(Paths.get(getPropAsString(originalMetaPath_k))))
                 .setOriginalViewPath(new ViewPath(Paths.get(getPropAsString(originalViewPath_k))))
-                .setAuthors(parseAuthorsToList(getPropAsString(authors_k)))
+                .setAuthors(configFormattedStringToAuthorsList(getPropAsString(authors_k)))
                 .setTitle(getPropAsString(title_k))
                 .setPublishers(stringToHashSet(getPropAsString(publishers_k)))
                 .setYearPublished(getPropAsIntegerHashSet(yearPublished_k))

@@ -8,10 +8,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Properties;
+import java.util.*;
 
 public abstract class PropertiesUtil {
     public static String delimiter = "\u001f"; // looks like: ^_ or: US
@@ -26,7 +23,7 @@ public abstract class PropertiesUtil {
         properties = new Properties();
     }
 
-    protected String authorsArrayFormattedString(ArrayList<Author> authors) {
+    protected String authorsListToConfigFormattedString(ArrayList<Author> authors) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < authors.size(); i++) {
             if (i < authors.size() - 1) {
@@ -38,29 +35,17 @@ public abstract class PropertiesUtil {
         return sb.toString();
     }
 
-    protected void loadPropertiesFile(Path path) {
-        if (Files.exists(path)) {
-            try (BufferedReader is = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
-                properties.load(is);
-            } catch (IOException e) {
-                System.err.println("PropertiesUtil.loadPropertiesFile(): IOException: " + path);
-            }
+    protected ArrayList<Author> configFormattedStringToAuthorsList(String configFormattedString) {
+        String[] formattedStrings = configFormattedString.split(delimiter);
+        ArrayList<Author> authors = new ArrayList<>();
+        for (String s : formattedStrings) {
+            authors.add(new Author(s));
         }
+        return authors;
     }
 
     protected static String emptyIfNull(String str) {
         return str == null ? "" : str;
-    }
-
-    // get properties that should be saved as HashSet<String> in a MutableNote or DiscardedElement
-    protected HashSet<String> getPropAsHashSet(String prop) {
-        HashSet<String> val = new HashSet<>();
-        if (hashSetStringPropertiesKeysSubset.contains(prop)) {
-            val = stringToHashSet(properties.getProperty(prop, ""));
-        } else {
-            System.err.println("PropertiesUtil.getPropAsHashSet(): prop parameter not found in hashSetStringPropertiesKeysSubset: " + prop);
-        }
-        return val;
     }
 
     // get properties that should be saved as HashSet<Integer> from a Bibliography
@@ -75,6 +60,17 @@ public abstract class PropertiesUtil {
         return integers;
     }
 
+    // get properties that should be saved as HashSet<String> in a MutableNote or DiscardedElement
+    protected HashSet<String> getPropAsHashSet(String prop) {
+        HashSet<String> val = new HashSet<>();
+        if (hashSetStringPropertiesKeysSubset.contains(prop)) {
+            val = stringToHashSet(properties.getProperty(prop, ""));
+        } else {
+            System.err.println("PropertiesUtil.getPropAsHashSet(): prop parameter not found in hashSetStringPropertiesKeysSubset: " + prop);
+        }
+        return val;
+    }
+
     // get properties that should be saved as String in a MutableNote or DiscardedElement
     protected String getPropAsString(String prop) {
         String val = "";
@@ -86,13 +82,6 @@ public abstract class PropertiesUtil {
         return val;
     }
 
-    // format a HashSet<String> to be saved in a properties file
-    protected String hashSetToString(HashSet<String> hs) {
-        if (hs == null || hs.isEmpty()) {
-            return "";
-        }
-        return String.join(delimiter, hs);
-    }
     protected String hashSetIntegerToString(HashSet<Integer> hs) {
         HashSet<String> strings = new HashSet<>();
         for (Integer i : hs) {
@@ -101,13 +90,22 @@ public abstract class PropertiesUtil {
         return hashSetToString(strings);
     }
 
-    protected ArrayList<Author> parseAuthorsToList(String configFormattedString) {
-        String[] formattedStrings = configFormattedString.split(delimiter);
-        ArrayList<Author> authors = new ArrayList<>();
-        for (String s : formattedStrings) {
-            authors.add(new Author(s));
+    // format a HashSet<String> to be saved in a properties file
+    protected String hashSetToString(HashSet<String> hs) {
+        if (hs == null || hs.isEmpty()) {
+            return "";
         }
-        return authors;
+        return String.join(delimiter, hs);
+    }
+
+    protected void loadPropertiesFile(Path path) {
+        if (Files.exists(path)) {
+            try (BufferedReader is = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+                properties.load(is);
+            } catch (IOException e) {
+                System.err.println("PropertiesUtil.loadPropertiesFile(): IOException: " + path);
+            }
+        }
     }
 
     // convert String objects retrieved from a Properties file to a HashSet<String>
@@ -143,5 +141,24 @@ public abstract class PropertiesUtil {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof PropertiesUtil that)) return false;
+        return Objects.equals(properties, that.properties) && Objects.equals(stringPropertiesKeysSubset, that.stringPropertiesKeysSubset) && Objects.equals(hashSetStringPropertiesKeysSubset, that.hashSetStringPropertiesKeysSubset) && Objects.equals(hashSetIntegerPropertiesKeysSubset, that.hashSetIntegerPropertiesKeysSubset);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(properties, stringPropertiesKeysSubset, hashSetStringPropertiesKeysSubset, hashSetIntegerPropertiesKeysSubset);
+    }
+
+    @Override
+    public String toString() {
+        return "PropertiesUtil{" +
+                "properties=" + properties +
+                ", stringPropertiesKeysSubset=" + stringPropertiesKeysSubset +
+                ", hashSetStringPropertiesKeysSubset=" + hashSetStringPropertiesKeysSubset +
+                ", hashSetIntegerPropertiesKeysSubset=" + hashSetIntegerPropertiesKeysSubset +
+                '}';
+    }
 }

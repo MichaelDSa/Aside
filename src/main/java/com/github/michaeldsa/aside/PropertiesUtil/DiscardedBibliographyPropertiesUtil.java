@@ -5,13 +5,8 @@ import com.github.michaeldsa.aside.AsidePathElement.DiscardedBibliography;
 import java.util.Arrays;
 import java.util.HashSet;
 
-public class DiscardedBibliographyPropertiesUtil extends PropertiesUtil{
+public class DiscardedBibliographyPropertiesUtil extends DiscardedElementPropertiesUtil {
     // all property key names:
-    protected final String warning_k = "warning";
-    protected final String message_k = "message";
-    protected final String originalFileType_k = "original_filetype";
-    protected final String originalMetaPath_k = "original_metaPath";
-    protected final String originalViewPath_k = "original_viewPath";
     protected final String authors_k = "authors";
     protected final String title_k = "title";
     protected final String publishers_k = "publishers";
@@ -35,12 +30,15 @@ public class DiscardedBibliographyPropertiesUtil extends PropertiesUtil{
     protected void setProperties(DiscardedBibliography db) {
         properties.clear();
 
+        // assign keys from DiscardedElementPropertiesUtil:
         properties.setProperty(warning_k, emptyIfNull(db.getWarning()));
         properties.setProperty(message_k, emptyIfNull(db.getMessage()));
         properties.setProperty(originalFileType_k, emptyIfNull(db.getFileTypeName()));
         properties.setProperty(originalMetaPath_k, emptyIfNull(db.getMetaPath().toString()));
         properties.setProperty(originalViewPath_k, emptyIfNull(db.getViewPath().toString()));
-        properties.setProperty(authors_k, emptyIfNull(authorsArrayFormattedString(db.getAuthors())));
+
+        // assign keys from this class:
+        properties.setProperty(authors_k, emptyIfNull(authorsListToConfigFormattedString(db.getAuthors())));
         properties.setProperty(title_k, emptyIfNull(db.getTitle()));
         properties.setProperty(publishers_k, hashSetToString(db.getPublishers()));
         properties.setProperty(yearPublished_k, hashSetIntegerToString(db.getYearPublished()));

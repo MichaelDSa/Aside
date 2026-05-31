@@ -24,7 +24,7 @@ public abstract class NotePropertiesUtil extends PropertiesUtil{
     }
 
     protected void setProperties(AbstractNote note) {
-
+        // clear properties
         properties.clear();
 
         // define propertiesMap keys and values:
@@ -36,4 +36,6 @@ public abstract class NotePropertiesUtil extends PropertiesUtil{
         properties.setProperty(tags_k, hashSetToString(note.getTags()));
         properties.setProperty(bibliographies_k, hashSetToString(note.getBibliographies()));
     }
+
+
 }
