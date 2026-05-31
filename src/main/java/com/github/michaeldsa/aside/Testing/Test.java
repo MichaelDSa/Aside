@@ -531,5 +531,23 @@ public class Test {
         System.out.println(Pretty.formatBibliography4ViewPath(bib, Settings.getLineWidth().file()));
     }
 
+    public static void discardedBibliography_PropUtils_writeDiscardedBibliograhy() {
+        Bibliography bib = new Bibliography(new MetaPath())
+                .setTitle("1984")
+                .addNewAuthor("Orwell", "George")
+                .addNewAuthor("Jackson", "Michael")
+                .addNewAuthor("Sting", "")
+                .addNewAuthor("Hemmingway", "ernest", "F. O.")
+                .addNewAuthor("gurdjieff", "Georges", "I.")
+                .setComment("forgot to add `publishedBy` field")
+                .addNewPublisher("Secker & Warburg", "Harcourt, Brace & Company")
+                .addYearPublished(1944, 1950, 1977, 1984, 2000)
+                .addIsbn("978-0-7334-2609-4", "9780151660346", "9780198829195", "9783886191055")
+                .addUrl("George-Orwell.com");
+        DiscardedBibliography db = new DiscardedBibliography(bib);
+        PropUtils.writeDiscardedBibliography(db);
+
+    }
+
 
 }

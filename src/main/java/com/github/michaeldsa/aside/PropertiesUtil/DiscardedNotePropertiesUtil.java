@@ -9,6 +9,7 @@ public class DiscardedNotePropertiesUtil extends PropertiesUtil {
     // all property key names:
     protected final String warning_k = "warning";
     protected final String message_k = "message";
+    protected final String originalFileType_k = "original_filetype";
     protected final String originalMetaPath_k = "original_metaPath";
     protected final String originalViewPath_k = "original_viewPath";
     protected final String title_k = "title";
@@ -30,8 +31,9 @@ public class DiscardedNotePropertiesUtil extends PropertiesUtil {
         properties.clear();
 
         // define propertiesMap keys & values:
-        properties.setProperty(warning_k, dn.getWarning());
+        properties.setProperty(warning_k, emptyIfNull(dn.getWarning()));
         properties.setProperty(message_k, emptyIfNull(dn.getMessage()));
+        properties.setProperty(originalFileType_k, emptyIfNull(dn.getFileTypeName()));
         properties.setProperty(originalMetaPath_k, emptyIfNull(dn.getOriginalMetaPath().toString()));
         properties.setProperty(originalViewPath_k, emptyIfNull(dn.getOriginalViewPath().toString()));
         properties.setProperty(title_k, emptyIfNull(dn.getTitle()));

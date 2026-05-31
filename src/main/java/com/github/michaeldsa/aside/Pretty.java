@@ -130,7 +130,7 @@ public class Pretty {
         String arXiv_ID = format(collections2String(db.getArXiv_ID()), width);
         String adsBibcode = format(collections2String(db.getAds_Bibcode()), width);
         String originalMetaPath = format(db.getOriginalMetaPath().getPath().toString(), width);
-        String originalViewPath = format(db.getOriginalMetaPath().getPath().toString(), width);
+        String originalViewPath = format(db.getOriginalViewPath().getPath().toString(), width);
 
         String nl = "\n";
         String result = "";
@@ -209,7 +209,7 @@ public class Pretty {
         String title = format(de.getTitle(), width);
         String content = format(de.getContent(), width);
         String originalMetaPath = format(de.getOriginalMetaPath().getPath().toString(), width);
-        String originalViewPath = format(de.getOriginalMetaPath().getPath().toString(), width);
+        String originalViewPath = format(de.getOriginalViewPath().getPath().toString(), width);
         String to = format(collections2String(de.getTo()), width);
         String from = format(collections2String(de.getFrom()), width);
         String tags = format(collections2String(de.getTags()), width);

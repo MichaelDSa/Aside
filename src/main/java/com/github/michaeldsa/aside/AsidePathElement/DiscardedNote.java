@@ -50,16 +50,19 @@ public class DiscardedNote extends AbstractDiscardedElement {
         }
 
 
-        // DiscardedElement may only have parent .DISCARDED and DISCARDED.
-        metaPath = mp;
-        viewPath = new ViewPath(metaPath);
-        nest = new ArrayList<>();
-
+        // AbstractDiscardedElement fields:
         fileTypeName = fileTypeName_note;
         fileNamePrefix = fileNamePrefix_discardedNote;
         originalMetaPath = null;
         originalViewPath = null;
 
+        // AsidePathElement fields:
+        // DiscardedElement may only have parent .DISCARDED and DISCARDED.
+        metaPath = mp;
+        viewPath = new ViewPath(metaPath);
+        nest = new ArrayList<>();
+
+        // this class' fields:
         title = "";
         content = "";
         message = "";
@@ -76,18 +79,19 @@ public class DiscardedNote extends AbstractDiscardedElement {
             System.err.println("IllegalArgumentException. Path must start with 'DISCARDED' ViewPath Category, and end with DiscardedNote filename.");
             throw new IllegalArgumentException("Invalid Path argument: " + vp);
         }
+        // AbstractDiscardedElement fields:
         fileTypeName = fileTypeName_note;
         fileNamePrefix = fileNamePrefix_discardedNote;
+        originalViewPath = null;
+        originalMetaPath = null;
 
-        // FileName must be reformatted
+        // AsidePathElement fields:
         // DiscardedElement may only have parent .DISCARDED and DISCARDED.
         viewPath = vp;
         metaPath = new MetaPath(viewPath);
-
-        originalViewPath = null;
-        originalMetaPath = null;
         nest = new ArrayList<>();
 
+        // this class' fields
         title = "";
         content = "";
         message = "";
@@ -99,17 +103,19 @@ public class DiscardedNote extends AbstractDiscardedElement {
     public DiscardedNote(Note mn) {
         // validation not necessary, since MutableNote filename is regulated.
 
+        // AbstractDiscardedElement fields:
         fileTypeName = fileTypeName_note;
         fileNamePrefix = fileNamePrefix_discardedNote;
+        originalMetaPath = mn.getMetaPath();
+        originalViewPath = mn.getViewPath();
 
+        // AsidePathElement fields:
         // convert AsidePath
         metaPath = discardedCategory.getMetaPath().resolve(renameMetaPathFileName(mn.getMetaPath()));
         viewPath = new ViewPath(metaPath);
-
-        originalMetaPath = mn.getMetaPath();
-        originalViewPath = mn.getViewPath();
         nest = new ArrayList<>();
 
+        // this class' fields:
         title = mn.getTitle();
         content = mn.getContent();
         message = "";

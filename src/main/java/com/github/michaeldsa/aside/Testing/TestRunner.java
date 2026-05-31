@@ -171,7 +171,12 @@ public class TestRunner {
             // SUCCESS
 
             // Test PropUtils.retrieveBibliography
-            Test.bibliography_PropUtils_readBibliography();
+//            Test.bibliography_PropUtils_readBibliography();
+            // SUCCESS
+
+            // Test PropUtils.writeDiscardedBibliography
+            Test.discardedBibliography_PropUtils_writeDiscardedBibliograhy();
+
 
 
 

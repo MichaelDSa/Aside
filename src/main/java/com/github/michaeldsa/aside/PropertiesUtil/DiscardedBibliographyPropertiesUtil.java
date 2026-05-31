@@ -1,6 +1,5 @@
 package com.github.michaeldsa.aside.PropertiesUtil;
 
-import com.github.michaeldsa.aside.AsidePathElement.AbstractBibliography;
 import com.github.michaeldsa.aside.AsidePathElement.DiscardedBibliography;
 
 import java.util.Arrays;
@@ -10,6 +9,7 @@ public class DiscardedBibliographyPropertiesUtil extends PropertiesUtil{
     // all property key names:
     protected final String warning_k = "warning";
     protected final String message_k = "message";
+    protected final String originalFileType_k = "original_filetype";
     protected final String originalMetaPath_k = "original_metaPath";
     protected final String originalViewPath_k = "original_viewPath";
     protected final String authors_k = "authors";
@@ -35,10 +35,11 @@ public class DiscardedBibliographyPropertiesUtil extends PropertiesUtil{
     protected void setProperties(DiscardedBibliography db) {
         properties.clear();
 
-        properties.setProperty(warning_k, db.getWarning());
-        properties.setProperty(message_k, db.getMessage());
-        properties.setProperty(originalMetaPath_k, db.getMetaPath().toString());
-        properties.setProperty(originalViewPath_k, db.getViewPath().toString());
+        properties.setProperty(warning_k, emptyIfNull(db.getWarning()));
+        properties.setProperty(message_k, emptyIfNull(db.getMessage()));
+        properties.setProperty(originalFileType_k, emptyIfNull(db.getFileTypeName()));
+        properties.setProperty(originalMetaPath_k, emptyIfNull(db.getMetaPath().toString()));
+        properties.setProperty(originalViewPath_k, emptyIfNull(db.getViewPath().toString()));
         properties.setProperty(authors_k, emptyIfNull(authorsArrayFormattedString(db.getAuthors())));
         properties.setProperty(title_k, emptyIfNull(db.getTitle()));
         properties.setProperty(publishers_k, hashSetToString(db.getPublishers()));
