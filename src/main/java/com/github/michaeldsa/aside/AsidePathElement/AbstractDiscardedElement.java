@@ -71,7 +71,6 @@ public abstract class AbstractDiscardedElement extends AsidePathElement {
         String fileName = mp.getPath().getFileName().toString();
         String remainder = fileName.substring(fileName.length() - 18); // 18: length of date stamp
         String newFileName = prefix + remainder;
-        System.out.println(newFileName);
         return new MetaPath(Paths.get(newFileName));
     }
 

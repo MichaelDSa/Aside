@@ -183,7 +183,7 @@ public class TestRunner {
             // SUCCESS
 
             // Test AbstractDiscardedElement restore methods:
-//            Test.abstractDiscardedElement_restore();
+            Test.abstractDiscardedElement_restore();
             // SUCCESS
 
 

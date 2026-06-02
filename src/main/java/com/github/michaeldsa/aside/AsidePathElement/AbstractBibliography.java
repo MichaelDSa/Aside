@@ -53,10 +53,8 @@ public abstract class AbstractBibliography extends AsidePathElement {
         boolean success = false;
         if(ap instanceof MetaPath mp) {
             success = mp.startsWith(bibliographyCategory_MetaPath);
-            System.out.println("instance of mp: " + success);
         } else if (ap instanceof ViewPath vp) {
             success = vp.startsWith(bibliographyCategory_ViewPath);
-            System.out.println("instance of vp: " + success);
         }
         return success;
     }
