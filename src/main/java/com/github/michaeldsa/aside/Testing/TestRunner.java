@@ -175,12 +175,16 @@ public class TestRunner {
             // SUCCESS
 
             // Test PropUtils.writeDiscardedBibliography
-            Test.discardedBibliography_PropUtils_writeDiscardedBibliograhy();
+//            Test.discardedBibliography_PropUtils_writeDiscardedBibliograhy();
             // SUCCESS
 
             // Test PropUtils.writeDiscardedNote
 //            Test.propUtils_writeDiscardedNote();
+            // SUCCESS
 
+            // Test AbstractDiscardedElement restore methods:
+//            Test.abstractDiscardedElement_restore();
+            // SUCCESS
 
 
 

@@ -137,6 +137,16 @@ public class DiscardedNote extends AbstractDiscardedElement {
         originalMetaPath = new MetaPath(originalViewPath);
         return this;
     }
+    public Note restore() {
+        /* Restore to original data object. client is meant to retrieve beforehand. */
+        return new Note(originalMetaPath != null ? originalMetaPath : metaPath)
+                        .setTitle(title)
+                        .setContent(content)
+                        .setTo(to)
+                        .setFrom(from)
+                        .setTags(tags)
+                        .setBibliographies(bibliographies);
+            }
 
     // metadata getters:
     public String getTitle() { return title; }

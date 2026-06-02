@@ -233,6 +233,24 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
     }
 
     @Override
+    public Bibliography restore() {
+        /* Restore original data object. Client is meant to retrieve beforehand. */
+        return new Bibliography(originalMetaPath != null ? originalMetaPath : metaPath)
+                .setAuthors(authors)
+                .setTitle(title)
+                .setPublishers(publishers)
+                .setYearPublished(yearPublished)
+                .setComment(comment)
+                .setReferences(references)
+                .setIsbn(isbn)
+                .setDoi(doi)
+                .setUrl(url)
+                .setArXiv_ID(arXiv_ID)
+                .setAds_Bibcode(ads_Bibcode);
+
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (!(o instanceof DiscardedBibliography that)) return false;
         if (!super.equals(o)) return false;

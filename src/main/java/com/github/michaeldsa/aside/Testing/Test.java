@@ -558,5 +558,40 @@ public class Test {
         PropUtils.writeDiscardedNote(dn);
     }
 
+    public static void abstractDiscardedElement_restore() {
+        Note n1 = new Note(new MetaPath())
+                .setTitle("What I think about Lady Chatterly")
+                .setContent("Lady Chatterly talks too much. She can't stop babbling. Just get on with it, lady!")
+                .addTo(".260526_1830_26.txt",".260526_1830_27.txt",".260526_1830_28.txt",".260526_1830_29.txt",".260526_1830_30.txt",".260526_1830_31.txt",".260526_1830_32.txt",".260526_1830_33.txt",".260526_1830_34.txt")
+                .addFrom(".260526_1830_33.txt",".260526_1830_34.txt",".260526_1830_35.txt",".260526_1830_26.txt",".260526_1830_27.txt",".260526_1830_28.txt")
+                .addTags("Dune", "Harry Potter", "Fux.25")
+                .addBibliographies(".b260526_1830_39.txt");
+        DiscardedNote dn = new DiscardedNote(n1);
+        Note n2 = dn.restore();
+        System.out.println(Pretty.formatNote4ViewPath(n1, Settings.getLineWidth().stdout()));
+        System.out.println(Pretty.formatNote4ViewPath(n2, Settings.getLineWidth().stdout()));
+
+        System.out.println("n1 == n2 = " + n1.equals(n2));
+
+        Bibliography b1 = new Bibliography(new MetaPath())
+                .setTitle("Fifty Shades of Gray")
+                .addNewAuthor("Orwell", "George")
+                .addNewAuthor("Jackson", "Michael")
+                .addNewAuthor("Sting", "")
+                .addNewAuthor("Hemmingway", "ernest", "F. O.")
+                .addNewAuthor("gurdjieff", "Georges", "I.")
+                .setComment("forgot to add `publishedBy` field")
+                .addNewPublisher("Secker & Warburg", "Harcourt, Brace & Company")
+                .addYearPublished(1944, 1950, 1977, 1984, 2000)
+                .addIsbn("978-0-7334-2609-4", "9780151660346", "9780198829195", "9783886191055")
+                .addUrl("George-Orwell.com");
+        DiscardedBibliography db = new DiscardedBibliography(b1);
+        Bibliography b2 = db.restore();
+        System.out.println(Pretty.formatBibliography4ViewPath(b1, Settings.getLineWidth().stdout()));
+        System.out.println(Pretty.formatBibliography4ViewPath(b2, Settings.getLineWidth().stdout()));
+        System.out.println("b1 == b2 = " + b1.equals(b2));
+
+    }
+
 
 }

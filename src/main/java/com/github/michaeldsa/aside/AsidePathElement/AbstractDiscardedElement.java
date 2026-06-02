@@ -48,6 +48,7 @@ public abstract class AbstractDiscardedElement extends AsidePathElement {
 
     public abstract AbstractDiscardedElement setOriginalMetaPath(MetaPath original);
     public abstract AbstractDiscardedElement setOriginalViewPath(ViewPath original);
+    public abstract AsidePathElement restore();
 
 
     // methods for subclass constructor use:
