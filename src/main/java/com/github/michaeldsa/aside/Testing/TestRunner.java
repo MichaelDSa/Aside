@@ -183,7 +183,11 @@ public class TestRunner {
             // SUCCESS
 
             // Test AbstractDiscardedElement restore methods:
-            Test.abstractDiscardedElement_restore();
+//            Test.abstractDiscardedElement_restore();
+            // SUCCESS
+
+            // Test filenameIsUnique with Test.areFileNamesUnique()
+//            Test.areFileNamesUnique();
             // SUCCESS
 
 

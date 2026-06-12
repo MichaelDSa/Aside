@@ -124,12 +124,6 @@ public abstract class AsidePathElement {
         return newdir.resolve(name);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof AsidePathElement that)) return false;
-        return Objects.equals(metaPath, that.metaPath) && Objects.equals(viewPath, that.viewPath);
-    }
-
     /* to move from AbstractNote:
     [x] anti_redundant set: Set<String>
     [x] fileNameIsUnique()
@@ -176,7 +170,7 @@ public abstract class AsidePathElement {
     }
 
     private static boolean fileNameIsUnique(MetaPath fileName) {
-        // tests whether file name is unique amongst all files, including files not yet written
+        // tests whether file name is unique amongst all files, including in-memory Note filenames not yet written
         if (!anti_redundant_set.add(fileName.getPath().getFileName().toString())) {
             return false;
         }
@@ -188,10 +182,10 @@ public abstract class AsidePathElement {
             return stream.parallel().noneMatch(
                     path -> {
                         String fn = path.getFileName().toString();
-                        if (ValidateString.BIBLIOGRAPHY_NAME.test(fn)
-                                || ValidateString.DISCARDED_NOTE_NAME.test(fn)) {
-
+                        if (ValidateString.BIBLIOGRAPHY_NAME.test(fn) || ValidateString.DISCARDED_NOTE_NAME.test(fn)) {
                             fn = "." + fn.substring(2);
+                        } else if (ValidateString.DISCARDED_BIBLIOGRAPHY_NAME.test(fn)) {
+                            fn = "." + fn.substring(3);
                         }
                         return fn.equals(fileName_str);
                     }
@@ -203,6 +197,11 @@ public abstract class AsidePathElement {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof AsidePathElement that)) return false;
+        return Objects.equals(metaPath, that.metaPath) && Objects.equals(viewPath, that.viewPath);
+    }
 
     @Override
     public int hashCode() {

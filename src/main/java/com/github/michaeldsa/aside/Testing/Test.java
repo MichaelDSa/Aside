@@ -593,5 +593,23 @@ public class Test {
 
     }
 
+    public static void areFileNamesUnique() {
+        /* write one of each: note, DiscardedNote, Bibliography,
+        DiscardedBibliography, and then print the anti-redundant-set
+        to see if filenames are properly being parsed by
+        AsidePathElement.filenamesAreUnique(). */
+        Note n1 = new Note(new MetaPath()).setTitle("areFileNamesUnique()").setContent("testing if file names are unique");
+        DiscardedNote dn = new DiscardedNote(n1);
+        Bibliography b1 = new Bibliography(new MetaPath()).setTitle("areFileNamesUnique() bib");
+        DiscardedBibliography db = new DiscardedBibliography(b1);
+//        AsidePathElement.print_anti_redundant_set(); // method deleted after use
+
+        System.out.println("n1: " + n1.getMetaPath().getPath().getFileName());
+        System.out.println("dn: " +  dn.getMetaPath().getPath().getFileName());
+        System.out.println("b1: " + b1.getMetaPath().getPath().getFileName());
+        System.out.println("db: " + db.getMetaPath().getPath().getFileName());
+    }
+
+
 
 }

@@ -126,9 +126,9 @@ public enum ValidateString implements Predicate<String> {
          */
         String filename = "";
         if (s.startsWith(".d")) {
-            filename = s.substring(3);
-        } else if (s.startsWith("d")) {
             filename = s.substring(2);
+        } else if (s.startsWith("d")) {
+            filename = s.substring(1);
         } else {
             return false;
         }
