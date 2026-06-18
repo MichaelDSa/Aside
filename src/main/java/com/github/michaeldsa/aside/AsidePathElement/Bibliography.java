@@ -18,7 +18,7 @@ public class Bibliography extends AbstractBibliography {
         /* client can use metaPath_root to create a new bibliography
         in the default bibliography category. */
         if (mp.equals(new MetaPath())) {
-            mp = bibliographyCategory_MetaPath.resolve(mp);
+            mp = bibliographyCategory_MetaPath;
         }
         /* mp must start with BIBLIOGRAPHY category and must end
         with either a bibliography filename or no filename. */
@@ -48,7 +48,7 @@ public class Bibliography extends AbstractBibliography {
         /* client can use viewPath_root to create a new bibliography
         in the default bibliography category. */
         if (vp.equals(new ViewPath())) {
-            vp = bibliographyCategory_ViewPath.resolve(vp);
+            vp = bibliographyCategory_ViewPath;
         }
         /* vp must start with BIBLIOGRAPHY category and must end
         with either a bibliography filename or no filename. */
@@ -75,21 +75,19 @@ public class Bibliography extends AbstractBibliography {
     }
     public Bibliography(BibliographyCategory bc) {
         /* unlikely, but arg can fail if cast to BibliographyCategory */
-        if (AbstractBibliography.constructorArgIsInvalid(bc.getMetaPath())) {
+        if (AbstractBibliography.constructorArgIsInvalid(bc.getMetaPath()) || AsidePathElement.endsWithFileName(bc.getMetaPath())) {
             System.err.println("InvalidArgumentException");
             throw new IllegalArgumentException("Invalid Path argument: " + bc.getMetaPath());
         }
 
         // AsidePathElement fields:
         /* ensure that metaPath ends with a Bibliography filename.*/
-        metaPath = ValidateAsidePath.CATEGORY_NAME.test(metaPath)
-                ? AbstractBibliography.generateNewBibliographyFileName(metaPath)
-                : metaPath;
+        metaPath = AbstractBibliography.generateNewBibliographyFileName(bc.getMetaPath());
         viewPath = new ViewPath(bc.getMetaPath());
         nest = new ArrayList<>();
 
         // AbstractBibliography fields:
-        stepParent = (BibliographyCategory) bc.getStepParentCategory();
+        stepParent = bc.getStepParentCategory();
         setBibFieldsToEmpty();
 
         // this class' fields:
@@ -213,8 +211,8 @@ public class Bibliography extends AbstractBibliography {
         this.authors.addAll(Arrays.asList(authors));
         return this;
     }
-    public Bibliography addNewAuthor(String propertiesFormattedAuthorString) {
-        this.authors.add(new Author(propertiesFormattedAuthorString));
+    public Bibliography addNewAuthor(String configFormattedAuthorString) {
+        this.authors.add(new Author(configFormattedAuthorString));
         return this;
     }
     public Bibliography addNewAuthor(String lastName, String firstName) {

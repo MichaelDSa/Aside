@@ -11,7 +11,7 @@ public class Note extends AbstractNote{
 
     // constructors:
     public Note(MetaPath mp) {
-        // if filename belongs to bibliography or DiscardedElement:
+        // if filename belongs to BIBLIOGRAPHY or DISCARDED:
         if (constructorArgIsInvalid(mp)) {
             System.err.println("IllegalArgumentException: " + mp);
             throw new IllegalArgumentException("Invalid Path argument (This is either a DiscardedElement or a Bibliography filename): " + mp);
@@ -36,7 +36,7 @@ public class Note extends AbstractNote{
         previousState = null;
     }
     public Note(ViewPath vp) {
-        // if filename belongs to bibliography or DiscardedElement:
+        // if filename belongs to BIBLIOGRAPHY or DISCARDED:
         if (constructorArgIsInvalid(vp)) {
             System.err.println("IllegalArgumentException: " + vp);
             throw new IllegalArgumentException("Invalid Path argument (This is either a DiscardedElement or a Bibliography filename):  " + vp);
@@ -76,7 +76,7 @@ public class Note extends AbstractNote{
         nest = new ArrayList<>();
 
         // AbstractNote fields:
-        stepParent = (Category) c.getStepParentCategory();
+        stepParent = c.getStepParentCategory();
         to = new HashSet<>();
         from = new HashSet<>();
         tags = new HashSet<>();
@@ -98,7 +98,7 @@ public class Note extends AbstractNote{
         nest = mn.getNest();
 
         // AbstractNote fields:
-        stepParent = (Category) mn.getStepParentCategory();
+        stepParent = mn.getStepParentCategory();
         title = mn.getTitle();
         content = mn.getContent();
         to = mn.getTo();
@@ -132,10 +132,10 @@ public class Note extends AbstractNote{
     public ImmutableNote getPreviousState() { return previousState; }
 
     @Override
-    public AbstractCategory getParentCategory() { return new Category(metaPath); }
+    public Category getParentCategory() { return new Category(metaPath); }
 
     @Override
-    public AbstractCategory getStepParentCategory() { return stepParent; }
+    public Category getStepParentCategory() { return stepParent; }
 
     @Override
     public void setStepParentCategory(AbstractCategory newStepParent) { stepParent = (Category) newStepParent; }

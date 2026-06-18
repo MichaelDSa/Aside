@@ -60,13 +60,13 @@ public abstract class AbstractBibliography extends AsidePathElement {
     }
 
     // must end with a valid category filename, or a valid bibliography filename
-    private static boolean noFileNameOrHasBibFileName(AsidePath ap) {
+    private static boolean hasBibFileNameOrHasNoFileName(AsidePath ap) {
         return ValidateAsidePath.CATEGORY_NAME.test(ap) || ValidateAsidePath.BIBLIOGRAPHY_NAME.test(ap);
     }
 
     // determine if constructor should throw an IllegalArgumentException.
     protected static boolean constructorArgIsInvalid(AsidePath ap) {
-        return !startsWithBibliographyCategory(ap) || !noFileNameOrHasBibFileName(ap);
+        return !startsWithBibliographyCategory(ap) || !hasBibFileNameOrHasNoFileName(ap);
     }
 
     protected static MetaPath generateNewBibliographyFileName(MetaPath parent) {

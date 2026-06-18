@@ -67,7 +67,7 @@ public abstract class AbstractDiscardedElement extends AsidePathElement {
     // fileNamePrefix must be assigned to preset var by each subclass!
     protected MetaPath renameMetaPathFileName(MetaPath mp) {
         // format to: `.dxxxxxx_xxxx_xx.txt`
-        String prefix = fileNamePrefix;
+        String prefix = fileNamePrefix; // `.d` or `.db` depending on subclass
         String fileName = generateUniqueFileName(mp.getParent()).getPath().getFileName().toString();
         String remainder = fileName.substring(fileName.length() - 18); // 18: length of date stamp
         String newFileName = prefix + remainder;
@@ -85,9 +85,9 @@ public abstract class AbstractDiscardedElement extends AsidePathElement {
     }
 
 
-    // inherited, but not used.
+    // inherited, use not expected.
     @Override
-    public AbstractCategory getParentCategory() { return null; }
+    public DiscardedCategory getParentCategory() { return DiscardedCategory.getInstance(); }
     @Override
     public AbstractCategory getStepParentCategory() { return null; }
     @Override

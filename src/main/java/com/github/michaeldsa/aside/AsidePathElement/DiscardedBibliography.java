@@ -32,8 +32,8 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
 
     // constructors:
 
-    // arg should be DiscardedBibliography MetaPath url
     public DiscardedBibliography(MetaPath mp) {
+        // mp must begin with DISCARDED, and end with DiscardedBibliography filename
         if (invalidConstructorArg(mp)) {
             System.err.println("IllegalArgumentException.  Path must start with '.DISCARDED' MetaPath Category and end with DiscardedBibilography filename.");
             throw new IllegalArgumentException("Invalid Path argument: " + mp);
@@ -54,8 +54,8 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
         setBiliographyFieldsToEmpty();
     }
 
-    // arg should be DiscardedBibliography ViewPath url
     public DiscardedBibliography(ViewPath vp) {
+        // vp must begin with DISCARDED, and end with DiscardedBibliography filename
         if (invalidConstructorArg(vp)) {
             System.err.println("IllegalArgumentException.  Path must start with 'DISCARDED' ViewPath Category and end with DiscardedBibilography filename.");
             throw new IllegalArgumentException("Invalid Path argument: " + vp);
@@ -98,7 +98,6 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
         nest = new ArrayList<>();
 
         // This class' fields:
-        setBiliographyFieldsToEmpty(); // in case bb fields are null
         authors = bb.getAuthors();
         title = bb.getTitle();
         publishers = bb.getPublishers();
@@ -181,6 +180,14 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
         this.message = message;
         return this;
     }
+    public DiscardedBibliography appendToMessage(String message) {
+        this.message += " " + message;
+        return this;
+    }
+    public DiscardedBibliography prependToMessage(String message) {
+        this.message = message + " " + this.message;
+        return this;
+    }
     public DiscardedBibliography setPublishers(HashSet<String> publishers) {
         this.publishers = publishers;
         return this;
@@ -220,22 +227,28 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
 
     @Override
     public DiscardedBibliography setOriginalMetaPath(MetaPath original) {
-        this.originalMetaPath = original;
-        this.originalViewPath = new ViewPath(originalMetaPath);
+        /* The original MetaPath must be of a valid Bibliography file. */
+        if (ValidateAsidePath.BIBLIOGRAPHY_NAME.test(original) && original.startsWith(RestrictedLists.getBibliographyCategory().getMetaPath())) {
+            this.originalMetaPath = original;
+            this.originalViewPath = new ViewPath(originalMetaPath);
+        }
         return this;
     }
 
     @Override
     public DiscardedBibliography setOriginalViewPath(ViewPath original) {
-        this.originalViewPath = original;
-        this.originalMetaPath = new MetaPath(originalViewPath);
+        /* The original ViewPath must be of a valid Bibliography file. */
+        if (ValidateAsidePath.BIBLIOGRAPHY_NAME.test(original) && original.startsWith(RestrictedLists.getBibliographyCategory().getMetaPath())) {
+            this.originalViewPath = original;
+            this.originalMetaPath = new MetaPath(originalViewPath);
+        }
         return this;
     }
 
     @Override
     public Bibliography restore() {
         /* Restore original data object. Client is meant to retrieve beforehand. */
-        return new Bibliography(originalMetaPath != null ? originalMetaPath : metaPath)
+        return new Bibliography(originalMetaPath != null ? originalMetaPath : metaPath.getParent())
                 .setAuthors(authors)
                 .setTitle(title)
                 .setPublishers(publishers)

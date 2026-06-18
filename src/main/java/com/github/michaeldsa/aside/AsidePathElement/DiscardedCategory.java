@@ -27,7 +27,7 @@ public class DiscardedCategory extends AbstractCategory{
     }
 
     @Override
-    public AbstractCategory getParentCategory() { return new Category(new MetaPath()); }
+    public Category getParentCategory() { return new Category(new MetaPath()); }
 
     @Override
     public AbstractCategory getStepParentCategory() { return null; }

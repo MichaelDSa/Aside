@@ -14,6 +14,11 @@ public class BibliographyCategory extends AbstractCategory {
     protected BibliographyCategory stepParent;
 
     public BibliographyCategory(MetaPath mp) {
+        /* client can use metapath root to create a new
+        BibliographyCategory instance pointing to default bibliography dirs */
+        if(mp.equals(new MetaPath())) {
+            mp = AbstractBibliography.bibliographyCategory_MetaPath;
+        }
         if (AbstractBibliography.constructorArgIsInvalid(mp)) {
             System.err.println("IllegalArgumentException");
             throw new IllegalArgumentException("Invalid Path argument BibCat(MetaPath mp): " + mp);
@@ -35,6 +40,11 @@ public class BibliographyCategory extends AbstractCategory {
         this.stepParent = null;
     }
     public BibliographyCategory(ViewPath vp) {
+        /* client can use viewpath root to create a new
+        BibliographyCategory instance pointing to default bibliography dirs */
+        if (vp.equals(new ViewPath())) {
+            vp = AbstractBibliography.bibliographyCategory_ViewPath;
+        }
         if (AbstractBibliography.constructorArgIsInvalid(vp)) {
             System.err.println("IllegalArgumentException");
             throw new IllegalArgumentException("Invalid Path argument BibCat(ViewPath vp): " + vp);
@@ -57,21 +67,16 @@ public class BibliographyCategory extends AbstractCategory {
     }
 
     public BibliographyCategory(BibliographyCategory bc) {
-        MetaPath mp = bc.getMetaPath();
         /* unlikely, but can fail if cast to BibliographyCategory */
-        if (AbstractBibliography.constructorArgIsInvalid(mp)) {
+        if (AbstractBibliography.constructorArgIsInvalid(bc.getMetaPath()) || AsidePathElement.endsWithFileName(bc.getMetaPath())) {
             System.err.println("IllegalArgumentException");
-            throw new IllegalArgumentException("Invalid Path argument BibCat(MetaPath mp): " + mp);
+            throw new IllegalArgumentException("Invalid Path argument BibCat(MetaPath mp): " + bc.getMetaPath());
         }
 
         // AsidePathElement fields:
-        /* must not end with filename */
-        metaPath = AsidePathElement.endsWithFileName(mp)
-                ? mp.getParent()
-                : mp;
         /* must start with correct dir */
-        metaPath = metaPath.startsWith(new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName())))
-                ? metaPath
+        metaPath = bc.getMetaPath().startsWith(new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName())))
+                ? bc.getMetaPath()
                 : new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName())).resolve(metaPath);
         viewPath = new ViewPath(metaPath);
         nest = new ArrayList<>();
@@ -101,11 +106,11 @@ public class BibliographyCategory extends AbstractCategory {
 
     // inherited methods:
     @Override
-    public AbstractCategory getParentCategory() {
+    public BibliographyCategory getParentCategory() {
         return new BibliographyCategory(metaPath.getParent());
     }
     @Override
-    public AbstractCategory getStepParentCategory() {
+    public BibliographyCategory getStepParentCategory() {
         return stepParent;
     }
     @Override

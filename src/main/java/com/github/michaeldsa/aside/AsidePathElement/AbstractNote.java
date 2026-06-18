@@ -31,20 +31,27 @@ public abstract class AbstractNote extends AsidePathElement {
 
     // methods for constructor use:
     protected boolean constructorArgIsInvalid(AsidePath ap) {
-        return ValidateAsidePath.BIBLIOGRAPHY_NAME.test(ap) || ValidateAsidePath.DISCARDED_NOTE_NAME.test(ap);
+        /* If an AsidePath with a filename is submitted, it must be a
+        Note filename, and not pass one of the below tests. However,
+        if the AsidePath contains a wrong directory element
+        (RestrictedLists.permanentDirectories), the offending element will
+        be removed. The parameter will be modified to conform to sandbox
+        rules using AsidePathElement.filterMetaPathElements().  */
+        return ValidateAsidePath.BIBLIOGRAPHY_NAME.test(ap)
+                || ValidateAsidePath.DISCARDED_NOTE_NAME.test(ap)
+                || ValidateAsidePath.DISCARDED_BIBLIOGRAPHY_NAME.test(ap);
     }
 
     @Override
     public String toString() {
         return "AbstractNote{" +
-                "title='" + title + '\'' +
+                "stepParent=" + stepParent +
+                ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", to=" + to +
                 ", from=" + from +
                 ", tags=" + tags +
                 ", bibliographies=" + bibliographies +
-                ", metaPath=" + metaPath +
-                ", viewPath=" + viewPath +
                 '}';
     }
 

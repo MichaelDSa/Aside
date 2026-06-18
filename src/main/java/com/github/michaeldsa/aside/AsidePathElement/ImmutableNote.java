@@ -18,7 +18,7 @@ public class ImmutableNote extends AbstractNote{
     private final Category stepParent;
     // ImmutableNote previousState;
     public ImmutableNote(Note mn) {
-        // if somehow mn has wrong filename
+        // if somehow mn has incorrect filename type
         if (constructorArgIsInvalid(mn.getMetaPath())) {
             System.err.println("IllegalArgumentException: " + mn.getMetaPath());
             throw new IllegalArgumentException("Invalid Path argument " + mn.getMetaPath());
@@ -32,7 +32,7 @@ public class ImmutableNote extends AbstractNote{
         this.from = new HashSet<>(Collections.unmodifiableSet(mn.getFrom()));
         this.tags = new HashSet<>(Collections.unmodifiableSet(mn.getTags()));
         this.bibliographies = new HashSet<>(Collections.unmodifiableSet(mn.getBibliographies()));
-        this.stepParent = (Category) mn.getStepParentCategory();
+        this.stepParent = mn.getStepParentCategory();
     }
     @Override
     public String getTitle() { return this.title; }
@@ -54,6 +54,7 @@ public class ImmutableNote extends AbstractNote{
 
     @Override
     public MetaPath getMetaPath() { return this.metaPath; }
+
     @Override
     public ViewPath getViewPath() { return this.viewPath; }
 
@@ -61,10 +62,10 @@ public class ImmutableNote extends AbstractNote{
     public List<AsidePathElement> getNest() { return this.nest; }
 
     @Override
-    public AbstractCategory getParentCategory() { return new Category(metaPath); }
+    public Category getParentCategory() { return new Category(metaPath); }
 
     @Override
-    public AbstractCategory getStepParentCategory() { return this.stepParent; }
+    public Category getStepParentCategory() { return this.stepParent; }
 
     @Override
     public void setStepParentCategory(AbstractCategory newStepParent) { return; }
@@ -80,25 +81,27 @@ public class ImmutableNote extends AbstractNote{
         return "ImmutableNote{" +
                 "metaPath=" + metaPath +
                 ", viewPath=" + viewPath +
+                ", nest=" + nest +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", to=" + to +
                 ", from=" + from +
                 ", tags=" + tags +
                 ", bibliographies=" + bibliographies +
-                ", stepParent=" + this.stepParent +
+                ", stepParent=" + stepParent +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof ImmutableNote that)) return false;
+        if (!(o instanceof ImmutableNote)) return false;
         if (!super.equals(o)) return false;
-        return Objects.equals(metaPath, that.metaPath) && Objects.equals(viewPath, that.viewPath) && Objects.equals(title, that.title) && Objects.equals(content, that.content) && Objects.equals(to, that.to) && Objects.equals(from, that.from) && Objects.equals(tags, that.tags) && Objects.equals(bibliographies, that.bibliographies) && Objects.equals(stepParent, that.stepParent);
+        ImmutableNote that = (ImmutableNote) o;
+        return Objects.equals(metaPath, that.metaPath) && Objects.equals(viewPath, that.viewPath) && Objects.equals(nest, that.nest) && Objects.equals(title, that.title) && Objects.equals(content, that.content) && Objects.equals(to, that.to) && Objects.equals(from, that.from) && Objects.equals(tags, that.tags) && Objects.equals(bibliographies, that.bibliographies) && Objects.equals(stepParent, that.stepParent);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), metaPath, viewPath, title, content, to, from, tags, bibliographies, stepParent);
+        return Objects.hash(super.hashCode(), metaPath, viewPath, nest, title, content, to, from, tags, bibliographies, stepParent);
     }
 }

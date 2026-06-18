@@ -41,9 +41,8 @@ public class DiscardedNote extends AbstractDiscardedElement {
 
     // constructors:
 
-    // Arg should be DiscardedNote MetaPath url
     public DiscardedNote(MetaPath mp) {
-        // mp must end with a DiscardedNote filename.
+        // mp must begin with DISCARDED Category, and end with a DiscardedNote filename.
         if(constructorArgIsInvalid(mp)) {
             System.err.println("IllegalArgumentException. Path must start with '.DISCARDED' MetaPath Category, and end with DiscardedNote filename.");
             throw new IllegalArgumentException("Invalid Path argument: " + mp);
@@ -72,9 +71,8 @@ public class DiscardedNote extends AbstractDiscardedElement {
         bibliographies = new HashSet<>();
     }
 
-    // Arg should be DiscardedNote ViewPath url
     public DiscardedNote(ViewPath vp) {
-        // if vp has wrong filename
+        // vp must begin with DISCARDED category, and end with a DiscardedNote filename
         if(constructorArgIsInvalid(vp)) {
             System.err.println("IllegalArgumentException. Path must start with 'DISCARDED' ViewPath Category, and end with DiscardedNote filename.");
             throw new IllegalArgumentException("Invalid Path argument: " + vp);
@@ -128,18 +126,22 @@ public class DiscardedNote extends AbstractDiscardedElement {
     // getters & setters:
 
     public DiscardedNote setOriginalMetaPath(MetaPath original) {
-        originalMetaPath = original;
-        originalViewPath = new ViewPath(originalMetaPath);
+        /* The original MetaPath must be of a valid Note file. */
+        if (ValidateAsidePath.NOTE_NAME.test(original)) {
+            originalMetaPath = original;
+            originalViewPath = new ViewPath(originalMetaPath);
+        }
         return this;
     }
     public DiscardedNote setOriginalViewPath(ViewPath original) {
+        /* The original ViewPath must be of a valid Note file. */
         originalViewPath = original;
         originalMetaPath = new MetaPath(originalViewPath);
         return this;
     }
     public Note restore() {
         /* Restore to original data object. client is meant to retrieve beforehand. */
-        return new Note(originalMetaPath != null ? originalMetaPath : metaPath)
+        return new Note(originalMetaPath != null ? originalMetaPath : metaPath.getParent())
                         .setTitle(title)
                         .setContent(content)
                         .setTo(to)

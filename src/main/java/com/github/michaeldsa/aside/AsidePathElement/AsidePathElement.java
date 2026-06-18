@@ -56,13 +56,16 @@ public abstract class AsidePathElement {
         return ValidateAsidePath.NOTE_NAME.test(ap)
                 || ValidateAsidePath.BIBLIOGRAPHY_NAME.test(ap)
                 || ValidateAsidePath.DISCARDED_NOTE_NAME.test(ap)
+                || ValidateAsidePath.DISCARDED_BIBLIOGRAPHY_NAME.test(ap)
                 || ap.getPath().getFileName().endsWith(".txt");}
     protected static boolean endsWithNoteName(AsidePath ap) {return ValidateAsidePath.NOTE_NAME.test(ap);}
     protected static boolean endsWithCategoryName(AsidePath ap) {return ValidateAsidePath.CATEGORY_NAME.test(ap);}
 
     protected static MetaPath filterMetaPathElements(MetaPath mp) {
-        // remove permanent directories such as .default
-        // from the Path elements of metaPath.
+        /* For use with Category or Note classes. Converts paths in adherence
+        to rules of the sandbox. Subcategories may not be created in any member
+        of RestrictedLists.permanentDirectories. Notes may not be persisted to
+        asidepath root, or members of RestriectedLists.permanentDirectories. */
         Path path = mp.getPath();
         MetaPath perm = new MetaPath(); // MetaPath root
 
@@ -96,8 +99,8 @@ public abstract class AsidePathElement {
             }
         }
         if (identical) {
-            // DISCARDED is unavailable to Category and AbstractNote.
-            // Return DEFAULT. DISCARDED is available only to DiscardedItem
+            // DISCARDED & BIBLIOGRAPHY is unavailable to Category and Note.
+            // Return DEFAULT regardless.
             return new MetaPath(Paths.get(RestrictedLists.getMetaPathDefaultDirectoryName()));
         }
         if (startsWith && isLonger) {
@@ -124,19 +127,13 @@ public abstract class AsidePathElement {
         return newdir.resolve(name);
     }
 
-    /* to move from AbstractNote:
-    [x] anti_redundant set: Set<String>
-    [x] fileNameIsUnique()
-    [x] generateUniqueFileName()
-    [x] getTimeStampedFilename()
-     */
-
-    /* static methods for unique filename generation. Does not
-    create Discarded or Bibliography filenames.*/
+    /* static methods for unique filename generation. Also a
+    dependency for other filename types, such as BIBLIOGRAPHY and
+    DISCARDED members. */
 
     // generate a MetaPath that ends with the unique file name formatted for notes.
     public static MetaPath generateUniqueFileName(MetaPath parent) {
-        // generate date stamp MetaPath ending with `.txt`.
+        // generate date stamp MetaPath file, formatted as `yyMMdd_HHmm_ss`, and ending with `.txt`.
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd_HHmm_ss");
         MetaPath name = getTimeStampedFileName(formatter);
 
@@ -177,17 +174,17 @@ public abstract class AsidePathElement {
 
         String fileName_str = fileName.getPath().getFileName().toString();
 
-        // test whole sandbox for files with the this filename.
+        // test whole sandbox for filnames identical to fileName.
         try (Stream<Path> stream = Files.walk(RootPaths.INSTANCE.getMetapath())) {
             return stream.parallel().noneMatch(
                     path -> {
-                        String fn = path.getFileName().toString();
-                        if (ValidateString.BIBLIOGRAPHY_NAME.test(fn) || ValidateString.DISCARDED_NOTE_NAME.test(fn)) {
-                            fn = "." + fn.substring(2);
-                        } else if (ValidateString.DISCARDED_BIBLIOGRAPHY_NAME.test(fn)) {
-                            fn = "." + fn.substring(3);
+                        String name = path.getFileName().toString();
+                        if (ValidateString.BIBLIOGRAPHY_NAME.test(name) || ValidateString.DISCARDED_NOTE_NAME.test(name)) {
+                            name = "." + name.substring(2);
+                        } else if (ValidateString.DISCARDED_BIBLIOGRAPHY_NAME.test(name)) {
+                            name = "." + name.substring(3);
                         }
-                        return fn.equals(fileName_str);
+                        return name.equals(fileName_str);
                     }
             );
         } catch (IOException e) {
@@ -196,16 +193,15 @@ public abstract class AsidePathElement {
         }
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof AsidePathElement that)) return false;
-        return Objects.equals(metaPath, that.metaPath) && Objects.equals(viewPath, that.viewPath);
+        return Objects.equals(metaPath, that.metaPath) && Objects.equals(viewPath, that.viewPath) && Objects.equals(nest, that.nest);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(metaPath, viewPath);
+        return Objects.hash(metaPath, viewPath, nest);
     }
 
     @Override
@@ -213,6 +209,7 @@ public abstract class AsidePathElement {
         return "AsidePathElement{" +
                 "metaPath=" + metaPath +
                 ", viewPath=" + viewPath +
+                ", nest=" + nest +
                 '}';
     }
 }

@@ -23,10 +23,10 @@ public class Author {
         this.initials  = initials.isBlank() ? placeMarker : initials;
         this.postNominals = postNominals.isBlank() ? placeMarker : postNominals;
     }
-    public Author(String configFormattedString) {
+    public Author(String configFormattedAuthorString) {
         // formatted string must have 5 delimiter characters.
-        if (configFormattedString.length() - configFormattedString.replace(delimiter, "").length() == 5) {
-            String[] fields = configFormattedString.split(delimiter);
+        if (configFormattedAuthorString.length() - configFormattedAuthorString.replace(delimiter, "").length() == 5) {
+            String[] fields = configFormattedAuthorString.split(delimiter);
             this.lastName = fields[0];
             this.prefix = fields[1];
             this.firstName = fields[2];
@@ -38,7 +38,7 @@ public class Author {
             the user may have modified the properties file, so
             preserve the mod. */
             configFormatOK = false;
-            this.lastName = configFormattedString;
+            this.lastName = configFormattedAuthorString;
             this.prefix = placeMarker;
             this.firstName = placeMarker;
             this.middleNames = placeMarker;
