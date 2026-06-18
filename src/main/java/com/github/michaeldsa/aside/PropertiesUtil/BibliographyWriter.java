@@ -19,6 +19,6 @@ public class BibliographyWriter extends BibliographyPropertiesUtil {
 
     public void writeToViewPath(AbstractBibliography bib) {
         setProperties(bib);
-        writeViewPath(bib.getMetaPath().getPath(), Pretty.formatBibliography4ViewPath(bib, Settings.getLineWidth().file()));
+        writeViewPath(bib.getMetaPath().getPath(), Pretty.formatBibliography4ViewPath(bib, Settings.lineWidths().getFile()));
     }
 }

@@ -18,6 +18,6 @@ public class NoteWriter extends NotePropertiesUtil {
 
     public void writeToViewPath(AbstractNote note) {
         setProperties(note);
-        writeViewPath(note.getMetaPath().getPath(), Pretty.formatNote4ViewPath(note, Settings.getLineWidth().file()));
+        writeViewPath(note.getMetaPath().getPath(), Pretty.formatNote4ViewPath(note, Settings.lineWidths().getFile()));
     }
 }

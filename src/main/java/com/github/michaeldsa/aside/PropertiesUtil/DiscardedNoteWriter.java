@@ -18,7 +18,7 @@ public class DiscardedNoteWriter extends DiscardedNotePropertiesUtil {
 
     public void writeToViewPath(DiscardedNote dn) {
         setProperties(dn);
-        writeViewPath(dn.getMetaPath().getPath(), Pretty.formatDiscardedNote4ViewPath(dn, Settings.getLineWidth().file()));
+        writeViewPath(dn.getMetaPath().getPath(), Pretty.formatDiscardedNote4ViewPath(dn, Settings.lineWidths().getFile()));
     }
 
 

@@ -24,10 +24,10 @@ public class LineWidth extends AbstractSettings {
         }
     }
 
-    public int stdout() {
+    public int getStdout() {
         return stdout;
     }
-    public int file() {
+    public int getFile() {
         return file;
     }
 
