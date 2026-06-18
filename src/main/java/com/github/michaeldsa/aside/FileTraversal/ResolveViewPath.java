@@ -2,11 +2,10 @@ package com.github.michaeldsa.aside.FileTraversal;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
-import com.github.michaeldsa.aside.AsidePathElement.DiscardedNote;
-import com.github.michaeldsa.aside.AsidePathElement.Note;
-import com.github.michaeldsa.aside.AsidePathElement.RestrictedLists;
+import com.github.michaeldsa.aside.AsidePathElement.*;
 import com.github.michaeldsa.aside.PropertiesUtil.PropUtils;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
+import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 import com.github.michaeldsa.aside.Validation.ValidatePath;
 
 import java.io.IOException;
@@ -24,7 +23,6 @@ all qualifying directories and .txt files to the ViewPath
 counterpart.
  */
 public class ResolveViewPath extends Traverser{
-    // set the width of the ViewPath .txt file
 
     public ResolveViewPath() {
         this.startingPoint = new MetaPath().getPath(); // root metapath
@@ -61,13 +59,10 @@ public class ResolveViewPath extends Traverser{
         this.depth = depth;
         return this;
     }
-    public ResolveViewPath setWidth(int width) {
-        return this;
-    }
 
     public FileVisitResult _preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
         // Does dir have a valid category name?
-        if (ValidatePath.CATEGORY_NAME.test(dir)) {
+        if (ValidateAsidePath.CATEGORY_NAME.test(new MetaPath(dir))) {
 
             // ...if so, get its ViewPath counterpart
             Path vpath = new ViewPath(new MetaPath(dir)).getPath();
@@ -83,22 +78,32 @@ public class ResolveViewPath extends Traverser{
     public FileVisitResult _visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         // early dismissal:
         if (
-                file.getParent().equals(RootPaths.INSTANCE.getMetapath()) ||
+                file.getParent().equals(RootPaths.INSTANCE.getMetapath()) || // a file may only exist in a directory within asidePath root.
                 !Files.isRegularFile(file) ||
-                !ValidatePath.NOTE_NAME.test(file)
+                !Files.isHidden(file) // dot must precede filename.
         ) {
             return FileVisitResult.CONTINUE;
         }
 
-        // if the file parent is .DISCARDED:
         Path discarded = RestrictedLists.getDiscardedCategory().getMetaPath().getPath();
+        Path bibliography = RestrictedLists.getBibliographyCategory().getMetaPath().getPath();
 
         if (file.startsWith(discarded)) {
-            DiscardedNote de = new DiscardedNote(new MetaPath(file));
-            PropUtils.retrieveDiscardedNote(de);
-            PropUtils.writeDiscardedNote_ViewPath(de);
-        } else {
-            // if the file parent is not .DISCARDED
+            /* may either be a DiscardedNote or a DiscardedBibliography */
+            if (ValidateAsidePath.DISCARDED_NOTE_NAME.test(new MetaPath(file))) {
+                DiscardedNote de = new DiscardedNote(new MetaPath(file));
+                PropUtils.retrieveDiscardedNote(de);
+                PropUtils.writeDiscardedNote_ViewPath(de);
+            } else if (ValidateAsidePath.DISCARDED_BIBLIOGRAPHY_NAME.test(new MetaPath(file))) {
+                DiscardedBibliography db = new DiscardedBibliography(new MetaPath(file));
+                PropUtils.retrieveDiscardedBibliography(db);
+                PropUtils.writeDiscardedBibliography_ViewPath(db);
+            }
+        } else if (file.startsWith(bibliography)) {
+            Bibliography bb = new Bibliography(new MetaPath(file));
+            PropUtils.retrieveBibliography(bb);
+            PropUtils.writeBibliography_ViewPath(bb);
+        } else if (ValidateAsidePath.NOTE_NAME.test(new MetaPath(file))) {
             Note mn = new Note(new MetaPath(file));
             PropUtils.retrieveNote(mn);
             PropUtils.writeNote_ViewPath(mn);

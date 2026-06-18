@@ -33,18 +33,6 @@ public abstract class Traverser {
         return FileVisitResult.CONTINUE;
     }
 
-    // method chaining ideas
-//    default Traverser traverseFirst(Traverser traverser, AsidePathElement ape, Set<FileVisitOption> options, int depth) {
-//        traverser.traverse(ape, options, depth);
-//        return this;
-//    }
-//    default void travserseNext(Traverser traverser, AsidePathElement ape, Set<FileVisitOption> options, int depth) {
-//        traverser.traverse(ape, options, depth);
-//    }
-
-//    public void traverse() throws IOException {
-//        traverse(Collections.emptySet(), Integer.MAX_VALUE);
-//    }
     public void traverse() throws IOException {
 
         Files.walkFileTree(startingPoint, options, depth, new SimpleFileVisitor<>(){
