@@ -190,6 +190,14 @@ public class TestRunner {
 //            Test.areFileNamesUnique();
             // SUCCESS
 
+            // Test are files overwritten?
+//            Test.areFilesOverwritten();
+            // SUCCESS: files are overwritten
+            // also testing: PropertiesUtil.writeViewPath(), which now uses BufferedWriter. ViewPath of .260530_0957_44.txt should show unusual utf-8 characters.
+            // SUCCESS.
+
+
+
 
 
 

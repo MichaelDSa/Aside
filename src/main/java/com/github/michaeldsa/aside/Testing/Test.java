@@ -610,6 +610,26 @@ public class Test {
         System.out.println("db: " + db.getMetaPath().getPath().getFileName());
     }
 
+    public static void areFilesOverwritten() {
+        Note n = new Note(new MetaPath(Paths.get(".260530_0957_44.txt")));
+        n.setTitle("overwritten note \u2663\u2ad8\u2663")
+                        .setContent("testing if file names and date are overwritten \n \u2663\u2ad8\u2663\u2663\u2ad8\u2663\u2663\u2ad8\u2663");
+        PropUtils.writeNote(n);
+//        System.out.println("\\u220e: ∎");
+//        System.out.println("\\u001f: \u001f");
+//        System.out.println("\\u2591: \u2591"); // ░
+//        System.out.println("\\u2592: \u2592"); // ▒
+//        System.out.println("\\u2593: \u2593"); // ▓
+//        System.out.println("\\u2588: \u2588"); // █
+//        System.out.println("\\u2584: \u2584"); // ▄
+//        System.out.println("\\u2580: \u2580"); // ▀
+//        System.out.println("\\u25A0: \u25A0"); // ■
+//        System.out.println("\\u2AD8: \u2AD8"); // ⫘
+//        System.out.println("\\u25FC: \u25FC"); // ◼
+//        System.out.println("\\u2663: \u2663"); // ♣
+//        System.out.println("\\u2580: \u2580"); // ▀
+    }
+
 
 
 }

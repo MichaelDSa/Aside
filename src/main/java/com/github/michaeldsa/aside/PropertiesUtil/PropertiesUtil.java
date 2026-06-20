@@ -134,8 +134,8 @@ public abstract class PropertiesUtil {
     // write ViewPath file
     protected void writeViewPath(Path m_path, String formattedString) {
         Path v_path = new ViewPath(new MetaPath(m_path)).getPath();
-        try (OutputStream out = Files.newOutputStream(v_path)) {
-            out.write(formattedString.getBytes());
+        try (BufferedWriter out = Files.newBufferedWriter(v_path, StandardCharsets.UTF_8)) {
+            out.write(formattedString);
         } catch (IOException e) {
             System.err.println("PropertiesUtil.writeViewPath(): caught IOException. path: " + v_path);
         }
