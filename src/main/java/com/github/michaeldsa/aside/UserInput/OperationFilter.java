@@ -1,4 +1,4 @@
-package com.github.michaeldsa.aside;
+package com.github.michaeldsa.aside.UserInput;
 
 // return the operation - usually the first word of the user input
 public class OperationFilter implements InputFilter {

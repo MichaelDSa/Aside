@@ -1,4 +1,4 @@
-package com.github.michaeldsa.aside;
+package com.github.michaeldsa.aside.UserInput;
 
 // This input helper will have a constructor that takes the user console
 // input as a String. It will have a InputFilter instance variable, which

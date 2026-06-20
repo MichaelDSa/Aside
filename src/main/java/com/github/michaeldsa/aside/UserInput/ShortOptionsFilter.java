@@ -1,4 +1,4 @@
-package com.github.michaeldsa.aside;
+package com.github.michaeldsa.aside.UserInput;
 
 // return the short options of the command. The user can scatter short
 // options anyhere in the command, and ShortOptionFilter will collect them all.

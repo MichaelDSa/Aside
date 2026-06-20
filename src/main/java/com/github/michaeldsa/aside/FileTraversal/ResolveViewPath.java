@@ -6,7 +6,6 @@ import com.github.michaeldsa.aside.AsidePathElement.*;
 import com.github.michaeldsa.aside.PropertiesUtil.PropUtils;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
 import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
-import com.github.michaeldsa.aside.Validation.ValidatePath;
 
 import java.io.IOException;
 import java.nio.file.FileVisitOption;

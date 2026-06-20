@@ -1,4 +1,4 @@
-package com.github.michaeldsa.aside;
+package com.github.michaeldsa.aside.UserInput;
 
 public class LongOptionsFilter implements InputFilter{
     public String filter(String input) {

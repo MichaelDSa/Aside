@@ -1,4 +1,4 @@
-package com.github.michaeldsa.aside;
+package com.github.michaeldsa.aside.UserInput;
 
 // Factory for InputFilter objects
 public class InputFilters {

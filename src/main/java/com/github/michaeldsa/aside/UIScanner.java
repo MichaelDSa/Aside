@@ -1,5 +1,7 @@
 package com.github.michaeldsa.aside;
 
+import com.github.michaeldsa.aside.UserInput.Input;
+
 import java.util.Scanner;
 
 public class UIScanner {
