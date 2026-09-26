@@ -35,15 +35,20 @@ public enum ValidatePath implements Predicate<Path> {
             path = path.subpath(rp.getViewpath().getNameCount() - 1, p.getNameCount());
         }
 
-        // test all elements except last
-        for (int i = 0; i < path.getNameCount() - 1; i++) {
-            s = path.getName(i).toString();
-            pass = ValidateString.CATEGORY_NAME.test(s);
-            if (!pass) {
-                break;
+        // if only one element, pass for now.
+        if (path.getNameCount() == 1){
+            pass = true;
+        } else {
+            // if 1 or more elements, test all elements except last
+            for (int i = 0; i < path.getNameCount() - 1; i++) {
+                s = path.getName(i).toString();
+                pass = ValidateString.CATEGORY_NAME.test(s);
+                if (!pass) {
+                    break;
+                }
             }
         }
-        // now test last element
+        // now test last (or only) element
         if (pass) {
             boolean ends_with_note_name = ValidateString.NOTE_NAME.test(path.getFileName().toString());
             boolean ends_with_category_name = ValidateString.CATEGORY_NAME.test(path.getFileName().toString());

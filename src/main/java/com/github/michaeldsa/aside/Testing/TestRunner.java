@@ -4,6 +4,7 @@ import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsidePathElement.Author;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
+import com.github.michaeldsa.aside.Validation.ValidateString;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -195,6 +196,27 @@ public class TestRunner {
             // SUCCESS: files are overwritten
             // also testing: PropertiesUtil.writeViewPath(), which now uses BufferedWriter. ViewPath of .260530_0957_44.txt should show unusual utf-8 characters.
             // SUCCESS.
+
+
+            // Test stringMatcher: can we filter category names?
+//            Test.stringMatcher("michael", "default");
+//            Test.stringMatcher("michael%", "default");
+//            Test.stringMatcher("michael");
+//            Test.stringMatcher("catego%#ry");
+//            Test.stringMatcher("mich.ael");
+//            Test.stringMatcher("mich(a)el");
+//            Test.stringMatcher("MIChael");
+//            Test.stringMatcher("MICh_ael");
+//            Test.stringMatcher("MICh-ael");
+
+            // Test category name after update:
+            String str = "category/260930_0102_12.txt";
+            System.out.println("test: "+str);
+            System.out.println("validate string as category: " + ValidateString.CATEGORY_NAME.test(str)); // true
+            System.out.println("validate all: " + Test.validatePath_CN(Paths.get(str)));
+            System.out.println("validate category path: " + Test.validatePath_C(Paths.get(str)));
+            System.out.println("validate note path: "+ Test.validatePath_N(Paths.get(str)));
+
 
 
 

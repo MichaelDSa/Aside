@@ -629,6 +629,16 @@ public class Test {
 //        System.out.println("\\u2663: \u2663"); // ♣
 //        System.out.println("\\u2580: \u2580"); // ▀
     }
+    public static void stringMatcher(String sample) {
+        String pattern = "\\w+";
+        if (sample.matches(pattern)) {
+            System.out.println(sample + " pattern matches!");
+        } else {
+            System.out.println(sample + " pattern does not match.");
+        }
+
+    }
+
 
 
 

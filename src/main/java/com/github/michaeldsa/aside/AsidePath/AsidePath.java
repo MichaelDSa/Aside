@@ -9,7 +9,7 @@ public abstract class AsidePath {
     protected Path path;
 
 
-    // abstract classes:
+    // abstract methods:
     public abstract boolean startsWithRoot();
 
     // getters/setters:

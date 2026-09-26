@@ -55,23 +55,6 @@ public enum ValidateString implements Predicate<String> {
                 all_characters_are_in_position &&
                 chars_between_underscores_and_ext_are_numerals;
     }),
-    CATEGORY_NAME (s -> {
-        /*
-        category names must:
-        - Must not have note format
-        - Must not have an extension. May not contain dots except first char.
-        - QUESTION: What if user uses non-standard character for directory name? What about non-english characters?
-         */
-        if(s.startsWith(".")){
-            s = s.substring(1);
-        }
-//        TEST
-//        System.out.println(s);
-//        System.out.println("no contains dot: " + !s.contains("."));
-//        System.out.println("is invalid as notename: " + !ValidateString.NOTE_NAME.test(s));
-//        System.out.println("return value: " + (!s.contains(".") && !ValidateString.NOTE_NAME.test(s)) );
-        return !s.contains(".") && !ValidateString.NOTE_NAME.test(s);
-    }),
     TAG_NAME (s -> {
         /*
         tag names:
@@ -133,6 +116,28 @@ public enum ValidateString implements Predicate<String> {
             return false;
         }
         return ValidateString.BIBLIOGRAPHY_NAME.test(filename);
+    }),
+    CATEGORY_NAME (s -> {
+        /*
+        category names must:
+        - Must not have note format
+        - Must not have an extension. May not contain dots except first char.
+        - QUESTION: What if user uses non-standard character for directory name? What about non-english characters?
+         */
+        if(s.startsWith(".")){
+            s = s.substring(1);
+        }
+        // must not contain '.'
+        boolean is_word_without_dots = s.matches("\\w+"); // same as: [a-zA-Z0-9_]
+        boolean not_Note_name = !ValidateString.NOTE_NAME.test(s);
+        boolean not_Bibliography_name = !ValidateString.BIBLIOGRAPHY_NAME.test(s);
+        boolean not_DiscardedNote_name = !ValidateString.DISCARDED_NOTE_NAME.test(s);
+        boolean not_DiscardedBibliography_name = !ValidateString.DISCARDED_BIBLIOGRAPHY_NAME.test(s);
+        return is_word_without_dots
+                && not_Note_name
+                && not_Bibliography_name
+                && not_DiscardedNote_name
+                && not_DiscardedBibliography_name;
     });
 
     // class boilerplate:
