@@ -99,9 +99,11 @@ public class ResolveViewPath extends Traverser{
                 PropUtils.writeDiscardedBibliography_ViewPath(db);
             }
         } else if (file.startsWith(bibliography)) {
-            Bibliography bb = new Bibliography(new MetaPath(file));
-            PropUtils.retrieveBibliography(bb);
-            PropUtils.writeBibliography_ViewPath(bb);
+            if (ValidateAsidePath.BIBLIOGRAPHY_NAME.test(new MetaPath(file))) {
+                Bibliography bb = new Bibliography(new MetaPath(file));
+                PropUtils.retrieveBibliography(bb);
+                PropUtils.writeBibliography_ViewPath(bb);
+            }
         } else if (ValidateAsidePath.NOTE_NAME.test(new MetaPath(file))) {
             Note mn = new Note(new MetaPath(file));
             PropUtils.retrieveNote(mn);

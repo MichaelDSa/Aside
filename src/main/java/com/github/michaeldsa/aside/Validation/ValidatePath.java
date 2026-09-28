@@ -1,14 +1,18 @@
 package com.github.michaeldsa.aside.Validation;
 
+import com.github.michaeldsa.aside.AsidePathElement.RestrictedLists;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
 
 import java.nio.file.Path;
 import java.util.function.Predicate;
 
-// test whether the client's submission is valid in
-// case they submit a file/dir name consisting of
-// multiple elements, like so:
-//   `new_category1/new_category2/new_category3/note_name`
+/*
+ test whether the client's (user's) submission is valid in case they
+ submit a file/dir name consisting of multiple elements, like so:
+   `new_category1/new_category2/new_category3/note_name`
+  NOTE: Users must not be allowed to submit path elements that start
+        with '.'. This must be fixed.
+ */
 public enum ValidatePath implements Predicate<Path> {
     ALL_ELEMENTS(p -> {
         /*
@@ -66,17 +70,42 @@ public enum ValidatePath implements Predicate<Path> {
     }),
     CATEGORY_NAME(p -> {
         /*
-        first test with CLIENT_PATH_NAME_SUBMISSION
+        first test with ALL_ELEMENTS
         then, test last element with CATEGORY_NAME
          */
         if (ALL_ELEMENTS.test(p)) {
-            return ValidateString.CATEGORY_NAME.test(p.getFileName().toString());
+            boolean contains_no_restricted_element = true;
+            for (Path e : p) {
+                if(RestrictedLists.getPermanentDirectories().contains(e.toString())) {
+                    contains_no_restricted_element = false;
+                    break;
+                }
+            }
+            if (!contains_no_restricted_element) {
+                /*
+                If p contains DEFAULT:
+                1) DEFAULT must be the first element
+                2) There may only be two elements, the second being a NOTE_NAME
+                 */
+                // check if first element is DEFAULT
+                if (RestrictedLists.getMetaPathDefaultDirectoryName().equals(p.getName(0).toString())
+                    || RestrictedLists.getViewPathDefaultDirectoryName().equals(p.getName(0).toString())) {
+
+                    // check if 1) length is 2. 2) 2nd element is a NOTE_NAME.
+                    if (p.getNameCount() == 2 && ValidateString.NOTE_NAME.test(p.getName(1).toString())) {
+                        contains_no_restricted_element = true;
+                    }
+                }
+            }
+            System.out.println("contains_no_restricted_element: " + contains_no_restricted_element);
+            System.out.println("ValidateString.CATEGORY_NAME.test: " + ValidateString.CATEGORY_NAME.test(p.getFileName().toString()));
+            return contains_no_restricted_element && ValidateString.CATEGORY_NAME.test(p.getFileName().toString());
         }
         return false;
     }),
     NOTE_NAME(p -> {
         /*
-        first test with CLIENT_PATH_NAME_SUBMISSION
+        first test with ALL_ELEMENTS
         then, test last element with NOTE_NAME
          */
         if (ALL_ELEMENTS.test(p)) {

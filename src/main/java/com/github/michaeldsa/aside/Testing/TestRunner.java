@@ -210,12 +210,20 @@ public class TestRunner {
 //            Test.stringMatcher("MICh-ael");
 
             // Test category name after update:
-            String str = "category/260930_0102_12.txt";
-            System.out.println("test: "+str);
-            System.out.println("validate string as category: " + ValidateString.CATEGORY_NAME.test(str)); // true
-            System.out.println("validate all: " + Test.validatePath_CN(Paths.get(str)));
-            System.out.println("validate category path: " + Test.validatePath_C(Paths.get(str)));
-            System.out.println("validate note path: "+ Test.validatePath_N(Paths.get(str)));
+//            String str = "category/260930_0102_12.txt";
+//            System.out.println("test: "+str);
+//            System.out.println("validate string as category: " + ValidateString.CATEGORY_NAME.test(str));
+//            System.out.println("validate all: " + Test.validatePath_CN(Paths.get(str)));
+//            System.out.println("validate category path: " + Test.validatePath_C(Paths.get(str)));
+//            System.out.println("validate note path: "+ Test.validatePath_N(Paths.get(str)));
+
+            // Test ValidatePath.CATEGORY_NAME with paths that contain restricted directories:
+//            Path testPath = Paths.get("DEFAULT");
+//            System.out.println("test ValidatePath.CATEGORY_NAME with paths that contain restricted directories:");
+//            System.out.println("path: 'DEFAULT': " + Test.validatePath_C(Paths.get("DEFAULT")));
+//            System.out.println("path: 'DEFAULT/260930_0102_12.txt': " + Test.validatePath_C(Paths.get("DEFAULT/260930_0102_12.txt")));
+//            System.out.println("path: 'category1/category2: " + Test.validatePath_C(Paths.get("category1/category2")));
+//            System.out.println("path: 'category1/.category2: " + Test.validatePath_C(Paths.get("category1/.category2"))); // concern.
 
 
 
