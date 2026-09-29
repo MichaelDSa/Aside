@@ -16,6 +16,6 @@ public class DiscardedBibliographyWriter extends DiscardedBibliographyProperties
 
     public void writeToViewPath(DiscardedBibliography db) {
         setProperties(db);
-        writeViewPath(db.getMetaPath().getPath(), Pretty.formatDiscardedBibliography4ViewPath(db, Settings.lineWidths().getFile()));
+        writeViewPath(db.getMetaPath().getPath(), Pretty.formatDiscardedBibliography4ViewPath(db, Settings.lineWidths().getFileLW()));
     }
 }

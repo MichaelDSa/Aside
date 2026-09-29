@@ -180,11 +180,11 @@ public enum Initializer {
         return valid;
     }
 
-    private void configurePropertiesWithUser() {
-        configurePropertiesWithUser(null);
+    private void configureAsidePathRootWithUser() {
+        configureAsidePathRootWithUser(null);
     }
 
-    private void configurePropertiesWithUser(String message) {
+    private void configureAsidePathRootWithUser(String message) {
 
         // interact with user to get configura
         InitDialogue uiconfig = new InitDialogue();
@@ -254,7 +254,7 @@ public enum Initializer {
 
         // first set the properties:
         if(Files.notExists(configPath_full) || !validateFileSize(configPath_full) || properties.getProperty(key_aside_root).isEmpty()){
-            configurePropertiesWithUser(message);
+            configureAsidePathRootWithUser(message);
         }
         configure_metapath_root();
         configure_viewpath_root();

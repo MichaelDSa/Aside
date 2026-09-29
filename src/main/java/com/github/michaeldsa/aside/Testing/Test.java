@@ -393,16 +393,16 @@ public class Test {
 
     public static void settings_LineWidth() {
         System.out.print("\nDefault Settings.getLineWidth().stdout(): ");
-        System.out.println(Settings.lineWidths().getStdout());
+        System.out.println(Settings.lineWidths().getStdoutLW());
         System.out.print("Default Settings.getLineWidth().file(): ");
-        System.out.println(Settings.lineWidths().getFile());
+        System.out.println(Settings.lineWidths().getFileLW());
         System.out.println("Does the settings File exists? " + Settings.lineWidths().settingsFileExists());
         System.out.println("\nChanging settings...");
-        Settings.lineWidths().setStdout(80);
-        System.out.println("new Settings.getLineWidth().stdout(): " + Settings.lineWidths().getStdout());
+        Settings.lineWidths().setStdoutLW(80);
+        System.out.println("new Settings.getLineWidth().stdout(): " + Settings.lineWidths().getStdoutLW());
         System.out.println("Settings file exists: " + Settings.lineWidths().settingsFileExists());
-        Settings.lineWidths().setFile(80);
-        System.out.println("new Settings.getLineWidth().file(): " + Settings.lineWidths().getFile());
+        Settings.lineWidths().setFileLW(80);
+        System.out.println("new Settings.getLineWidth().file(): " + Settings.lineWidths().getFileLW());
         System.out.println("Settings file exists: " + Settings.lineWidths().settingsFileExists());
     }
 
@@ -441,7 +441,7 @@ public class Test {
         /* updated: PropUtils now uses NotePropsRetriever;
         NotePropsRetriever has been renamed to NoteRetriever. */
         PropUtils.retrieveNote(n);
-        System.out.println(Pretty.formatNote4ViewPath(n, Settings.lineWidths().getFile()));
+        System.out.println(Pretty.formatNote4ViewPath(n, Settings.lineWidths().getFileLW()));
         System.out.println(n);
     }
 
@@ -522,13 +522,13 @@ public class Test {
                 .addYearPublished(1944, 1950, 1977, 1984, 2000)
                 .addIsbn("978-0-7334-2609-4", "9780151660346", "9780198829195", "9783886191055")
                 .addUrl("George-Orwell.com");
-        System.out.println(Pretty.formatBibliography4ViewPath(bib, Settings.lineWidths().getFile()));
+        System.out.println(Pretty.formatBibliography4ViewPath(bib, Settings.lineWidths().getFileLW()));
     }
 
     public static void bibliography_PropUtils_readBibliography() {
         Bibliography bib = new Bibliography(new MetaPath(Paths.get(".BIBLIOGRAPHY", ".b260530_1727_25.txt")));
         PropUtils.retrieveBibliography(bib);
-        System.out.println(Pretty.formatBibliography4ViewPath(bib, Settings.lineWidths().getFile()));
+        System.out.println(Pretty.formatBibliography4ViewPath(bib, Settings.lineWidths().getFileLW()));
     }
 
     public static void discardedBibliography_PropUtils_writeDiscardedBibliograhy() {
@@ -568,8 +568,8 @@ public class Test {
                 .addBibliographies(".b260526_1830_39.txt");
         DiscardedNote dn = new DiscardedNote(n1);
         Note n2 = dn.restore();
-        System.out.println(Pretty.formatNote4ViewPath(n1, Settings.lineWidths().getStdout()));
-        System.out.println(Pretty.formatNote4ViewPath(n2, Settings.lineWidths().getStdout()));
+        System.out.println(Pretty.formatNote4ViewPath(n1, Settings.lineWidths().getStdoutLW()));
+        System.out.println(Pretty.formatNote4ViewPath(n2, Settings.lineWidths().getStdoutLW()));
 
         System.out.println("n1 == n2 = " + n1.equals(n2));
 
@@ -587,8 +587,8 @@ public class Test {
                 .addUrl("George-Orwell.com");
         DiscardedBibliography db = new DiscardedBibliography(b1);
         Bibliography b2 = db.restore();
-        System.out.println(Pretty.formatBibliography4ViewPath(b1, Settings.lineWidths().getStdout()));
-        System.out.println(Pretty.formatBibliography4ViewPath(b2, Settings.lineWidths().getStdout()));
+        System.out.println(Pretty.formatBibliography4ViewPath(b1, Settings.lineWidths().getStdoutLW()));
+        System.out.println(Pretty.formatBibliography4ViewPath(b2, Settings.lineWidths().getStdoutLW()));
         System.out.println("b1 == b2 = " + b1.equals(b2));
 
     }

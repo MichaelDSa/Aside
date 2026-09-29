@@ -24,19 +24,19 @@ public class LineWidth extends AbstractSettings {
         }
     }
 
-    public int getStdout() {
+    public int getStdoutLW() {
         return stdout;
     }
-    public int getFile() {
+    public int getFileLW() {
         return file;
     }
 
-    public void setFile(int width) {
+    public void setFileLW(int width) {
         file = width;
         properties.setProperty(key_file, String.valueOf(file));
         super.writeFile();
     }
-    public void setStdout(int width) {
+    public void setStdoutLW(int width) {
         stdout = width;
         properties.setProperty(key_stdout, String.valueOf(width));
         super.writeFile();
