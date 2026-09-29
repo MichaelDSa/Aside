@@ -23,7 +23,7 @@ public class Bibliography extends AbstractBibliography {
         /* mp must start with BIBLIOGRAPHY category and must end
         with either a bibliography filename or no filename. */
         if (AbstractBibliography.constructorArgIsInvalid(mp)) {
-            System.err.println("InvalidArgumentException");
+            System.err.println("InvalidArgumentException. Path must start with '.BIBLIOGRAPHY' and end with Bibliography file name.");
             throw new IllegalArgumentException("Invalid Path argument: " + mp);
         }
 
@@ -53,7 +53,7 @@ public class Bibliography extends AbstractBibliography {
         /* vp must start with BIBLIOGRAPHY category and must end
         with either a bibliography filename or no filename. */
         if (AbstractBibliography.constructorArgIsInvalid(vp)) {
-            System.err.println("InvalidArgumentException");
+            System.err.println("InvalidArgumentException. Path must start with 'BIBLIOGRAPHY' and end with Bibliography file name.");
             throw new IllegalArgumentException("Invalid Path argument: " + vp);
         }
 
@@ -76,7 +76,7 @@ public class Bibliography extends AbstractBibliography {
     public Bibliography(BibliographyCategory bc) {
         /* unlikely, but arg can fail if cast to BibliographyCategory */
         if (AbstractBibliography.constructorArgIsInvalid(bc.getMetaPath()) || AsidePathElement.endsWithFileName(bc.getMetaPath())) {
-            System.err.println("InvalidArgumentException");
+            System.err.println("InvalidArgumentException. Path must start with '[.]BIBLIOGRAPHY' and end with Bibliography file name.");
             throw new IllegalArgumentException("Invalid Path argument: " + bc.getMetaPath());
         }
 
@@ -96,7 +96,7 @@ public class Bibliography extends AbstractBibliography {
     public Bibliography(Bibliography bb) {
         /* unlikely, but arg can fail if cast to Bibliography */
         if (AbstractBibliography.constructorArgIsInvalid(bb.getMetaPath())) {
-            System.err.println("InvalidArgumentException");
+            System.err.println("InvalidArgumentException. Path must start with '[.]BIBLIOGRAPHY' and end with Bibliography file name.");
             throw new IllegalArgumentException("Invalid Path argument: " + bb.getMetaPath());
         }
 

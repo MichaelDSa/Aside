@@ -13,8 +13,8 @@ public class Note extends AbstractNote{
     public Note(MetaPath mp) {
         // if filename belongs to BIBLIOGRAPHY or DISCARDED:
         if (constructorArgIsInvalid(mp)) {
-            System.err.println("IllegalArgumentException: " + mp);
-            throw new IllegalArgumentException("Invalid Path argument (This is either a DiscardedElement or a Bibliography filename): " + mp);
+            System.err.println("IllegalArgumentException. Path must end with a Note file name");
+            throw new IllegalArgumentException("Invalid Path argument:  " + mp);
         }
 
         // AsidePathElement fields:
@@ -38,8 +38,8 @@ public class Note extends AbstractNote{
     public Note(ViewPath vp) {
         // if filename belongs to BIBLIOGRAPHY or DISCARDED:
         if (constructorArgIsInvalid(vp)) {
-            System.err.println("IllegalArgumentException: " + vp);
-            throw new IllegalArgumentException("Invalid Path argument (This is either a DiscardedElement or a Bibliography filename):  " + vp);
+            System.err.println("IllegalArgumentException. Path must end with a Note file name.");
+            throw new IllegalArgumentException("Invalid Path argument:  " + vp);
         }
 
         // AsidePathElement fields:
@@ -63,8 +63,8 @@ public class Note extends AbstractNote{
     public Note(Category c){
         /* unlikely, but can fail if cast to Category */
         if (constructorArgIsInvalid(c.getMetaPath())) {
-            System.err.println("IllegalArgumentException: " + c.getMetaPath());
-            throw new IllegalArgumentException("Invalid Path argument (This is either a DiscardedElement or a Bibliography filename):  " + c.getMetaPath());
+            System.err.println("IllegalArgumentException. Path must end with a Note file name");
+            throw new IllegalArgumentException("Invalid Path argument:  " + c.getMetaPath());
         }
 
         // AsidePathElement fields:
@@ -88,8 +88,8 @@ public class Note extends AbstractNote{
     public Note(Note mn){
         /* unlikely, but can fail if cast to Note */
         if (constructorArgIsInvalid(mn.getMetaPath())) {
-            System.err.println("IllegalArgumentException: " + mn.getMetaPath());
-            throw new IllegalArgumentException("Invalid Path argument " + mn.getMetaPath());
+            System.err.println("IllegalArgumentException. Path must end with a Note file name");
+            throw new IllegalArgumentException("Invalid Path argument:  " + mn.getMetaPath());
         }
 
         // AsidepathElement fields:
