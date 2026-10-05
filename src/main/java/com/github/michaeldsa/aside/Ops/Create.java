@@ -72,7 +72,6 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
 
         // if The category does not exist, abort.
         if (!Files.exists(m_note.getParent())) {
-//            String cat_name = m_note.getParent().getFileName().toString();
             String cat_name = new ViewPath(ape.getMetaPath()).getPath().getParent().getFileName().toString();
             System.out.println("Category does not exist: " + cat_name);
             return ape;
@@ -81,6 +80,40 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
         // write note to MetaPath and ViewPath
         PropUtils.writeNote( (AbstractNote) ape );
 
+        return ape;
+    }),
+    DISCARDED_NOTE(ape -> {
+        if (!(ape instanceof DiscardedNote)) {
+            System.err.println("Create.DISCARDED_NOTE: Parameter must be a DiscardedNote instance");
+            return ape;
+        }
+
+        if (Files.exists(ape.getMetaPath().getPath())) {
+            System.err.println("Create.DISCARDED_NOTE: file already exists!");
+            return ape;
+        }
+        PropUtils.writeDiscardedNote( (DiscardedNote) ape );
+        return ape;
+    }),
+    DISCARDED_BIBLIOGRAPHY(ape -> {
+        if (!(ape instanceof DiscardedBibliography)) {
+            System.err.println("Create.DISCARDED_BIBLIOGRAPHY: Parameter must be a DiscardedBibliography instance");
+            return ape;
+        }
+
+        if (Files.exists(ape.getMetaPath().getPath())) {
+            System.err.println("Create.DISCARDED_BIBLIOGRAHY: file already exists!");
+            return ape;
+        }
+        PropUtils.writeDiscardedBibliography( (DiscardedBibliography) ape );
+        return ape;
+    }),
+    BIBLIOGRAPHY_CATEGORY(ape -> {
+
+        return ape;
+    }),
+    BIBLIOGRAPHY(ape -> {
+        PropUtils.writeBibliography( (Bibliography) ape );
         return ape;
     });
 
