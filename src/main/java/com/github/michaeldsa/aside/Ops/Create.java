@@ -13,9 +13,9 @@ import java.nio.file.Path;
 public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
 
     CATEGORY(ape-> {
-        // prerequisite: no DiscardedElement objects
-        if (ape instanceof DiscardedNote) {
-            System.err.println("Create.CATEGORY: Cannot operate on DiscardedElement objects.");
+        // prerequisite: parameter must be Category or AbstractNote implementation.
+        if (!(ape instanceof Category || ape instanceof AbstractNote)) {
+            System.err.println("Create.CATEGORY: Parameter must be Category or AbstractNote implementation");
             return ape;
         }
         // get the Path from ape.getMetaPath
