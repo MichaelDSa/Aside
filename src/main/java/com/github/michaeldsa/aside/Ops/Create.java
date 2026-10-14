@@ -18,18 +18,20 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
             System.err.println("Create.CATEGORY: Parameter must be Category or AbstractNote implementation");
             return ape;
         }
-        // get the Path from ape.getMetaPath
+        // get the Paths
         Path m_newCategory = ape instanceof AbstractNote
                 ? ape.getParentCategory().getMetaPath().getPath()
                 : ape.getMetaPath().getPath();
+        Path v_newCategory = new ViewPath(new MetaPath(m_newCategory)).getPath();
 
-        // early dismissal:
-        Path mpr = RootPaths.INSTANCE.getMetapath();
-        if (m_newCategory.equals(mpr)
-                || !m_newCategory.startsWith(mpr)
-                || Files.exists(m_newCategory)) {
-            return ape;
-        }
+        // test Path to make sure it isn't Metapath_root. It should not be.
+        // This block is redundant. please test.
+//        Path mpr = RootPaths.INSTANCE.getMetapath();
+//        if (m_newCategory.equals(mpr)
+//                || !m_newCategory.startsWith(mpr)
+//                || Files.exists(m_newCategory)) {
+//            return ape;
+//        }
 
         // create permenant categories (.default, .trash, etc) if not exists.
         Create.createPermanentCategories();
@@ -42,7 +44,6 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
         // so we don't have to modify paths at this level.
         
         // create category
-        Path v_newCategory = new ViewPath(new MetaPath(m_newCategory)).getPath();
         try {
             Files.createDirectories(m_newCategory); // MetaPath
             Files.createDirectories(v_newCategory); // ViewPath
@@ -52,10 +53,9 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
         return ape;
     }),
     NOTE(ape -> {
-        // get path of note:
+
         Path m_note = ape.getMetaPath().getPath();
 
-        // early dismissal:
         if ( !(ape instanceof AbstractNote) ) {
             System.err.println("Create.NOTE: Parameter must be AbstractNote implementation");
             return ape;
@@ -66,7 +66,6 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
             return ape;
         }
 
-        // ensure permanent categories exist:
         // consider placing this in the UI instead of here.
         Create.createPermanentCategories();
 
@@ -77,7 +76,6 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
             return ape;
         }
 
-        // write note to MetaPath and ViewPath
         PropUtils.writeNote( (AbstractNote) ape );
 
         return ape;
@@ -87,6 +85,8 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
             System.err.println("Create.DISCARDED_NOTE: Parameter must be a DiscardedNote instance");
             return ape;
         }
+
+        Create.createPermanentCategories();
 
         if (Files.exists(ape.getMetaPath().getPath())) {
             System.err.println("Create.DISCARDED_NOTE: file already exists!");
@@ -101,6 +101,8 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
             return ape;
         }
 
+        Create.createPermanentCategories();
+
         if (Files.exists(ape.getMetaPath().getPath())) {
             System.err.println("Create.DISCARDED_BIBLIOGRAHY: file already exists!");
             return ape;
@@ -109,11 +111,46 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
         return ape;
     }),
     BIBLIOGRAPHY_CATEGORY(ape -> {
+        Path m_bibCat = ape.getMetaPath().getPath();
+        Path v_bibCat = ape.getViewPath().getPath();
+
+        if (!(ape instanceof BibliographyCategory)) {
+            System.err.println("Create.BIBLIOGRAPHY_CATEGORY: Parameter must be a BibliographyCategory instance");
+            return ape;
+        }
+
+        Create.createPermanentCategories();
+
+        if (Files.exists(m_bibCat)) {
+            System.err.println("Create.BIBLIOGRAPHY_CATEGORY: File already exists!");
+            return ape;
+        }
+
+        try {
+            Files.createDirectories(m_bibCat);
+            Files.createDirectories(v_bibCat);
+        } catch (IOException e) {
+            System.err.println("Create.BIBLIOGRAPHY_CATEGORY failed \n" + e.getMessage());
+        }
+
 
         return ape;
     }),
     BIBLIOGRAPHY(ape -> {
+        if (!(ape instanceof Bibliography)) {
+            System.err.println("Create.BIBLIOGRAPHY: Parameter must be a Biblography instance");
+            return ape;
+        }
+
+        Create.createPermanentCategories();
+
+        if (Files.exists(ape.getMetaPath().getPath())) {
+            System.err.println("Create.BIBLIOGRAPHY: file already exists!");
+            return ape;
+        }
+
         PropUtils.writeBibliography( (Bibliography) ape );
+
         return ape;
     });
 

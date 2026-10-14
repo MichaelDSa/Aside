@@ -74,14 +74,14 @@ public enum ValidatePath implements Predicate<Path> {
         then, test last element with CATEGORY_NAME
          */
         if (ALL_ELEMENTS.test(p)) {
-            boolean contains_no_restricted_element = true;
+            boolean contains_restricted_element = false;
             for (Path e : p) {
                 if(RestrictedLists.getPermanentDirectories().contains(e.toString())) {
-                    contains_no_restricted_element = false;
+                    contains_restricted_element = true;
                     break;
                 }
             }
-            if (!contains_no_restricted_element) {
+            if (contains_restricted_element) {
                 /*
                 If p contains DEFAULT:
                 1) DEFAULT must be the first element
@@ -93,13 +93,12 @@ public enum ValidatePath implements Predicate<Path> {
 
                     // check if 1) length is 2. 2) 2nd element is a NOTE_NAME.
                     if (p.getNameCount() == 2 && ValidateString.NOTE_NAME.test(p.getName(1).toString())) {
-                        contains_no_restricted_element = true;
+                        contains_restricted_element = false;
                     }
                 }
             }
-            System.out.println("contains_no_restricted_element: " + contains_no_restricted_element);
-            System.out.println("ValidateString.CATEGORY_NAME.test: " + ValidateString.CATEGORY_NAME.test(p.getFileName().toString()));
-            return contains_no_restricted_element && ValidateString.CATEGORY_NAME.test(p.getFileName().toString());
+
+            return !contains_restricted_element && ValidateString.CATEGORY_NAME.test(p.getFileName().toString());
         }
         return false;
     }),
