@@ -2,9 +2,8 @@ package com.github.michaeldsa.aside.Testing;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
-import com.github.michaeldsa.aside.AsidePathElement.Author;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
-import com.github.michaeldsa.aside.Validation.ValidateString;
+import com.github.michaeldsa.aside.Validation.ValidatePath;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,6 +14,7 @@ public class TestRunner {
             // run test methods here
 
             MetaPath mpRoot = new MetaPath(RootPaths.INSTANCE.getMetapath());
+            ViewPath vpRoot = new ViewPath(RootPaths.INSTANCE.getViewpath());
 
             // testing for Validattion.ValidatePath
             boolean is_cat_or_note = false;
@@ -25,8 +25,8 @@ public class TestRunner {
             Path category = new MetaPath(Paths.get(category_name)).getPath();
             Path note = new ViewPath(Paths.get(note_name)).getPath();
 
-            is_cat_or_note = Test.validatePath_CN(category);
-            is_cat = Test.validatePath_CN(category);
+            is_cat_or_note = Test.validatePath_ALL(category);
+            is_cat = Test.validatePath_ALL(category);
             is_note = Test.validatePath_N(note);
 
             System.out.println("\nPath " + category_name + " has a valid category or note name: " + is_cat_or_note);
@@ -224,6 +224,38 @@ public class TestRunner {
 //            System.out.println("path: 'DEFAULT/260930_0102_12.txt': " + Test.validatePath_C(Paths.get("DEFAULT/260930_0102_12.txt")));
 //            System.out.println("path: 'category1/category2: " + Test.validatePath_C(Paths.get("category1/category2")));
 //            System.out.println("path: 'category1/.category2: " + Test.validatePath_C(Paths.get("category1/.category2"))); // concern.
+
+            // Test ValidatePath.ALL_ELEMENTS:
+//            Path path = mpRoot.getPath().resolve(Paths.get(".Frank_Herbert", ".Dune", ".Chapter1"));
+//            System.out.println("test path that starts with MPR: " + path + "  :  " + ValidatePath.ALL_ELEMENTS.test(path));
+//
+//            path = vpRoot.getPath().resolve(Paths.get("Frank_Herbert", "Dune", "chapter1"));
+//            System.out.println("Test path that starts with VPR: " + path + "  :  " + ValidatePath.ALL_ELEMENTS.test(path));
+//
+//            path = Paths.get("Frank_Herbert", "Dune", "chapter1");
+//            System.out.println("Test path that does not start with MPR or VPR: " + path + "  :  " + ValidatePath.ALL_ELEMENTS.test(path));
+//            path = Paths.get("Frank_Herbert", ".Dune", "chapter1");
+//            System.out.println("Test path that does not start with MPR or VPR: " + path + "  :  " + ValidatePath.ALL_ELEMENTS.test(path));
+//            path = Paths.get("Frank_Herbert", "Du.ne", "chapter1");
+//            System.out.println("Test path that does not start with MPR or VPR: " + path + "  :  " + ValidatePath.ALL_ELEMENTS.test(path));
+//
+//            path = vpRoot.getPath().resolve(Paths.get("Frank_Herbert", "Dune", "chapter1", "261015_1242_01.txt"));
+//            System.out.println("Test path that starts with VPR: " + path + "  :  " + ValidatePath.ALL_ELEMENTS.test(path));
+//            path = vpRoot.getPath().resolve(Paths.get("Frank_Herbert", "Dune", "chapter1", "261015_1242_01.tpt"));
+//            System.out.println("Test path that starts with VPR: " + path + "  :  " + ValidatePath.ALL_ELEMENTS.test(path));
+//            path = vpRoot.getPath().resolve(Paths.get("Frank_Herbert", "Dune", "chapter1", "d261015_1242_01.txt"));
+//            System.out.println("Test path that starts with VPR: " + path + "  :  " + ValidatePath.ALL_ELEMENTS.test(path));
+//            path = vpRoot.getPath().resolve(Paths.get("Frank_Herbert", "Dune", "chapter1", "b261015_1242_01.txt"));
+//            System.out.println("Test path that starts with VPR: " + path + "  :  " + ValidatePath.ALL_ELEMENTS.test(path));
+//            path = vpRoot.getPath().resolve(Paths.get("Frank_Herbert", "Dune", "chapter1", "db261015_1242_01.txt"));
+//            System.out.println("Test path that starts with VPR: " + path + "  :  " + ValidatePath.ALL_ELEMENTS.test(path));
+//            path = vpRoot.getPath().resolve(Paths.get("Frank_Herbert", "Dune", "chapter1", "bd261015_1242_01.txt"));
+//            System.out.println("Test path that starts with VPR: " + path + "  :  " + ValidatePath.ALL_ELEMENTS.test(path));
+//            path = mpRoot.getPath().resolve(Paths.get("Frank_Herbert", "Dune", "chapter1", "d261015_1242_01.txt"));
+//            System.out.println("Test path that starts with VPR: " + path + "  :  " + ValidatePath.ALL_ELEMENTS.test(path));
+//            path = mpRoot.getPath().resolve(Paths.get(".Frank_Herbert", ".Dune", ".chapter1", ".d261015_1242_01.txt"));
+//            System.out.println("Test path that starts with VPR: " + path + "  :  " + ValidatePath.ALL_ELEMENTS.test(path));
+
 
 
 

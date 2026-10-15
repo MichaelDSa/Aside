@@ -100,7 +100,7 @@ public class Test {
         System.out.println("IllegalArgumentException not caught. " + msg);
     }
 
-    public static boolean validatePath_CN(Path path) {
+    public static boolean validatePath_ALL(Path path) {
         return ValidatePath.ALL_ELEMENTS.test(path);
     }
     public static boolean validatePath_C(Path path) {

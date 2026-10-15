@@ -21,7 +21,7 @@ public enum ValidatePath implements Predicate<Path> {
           end with a note name or a category name.
         - Path must consist of:
           1. ViewPath root or MetaPath root. However, the client may omit this.
-          2. category names
+          2. category names; not failing if name is member of RestrictedLists.permanentDirectories
           3. A Note name may be present as the final element.
          */
         RootPaths rp = RootPaths.INSTANCE;
@@ -34,9 +34,37 @@ public enum ValidatePath implements Predicate<Path> {
         // if path starts with MetaPath or ViewPath root, remove root from path:
         if (p.startsWith(mpr)){
             path = path.subpath(rp.getMetapath().getNameCount() - 1, p.getNameCount());
-        }
-        else if (p.startsWith(vpr)){
+
+            /* also test each element to make sure path conforms to
+             metapath naming. each element should begin with a dot. */
+            for (Path e : path) {
+                if (!e.toString().startsWith(".")) {
+                    return false;
+                }
+            }
+        } else if (p.startsWith(vpr)){
             path = path.subpath(rp.getViewpath().getNameCount() - 1, p.getNameCount());
+
+            // test for viewpath naming. no leading dots:
+            for (Path e : path) {
+                if (e.toString().startsWith(".")) {
+                    return false;
+                }
+            }
+        } else { // if submitted path does nto start with mpr or vpr, make sure leading char is consistent.
+            if (path.getName(0).toString().startsWith(".")) {
+                for (Path e : path) {
+                    if (!e.toString().startsWith(".")) {
+                        return false;
+                    }
+                }
+            } else {
+                for (Path e : path ) {
+                    if (e.toString().startsWith(".")) {
+                        return false;
+                    }
+                }
+            }
         }
 
         // if only one element, pass for now.
