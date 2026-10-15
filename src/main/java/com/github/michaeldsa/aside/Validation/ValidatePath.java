@@ -10,8 +10,9 @@ import java.util.function.Predicate;
  test whether the client's (user's) submission is valid in case they
  submit a file/dir name consisting of multiple elements, like so:
    `new_category1/new_category2/new_category3/note_name`
-  NOTE: Users must not be allowed to submit path elements that start
-        with '.'. This must be fixed.
+  NOTE: users may submit paths that conform to either MetaPath, or
+        ViewPath. It's up to the client whether they want to
+        enforce ViewPath naming on the user.
  */
 public enum ValidatePath implements Predicate<Path> {
     ALL_ELEMENTS(p -> {

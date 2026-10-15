@@ -639,6 +639,10 @@ public class Test {
 
     }
 
+    public static void create_category(AsidePathElement ape) {
+        Create.CATEGORY.execute(ape);
+    }
+
 
 
 

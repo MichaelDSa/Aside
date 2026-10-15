@@ -2,6 +2,7 @@ package com.github.michaeldsa.aside.Testing;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.AsidePathElement.Category;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
 import com.github.michaeldsa.aside.Validation.ValidatePath;
 
@@ -256,6 +257,10 @@ public class TestRunner {
 //            path = mpRoot.getPath().resolve(Paths.get(".Frank_Herbert", ".Dune", ".chapter1", ".d261015_1242_01.txt"));
 //            System.out.println("Test path that starts with VPR: " + path + "  :  " + ValidatePath.ALL_ELEMENTS.test(path));
 
+            // Test Create.CATEGORY.execute()
+            Category cat = new Category(new ViewPath(Paths.get("Dune")));
+            System.out.println(cat);
+            Test.create_category(cat);
 
 
 
