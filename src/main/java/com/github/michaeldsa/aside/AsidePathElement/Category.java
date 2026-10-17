@@ -30,10 +30,8 @@ public class Category extends AbstractCategory {
     public Category(ViewPath vp) {
         if (AsidePathElement.endsWithFileName(vp)) {
             viewPath = vp.getParent();
-            System.out.println("ends with filename");
         } else if (AsidePathElement.endsWithCategoryName(vp)) {
             viewPath = vp;
-            System.out.println("ValidateAsidePath.CATEGORY_NAME.test(viewPath) failed");
         } else {
             System.err.println("IllegalArgumentException");
             throw new IllegalArgumentException("Invalid Path Argument: " + vp);

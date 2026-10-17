@@ -3,11 +3,14 @@ package com.github.michaeldsa.aside.Testing;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsidePathElement.Category;
+import com.github.michaeldsa.aside.AsidePathElement.Note;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
 import com.github.michaeldsa.aside.Validation.ValidatePath;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.HashSet;
 
 public class TestRunner {
     public static class MutableNoteTests {
@@ -258,9 +261,19 @@ public class TestRunner {
 //            System.out.println("Test path that starts with VPR: " + path + "  :  " + ValidatePath.ALL_ELEMENTS.test(path));
 
             // Test Create.CATEGORY.execute()
-            Category cat = new Category(new ViewPath(Paths.get("Dune")));
-            System.out.println(cat);
-            Test.create_category(cat);
+            Category cat = new Category(new ViewPath(Paths.get("Benny$Hill", "Yakety_sax")));
+//            Test.create_category(cat);
+            Note nt = new Note(cat)
+                    .setContent("This is the user submitted content of the test note")
+                    .setTo(new HashSet<>(Arrays.asList("261015_1709_30")))
+                    .setTitle("This is the user sumitted title of the test note");
+            System.out.println(nt);
+            if (ValidatePath.CATEGORY_NAME.test(cat.getMetaPath().getPath())) {
+                Test.create_category(nt);
+            } else {
+                System.out.println("ValidatePath.CATEGORY_NAME failed: " + cat.getMetaPath().getPath());
+            }
+
 
 
 
