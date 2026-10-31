@@ -8,72 +8,12 @@ import java.nio.file.Path;
 import java.util.function.Predicate;
 
 public enum ValidateAsidePath implements Predicate<AsidePath> {
-    NOTE_NAME (ap -> {
-        Path mname = null, vname = null;
-        if(ap instanceof MetaPath mp) {
-            mname = mp.getPath();
-            vname = new ViewPath(mp).getPath();
-        } else if (ap instanceof ViewPath vp) {
-            mname = new MetaPath(vp).getPath();
-            vname = vp.getPath();
-        }
-        return ValidatePath.NOTE_NAME.test(mname) && ValidatePath.NOTE_NAME.test(vname);
-    }),
-    CATEGORY_NAME (ap -> {
-        Path mname = null, vname = null;
-        if(ap instanceof MetaPath mp) {
-            mname = mp.getPath();
-            vname = new ViewPath(mp).getPath();
-        } else if (ap instanceof ViewPath vp) {
-            mname = new MetaPath(vp).getPath();
-            vname = vp.getPath();
-        }
-        return ValidatePath.CATEGORY_NAME.test(mname) && ValidatePath.CATEGORY_NAME.test(vname);
-    }),
-    BIBLIOGRAPHY_NAME (ap -> {
-        Path mname = null, vname = null;
-        if (ap instanceof MetaPath mp) {
-            mname = mp.getPath();
-            vname = new ViewPath(mp).getPath();
-        } else if (ap instanceof ViewPath vp) {
-            mname = new MetaPath(vp).getPath();
-            vname = vp.getPath();
-        }
-        return ValidatePath.BIBLIOGRAPHY_NAME.test(mname) && ValidatePath.BIBLIOGRAPHY_NAME.test(vname);
-    }),
-    BIBLIOGRAPHY_CATEGORY_NAME (ap -> {
-        Path mname = null, vname = null;
-        if (ap instanceof MetaPath mp) {
-            mname = mp.getPath();
-            vname = new ViewPath(mp).getPath();
-        } else if (ap instanceof ViewPath vp) {
-            mname = new MetaPath(vp).getPath();
-            vname = vp.getPath();
-        }
-        return ValidatePath.BIBLIOGRAPHY_CATEGORY_NAME.test(mname) && ValidatePath.BIBLIOGRAPHY_CATEGORY_NAME.test(vname);
-    }),
-    DISCARDED_NOTE_NAME(ap -> {
-        Path mname = null, vname = null;
-        if (ap instanceof MetaPath mp) {
-            mname = mp.getPath();
-            vname = new ViewPath(mp).getPath();
-        } else if (ap instanceof ViewPath vp) {
-            mname = new MetaPath(vp).getPath();
-            vname = vp.getPath();
-        }
-        return ValidatePath.DISCARDED_NOTE_NAME.test(mname) && ValidatePath.DISCARDED_NOTE_NAME.test(vname);
-    }),
-    DISCARDED_BIBLIOGRAPHY_NAME(ap -> {
-        Path mname = null, vname = null;
-        if (ap instanceof MetaPath mp) {
-            mname = mp.getPath();
-            vname = new ViewPath(mp).getPath();
-        } else if (ap instanceof ViewPath vp) {
-            mname = new MetaPath(vp).getPath();
-            vname = vp.getPath();
-        }
-        return ValidatePath.DISCARDED_BIBLIOGRAPHY_NAME.test(mname) && ValidatePath.DISCARDED_BIBLIOGRAPHY_NAME.test(vname);
-    });
+    NOTE_NAME (ap -> ValidatePath.NOTE_NAME.test(asMetaPath(ap)) && ValidatePath.NOTE_NAME.test(asViewPath(ap))),
+    CATEGORY_NAME (ap -> ValidatePath.CATEGORY_NAME.test(asMetaPath(ap)) && ValidatePath.CATEGORY_NAME.test(asViewPath(ap))),
+    BIBLIOGRAPHY_NAME (ap -> ValidatePath.BIBLIOGRAPHY_NAME.test(asMetaPath(ap)) && ValidatePath.BIBLIOGRAPHY_NAME.test(asViewPath(ap))),
+    BIBLIOGRAPHY_CATEGORY_NAME (ap -> ValidatePath.BIBLIOGRAPHY_CATEGORY_NAME.test(asMetaPath(ap)) && ValidatePath.BIBLIOGRAPHY_CATEGORY_NAME.test(asViewPath(ap))),
+    DISCARDED_NOTE_NAME (ap -> ValidatePath.DISCARDED_NOTE_NAME.test(asMetaPath(ap)) && ValidatePath.DISCARDED_NOTE_NAME.test(asViewPath(ap))),
+    DISCARDED_BIBLIOGRAPHY_NAME (ap -> ValidatePath.DISCARDED_BIBLIOGRAPHY_NAME.test(asMetaPath(ap)) && ValidatePath.DISCARDED_BIBLIOGRAPHY_NAME.test(asViewPath(ap)));
 
     // class boilerplate:
     private final Predicate<AsidePath> predicate;
@@ -85,6 +25,17 @@ public enum ValidateAsidePath implements Predicate<AsidePath> {
     @Override
     public boolean test(AsidePath asidePath) {
         return predicate.test(asidePath);
+    }
+
+    private static Path asMetaPath(AsidePath ap) {
+        return ap instanceof MetaPath
+                ? ap.getPath()
+                : new MetaPath(new ViewPath(ap.getPath())).getPath();
+    }
+    private static Path asViewPath(AsidePath ap) {
+        return ap instanceof ViewPath
+                ? ap.getPath()
+                : new ViewPath(new MetaPath(ap.getPath())).getPath();
     }
 
 }
