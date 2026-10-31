@@ -27,7 +27,7 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
 
     // Validation: Must start with DISCARDED. Must end with DiscardedBibliography filename.
     private boolean invalidConstructorArg(AsidePath ap) {
-        return !ValidateAsidePath.DISCARDED_BIBLIOGRAPHY_NAME.test(ap) || !startsWithDiscardedCategory(ap);
+        return !ValidateAsidePath.DISCARDED_BIBLIOGRAPHY.test(ap) || !startsWithDiscardedCategory(ap);
     }
 
     // constructors:
@@ -80,7 +80,7 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
     public DiscardedBibliography(Bibliography bb) {
         /* test Metapath. Arg can fail if cast to Bibliography */
         MetaPath bibliographyCategory = new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName()));
-        if (!bb.getMetaPath().startsWith(bibliographyCategory) || !ValidateAsidePath.BIBLIOGRAPHY_NAME.test(bb.getMetaPath())) {
+        if (!bb.getMetaPath().startsWith(bibliographyCategory) || !ValidateAsidePath.BIBLIOGRAPHY.test(bb.getMetaPath())) {
             System.err.println("IllegalArgumentException.  Path must start with 'BIBLIOGRAPHY' Category and end with Bibliography filename.");
             throw new IllegalArgumentException("Invalid Path argument: " + bb.getMetaPath());
 
@@ -95,7 +95,7 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
         // AsidePathElement fields:
         metaPath = discardedCategory.getMetaPath().resolve(renameMetaPathFileName(bb.getMetaPath()));
         /* validate new path: */
-        if (!ValidateAsidePath.DISCARDED_BIBLIOGRAPHY_NAME.test(metaPath)) {
+        if (!ValidateAsidePath.DISCARDED_BIBLIOGRAPHY.test(metaPath)) {
             System.err.println("DiscardedBibliography: invalid path argument mutation: " + metaPath);
             throw new IllegalArgumentException("Invalid Path Argument mutation: " + metaPath);
         }
@@ -233,7 +233,7 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
     @Override
     public DiscardedBibliography setOriginalMetaPath(MetaPath original) {
         /* The original MetaPath must be of a valid Bibliography file. */
-        if (ValidateAsidePath.BIBLIOGRAPHY_NAME.test(original) && original.startsWith(RestrictedLists.getBibliographyCategory().getMetaPath())) {
+        if (ValidateAsidePath.BIBLIOGRAPHY.test(original) && original.startsWith(RestrictedLists.getBibliographyCategory().getMetaPath())) {
             this.originalMetaPath = original;
             this.originalViewPath = new ViewPath(originalMetaPath);
         }
@@ -243,7 +243,7 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
     @Override
     public DiscardedBibliography setOriginalViewPath(ViewPath original) {
         /* The original ViewPath must be of a valid Bibliography file. */
-        if (ValidateAsidePath.BIBLIOGRAPHY_NAME.test(original) && original.startsWith(RestrictedLists.getBibliographyCategory().getMetaPath())) {
+        if (ValidateAsidePath.BIBLIOGRAPHY.test(original) && original.startsWith(RestrictedLists.getBibliographyCategory().getMetaPath())) {
             this.originalViewPath = original;
             this.originalMetaPath = new MetaPath(originalViewPath);
         }

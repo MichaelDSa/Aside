@@ -4,9 +4,8 @@ import com.github.michaeldsa.aside.AsidePath.AsidePath;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
-import com.github.michaeldsa.aside.Testing.Test;
 import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
-import com.github.michaeldsa.aside.Validation.ValidateString;
+import com.github.michaeldsa.aside.Validation.ValidateName;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -54,13 +53,13 @@ public abstract class AsidePathElement {
 
     // static methods:
     protected static boolean endsWithFileName(AsidePath ap) {
-        return ValidateAsidePath.NOTE_NAME.test(ap)
-                || ValidateAsidePath.BIBLIOGRAPHY_NAME.test(ap)
-                || ValidateAsidePath.DISCARDED_NOTE_NAME.test(ap)
-                || ValidateAsidePath.DISCARDED_BIBLIOGRAPHY_NAME.test(ap)
+        return ValidateAsidePath.NOTE.test(ap)
+                || ValidateAsidePath.BIBLIOGRAPHY.test(ap)
+                || ValidateAsidePath.DISCARDED_NOTE.test(ap)
+                || ValidateAsidePath.DISCARDED_BIBLIOGRAPHY.test(ap)
                 || ap.getPath().getFileName().toString().endsWith(".txt");}
-    protected static boolean endsWithNoteName(AsidePath ap) {return ValidateString.NOTE_NAME.test(ap.getPath().getFileName().toString());}
-    protected static boolean endsWithCategoryName(AsidePath ap) {return ValidateAsidePath.CATEGORY_NAME.test(ap);}
+    protected static boolean endsWithNoteName(AsidePath ap) {return ValidateName.NOTE.test(ap.getPath().getFileName().toString());}
+    protected static boolean endsWithCategoryName(AsidePath ap) {return ValidateAsidePath.CATEGORY.test(ap);}
 
     protected static MetaPath filterMetaPathElements(MetaPath mp) {
         /* For use with Category or Note classes. Converts paths in adherence
@@ -182,9 +181,9 @@ public abstract class AsidePathElement {
             return stream.parallel().noneMatch(
                     path -> {
                         String name = path.getFileName().toString();
-                        if (ValidateString.BIBLIOGRAPHY_NAME.test(name) || ValidateString.DISCARDED_NOTE_NAME.test(name)) {
+                        if (ValidateName.BIBLIOGRAPHY.test(name) || ValidateName.DISCARDED_NOTE.test(name)) {
                             name = "." + name.substring(2);
-                        } else if (ValidateString.DISCARDED_BIBLIOGRAPHY_NAME.test(name)) {
+                        } else if (ValidateName.DISCARDED_BIBLIOGRAPHY.test(name)) {
                             name = "." + name.substring(3);
                         }
                         return name.equals(fileName_str);

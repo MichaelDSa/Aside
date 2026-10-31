@@ -37,9 +37,9 @@ public abstract class AbstractNote extends AsidePathElement {
         (RestrictedLists.permanentDirectories), the offending element will
         be removed. The parameter will be modified to conform to sandbox
         rules using AsidePathElement.filterMetaPathElements().  */
-        return ValidateAsidePath.BIBLIOGRAPHY_NAME.test(ap)
-                || ValidateAsidePath.DISCARDED_NOTE_NAME.test(ap)
-                || ValidateAsidePath.DISCARDED_BIBLIOGRAPHY_NAME.test(ap);
+        return ValidateAsidePath.BIBLIOGRAPHY.test(ap)
+                || ValidateAsidePath.DISCARDED_NOTE.test(ap)
+                || ValidateAsidePath.DISCARDED_BIBLIOGRAPHY.test(ap);
     }
 
     @Override

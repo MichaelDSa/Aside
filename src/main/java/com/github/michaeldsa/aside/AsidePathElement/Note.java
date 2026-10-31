@@ -24,7 +24,7 @@ public class Note extends AbstractNote{
         /* correct if starts with wrong category/directory: */
         metaPath = AsidePathElement.filterMetaPathElements(metaPath);
         /* validate new path: */
-        if (!ValidateAsidePath.NOTE_NAME.test(metaPath)) {
+        if (!ValidateAsidePath.NOTE.test(metaPath)) {
             System.err.println("Note: invalid path argument mutation:  " + metaPath);
             throw new IllegalArgumentException("Invalid path argument mutation:  " + metaPath);
         }
@@ -54,7 +54,7 @@ public class Note extends AbstractNote{
         /* correct if starts with wrong category/directory: */
         viewPath = AsidePathElement.filterViewPathElements(viewPath);
         /* validate new path: */
-        if (!ValidateAsidePath.NOTE_NAME.test(viewPath)) {
+        if (!ValidateAsidePath.NOTE.test(viewPath)) {
             System.err.println("Note: invalid path argument mutation:  " + viewPath);
             throw new IllegalArgumentException("Invalid path argument mutation:  " + viewPath);
         }
@@ -73,7 +73,7 @@ public class Note extends AbstractNote{
     }
     public Note(Category c){
         /* unlikely, but can fail if cast to Category */
-        if (constructorArgIsInvalid(c.getMetaPath()) || !ValidateAsidePath.NOTE_NAME.test(c.getMetaPath())) {
+        if (constructorArgIsInvalid(c.getMetaPath()) || !ValidateAsidePath.NOTE.test(c.getMetaPath())) {
             System.err.println("IllegalArgumentException. Path must end with a Category file name");
             throw new IllegalArgumentException("Invalid Path argument:  " + c.getMetaPath());
         }
@@ -83,7 +83,7 @@ public class Note extends AbstractNote{
         metaPath = AsidePathElement.generateUniqueFileName(c.getMetaPath());
         /* correct if starts with wrong category/directory: */
         metaPath = AsidePathElement.filterMetaPathElements(c.getMetaPath());
-        if (!ValidateAsidePath.NOTE_NAME.test(metaPath)) {
+        if (!ValidateAsidePath.NOTE.test(metaPath)) {
             System.err.println("Note: invalid path argument mutation:  " + metaPath);
             throw new IllegalArgumentException("Invalid path argument mutation:  " + metaPath);
         }
@@ -102,7 +102,7 @@ public class Note extends AbstractNote{
     }
     public Note(Note mn){
         /* unlikely, but can fail if cast to Note */
-        if (constructorArgIsInvalid(mn.getMetaPath()) || !ValidateAsidePath.NOTE_NAME.test(mn.getMetaPath())) {
+        if (constructorArgIsInvalid(mn.getMetaPath()) || !ValidateAsidePath.NOTE.test(mn.getMetaPath())) {
             System.err.println("IllegalArgumentException. Path must end with a Note file name");
             throw new IllegalArgumentException("Invalid Path argument:  " + mn.getMetaPath());
         }

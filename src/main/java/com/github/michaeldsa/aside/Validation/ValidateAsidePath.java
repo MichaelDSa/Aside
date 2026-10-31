@@ -8,12 +8,12 @@ import java.nio.file.Path;
 import java.util.function.Predicate;
 
 public enum ValidateAsidePath implements Predicate<AsidePath> {
-    NOTE_NAME (ap -> ValidatePath.NOTE_NAME.test(asMetaPath(ap)) && ValidatePath.NOTE_NAME.test(asViewPath(ap))),
-    CATEGORY_NAME (ap -> ValidatePath.CATEGORY_NAME.test(asMetaPath(ap)) && ValidatePath.CATEGORY_NAME.test(asViewPath(ap))),
-    BIBLIOGRAPHY_NAME (ap -> ValidatePath.BIBLIOGRAPHY_NAME.test(asMetaPath(ap)) && ValidatePath.BIBLIOGRAPHY_NAME.test(asViewPath(ap))),
-    BIBLIOGRAPHY_CATEGORY_NAME (ap -> ValidatePath.BIBLIOGRAPHY_CATEGORY_NAME.test(asMetaPath(ap)) && ValidatePath.BIBLIOGRAPHY_CATEGORY_NAME.test(asViewPath(ap))),
-    DISCARDED_NOTE_NAME (ap -> ValidatePath.DISCARDED_NOTE_NAME.test(asMetaPath(ap)) && ValidatePath.DISCARDED_NOTE_NAME.test(asViewPath(ap))),
-    DISCARDED_BIBLIOGRAPHY_NAME (ap -> ValidatePath.DISCARDED_BIBLIOGRAPHY_NAME.test(asMetaPath(ap)) && ValidatePath.DISCARDED_BIBLIOGRAPHY_NAME.test(asViewPath(ap)));
+    NOTE(ap -> ValidatePath.NOTE.test(asMetaPath(ap)) && ValidatePath.NOTE.test(asViewPath(ap))),
+    CATEGORY(ap -> ValidatePath.CATEGORY.test(asMetaPath(ap)) && ValidatePath.CATEGORY.test(asViewPath(ap))),
+    BIBLIOGRAPHY(ap -> ValidatePath.BIBLIOGRAPHY.test(asMetaPath(ap)) && ValidatePath.BIBLIOGRAPHY.test(asViewPath(ap))),
+    BIBLIOGRAPHY_CATEGORY(ap -> ValidatePath.BIBLIOGRAPHY_CATEGORY.test(asMetaPath(ap)) && ValidatePath.BIBLIOGRAPHY_CATEGORY.test(asViewPath(ap))),
+    DISCARDED_NOTE(ap -> ValidatePath.DISCARDED_NOTE.test(asMetaPath(ap)) && ValidatePath.DISCARDED_NOTE.test(asViewPath(ap))),
+    DISCARDED_BIBLIOGRAPHY(ap -> ValidatePath.DISCARDED_BIBLIOGRAPHY.test(asMetaPath(ap)) && ValidatePath.DISCARDED_BIBLIOGRAPHY.test(asViewPath(ap)));
 
     // class boilerplate:
     private final Predicate<AsidePath> predicate;

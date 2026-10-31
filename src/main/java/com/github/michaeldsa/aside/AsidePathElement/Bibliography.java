@@ -3,7 +3,7 @@ package com.github.michaeldsa.aside.AsidePathElement;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
-import com.github.michaeldsa.aside.Validation.ValidateString;
+import com.github.michaeldsa.aside.Validation.ValidateName;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,11 +30,11 @@ public class Bibliography extends AbstractBibliography {
 
         // AsidePathElement fields:
         /* generate bibliography filename if necessary */
-        metaPath = ValidateString.BIBLIOGRAPHY_NAME.test(mp.getPath().getFileName().toString())
+        metaPath = ValidateName.BIBLIOGRAPHY.test(mp.getPath().getFileName().toString())
                 ? mp
                 : AbstractBibliography.generateNewBibliographyFileName(mp);
         /* validate new path: */
-        if (!ValidateAsidePath.BIBLIOGRAPHY_NAME.test(metaPath)) {
+        if (!ValidateAsidePath.BIBLIOGRAPHY.test(metaPath)) {
             System.err.println("Bibliography: invalid path argument mutation: " + metaPath);
             throw new IllegalArgumentException("Invalid Path Argument mutation: " + metaPath);
         }
@@ -65,11 +65,11 @@ public class Bibliography extends AbstractBibliography {
 
         // AsidePathElement fields:
         /* ensure that viewPath ends with a Bibliography filename */
-        viewPath = ValidateString.BIBLIOGRAPHY_NAME.test(vp.getPath().getFileName().toString())
+        viewPath = ValidateName.BIBLIOGRAPHY.test(vp.getPath().getFileName().toString())
                 ? vp
                 : AbstractBibliography.generateNewBibliographyFileName(vp);
         /* validate new path: */
-        if (!ValidateAsidePath.BIBLIOGRAPHY_NAME.test(viewPath)) {
+        if (!ValidateAsidePath.BIBLIOGRAPHY.test(viewPath)) {
             System.err.println("Bibliography: invalid path argument mutation: " + viewPath);
             throw new IllegalArgumentException("Invalid Path Argument mutation: " + viewPath);
         }
@@ -95,7 +95,7 @@ public class Bibliography extends AbstractBibliography {
         /* ensure that metaPath ends with a Bibliography filename.*/
         metaPath = AbstractBibliography.generateNewBibliographyFileName(bc.getMetaPath());
         /* validate new path: */
-        if (!ValidateAsidePath.BIBLIOGRAPHY_NAME.test(metaPath)) {
+        if (!ValidateAsidePath.BIBLIOGRAPHY.test(metaPath)) {
             System.err.println("Bibliography: invalid path argument mutation: " + metaPath);
             throw new IllegalArgumentException("Invalid Path Argument mutation: " + metaPath);
         }

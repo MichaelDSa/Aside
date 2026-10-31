@@ -61,7 +61,7 @@ public class ResolveViewPath extends Traverser{
 
     public FileVisitResult _preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
         // Does dir have a valid category name?
-        if (ValidateAsidePath.CATEGORY_NAME.test(new MetaPath(dir))) {
+        if (ValidateAsidePath.CATEGORY.test(new MetaPath(dir))) {
 
             // ...if so, get its ViewPath counterpart
             Path vpath = new ViewPath(new MetaPath(dir)).getPath();
@@ -89,22 +89,22 @@ public class ResolveViewPath extends Traverser{
 
         if (file.startsWith(discarded)) {
             /* may either be a DiscardedNote or a DiscardedBibliography */
-            if (ValidateAsidePath.DISCARDED_NOTE_NAME.test(new MetaPath(file))) {
+            if (ValidateAsidePath.DISCARDED_NOTE.test(new MetaPath(file))) {
                 DiscardedNote de = new DiscardedNote(new MetaPath(file));
                 PropUtils.retrieveDiscardedNote(de);
                 PropUtils.writeDiscardedNote_ViewPath(de);
-            } else if (ValidateAsidePath.DISCARDED_BIBLIOGRAPHY_NAME.test(new MetaPath(file))) {
+            } else if (ValidateAsidePath.DISCARDED_BIBLIOGRAPHY.test(new MetaPath(file))) {
                 DiscardedBibliography db = new DiscardedBibliography(new MetaPath(file));
                 PropUtils.retrieveDiscardedBibliography(db);
                 PropUtils.writeDiscardedBibliography_ViewPath(db);
             }
         } else if (file.startsWith(bibliography)) {
-            if (ValidateAsidePath.BIBLIOGRAPHY_NAME.test(new MetaPath(file))) {
+            if (ValidateAsidePath.BIBLIOGRAPHY.test(new MetaPath(file))) {
                 Bibliography bb = new Bibliography(new MetaPath(file));
                 PropUtils.retrieveBibliography(bb);
                 PropUtils.writeBibliography_ViewPath(bb);
             }
-        } else if (ValidateAsidePath.NOTE_NAME.test(new MetaPath(file))) {
+        } else if (ValidateAsidePath.NOTE.test(new MetaPath(file))) {
             Note mn = new Note(new MetaPath(file));
             PropUtils.retrieveNote(mn);
             PropUtils.writeNote_ViewPath(mn);

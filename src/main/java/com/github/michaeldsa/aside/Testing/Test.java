@@ -12,13 +12,11 @@ import com.github.michaeldsa.aside.Initialization.RootPaths;
 import com.github.michaeldsa.aside.Ops.Create;
 import com.github.michaeldsa.aside.PathKeeper;
 import com.github.michaeldsa.aside.Pretty;
-import com.github.michaeldsa.aside.PropertiesUtil.NotePropertiesUtil;
 import com.github.michaeldsa.aside.PropertiesUtil.PropUtils;
 import com.github.michaeldsa.aside.Search.Search;
 import com.github.michaeldsa.aside.Settings.Settings;
 import com.github.michaeldsa.aside.Settings.TempSettings;
 import com.github.michaeldsa.aside.Validation.ValidatePath;
-import org.graalvm.nativeimage.IsolateThread;
 
 import java.io.File;
 import java.io.IOException;
@@ -124,10 +122,10 @@ public class Test {
         return ValidatePath.ALL_ELEMENTS.test(path);
     }
     public static boolean validatePath_C(Path path) {
-        return ValidatePath.CATEGORY_NAME.test(path);
+        return ValidatePath.CATEGORY.test(path);
     }
     public static boolean validatePath_N(Path path) {
-        return ValidatePath.NOTE_NAME.test(path);
+        return ValidatePath.NOTE.test(path);
     }
 
     public static void searchLambda() {

@@ -2,8 +2,8 @@ package com.github.michaeldsa.aside.Validation;
 
 import java.util.function.Predicate;
 
-public enum ValidateString implements Predicate<String> {
-    NOTE_NAME (s -> {
+public enum ValidateName implements Predicate<String> {
+    NOTE(s -> {
 
         // string should be formatted thus:
         // `[.]xxxxxx_xxxx_xx.txt`.
@@ -55,7 +55,7 @@ public enum ValidateString implements Predicate<String> {
                 all_characters_are_in_position &&
                 chars_between_underscores_and_ext_are_numerals;
     }),
-    TAG_NAME (s -> {
+    TAG(s -> {
         /*
         tag names:
         - Must not start with a dot
@@ -63,9 +63,9 @@ public enum ValidateString implements Predicate<String> {
         - May end with a dot
         - Must not be in NOTE_NAME format
          */
-        return !s.startsWith(".") && !ValidateString.NOTE_NAME.test(s);
+        return !s.startsWith(".") && !ValidateName.NOTE.test(s);
     }),
-    BIBLIOGRAPHY_NAME (s -> {
+    BIBLIOGRAPHY(s -> {
         /*
         A bibliography filename must start with '.b', or 'b'.  The
         rest of the filename must be a valid note filename.
@@ -80,9 +80,9 @@ public enum ValidateString implements Predicate<String> {
         } else {
             return false;
         }
-        return ValidateString.NOTE_NAME.test(filename);
+        return ValidateName.NOTE.test(filename);
     }),
-    DISCARDED_NOTE_NAME(s -> {
+    DISCARDED_NOTE(s -> {
         /*
         A DiscardedNote filename must start with '.d', or
         'd'.  The rest of the filename must be a valid Note filename.
@@ -97,9 +97,9 @@ public enum ValidateString implements Predicate<String> {
         } else {
             return false;
         }
-        return ValidateString.NOTE_NAME.test(filename);
+        return ValidateName.NOTE.test(filename);
     }),
-    DISCARDED_BIBLIOGRAPHY_NAME(s -> {
+    DISCARDED_BIBLIOGRAPHY(s -> {
         /*
         A DiscardedBibliography filename must start with '.db', or
         'db'. The rest of the filename must be a valid Bibliography
@@ -115,9 +115,9 @@ public enum ValidateString implements Predicate<String> {
         } else {
             return false;
         }
-        return ValidateString.BIBLIOGRAPHY_NAME.test(filename);
+        return ValidateName.BIBLIOGRAPHY.test(filename);
     }),
-    CATEGORY_NAME (s -> {
+    CATEGORY(s -> {
         /*
         category names must:
         - Must not have note format
@@ -129,10 +129,10 @@ public enum ValidateString implements Predicate<String> {
         }
         // must not contain '.'
         boolean is_word_without_dots = s.matches("\\w+"); // same as: [a-zA-Z0-9_]
-        boolean not_Note_name = !ValidateString.NOTE_NAME.test(s);
-        boolean not_Bibliography_name = !ValidateString.BIBLIOGRAPHY_NAME.test(s);
-        boolean not_DiscardedNote_name = !ValidateString.DISCARDED_NOTE_NAME.test(s);
-        boolean not_DiscardedBibliography_name = !ValidateString.DISCARDED_BIBLIOGRAPHY_NAME.test(s);
+        boolean not_Note_name = !ValidateName.NOTE.test(s);
+        boolean not_Bibliography_name = !ValidateName.BIBLIOGRAPHY.test(s);
+        boolean not_DiscardedNote_name = !ValidateName.DISCARDED_NOTE.test(s);
+        boolean not_DiscardedBibliography_name = !ValidateName.DISCARDED_BIBLIOGRAPHY.test(s);
         return is_word_without_dots
                 && not_Note_name
                 && not_Bibliography_name
@@ -143,7 +143,7 @@ public enum ValidateString implements Predicate<String> {
     // class boilerplate:
     private final Predicate<String> predicate;
 
-    ValidateString(Predicate<String> pred) {
+    ValidateName(Predicate<String> pred) {
         this.predicate = pred;
     }
 

@@ -82,7 +82,7 @@ public enum ValidatePath implements Predicate<Path> {
             // if more than one element, test all elements except last
             for (int i = 0; i < path.getNameCount() - 1; i++) {
                 s = path.getName(i).toString();
-                pass = ValidateString.CATEGORY_NAME.test(s);
+                pass = ValidateName.CATEGORY.test(s);
                 if (!pass) {
                     break;
                 }
@@ -90,11 +90,11 @@ public enum ValidatePath implements Predicate<Path> {
         }
         // now test last (or only) element
         if (pass) {
-            boolean ends_with_note_name = ValidateString.NOTE_NAME.test(path.getFileName().toString());
-            boolean ends_with_category_name = ValidateString.CATEGORY_NAME.test(path.getFileName().toString());
-            boolean ends_with_bibliography_name = ValidateString.BIBLIOGRAPHY_NAME.test(path.getFileName().toString());
-            boolean ends_with_discarded_note_name = ValidateString.DISCARDED_NOTE_NAME.test(path.getFileName().toString());
-            boolean ends_with_discarded_bibliography_name = ValidateString.DISCARDED_BIBLIOGRAPHY_NAME.test(path.getFileName().toString());
+            boolean ends_with_note_name = ValidateName.NOTE.test(path.getFileName().toString());
+            boolean ends_with_category_name = ValidateName.CATEGORY.test(path.getFileName().toString());
+            boolean ends_with_bibliography_name = ValidateName.BIBLIOGRAPHY.test(path.getFileName().toString());
+            boolean ends_with_discarded_note_name = ValidateName.DISCARDED_NOTE.test(path.getFileName().toString());
+            boolean ends_with_discarded_bibliography_name = ValidateName.DISCARDED_BIBLIOGRAPHY.test(path.getFileName().toString());
             pass = ends_with_note_name
                     || ends_with_category_name
                     || ends_with_bibliography_name
@@ -104,7 +104,7 @@ public enum ValidatePath implements Predicate<Path> {
         return pass;
 
     }),
-    CATEGORY_NAME(p -> {
+    CATEGORY(p -> {
 
         // pass if p is AsidePathRoot
         if (p.equals(RootPaths.INSTANCE.getMetapath()) || p.equals(RootPaths.INSTANCE.getViewpath())) {
@@ -145,14 +145,14 @@ public enum ValidatePath implements Predicate<Path> {
             }
         }
 
-        return ValidateString.CATEGORY_NAME.test(p.getFileName().toString());
+        return ValidateName.CATEGORY.test(p.getFileName().toString());
     }),
-    NOTE_NAME(p -> {
+    NOTE(p -> {
         Path sans_filename = p.getParent();
         String filename = p.getFileName().toString();
-        return CATEGORY_NAME.test(sans_filename) && ValidateString.NOTE_NAME.test(filename);
+        return CATEGORY.test(sans_filename) && ValidateName.NOTE.test(filename);
     }),
-    BIBLIOGRAPHY_CATEGORY_NAME(p -> {
+    BIBLIOGRAPHY_CATEGORY(p -> {
         // fail if equal to AsidePathRoot
         if (p.equals(RootPaths.INSTANCE.getMetapath()) || p.equals(RootPaths.INSTANCE.getViewpath())) {
             return false;
@@ -193,33 +193,33 @@ public enum ValidatePath implements Predicate<Path> {
         }
 
         // fail if last element does not conform to CATEGORY name rules:
-        return ValidateString.CATEGORY_NAME.test(p.getFileName().toString());
+        return ValidateName.CATEGORY.test(p.getFileName().toString());
     }),
-    BIBLIOGRAPHY_NAME(p -> {
+    BIBLIOGRAPHY(p -> {
         // fail if equal to AsidePathRoot
         boolean is_AsidePathRoot = p.equals(RootPaths.INSTANCE.getMetapath()) || p.equals(RootPaths.INSTANCE.getViewpath());
         // test parent and filename
         Path sans_filename = p.getParent();
         String filename = p.getFileName().toString();
         return !is_AsidePathRoot
-                && BIBLIOGRAPHY_CATEGORY_NAME.test(sans_filename)
-                && ValidateString.BIBLIOGRAPHY_NAME.test(filename);
+                && BIBLIOGRAPHY_CATEGORY.test(sans_filename)
+                && ValidateName.BIBLIOGRAPHY.test(filename);
     }),
-    DISCARDED_CATEGORY_NAME(p -> {
+    DISCARDED_CATEGORY(p -> {
         // there can only be one discarded category. No children allowed.
         Path m_discarded = RootPaths.INSTANCE.getMetapath().resolve(Paths.get(RestrictedLists.getMetaPathDiscardedDirectoryName()));
         Path v_discarded = RootPaths.INSTANCE.getViewpath().resolve(Paths.get(RestrictedLists.getViewPathDiscardedDirectoryName()));
         return p.equals(m_discarded) || p.equals(v_discarded);
     }),
-    DISCARDED_NOTE_NAME(p -> {
+    DISCARDED_NOTE(p -> {
         Path sans_filename = p.getParent();
         String filename = p.getFileName().toString();
-        return DISCARDED_CATEGORY_NAME.test(sans_filename) && ValidateString.DISCARDED_NOTE_NAME.test(filename);
+        return DISCARDED_CATEGORY.test(sans_filename) && ValidateName.DISCARDED_NOTE.test(filename);
     }),
-    DISCARDED_BIBLIOGRAPHY_NAME(p -> {
+    DISCARDED_BIBLIOGRAPHY(p -> {
         Path sans_filename = p.getParent();
         String filename = p.getFileName().toString();
-        return DISCARDED_CATEGORY_NAME.test(sans_filename) && ValidateString.DISCARDED_BIBLIOGRAPHY_NAME.test(filename);
+        return DISCARDED_CATEGORY.test(sans_filename) && ValidateName.DISCARDED_BIBLIOGRAPHY.test(filename);
     });
 
 

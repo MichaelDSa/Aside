@@ -36,7 +36,7 @@ public class DiscardedNote extends AbstractDiscardedElement {
 
     // constructor validation method(s):
     private boolean constructorArgIsInvalid(AsidePath ap) {
-        return !ValidateAsidePath.DISCARDED_NOTE_NAME.test(ap) || !startsWithDiscardedCategory(ap);
+        return !ValidateAsidePath.DISCARDED_NOTE.test(ap) || !startsWithDiscardedCategory(ap);
     }
 
     // constructors:
@@ -111,7 +111,7 @@ public class DiscardedNote extends AbstractDiscardedElement {
         // convert AsidePath
         metaPath = discardedCategory.getMetaPath().resolve(renameMetaPathFileName(mn.getMetaPath()));
         /* validate new path: */
-        if (!ValidateAsidePath.DISCARDED_NOTE_NAME.test(metaPath)) {
+        if (!ValidateAsidePath.DISCARDED_NOTE.test(metaPath)) {
             System.err.println("DiscardedNote: invalid path argument mutation: " + metaPath);
             throw new IllegalArgumentException("Invalid Path Argument mutation: " + metaPath);
         }
@@ -132,7 +132,7 @@ public class DiscardedNote extends AbstractDiscardedElement {
 
     public DiscardedNote setOriginalMetaPath(MetaPath original) {
         /* The original MetaPath must be of a valid Note file. */
-        if (ValidateAsidePath.NOTE_NAME.test(original)) {
+        if (ValidateAsidePath.NOTE.test(original)) {
             originalMetaPath = original;
             originalViewPath = new ViewPath(originalMetaPath);
         }

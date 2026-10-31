@@ -35,7 +35,7 @@ public class BibliographyCategory extends AbstractCategory {
                 ? metaPath
                 : new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName())).resolve(metaPath);
         /* validate new path: */
-        if (!ValidateAsidePath.BIBLIOGRAPHY_CATEGORY_NAME.test(metaPath)) {
+        if (!ValidateAsidePath.BIBLIOGRAPHY_CATEGORY.test(metaPath)) {
             System.err.println("BibliographyCategory: invalid path argument mutation: " + metaPath);
             throw new IllegalArgumentException("Invalid Path Argument mutation: " + metaPath);
         }
@@ -66,7 +66,7 @@ public class BibliographyCategory extends AbstractCategory {
                 ? viewPath
                 : new ViewPath(Paths.get(RestrictedLists.getViewPathBibliographyDirectoryName())).resolve(viewPath);
         /* validate new path: */
-        if (!ValidateAsidePath.BIBLIOGRAPHY_CATEGORY_NAME.test(viewPath)) {
+        if (!ValidateAsidePath.BIBLIOGRAPHY_CATEGORY.test(viewPath)) {
             System.err.println("BibliographyCategory: invalid path argument mutation: " + viewPath);
             throw new IllegalArgumentException("Invalid Path Argument mutation: " + viewPath);
         }
@@ -90,7 +90,7 @@ public class BibliographyCategory extends AbstractCategory {
                 ? bc.getMetaPath()
                 : new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName())).resolve(metaPath);
         /* validate new path: */
-        if (!ValidateAsidePath.BIBLIOGRAPHY_CATEGORY_NAME.test(metaPath)) {
+        if (!ValidateAsidePath.BIBLIOGRAPHY_CATEGORY.test(metaPath)) {
             System.err.println("BibliographyCategory: invalid path argument mutation: " + metaPath);
             throw new IllegalArgumentException("Invalid Path Argument mutation: " + metaPath);
         }

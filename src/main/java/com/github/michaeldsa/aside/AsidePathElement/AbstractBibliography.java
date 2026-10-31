@@ -61,7 +61,7 @@ public abstract class AbstractBibliography extends AsidePathElement {
 
     // must end with a valid category filename, or a valid bibliography filename
     private static boolean hasBibFileNameOrHasNoFileName(AsidePath ap) {
-        return ValidateAsidePath.BIBLIOGRAPHY_CATEGORY_NAME.test(ap) || ValidateAsidePath.BIBLIOGRAPHY_NAME.test(ap);
+        return ValidateAsidePath.BIBLIOGRAPHY_CATEGORY.test(ap) || ValidateAsidePath.BIBLIOGRAPHY.test(ap);
     }
 
     // determine if constructor should throw an IllegalArgumentException.

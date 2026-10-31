@@ -2,7 +2,6 @@ package com.github.michaeldsa.aside.AsidePathElement;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
-import com.github.michaeldsa.aside.Testing.Test;
 import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ public class Category extends AbstractCategory {
         // AsidePathElement fields
         metaPath = AsidePathElement.filterMetaPathElements(metaPath);
         /* validate new path: */
-        if (!ValidateAsidePath.CATEGORY_NAME.test(metaPath)) {
+        if (!ValidateAsidePath.CATEGORY.test(metaPath)) {
             System.err.println("Category: invalid path argument mutation:  " + metaPath);
             throw new IllegalArgumentException("Invalid path argument mutation:  " + metaPath);
         }
@@ -47,7 +46,7 @@ public class Category extends AbstractCategory {
         // AsidePathElement fields
         viewPath = AsidePathElement.filterViewPathElements(viewPath);
         /* validate new path: */
-        if (!ValidateAsidePath.CATEGORY_NAME.test(viewPath)) {
+        if (!ValidateAsidePath.CATEGORY.test(viewPath)) {
             System.err.println("Category: invalid path argument mutation:  " + viewPath);
             throw new IllegalArgumentException("Invalid path argument mutation:  " + viewPath);
         }
@@ -71,7 +70,7 @@ public class Category extends AbstractCategory {
         // AsidePathElement fields
         metaPath = AsidePathElement.filterMetaPathElements(metaPath);
         /* validate new path: */
-        if (!ValidateAsidePath.CATEGORY_NAME.test(metaPath)) {
+        if (!ValidateAsidePath.CATEGORY.test(metaPath)) {
             System.err.println("Category: invalid path argument mutation:  " + metaPath);
             throw new IllegalArgumentException("Invalid path argument mutation:  " + metaPath);
         }
