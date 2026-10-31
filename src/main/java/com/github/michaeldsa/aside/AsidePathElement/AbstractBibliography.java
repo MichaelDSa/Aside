@@ -61,7 +61,7 @@ public abstract class AbstractBibliography extends AsidePathElement {
 
     // must end with a valid category filename, or a valid bibliography filename
     private static boolean hasBibFileNameOrHasNoFileName(AsidePath ap) {
-        return ValidateAsidePath.CATEGORY_NAME.test(ap) || ValidateAsidePath.BIBLIOGRAPHY_NAME.test(ap);
+        return ValidateAsidePath.BIBLIOGRAPHY_CATEGORY_NAME.test(ap) || ValidateAsidePath.BIBLIOGRAPHY_NAME.test(ap);
     }
 
     // determine if constructor should throw an IllegalArgumentException.
@@ -77,7 +77,7 @@ public abstract class AbstractBibliography extends AsidePathElement {
 
     protected static ViewPath generateNewBibliographyFileName(ViewPath parent) {
         String filename = AsidePathElement.generateUniqueFileName(new MetaPath()).getPath().getFileName().toString();
-        String bibFilename = v_prefix + filename;
+        String bibFilename = v_prefix + filename.substring(1);
         return parent.resolve(new ViewPath(Paths.get(bibFilename)));
     }
 

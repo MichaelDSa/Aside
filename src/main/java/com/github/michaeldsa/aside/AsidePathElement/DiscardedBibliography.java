@@ -94,6 +94,11 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
 
         // AsidePathElement fields:
         metaPath = discardedCategory.getMetaPath().resolve(renameMetaPathFileName(bb.getMetaPath()));
+        /* validate new path: */
+        if (!ValidateAsidePath.DISCARDED_BIBLIOGRAPHY_NAME.test(metaPath)) {
+            System.err.println("DiscardedBibliography: invalid path argument mutation: " + metaPath);
+            throw new IllegalArgumentException("Invalid Path Argument mutation: " + metaPath);
+        }
         viewPath = new ViewPath(metaPath);
         nest = new ArrayList<>();
 

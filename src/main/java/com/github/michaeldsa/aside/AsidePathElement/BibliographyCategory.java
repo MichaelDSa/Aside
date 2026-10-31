@@ -2,6 +2,7 @@ package com.github.michaeldsa.aside.AsidePathElement;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class BibliographyCategory extends AbstractCategory {
         }
         if (AbstractBibliography.constructorArgIsInvalid(mp)) {
             System.err.println("IllegalArgumentException");
-            throw new IllegalArgumentException("Invalid Path argument BibCat(MetaPath mp): " + mp);
+            throw new IllegalArgumentException("Invalid Path argument BibliographyCategory(MetaPath mp): " + mp);
         }
 
         // AsidePathElement fields:
@@ -33,6 +34,11 @@ public class BibliographyCategory extends AbstractCategory {
         metaPath = metaPath.startsWith(new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName())))
                 ? metaPath
                 : new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName())).resolve(metaPath);
+        /* validate new path: */
+        if (!ValidateAsidePath.BIBLIOGRAPHY_CATEGORY_NAME.test(metaPath)) {
+            System.err.println("BibliographyCategory: invalid path argument mutation: " + metaPath);
+            throw new IllegalArgumentException("Invalid Path Argument mutation: " + metaPath);
+        }
         viewPath = new ViewPath(metaPath);
         nest = new ArrayList<>();
 
@@ -47,7 +53,7 @@ public class BibliographyCategory extends AbstractCategory {
         }
         if (AbstractBibliography.constructorArgIsInvalid(vp)) {
             System.err.println("IllegalArgumentException");
-            throw new IllegalArgumentException("Invalid Path argument BibCat(ViewPath vp): " + vp);
+            throw new IllegalArgumentException("Invalid Path argument BibliogrphyCategory(ViewPath vp): " + vp);
         }
 
         // AsidePathElement fields:
@@ -59,6 +65,11 @@ public class BibliographyCategory extends AbstractCategory {
         viewPath = viewPath.startsWith(new ViewPath(Paths.get(RestrictedLists.getViewPathBibliographyDirectoryName())))
                 ? viewPath
                 : new ViewPath(Paths.get(RestrictedLists.getViewPathBibliographyDirectoryName())).resolve(viewPath);
+        /* validate new path: */
+        if (!ValidateAsidePath.BIBLIOGRAPHY_CATEGORY_NAME.test(viewPath)) {
+            System.err.println("BibliographyCategory: invalid path argument mutation: " + viewPath);
+            throw new IllegalArgumentException("Invalid Path Argument mutation: " + viewPath);
+        }
         metaPath = new MetaPath(viewPath);
         nest = new ArrayList<>();
 
@@ -70,7 +81,7 @@ public class BibliographyCategory extends AbstractCategory {
         /* unlikely, but can fail if cast to BibliographyCategory */
         if (AbstractBibliography.constructorArgIsInvalid(bc.getMetaPath()) || AsidePathElement.endsWithFileName(bc.getMetaPath())) {
             System.err.println("IllegalArgumentException");
-            throw new IllegalArgumentException("Invalid Path argument BibCat(MetaPath mp): " + bc.getMetaPath());
+            throw new IllegalArgumentException("Invalid Path argument BibliographyCategory(MetaPath mp): " + bc.getMetaPath());
         }
 
         // AsidePathElement fields:
@@ -78,6 +89,11 @@ public class BibliographyCategory extends AbstractCategory {
         metaPath = bc.getMetaPath().startsWith(new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName())))
                 ? bc.getMetaPath()
                 : new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName())).resolve(metaPath);
+        /* validate new path: */
+        if (!ValidateAsidePath.BIBLIOGRAPHY_CATEGORY_NAME.test(metaPath)) {
+            System.err.println("BibliographyCategory: invalid path argument mutation: " + metaPath);
+            throw new IllegalArgumentException("Invalid Path Argument mutation: " + metaPath);
+        }
         viewPath = new ViewPath(metaPath);
         nest = new ArrayList<>();
 

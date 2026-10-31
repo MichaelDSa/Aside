@@ -261,18 +261,22 @@ public class TestRunner {
 //            System.out.println("Test path that starts with VPR: " + path + "  :  " + ValidatePath.ALL_ELEMENTS.test(path));
 
             // Test Create.CATEGORY.execute()
-            Category cat = new Category(new ViewPath(Paths.get("Benny$Hill", "Yakety_sax")));
+//            Category cat = new Category(new ViewPath(Paths.get("BennyHill", "Yakety_sax")));
 //            Test.create_category(cat);
-            Note nt = new Note(cat)
-                    .setContent("This is the user submitted content of the test note")
-                    .setTo(new HashSet<>(Arrays.asList("261015_1709_30")))
-                    .setTitle("This is the user sumitted title of the test note");
-            System.out.println(nt);
-            if (ValidatePath.CATEGORY_NAME.test(cat.getMetaPath().getPath())) {
-                Test.create_category(nt);
-            } else {
-                System.out.println("ValidatePath.CATEGORY_NAME failed: " + cat.getMetaPath().getPath());
-            }
+//            Note nt = new Note(cat)
+//                    .setContent("This is the user submitted content of the test note")
+//                    .setTo(new HashSet<>(Arrays.asList("261015_1709_30")))
+//                    .setTitle("This is the user sumitted title of the test note");
+//            System.out.println(nt);
+//            if (ValidatePath.CATEGORY_NAME.test(cat.getMetaPath().getPath())) {
+//                Test.create_category(nt);
+//            } else {
+//                System.out.println("ValidatePath.CATEGORY_NAME failed: " + cat.getMetaPath().getPath());
+//            }
+
+
+            // Miscellaneous tests performed on 261019.d
+            Test.tests_261019();
 
 
 

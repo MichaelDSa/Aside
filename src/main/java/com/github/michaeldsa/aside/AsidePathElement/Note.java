@@ -2,6 +2,7 @@ package com.github.michaeldsa.aside.AsidePathElement;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
 import java.util.*;
 
@@ -11,9 +12,9 @@ public class Note extends AbstractNote{
 
     // constructors:
     public Note(MetaPath mp) {
-        // if filename belongs to BIBLIOGRAPHY or DISCARDED:
+        // check endings of parameter. must not end with anything other than Category or Note.
         if (constructorArgIsInvalid(mp)) {
-            System.err.println("IllegalArgumentException. Path must end with a Note file name");
+            System.err.println("IllegalArgumentException. Path must end with a Note or Category file name");
             throw new IllegalArgumentException("Invalid Path argument:  " + mp);
         }
 
@@ -22,6 +23,11 @@ public class Note extends AbstractNote{
         metaPath = AsidePathElement.endsWithNoteName(mp) ? mp : AsidePathElement.generateUniqueFileName(mp);
         /* correct if starts with wrong category/directory: */
         metaPath = AsidePathElement.filterMetaPathElements(metaPath);
+        /* validate new path: */
+        if (!ValidateAsidePath.NOTE_NAME.test(metaPath)) {
+            System.err.println("Note: invalid path argument mutation:  " + metaPath);
+            throw new IllegalArgumentException("Invalid path argument mutation:  " + metaPath);
+        }
         viewPath = new ViewPath(metaPath);
         nest = new ArrayList<>();
 
@@ -47,6 +53,11 @@ public class Note extends AbstractNote{
         viewPath = AsidePathElement.endsWithNoteName(vp) ? vp : new ViewPath(AsidePathElement.generateUniqueFileName(new MetaPath(vp)));
         /* correct if starts with wrong category/directory: */
         viewPath = AsidePathElement.filterViewPathElements(viewPath);
+        /* validate new path: */
+        if (!ValidateAsidePath.NOTE_NAME.test(viewPath)) {
+            System.err.println("Note: invalid path argument mutation:  " + viewPath);
+            throw new IllegalArgumentException("Invalid path argument mutation:  " + viewPath);
+        }
         metaPath = new MetaPath(viewPath);
         nest = new ArrayList<>();
 
@@ -62,16 +73,20 @@ public class Note extends AbstractNote{
     }
     public Note(Category c){
         /* unlikely, but can fail if cast to Category */
-        if (constructorArgIsInvalid(c.getMetaPath())) {
-            System.err.println("IllegalArgumentException. Path must end with a Note file name");
+        if (constructorArgIsInvalid(c.getMetaPath()) || !ValidateAsidePath.NOTE_NAME.test(c.getMetaPath())) {
+            System.err.println("IllegalArgumentException. Path must end with a Category file name");
             throw new IllegalArgumentException("Invalid Path argument:  " + c.getMetaPath());
         }
 
         // AsidePathElement fields:
         /* filename assignment if necessary: */
-        metaPath = AsidePathElement.filterMetaPathElements(c.getMetaPath());
-        /* correct if starts with wrong category/directory: */
         metaPath = AsidePathElement.generateUniqueFileName(c.getMetaPath());
+        /* correct if starts with wrong category/directory: */
+        metaPath = AsidePathElement.filterMetaPathElements(c.getMetaPath());
+        if (!ValidateAsidePath.NOTE_NAME.test(metaPath)) {
+            System.err.println("Note: invalid path argument mutation:  " + metaPath);
+            throw new IllegalArgumentException("Invalid path argument mutation:  " + metaPath);
+        }
         viewPath = new ViewPath(metaPath);
         nest = new ArrayList<>();
 
@@ -87,7 +102,7 @@ public class Note extends AbstractNote{
     }
     public Note(Note mn){
         /* unlikely, but can fail if cast to Note */
-        if (constructorArgIsInvalid(mn.getMetaPath())) {
+        if (constructorArgIsInvalid(mn.getMetaPath()) || !ValidateAsidePath.NOTE_NAME.test(mn.getMetaPath())) {
             System.err.println("IllegalArgumentException. Path must end with a Note file name");
             throw new IllegalArgumentException("Invalid Path argument:  " + mn.getMetaPath());
         }

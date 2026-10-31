@@ -94,7 +94,7 @@ public class DiscardedNote extends AbstractDiscardedElement {
         content = "";
         message = "";
         to = new HashSet<>(); from = new HashSet<>();
-        tags = new HashSet<>();
+
         bibliographies = new HashSet<>();
     }
 
@@ -110,6 +110,11 @@ public class DiscardedNote extends AbstractDiscardedElement {
         // AsidePathElement fields:
         // convert AsidePath
         metaPath = discardedCategory.getMetaPath().resolve(renameMetaPathFileName(mn.getMetaPath()));
+        /* validate new path: */
+        if (!ValidateAsidePath.DISCARDED_NOTE_NAME.test(metaPath)) {
+            System.err.println("DiscardedNote: invalid path argument mutation: " + metaPath);
+            throw new IllegalArgumentException("Invalid Path Argument mutation: " + metaPath);
+        }
         viewPath = new ViewPath(metaPath);
         nest = new ArrayList<>();
 

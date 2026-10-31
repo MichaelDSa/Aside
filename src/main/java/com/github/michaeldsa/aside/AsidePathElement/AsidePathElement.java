@@ -4,6 +4,7 @@ import com.github.michaeldsa.aside.AsidePath.AsidePath;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
+import com.github.michaeldsa.aside.Testing.Test;
 import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 import com.github.michaeldsa.aside.Validation.ValidateString;
 
@@ -57,16 +58,18 @@ public abstract class AsidePathElement {
                 || ValidateAsidePath.BIBLIOGRAPHY_NAME.test(ap)
                 || ValidateAsidePath.DISCARDED_NOTE_NAME.test(ap)
                 || ValidateAsidePath.DISCARDED_BIBLIOGRAPHY_NAME.test(ap)
-                || ap.getPath().getFileName().endsWith(".txt");}
-    protected static boolean endsWithNoteName(AsidePath ap) {return ValidateAsidePath.NOTE_NAME.test(ap);}
+                || ap.getPath().getFileName().toString().endsWith(".txt");}
+    protected static boolean endsWithNoteName(AsidePath ap) {return ValidateString.NOTE_NAME.test(ap.getPath().getFileName().toString());}
     protected static boolean endsWithCategoryName(AsidePath ap) {return ValidateAsidePath.CATEGORY_NAME.test(ap);}
 
     protected static MetaPath filterMetaPathElements(MetaPath mp) {
         /* For use with Category or Note classes. Converts paths in adherence
         to rules of the sandbox. Subcategories may not be created in any member
-        of RestrictedLists.permanentDirectories. Notes may not be persisted to
-        asidepath root, or members of RestriectedLists.permanentDirectories. */
-        Path path = mp.getPath();
+        of RestrictedLists.permanentDirectories including DEFAULT. Notes
+        may not be persisted to asidepath root, or members of
+        RestriectedLists.permanentDirectories except for DEFAULT, which is
+        the default category in which notes are persisted */
+        final Path path = mp.getPath();
         MetaPath perm = new MetaPath(); // MetaPath root
 
         // return default if mp == metapath root.

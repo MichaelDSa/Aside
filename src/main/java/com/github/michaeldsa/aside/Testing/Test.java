@@ -2,19 +2,23 @@ package com.github.michaeldsa.aside.Testing;
 // I don't have time to learn unit testing,
 // so I'm writing this class to test stuff.
 
+import com.github.michaeldsa.aside.AsidePath.AsidePath;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsidePathElement.*;
 import com.github.michaeldsa.aside.Initialization.CurrentCategory;
 import com.github.michaeldsa.aside.FileTraversal.Traversers;
+import com.github.michaeldsa.aside.Initialization.RootPaths;
 import com.github.michaeldsa.aside.Ops.Create;
 import com.github.michaeldsa.aside.PathKeeper;
 import com.github.michaeldsa.aside.Pretty;
+import com.github.michaeldsa.aside.PropertiesUtil.NotePropertiesUtil;
 import com.github.michaeldsa.aside.PropertiesUtil.PropUtils;
 import com.github.michaeldsa.aside.Search.Search;
 import com.github.michaeldsa.aside.Settings.Settings;
 import com.github.michaeldsa.aside.Settings.TempSettings;
 import com.github.michaeldsa.aside.Validation.ValidatePath;
+import org.graalvm.nativeimage.IsolateThread;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,9 +33,25 @@ import java.util.stream.Stream;
 public class Test {
     public static PathKeeper pk = PathKeeper.INSTANCE;
     public static CurrentCategory cc = CurrentCategory.INSTANCE;
+    public static Path mpr = RootPaths.INSTANCE.getMetapath();
+    public static Path vpr = RootPaths.INSTANCE.getViewpath();
 
 
 
+    // print testing instead of using System.out.print.
+    // Makes it easier to find and delete when done with print tests.
+    public static void echo(String str) {
+        System.out.println(str);
+    }
+    public static void echo(Path p) {
+        System.out.println(p);
+    }
+    public static void echo(AsidePath ap) {
+        System.out.println(ap);
+    }
+    public static void echo(AsidePathElement ape) {
+        System.out.println(ape);
+    }
 
     public static void numberOfPathElements(){
         System.out.printf("Number of elements in `home_directory`: %s %s%n", pk.getHome_directory().getNameCount(), pk.getHome_directory() );
@@ -641,6 +661,113 @@ public class Test {
 
     public static void create_category(AsidePathElement ape) {
         Create.CATEGORY.execute(ape);
+    }
+
+    public static void tests_261019() {
+        // test each concrete AsidePathElement with AsidePathRoot:
+
+        System.out.println("\nTESTS: 261019");
+
+        // test each concrete element with mpr/vpr:
+        System.out.println("\n1) test each concrete AsidePathElement with mpr/vpr");
+        // Category
+//        System.out.println(new Category(new MetaPath(mpr)));
+//        System.out.println(new Category(new ViewPath(vpr)));
+        // Note
+//        System.out.println(new Note(new MetaPath(mpr)));
+//        System.out.println(new Note(new ViewPath(vpr)));
+//        System.out.println(new Note(new Category(new MetaPath(mpr))));
+//        System.out.println(new Note(new Note(new Category(new MetaPath(mpr)))));
+        // immutableNote
+//        System.out.println(new ImmutableNote(new Note(new MetaPath(mpr))));
+        // Bibliography
+//        System.out.println(new Bibliography(new MetaPath(mpr)));
+//        System.out.println(new Bibliography(new ViewPath(vpr)));
+//        System.out.println(new Bibliography(new BibliographyCategory(new MetaPath(mpr))));
+        // ImmutableBibliography
+//        System.out.println(new ImmutableBibliography(new Bibliography(new MetaPath(mpr))));
+//        System.out.println(new ImmutableBibliography(new Bibliography(new ViewPath(vpr))));
+        // DiscardedCategory
+//        System.out.println(DiscardedCategory.getInstance());
+        // DiscardedNote
+//        System.out.println(new DiscardedNote(new MetaPath(mpr))); // fails as expected.
+//        System.out.println(new DiscardedNote(new ViewPath(vpr))); // fails as expected.
+//        System.out.println(new DiscardedNote(new Note(new MetaPath(mpr))));
+//        System.out.println(new DiscardedNote(new Note(new ViewPath(vpr))));
+
+        // test each concrete element with Paths.get("[.]000000_0000_00.txt")
+        System.out.println("2) test each concrete AsidePathELement with '[.]000000_0000_00.txt'");
+        String mn = ".000000_0000_00.txt";
+        String vn = "000000_0000_00.txt";
+        MetaPath mname = new MetaPath(Paths.get(mn));
+        ViewPath vname = new ViewPath(Paths.get(vn));
+        // Category
+        System.out.println(new Category(mname));
+        System.out.println(new Category(vname));
+        // Note
+//        System.out.println(new Note(mname));
+//        System.out.println(new Note(vname));
+//        System.out.println(new Note(new Category(mname)));
+//        System.out.println(new Note(new Category(vname)));
+//        System.out.println(new Note(new Note(mname)));
+        // ImmutableNote
+//        System.out.println(new ImmutableNote(new Note(mname)));
+//        System.out.println(new ImmutableNote(new Note(vname)));
+        // BibliographyCategory
+//        System.out.println(new BibliographyCategory(mname)); // should fail
+//        System.out.println(new BibliographyCategory(vname)); // should fail
+        // Bibliography
+//        System.out.println(new Bibliography(mname)); // should fail
+//        System.out.println(new Bibliography(vname)); // should fail
+        MetaPath bmname = new BibliographyCategory(new MetaPath(mpr)).getMetaPath().resolve(new MetaPath(Paths.get(".b" + mn.substring(1))));
+        ViewPath bvname = new BibliographyCategory(new ViewPath(vpr)).getViewPath().resolve(new ViewPath(Paths.get("b" + vn)));
+        MetaPath bmcatname = new BibliographyCategory(new MetaPath(mpr)).getMetaPath().resolve(new MetaPath(Paths.get(".Dostoyevsky", ".The_Idiot", ".b" + mn.substring(1))));
+        ViewPath bvcatname = new BibliographyCategory(new ViewPath(vpr)).getViewPath().resolve(new ViewPath(Paths.get("Davies_Robertson", "Tempest_tossed", "b" + vn)));
+        System.out.println(bmname);
+        System.out.println(bvname);
+        System.out.println(bmcatname);
+        System.out.println(bvcatname);
+        System.out.println(new Bibliography(bmname));
+        System.out.println(new Bibliography(bvname));
+        System.out.println(new Bibliography(bmcatname));
+        System.out.println(new Bibliography(bvcatname));
+        // ImmutableBibliography
+        System.out.println(new ImmutableBibliography(new Bibliography(bmname)));
+        System.out.println(new ImmutableBibliography(new Bibliography(bvname)));
+        // DiscardedNote
+//        System.out.println(new DiscardedNote(new Note(mname)));
+//        System.out.println(new DiscardedNote(new Note(vname)));
+        String dmn = ".d" + mn.substring(1);
+        String dvn = "d" + vn;
+        MetaPath dmname = DiscardedCategory.getInstance().getMetaPath().resolve(new MetaPath(Paths.get(dmn)));
+        ViewPath dvname = DiscardedCategory.getInstance().getViewPath().resolve(new ViewPath(Paths.get(dvn)));
+//        System.out.println(new DiscardedNote(dmname));
+//        System.out.println(new DiscardedNote(dvname));
+        System.out.println("test BIBLIOGRAPHY arg in:  " + new BibliographyCategory(new ViewPath(Paths.get("BIBLIOGRAPHY"))));
+        System.out.println("test BIBLIOGRAPHY arg in:  " + new Bibliography(new BibliographyCategory(new ViewPath(Paths.get("BIBLIOGRAPHY")))));
+//        System.out.println("test extra permanent dir element arg in:  " + new BibliographyCategory(new ViewPath(Paths.get("BIBLIOGRAPHY", "Some_Author", "Novel", "BIBLIOGRAPHY", "Novel_name")))); // should fail
+//        System.out.println("test extra permanent dir element arg in:  " + new Bibliography(new BibliographyCategory(new ViewPath(Paths.get("BIBLIOGRAPHY", "Some_Author", "Novel", "BIBLIOGRAPHY", "Novel_name"))))); // should fail
+//        System.out.println("test extra permanent dir element arg in:  " + new Bibliography(new BibliographyCategory(new ViewPath(Paths.get("BIBLIOGRAPHY", "Some_Author", "Novel", "DISCARDED", "Novel_name"))))); // should fail
+//        System.out.println("test extra permanent dir element arg in:  " + new Bibliography(new BibliographyCategory(new ViewPath(Paths.get("BIBLIOGRAPHY", "Some_Author", "Novel", "DEFAULT", "Novel_name"))))); // should fail
+        System.out.println("test extra BIBLIOGRAPHY element arg in:  " + new Bibliography(new BibliographyCategory(new ViewPath(Paths.get("BIBLIOGRAPHY", "Some_Author", "Novel", "_DEFAULT", "Novel_name"))))); // passes, because '_DEFAULT'
+        System.out.println("test mpr:  " + new BibliographyCategory(new MetaPath(mpr)));
+        System.out.println("test vpr:  " + new BibliographyCategory(new ViewPath(vpr)));
+        // test CATEGORY:
+        System.out.println("test Category.getParent() on mpr/test:  " + new Category(new MetaPath(mpr).resolve(new MetaPath(Paths.get(".test")))).getParentCategory());
+        MetaPath m_default = new MetaPath().resolve(new MetaPath(Paths.get(RestrictedLists.getMetaPathDefaultDirectoryName())));
+        MetaPath m_discarded = new MetaPath().resolve(new MetaPath(Paths.get(RestrictedLists.getMetaPathDiscardedDirectoryName())));
+        MetaPath m_bibliography = new MetaPath().resolve(new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName())));
+        ViewPath v_default = new ViewPath().resolve(new ViewPath(Paths.get(RestrictedLists.getViewPathDefaultDirectoryName())));
+        ViewPath v_discarded = new ViewPath().resolve(new ViewPath(Paths.get(RestrictedLists.getViewPathDiscardedDirectoryName())));
+        ViewPath v_bibliography = new ViewPath().resolve(new ViewPath(Paths.get(RestrictedLists.getViewPathBibliographyDirectoryName())));
+//        System.out.println("Category test default:  " + new Category(m_default)); // should pass. passed
+//        System.out.println("Category test default:  " + new Category(v_default)); // should pass. passed
+//        System.out.println("Category test discarded:  " + new Category(m_discarded)); // should fail. failed
+//        System.out.println("Category test view discarded:  " + new Category(v_discarded)); // should fail. failed
+//        System.out.println("Category test meta bibliography:  " + new Category(m_bibliography)); // should fail. failed
+//        System.out.println("Category test view bibliography:  " + new Category(v_bibliography)); // should fail. failed
+        System.out.println("test subpath:  " + m_default.getPath().subpath(0, m_default.getPath().getNameCount() - 1));
+//        System.out.println("test Note with second perm category:  " + new Note(v_default.resolve(new ViewPath(Paths.get("Note", "DISCARDED", "Novel_name"))))); // should fail. failed
     }
 
 

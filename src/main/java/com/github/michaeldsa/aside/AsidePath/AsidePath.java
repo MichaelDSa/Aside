@@ -13,6 +13,12 @@ public abstract class AsidePath {
     public abstract boolean startsWithRoot();
 
     // getters/setters:
+
+    /* * AsidePath.getFileName cannot replace AsidePath.getPath().getFileName. The
+    * method removes the last element from the parameter, and resolves it to
+    * AsidePathRoot. Is effective when used with MetaPath.resolve, or
+    * ViewPath.resolve.
+    * */
     protected AsidePath getFileName(AsidePath asidePath) {
         if (!(asidePath.getPath().equals(getMetaPathRoot()) || asidePath.getPath().equals(getViewPathRoot()))) {
             if (asidePath instanceof MetaPath) {
