@@ -53,13 +53,15 @@ public abstract class AsidePathElement {
 
     // static methods:
     protected static boolean endsWithFileName(AsidePath ap) {
-        return ValidateAsidePath.NOTE.test(ap)
-                || ValidateAsidePath.BIBLIOGRAPHY.test(ap)
-                || ValidateAsidePath.DISCARDED_NOTE.test(ap)
-                || ValidateAsidePath.DISCARDED_BIBLIOGRAPHY.test(ap)
-                || ap.getPath().getFileName().toString().endsWith(".txt");}
+        String name = ap.getPath().getFileName().toString();
+        return ValidateName.NOTE.test(name)
+                || ValidateName.BIBLIOGRAPHY.test(name)
+                || ValidateName.DISCARDED_NOTE.test(name)
+                || ValidateName.DISCARDED_BIBLIOGRAPHY.test(name)
+                || name.endsWith(".txt");
+    }
     protected static boolean endsWithNoteName(AsidePath ap) {return ValidateName.NOTE.test(ap.getPath().getFileName().toString());}
-    protected static boolean endsWithCategoryName(AsidePath ap) {return ValidateAsidePath.CATEGORY.test(ap);}
+    protected static boolean endsWithCategoryName(AsidePath ap) {return ValidateName.CATEGORY.test(ap.getPath().getFileName().toString());}
 
     protected static MetaPath filterMetaPathElements(MetaPath mp) {
         /* For use with Category or Note classes. Converts paths in adherence

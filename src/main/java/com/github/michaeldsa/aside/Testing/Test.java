@@ -179,7 +179,7 @@ public class Test {
     }
 
     public static void createDefaultCategory() {
-        Create.createDefaultCategory();
+//        Create.createDefaultCategory();
     }
 
     public static void purgeViewPathOrphans() {
@@ -767,8 +767,76 @@ public class Test {
         System.out.println("test subpath:  " + m_default.getPath().subpath(0, m_default.getPath().getNameCount() - 1));
 //        System.out.println("test Note with second perm category:  " + new Note(v_default.resolve(new ViewPath(Paths.get("Note", "DISCARDED", "Novel_name"))))); // should fail. failed
     }
+    public static void tests_261031() {
+
+        // title:
+        System.out.println("\n\nTESTS MADE ON 261031: OCTOBER 31st, 2026:\n" + "-".repeat(41) + "\n" + "-".repeat(41) + "\n" );
+
+        Path mpr = RootPaths.INSTANCE.getMetapath();
+        Path vpr = RootPaths.INSTANCE.getViewpath();
+
+        // Test most basic instance of Category:
+        Test.echo(new Category(new MetaPath())); // success
+
+        // Test most basic instance of BibliographyCategory:
+        Test.echo(new BibliographyCategory(new MetaPath())); // success
+
+        // Test most basic instance of DiscardedCategory:
+        Test.echo(DiscardedCategory.getInstance()); // success
+
+        // Test Category with more complicated constructor uses:
+        Test.echo(new Category(new MetaPath(Paths.get(".BennyHill"))));
+        Test.echo(new Category(new ViewPath(Paths.get("BennyHill"))));
+
+        // Test Category for correct failures:
+//        Test.echo(new Category(new MetaPath(Paths.get(".BennyHill/.DEFAULT")))); // should fail. Failed.
+//        Test.echo(new Category(new MetaPath(Paths.get(".BennyHill/.DISCARDED")))); // should fail. Failed.
+//        Test.echo(new Category(new MetaPath(Paths.get(".BennyHill/.BIBLIOGRAPHY")))); // should fail. Failed.
+//        Test.echo(new Category(new ViewPath(Paths.get("BennyHill/DEFAULT")))); // should fail. Failed.
+//        Test.echo(new Category(new ViewPath(Paths.get("BennyHill/DISCARDED")))); // should fail. Failed.
+//        Test.echo(new Category(new ViewPath(Paths.get("BennyHill/BIBLIOGRAPHY")))); // should fail. Failed.
+        Test.echo(new Category(new ViewPath(Paths.get("BIBLIOGRAPHY/1BennyHill/YaketySax")))); // Should self correct. After changes, worked as expected.
+        Test.echo(new Category(new ViewPath(Paths.get("DEFAULT/2BennyHill/YaketySax")))); // should self correct. worked as expected
+        Test.echo(new Category(new ViewPath(Paths.get("BIBLIOGRAPHY/3BennyHill/YaketySax")))); // should self correct. worked as expected.
+
+        // Test BibliographyCategory more deeply
+        Path mbibCat = RestrictedLists.getBibliographyCategory().getMetaPath().getPath();
+        Path vbibCat = RestrictedLists.getBibliographyCategory().getViewPath().getPath();
+
+        Test.echo("mbibCat: " + new BibliographyCategory(new MetaPath(mbibCat.resolve(Paths.get(".b261031_1932_55.txt")))));
+        Test.echo("mbibCat: " + new BibliographyCategory(new MetaPath(mbibCat.resolve(Paths.get(".BennyHill", ".YaketySax", ".b261031_1932_55.txt")))));
+        Test.echo("vibCat: " + new BibliographyCategory(new ViewPath(vbibCat.resolve(Paths.get("BennyHill", "YaketySax", "b261031_1932_55.txt")))));
+//        Test.echo("vibCat: " + new BibliographyCategory(new ViewPath(vbibCat.resolve(Paths.get("BennyHill", "YaketySax", "d261031_1932_55.txt"))))); // should fail. failed.
+//        Test.echo("vibCat: " + new BibliographyCategory(new ViewPath(vbibCat.resolve(Paths.get("BennyHill", "YaketySax", "db261031_1932_55.txt"))))); // should fail. failed.
+//        Test.echo("vibCat: " + new BibliographyCategory(new ViewPath(vbibCat.resolve(Paths.get("BennyHill", "YaketySax", "261031_1932_55.txt"))))); // should fail. failed.
+
+        // should be able to omit BIBLIOGRAPHY permanent dir... Wrong! The constructor specifies that BIBLIOGRAPHY dir must be part of the arg. I don't see a problem with that.
+//        Test.echo("no BIBLIOGRAPHY: " + new BibliographyCategory(new MetaPath(Paths.get(".MikeMyers", ".AustinPowers", ".b261031_1952_06.txt"))));// should fail. arg must have full path, starting with BIBLIOGRAPHY dir.
+        Test.echo("CORRECTED: " + new BibliographyCategory(new MetaPath(mbibCat.resolve(Paths.get(".MikeMyers", ".AustinPowers", ".b261031_1952_06.txt"))))); // This is the corrected instance.
+
+        // Test Note
+        Test.echo("New Note, MetaPathRoot: " + new Note(new MetaPath())); // should have DEFAULT dir as parent.
+        Test.echo("New Note, ViewPathRoot: " + new Note(new ViewPath())); // should have DEFAULT dir as parent.
+        Test.echo("Note, in DEFAULT: " + new Note(new MetaPath(Paths.get(".261031_2224_55.txt"))));
+        Test.echo("Note, in DEFAULT: " + new Note(new MetaPath(Paths.get(".261031_2224_56.txt"))));
+
+        // Test Bibliography
+        Test.echo("Bibliography: " + new Bibliography(new MetaPath()));
+        Test.echo("Bibliography: " + new Bibliography(new ViewPath()));
+        Test.echo("Bibliography: " + new Bibliography(new MetaPath(mbibCat.resolve(Paths.get(".BoogieNights", ".DirkDiggler", ".HeatherGrahm", ".b269999_9999_99.txt")))));
+        Test.echo("Bibliography: " + new Bibliography(new MetaPath(mbibCat.resolve(Paths.get(".BoogieNights", ".DirkDiggler", ".HeatherGrahm", ".RollerGirl")))));
+
+        // Test DiscardedNote
+        Test.echo("DiscardedNote: " + new DiscardedNote(new Note(new MetaPath())));
+        Test.echo("DiscardedNote: " + new DiscardedNote(new Note(new ViewPath(Paths.get("990101_0000_00.txt")))));
+
+        // Test DiscardedBiliography
+        Test.echo("DiscardedBibliography: "+ new DiscardedBibliography(new Bibliography(new MetaPath())));
+    }
 
 
+    // CHANGES:
+    /* changes to AsidePathElement: correct validation methods */
 
 
 }

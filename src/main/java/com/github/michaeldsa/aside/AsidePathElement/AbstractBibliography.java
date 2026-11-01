@@ -4,6 +4,7 @@ import com.github.michaeldsa.aside.AsidePath.AsidePath;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
+import com.github.michaeldsa.aside.Validation.ValidateName;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -61,7 +62,9 @@ public abstract class AbstractBibliography extends AsidePathElement {
 
     // must end with a valid category filename, or a valid bibliography filename
     private static boolean hasBibFileNameOrHasNoFileName(AsidePath ap) {
-        return ValidateAsidePath.BIBLIOGRAPHY_CATEGORY.test(ap) || ValidateAsidePath.BIBLIOGRAPHY.test(ap);
+//        return ValidateAsidePath.BIBLIOGRAPHY_CATEGORY.test(ap) || ValidateAsidePath.BIBLIOGRAPHY.test(ap);
+        String name = ap.getPath().getFileName().toString();
+        return ValidateName.CATEGORY.test(name) || ValidateName.BIBLIOGRAPHY.test(name);
     }
 
     // determine if constructor should throw an IllegalArgumentException.

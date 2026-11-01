@@ -4,7 +4,6 @@ import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsidePathElement.*;
 import com.github.michaeldsa.aside.PropertiesUtil.PropUtils;
-import com.github.michaeldsa.aside.Initialization.RootPaths;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -169,17 +168,17 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
     public AsidePathElement execute(AsidePathElement ape) {
         return fops.execute(ape);
     }
-    public static boolean bibliographyCategoryExists() {
+    private static boolean bibliographyCategoryExists() {
         boolean mpisdir = Files.isDirectory(bibliographyCategory.getMetaPath().getPath());
         boolean vpisdir = Files.isDirectory(bibliographyCategory.getViewPath().getPath());
         return mpisdir && vpisdir;
     }
-    public static boolean defaultCategoryExists() {
+    private static boolean defaultCategoryExists() {
         boolean mpisdir = Files.isDirectory(defaultCategory.getMetaPath().getPath());
         boolean vpisdir = Files.isDirectory(defaultCategory.getViewPath().getPath());
         return mpisdir && vpisdir;
     }
-    public static boolean discardedElementDirectoryExists() {
+    private static boolean discardedElementDirectoryExists() {
         boolean mpisdir = Files.isDirectory(discardedCategory.getMetaPath().getPath());
         boolean vpisdir = Files.isDirectory(discardedCategory.getViewPath().getPath());
         return mpisdir && vpisdir;
@@ -190,36 +189,32 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
             // create the metapath directory.
             Path mpath = defaultCategory.getMetaPath().getPath();
             Path vpath  = defaultCategory.getViewPath().getPath();
-            try {
-                Files.createDirectories(mpath);
-                Files.createDirectories(vpath);
-            } catch (IOException e){
-                System.err.println("IOException in Create.createDefaultCategory().\n" + e.getMessage());
-            }
+            String exmsg = "IOException in Create.createDefaultCategory().\n";
+            createCustomCategory(mpath, vpath, exmsg);
         }
     }
     public static void createDiscardedCategory() {
         if (!discardedElementDirectoryExists()) {
             Path mpath = discardedCategory.getMetaPath().getPath();
             Path vpath  = discardedCategory.getViewPath().getPath();
-            try {
-                Files.createDirectories(mpath);
-                Files.createDirectories(vpath);
-            } catch (IOException e) {
-                System.err.println("IOException in Create.createDiscardedCategory().\n" + e.getMessage());
-            }
+            String exmsg = "IOException in Create.createDiscardedCategory().\n";
+            createCustomCategory(mpath, vpath, exmsg);
         }
     }
     public static void createBibliographyCategory() {
         if (!bibliographyCategoryExists()) {
             Path mpath = bibliographyCategory.getMetaPath().getPath();
             Path vpath  = bibliographyCategory.getViewPath().getPath();
-            try {
-                Files.createDirectories(mpath);
-                Files.createDirectories(vpath);
-            } catch (IOException e) {
-                System.err.println("IOException in Create.createBibliographyCategory().\n" + e.getMessage());
-            }
+            String exmsg = "IOException in Create.createBibliographyCategory().\n";
+            createCustomCategory(mpath, vpath, exmsg);
+        }
+    }
+    private static void createCustomCategory(Path mpath, Path vpath, String errmsg) {
+        try {
+            Files.createDirectories(mpath);
+            Files.createDirectories(vpath);
+        } catch (IOException e) {
+            System.err.println(errmsg + e.getMessage());
         }
     }
     public static void createPermanentCategories() {
