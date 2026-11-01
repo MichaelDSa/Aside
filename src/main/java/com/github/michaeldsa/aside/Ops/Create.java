@@ -186,35 +186,37 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
 
     public static void createDefaultCategory() {
         if (!defaultCategoryExists()) {
-            // create the metapath directory.
-            Path mpath = defaultCategory.getMetaPath().getPath();
-            Path vpath  = defaultCategory.getViewPath().getPath();
-            String exmsg = "IOException in Create.createDefaultCategory().\n";
-            createCustomCategory(mpath, vpath, exmsg);
+            // create DEFAULT
+            createCustomCategory(
+                defaultCategory.getMetaPath().getPath(),
+                defaultCategory.getViewPath().getPath(),
+                "IOException in Create.createDefaultCategory().\n" );
         }
     }
     public static void createDiscardedCategory() {
         if (!discardedElementDirectoryExists()) {
-            Path mpath = discardedCategory.getMetaPath().getPath();
-            Path vpath  = discardedCategory.getViewPath().getPath();
-            String exmsg = "IOException in Create.createDiscardedCategory().\n";
-            createCustomCategory(mpath, vpath, exmsg);
+            // create DISCARDED
+            createCustomCategory(
+                    discardedCategory.getMetaPath().getPath(),
+                    discardedCategory.getViewPath().getPath(),
+                    "IOException in Create.createDiscardedCategory().\n" );
         }
     }
     public static void createBibliographyCategory() {
         if (!bibliographyCategoryExists()) {
-            Path mpath = bibliographyCategory.getMetaPath().getPath();
-            Path vpath  = bibliographyCategory.getViewPath().getPath();
-            String exmsg = "IOException in Create.createBibliographyCategory().\n";
-            createCustomCategory(mpath, vpath, exmsg);
+            // create BIBLIOGRAPHY
+            createCustomCategory(
+                    bibliographyCategory.getMetaPath().getPath(),
+                    bibliographyCategory.getViewPath().getPath(),
+                    "IOException in Create.createBibliographyCategory().\n" );
         }
     }
-    private static void createCustomCategory(Path mpath, Path vpath, String errmsg) {
+    private static void createCustomCategory(Path mpath, Path vpath, String error_msg) {
         try {
             Files.createDirectories(mpath);
             Files.createDirectories(vpath);
         } catch (IOException e) {
-            System.err.println(errmsg + e.getMessage());
+            System.err.println(error_msg + e.getMessage());
         }
     }
     public static void createPermanentCategories() {

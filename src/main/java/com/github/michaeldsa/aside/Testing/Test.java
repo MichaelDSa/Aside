@@ -179,7 +179,7 @@ public class Test {
     }
 
     public static void createDefaultCategory() {
-//        Create.createDefaultCategory();
+        Create.createDefaultCategory();
     }
 
     public static void purgeViewPathOrphans() {
