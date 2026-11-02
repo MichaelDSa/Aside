@@ -833,6 +833,27 @@ public class Test {
         // Test DiscardedBiliography
         Test.echo("DiscardedBibliography: "+ new DiscardedBibliography(new Bibliography(new MetaPath())));
     }
+    public static void tests_261101() {
+        Create.CATEGORY.execute(new Category(new ViewPath(Paths.get("Homer", "Oddesius", "TheSimpsons")))); // works
+        Create.CATEGORY.execute(new Category(new ViewPath(Paths.get("BIBLIOGRAPHY", "Shakespear", "RomeoJuliet", "Capulets")))); // works. Also: does not allow use of '&' in filename
+
+        // Test Create.NOTE.execute:
+        Note testNote1 = new Note(new ViewPath(Paths.get("Homer")));
+        testNote1
+            .setTitle("Homer Simpson's list of amazing Donuts")
+            .setContent("Hi This is Homer Simpson. Here is my list of amazing Donuts. french cruller.. mmmmm french.");
+
+
+//        Create.NOTE.execute(testNote1);  // worked
+
+        // test Create.Category.andThen...
+        Note testNote2 = new Note(new ViewPath(Paths.get("TheSimpsons", "Homer")));
+        Category testCat1 = new Category(new ViewPath(Paths.get("TheSimpsons", "Homer")));
+//        Create.CATEGORY.andThen(Create.NOTE).execute(testNote2); // worked
+        ImmutableNote immutableNote1 = new ImmutableNote(testNote1);
+//        Create.CATEGORY.andThen(Create.NOTE).execute(immutableNote1); // worked
+
+    }
 
 
     // CHANGES:

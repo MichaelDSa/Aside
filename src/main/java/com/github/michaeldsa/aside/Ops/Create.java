@@ -14,7 +14,7 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
     CATEGORY(ape-> {
         // prerequisite: parameter must be Category or AbstractNote implementation.
         if (!(ape instanceof Category || ape instanceof AbstractNote)) {
-            System.err.println("Create.CATEGORY: Parameter must be Category or AbstractNote implementation");
+            System.err.println("Create.CATEGORY: Parameter must be Category or AbstractNote instance\n");
             return ape;
         }
         // get the Paths
@@ -40,15 +40,10 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
         //      new Category(new MetaPath(Paths.get(metaPathRoot, ".default"))) is fine,
         //  but new Category(new MetaPath(Paths.get(metaPathRoot, ".default", ".subdirectory))) is modified to:
         //      new Category(new MetaPath(Paths.get(metaPathRoot, ".subdirectory")))
-        // so we don't have to modify paths at this level.
+        // so we don't have to modify paths here, at this level.
         
         // create category
-        try {
-            Files.createDirectories(m_newCategory); // MetaPath
-            Files.createDirectories(v_newCategory); // ViewPath
-        } catch (IOException e) {
-            System.err.println("Create.NEW_CATEGORY failed \n" + e.getMessage());
-        }
+        createCustomCategory(m_newCategory, v_newCategory, "Create.CATEGORY failed\n");
         return ape;
     }),
     NOTE(ape -> {
@@ -56,7 +51,7 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
         Path m_note = ape.getMetaPath().getPath();
 
         if ( !(ape instanceof AbstractNote) ) {
-            System.err.println("Create.NOTE: Parameter must be AbstractNote implementation");
+            System.err.println("Create.NOTE: Parameter must be AbstractNote subclass instance\n");
             return ape;
         }
 
@@ -81,7 +76,7 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
     }),
     DISCARDED_NOTE(ape -> {
         if (!(ape instanceof DiscardedNote)) {
-            System.err.println("Create.DISCARDED_NOTE: Parameter must be a DiscardedNote instance");
+            System.err.println("Create.DISCARDED_NOTE: Parameter must be a DiscardedNote instance\n");
             return ape;
         }
 
@@ -96,7 +91,7 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
     }),
     DISCARDED_BIBLIOGRAPHY(ape -> {
         if (!(ape instanceof DiscardedBibliography)) {
-            System.err.println("Create.DISCARDED_BIBLIOGRAPHY: Parameter must be a DiscardedBibliography instance");
+            System.err.println("Create.DISCARDED_BIBLIOGRAPHY: Parameter must be a DiscardedBibliography instance\n");
             return ape;
         }
 
@@ -114,7 +109,7 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
         Path v_bibCat = ape.getViewPath().getPath();
 
         if (!(ape instanceof BibliographyCategory)) {
-            System.err.println("Create.BIBLIOGRAPHY_CATEGORY: Parameter must be a BibliographyCategory instance");
+            System.err.println("Create.BIBLIOGRAPHY_CATEGORY: Parameter must be a BibliographyCategory instance\n");
             return ape;
         }
 
@@ -125,19 +120,12 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
             return ape;
         }
 
-        try {
-            Files.createDirectories(m_bibCat);
-            Files.createDirectories(v_bibCat);
-        } catch (IOException e) {
-            System.err.println("Create.BIBLIOGRAPHY_CATEGORY failed \n" + e.getMessage());
-        }
-
-
+        createCustomCategory(m_bibCat, v_bibCat, "Create.BIBLIOGRAPHY_CATEGRY failed\n");
         return ape;
     }),
     BIBLIOGRAPHY(ape -> {
         if (!(ape instanceof Bibliography)) {
-            System.err.println("Create.BIBLIOGRAPHY: Parameter must be a Biblography instance");
+            System.err.println("Create.BIBLIOGRAPHY: Parameter must be a Bibliography instance\n");
             return ape;
         }
 

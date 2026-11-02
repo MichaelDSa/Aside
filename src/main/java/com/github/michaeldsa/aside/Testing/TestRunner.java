@@ -278,6 +278,7 @@ public class TestRunner {
             // Miscellaneous tests performed on 261019.d
 //            Test.tests_261019(); // forgotten, abandonded
 //            Test.tests_261031(); // satisfied.
+            Test.tests_261101();
 
 
 
