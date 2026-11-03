@@ -28,6 +28,12 @@ public abstract class AbstractNote extends AsidePathElement {
 
     // static methods:
 
+    // abstract methods from AsidePathElement
+    @Override
+    public Category getParentCategory() {
+        return new Category(metaPath);
+    }
+
     // methods for constructor use:
     protected boolean constructorArgIsInvalid(AsidePath ap) {
         /* If an AsidePath with a filename is submitted, it must be a

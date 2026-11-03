@@ -47,6 +47,11 @@ public abstract class AbstractBibliography extends AsidePathElement {
 
     // static methods:
 
+    // Abstract methods from AsidePathElement
+    @Override
+    public BibliographyCategory getParentCategory() {
+        return new BibliographyCategory(metaPath);
+    }
     // AsidePath must start with bibliographyCategory.
     private static boolean startsWithBibliographyCategory(AsidePath ap) {
         boolean success = false;

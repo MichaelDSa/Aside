@@ -12,8 +12,6 @@ import java.util.Objects;
 To handle subdirectories of BIBLIOGRAPHY AsidePath elements */
 public class BibliographyCategory extends AbstractCategory {
 
-    protected BibliographyCategory stepParent;
-
     public BibliographyCategory(MetaPath mp) {
         /* client can use metapath root to create a new
         BibliographyCategory instance pointing to default bibliography dirs */
@@ -42,8 +40,6 @@ public class BibliographyCategory extends AbstractCategory {
         viewPath = new ViewPath(metaPath);
         nest = new ArrayList<>();
 
-        // This class' fields:
-        this.stepParent = null;
     }
     public BibliographyCategory(ViewPath vp) {
         /* client can use viewpath root to create a new
@@ -73,8 +69,6 @@ public class BibliographyCategory extends AbstractCategory {
         metaPath = new MetaPath(viewPath);
         nest = new ArrayList<>();
 
-        // This class' fields:
-        this.stepParent = null;
     }
 
     public BibliographyCategory(BibliographyCategory bc) {
@@ -97,8 +91,6 @@ public class BibliographyCategory extends AbstractCategory {
         viewPath = new ViewPath(metaPath);
         nest = new ArrayList<>();
 
-        // This class' fields:
-        this.stepParent = null;
     }
 
     // static singleton BibliographyCategory that holds the root bib category;
@@ -108,6 +100,11 @@ public class BibliographyCategory extends AbstractCategory {
 
     public static BibliographyCategory getRootCategory() {
         return BibliographyCategoryHolder.bc;
+    }
+
+    @Override
+    public BibliographyCategory getParentCategory() {
+        return new BibliographyCategory(metaPath);
     }
 
 

@@ -77,6 +77,20 @@ public class Category extends AbstractCategory {
         // AbstractCategory fields
     }
 
+    public Category getParentCategory() {
+        return new Category(metaPath);
+    }
+
+    public void setParentCategory(Category newParentCategory) {
+        // validate by instantiation:
+        try {
+            metaPath = new Category(newParentCategory).getMetaPath().resolve(metaPath.getFileName());
+            viewPath = new ViewPath(metaPath);
+        } catch (IllegalArgumentException e) {
+            System.err.println("Category.setParentCategory: IllegalArgumentException. Argument must be Category");
+        }
+    }
+
     @Override
     public String toString() {
         return "Category{" +

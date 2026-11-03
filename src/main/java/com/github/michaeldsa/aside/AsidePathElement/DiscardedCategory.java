@@ -25,6 +25,12 @@ public class DiscardedCategory extends AbstractCategory{
         return DiscardedCategoryHolder.dc;
     }
 
+    // AbstractCagegory
+    @Override
+    public DiscardedCategory getParentCategory() {
+        return getInstance();
+    }
+
     @Override
     public String toString() {
         return "DiscardedCategory{" +

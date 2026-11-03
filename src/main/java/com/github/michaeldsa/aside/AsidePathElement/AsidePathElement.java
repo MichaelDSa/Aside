@@ -45,7 +45,7 @@ public abstract class AsidePathElement {
     }
 
     // abstract methods:
-    // none.
+    public abstract AbstractCategory getParentCategory();
 
     // static methods:
     protected static boolean endsWithFileName(AsidePath ap) {

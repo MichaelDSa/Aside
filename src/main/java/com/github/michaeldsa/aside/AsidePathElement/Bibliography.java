@@ -215,6 +215,15 @@ public class Bibliography extends AbstractBibliography {
 
 
     // setters and field modifiers:
+    public void setParentCategory(BibliographyCategory newParentBibliographyCategory) {
+        // validate by instantiating
+        try {
+            metaPath = new BibliographyCategory(newParentBibliographyCategory).getMetaPath().resolve(metaPath.getFileName());
+            viewPath = new ViewPath(metaPath);
+        } catch (IllegalArgumentException e) {
+            System.err.println("Bibliography.setParentCategory: IllegalArgumentException. Argument must be BibliographyCategory");
+        }
+    }
     public Bibliography setAuthors(ArrayList<Author> authors) {
         this.authors = authors;
         return this;
