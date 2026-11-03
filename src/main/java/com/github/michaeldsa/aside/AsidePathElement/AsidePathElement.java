@@ -45,11 +45,7 @@ public abstract class AsidePathElement {
     }
 
     // abstract methods:
-    // most of these methods are for subclasses that choose to include a Category stepParent field.
-    public abstract AbstractCategory getParentCategory();
-    public abstract AbstractCategory getStepParentCategory();
-    public abstract void setStepParentCategory(AbstractCategory newStepParent);
-    public abstract boolean hasStepParent();
+    // none.
 
     // static methods:
     protected static boolean endsWithFileName(AsidePath ap) {

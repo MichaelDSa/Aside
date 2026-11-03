@@ -12,7 +12,6 @@ import java.util.Objects;
 public class ImmutableBibliography extends AbstractBibliography {
     private final MetaPath metaPath;
     private final ViewPath viewPath;
-    private final BibliographyCategory stepParent;
     private final ArrayList<Author> authors;
     private final String title;
     private final HashSet<String> publishers;
@@ -33,7 +32,6 @@ public class ImmutableBibliography extends AbstractBibliography {
         }
         this.metaPath = bb.getMetaPath();
         this.viewPath = bb.getViewPath();
-        this.stepParent = (BibliographyCategory)bb.getStepParentCategory();
 
         this.authors = bb.getAuthors();
         this.title = bb.getTitle();
@@ -112,32 +110,18 @@ public class ImmutableBibliography extends AbstractBibliography {
     public ViewPath getViewPath() {
         return this.viewPath;
     }
-    @Override
-    public AbstractCategory getParentCategory() {
-        return new BibliographyCategory(this.metaPath);
-    }
-    @Override
-    public AbstractCategory getStepParentCategory() {
-        return this.stepParent;
-    }
-    @Override
-    public void setStepParentCategory(AbstractCategory category) { }
 
-    @Override
-    public boolean hasStepParent() {
-        return this.stepParent != null;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof ImmutableBibliography that)) return false;
         if (!super.equals(o)) return false;
-        return yearPublished == that.yearPublished && Objects.equals(metaPath, that.metaPath) && Objects.equals(viewPath, that.viewPath) && Objects.equals(stepParent, that.stepParent) && Objects.equals(authors, that.authors) && Objects.equals(title, that.title) && Objects.equals(comment, that.comment) && Objects.equals(references, that.references) && Objects.equals(isbn, that.isbn) && Objects.equals(doi, that.doi) && Objects.equals(url, that.url) && Objects.equals(arXiv_ID, that.arXiv_ID) && Objects.equals(ads_Bibcode, that.ads_Bibcode);
+        return yearPublished == that.yearPublished && Objects.equals(metaPath, that.metaPath) && Objects.equals(viewPath, that.viewPath) && Objects.equals(authors, that.authors) && Objects.equals(title, that.title) && Objects.equals(comment, that.comment) && Objects.equals(references, that.references) && Objects.equals(isbn, that.isbn) && Objects.equals(doi, that.doi) && Objects.equals(url, that.url) && Objects.equals(arXiv_ID, that.arXiv_ID) && Objects.equals(ads_Bibcode, that.ads_Bibcode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), metaPath, viewPath, stepParent, authors, title, yearPublished, comment, references, isbn, doi, url, arXiv_ID, ads_Bibcode);
+        return Objects.hash(super.hashCode(), metaPath, viewPath, authors, title, yearPublished, comment, references, isbn, doi, url, arXiv_ID, ads_Bibcode);
     }
 
     @Override
@@ -145,7 +129,6 @@ public class ImmutableBibliography extends AbstractBibliography {
         return "ImmutableBibliography{" +
                 "metaPath=" + metaPath +
                 ", viewPath=" + viewPath +
-                ", stepParent=" + stepParent +
                 ", authors='" + authors + '\'' +
                 ", title='" + title + '\'' +
                 ", yearPublished=" + yearPublished +

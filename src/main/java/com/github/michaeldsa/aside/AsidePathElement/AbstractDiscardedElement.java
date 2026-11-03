@@ -86,14 +86,7 @@ public abstract class AbstractDiscardedElement extends AsidePathElement {
 
 
     // inherited, use not expected.
-    @Override
-    public DiscardedCategory getParentCategory() { return DiscardedCategory.getInstance(); }
-    @Override
-    public AbstractCategory getStepParentCategory() { return null; }
-    @Override
-    public void setStepParentCategory(AbstractCategory newStepParent) { }
-    @Override
-    public boolean hasStepParent() { return false; }
+    // none
 
     @Override
     public boolean equals(Object o) {

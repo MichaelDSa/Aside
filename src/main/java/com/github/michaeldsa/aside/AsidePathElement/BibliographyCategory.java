@@ -121,44 +121,7 @@ public class BibliographyCategory extends AbstractCategory {
     }
 
     // inherited methods:
-    @Override
-    public BibliographyCategory getParentCategory() {
-        return new BibliographyCategory(metaPath.getParent());
-    }
-    @Override
-    public BibliographyCategory getStepParentCategory() {
-        return stepParent;
-    }
-    @Override
-    public void setStepParentCategory(AbstractCategory newStepParent) {
-        this.stepParent = (BibliographyCategory) newStepParent;
-
-    }
-    @Override
-    public boolean hasStepParent() {
-        return false;
-    }
-
+    // none.
     // Now write toString, equals & hashcode.
 
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof BibliographyCategory that)) return false;
-        if (!super.equals(o)) return false;
-        return Objects.equals(stepParent, that.stepParent);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), stepParent);
-    }
-
-    @Override
-    public String toString() {
-        return "BibliographyCategory{" +
-                "stepParent=" + stepParent +
-                ", metaPath=" + metaPath +
-                ", viewPath=" + viewPath +
-                '}';
-    }
 }

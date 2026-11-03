@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Category extends AbstractCategory {
-    protected Category stepParent;
 
     public Category(MetaPath mp) {
         if (AsidePathElement.endsWithFileName(mp)) {
@@ -31,7 +30,6 @@ public class Category extends AbstractCategory {
         nest = new ArrayList<>();
 
         // AbstractCategory fields
-        this.stepParent = null;
     }
     public Category(ViewPath vp) {
         if (AsidePathElement.endsWithFileName(vp)) {
@@ -54,7 +52,6 @@ public class Category extends AbstractCategory {
         nest = new ArrayList<>();
 
         // AbstractCategory fields
-        this.stepParent = null;
     }
     public Category(Category c) {
         MetaPath mp = c.getMetaPath();
@@ -78,51 +75,14 @@ public class Category extends AbstractCategory {
         nest = new ArrayList<>();
 
         // AbstractCategory fields
-        this.stepParent = null;
-    }
-
-    @Override
-    public Category getParentCategory() {
-        // returns default category if parent is AProot.
-        return new Category(metaPath.getParent());
-    }
-
-    @Override
-    public Category getStepParentCategory() {
-        return this.stepParent;
-    }
-
-    @Override
-    public void setStepParentCategory(AbstractCategory newStepParent) {
-        if (newStepParent instanceof Category) {
-            this.stepParent = (Category) newStepParent;
-        }
-    }
-
-    @Override
-    public boolean hasStepParent() {
-        return this.stepParent != null;
     }
 
     @Override
     public String toString() {
         return "Category{" +
-                "stepParent=" + stepParent +
-                ", stepParent=" + stepParent +
                 ", metaPath=" + metaPath +
                 ", viewPath=" + viewPath +
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Category category)) return false;
-        if (!super.equals(o)) return false;
-        return Objects.equals(this.stepParent, category.stepParent);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), this.stepParent);
-    }
 }

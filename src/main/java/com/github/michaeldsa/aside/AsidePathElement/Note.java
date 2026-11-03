@@ -32,7 +32,6 @@ public class Note extends AbstractNote{
         nest = new ArrayList<>();
 
         // AbstractNote fields:
-        stepParent = null;
         to = new HashSet<>();
         from = new HashSet<>();
         tags = new HashSet<>();
@@ -62,7 +61,6 @@ public class Note extends AbstractNote{
         nest = new ArrayList<>();
 
         // AbstractNote fields:
-        stepParent = null;
         to = new HashSet<>();
         from = new HashSet<>();
         tags = new HashSet<>();
@@ -91,7 +89,6 @@ public class Note extends AbstractNote{
         nest = new ArrayList<>();
 
         // AbstractNote fields:
-        stepParent = c.getStepParentCategory();
         to = new HashSet<>();
         from = new HashSet<>();
         tags = new HashSet<>();
@@ -113,7 +110,6 @@ public class Note extends AbstractNote{
         nest = mn.getNest();
 
         // AbstractNote fields:
-        stepParent = mn.getStepParentCategory();
         title = mn.getTitle();
         content = mn.getContent();
         to = mn.getTo();
@@ -122,7 +118,7 @@ public class Note extends AbstractNote{
         bibliographies = mn.getBibliographies();
 
         // This class' fields:
-        previousState = new ImmutableNote(mn);
+        previousState = mn.getPreviousState();
     }
 
     @Override
@@ -146,27 +142,15 @@ public class Note extends AbstractNote{
     @Override
     public ImmutableNote getPreviousState() { return previousState; }
 
-    @Override
-    public Category getParentCategory() { return new Category(metaPath); }
-
-    @Override
-    public Category getStepParentCategory() { return stepParent; }
-
-    @Override
-    public void setStepParentCategory(AbstractCategory newStepParent) { stepParent = (Category) newStepParent; }
-
     public Note setPreviousState() {
         previousState = new ImmutableNote(this);
         return this;
     }
 
-    @Override
-    public boolean hasStepParent() { return stepParent != null; }
-
-    // setters that replace existing values
-    public Note setStepParents(Category stepParent) {
-        setStepParentCategory(stepParent);
-        return this;
+    public void setParent(Category np) {
+        // validate & assign:
+        metaPath = new Category(np).getMetaPath().resolve(metaPath.getFileName());
+        viewPath = new ViewPath(metaPath);
     }
     public Note setTitle(String title) {
         this.title = title;
@@ -285,7 +269,6 @@ public class Note extends AbstractNote{
                 "previousState=" + previousState +
                 ", metaPath=" + metaPath +
                 ", viewPath=" + viewPath +
-                ", stepParent=" + stepParent +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", to=" + to +

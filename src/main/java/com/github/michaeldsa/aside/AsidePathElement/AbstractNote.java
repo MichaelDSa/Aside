@@ -8,7 +8,6 @@ import java.util.Objects;
 
 public abstract class AbstractNote extends AsidePathElement {
     // optional:
-    protected Category stepParent;
 
     protected String title;
     protected String content;
@@ -45,7 +44,6 @@ public abstract class AbstractNote extends AsidePathElement {
     @Override
     public String toString() {
         return "AbstractNote{" +
-                "stepParent=" + stepParent +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", to=" + to +
@@ -59,11 +57,11 @@ public abstract class AbstractNote extends AsidePathElement {
     public boolean equals(Object o) {
         if (!(o instanceof AbstractNote that)) return false;
         if (!super.equals(o)) return false;
-        return Objects.equals(stepParent, that.stepParent) && Objects.equals(title, that.title) && Objects.equals(content, that.content) && Objects.equals(to, that.to) && Objects.equals(from, that.from) && Objects.equals(tags, that.tags) && Objects.equals(bibliographies, that.bibliographies);
+        return Objects.equals(title, that.title) && Objects.equals(content, that.content) && Objects.equals(to, that.to) && Objects.equals(from, that.from) && Objects.equals(tags, that.tags) && Objects.equals(bibliographies, that.bibliographies);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), stepParent, title, content, to, from, tags, bibliographies);
+        return Objects.hash(super.hashCode(), title, content, to, from, tags, bibliographies);
     }
 }

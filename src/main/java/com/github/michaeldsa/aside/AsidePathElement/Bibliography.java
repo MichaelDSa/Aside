@@ -43,7 +43,6 @@ public class Bibliography extends AbstractBibliography {
 
 
         // AbstractBibliography fields:
-        stepParent = null;
         setBibFieldsToEmpty();
 
         // this class' fields:
@@ -77,7 +76,6 @@ public class Bibliography extends AbstractBibliography {
         nest = new ArrayList<>();
 
         // AbstractBibliography fields:
-        stepParent = null;
         setBibFieldsToEmpty();
 
         // this class' fields:
@@ -103,7 +101,6 @@ public class Bibliography extends AbstractBibliography {
         nest = new ArrayList<>();
 
         // AbstractBibliography fields:
-        stepParent = bc.getStepParentCategory();
         setBibFieldsToEmpty();
 
         // this class' fields:
@@ -122,7 +119,6 @@ public class Bibliography extends AbstractBibliography {
         nest = bb.getNest();
 
         // AbstractBibliography fields:
-        stepParent = (BibliographyCategory) bb.getStepParentCategory();
 
         authors = bb.getAuthors();
         title = bb.getTitle();
@@ -417,7 +413,6 @@ public class Bibliography extends AbstractBibliography {
     public String toString() {
         return "Bibliography{" +
                 "previousState=" + previousState +
-                ", stepParent=" + stepParent +
                 ", authors='" + authors + '\'' +
                 ", title='" + title + '\'' +
                 ", yearPublished=" + yearPublished +

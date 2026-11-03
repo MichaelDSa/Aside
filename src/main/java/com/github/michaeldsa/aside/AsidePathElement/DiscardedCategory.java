@@ -16,7 +16,6 @@ public class DiscardedCategory extends AbstractCategory{
     private DiscardedCategory(MetaPath mp) {
         metaPath = mp;
         viewPath = new ViewPath(mp);
-        stepParent = null;
     }
 
     private static class DiscardedCategoryHolder {
@@ -24,20 +23,6 @@ public class DiscardedCategory extends AbstractCategory{
     }
     public static DiscardedCategory getInstance() {
         return DiscardedCategoryHolder.dc;
-    }
-
-    @Override
-    public Category getParentCategory() { return new Category(new MetaPath()); }
-
-    @Override
-    public AbstractCategory getStepParentCategory() { return null; }
-
-    @Override
-    public void setStepParentCategory(AbstractCategory newStepParent) { }
-
-    @Override
-    public boolean hasStepParent() {
-        return false;
     }
 
     @Override

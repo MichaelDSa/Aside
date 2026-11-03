@@ -16,8 +16,6 @@ public abstract class AbstractBibliography extends AsidePathElement {
     protected static MetaPath bibliographyCategory_MetaPath = new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName()));
     protected static ViewPath bibliographyCategory_ViewPath = new ViewPath(Paths.get(RestrictedLists.getViewPathBibliographyDirectoryName()));
 
-    protected BibliographyCategory stepParent;
-
     private static final String m_prefix = ".b";
     private static final String v_prefix = "b";
 
@@ -85,43 +83,22 @@ public abstract class AbstractBibliography extends AsidePathElement {
     }
 
     // inherited from AsidePathElement
-    @Override
-    public AbstractCategory getParentCategory() {
-        return new BibliographyCategory(metaPath.getParent());
-    }
-
-    @Override
-    public AbstractCategory getStepParentCategory() {
-        return stepParent;
-    }
-
-    @Override
-    public void setStepParentCategory(AbstractCategory newStepParent) {
-        this.stepParent = (BibliographyCategory) newStepParent;
-    }
-
-    @Override
-    public boolean hasStepParent() {
-        return stepParent != null;
-    }
-
 
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof AbstractBibliography that)) return false;
         if (!super.equals(o)) return false;
-        return yearPublished == that.yearPublished && Objects.equals(stepParent, that.stepParent) && Objects.equals(authors, that.authors) && Objects.equals(title, that.title) && Objects.equals(comment, that.comment) && Objects.equals(references, that.references) && Objects.equals(isbn, that.isbn) && Objects.equals(doi, that.doi) && Objects.equals(url, that.url) && Objects.equals(arXiv_ID, that.arXiv_ID) && Objects.equals(ads_Bibcode, that.ads_Bibcode);
+        return yearPublished == that.yearPublished && Objects.equals(authors, that.authors) && Objects.equals(title, that.title) && Objects.equals(comment, that.comment) && Objects.equals(references, that.references) && Objects.equals(isbn, that.isbn) && Objects.equals(doi, that.doi) && Objects.equals(url, that.url) && Objects.equals(arXiv_ID, that.arXiv_ID) && Objects.equals(ads_Bibcode, that.ads_Bibcode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), stepParent, authors, title, yearPublished, comment, references, isbn, doi, url, arXiv_ID, ads_Bibcode);
+        return Objects.hash(super.hashCode(), authors, title, yearPublished, comment, references, isbn, doi, url, arXiv_ID, ads_Bibcode);
     }
 
     @Override
     public String toString() {
         return "AbstractBibliography{" +
-                "stepParent=" + stepParent +
                 ", authors='" + authors + '\'' +
                 ", title='" + title + '\'' +
                 ", yearPublished=" + yearPublished +
