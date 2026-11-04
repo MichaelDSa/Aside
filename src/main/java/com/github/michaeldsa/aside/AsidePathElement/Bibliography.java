@@ -133,7 +133,7 @@ public class Bibliography extends AbstractBibliography {
         ads_Bibcode = bb.getAds_Bibcode();
 
         // this class' fields:
-        previousState = new ImmutableBibliography(bb);
+        previousState = bb.getPreviousState();
     }
 
 
@@ -397,7 +397,9 @@ public class Bibliography extends AbstractBibliography {
         return this;
     }
     public Bibliography setPreviousState() {
-        previousState = new ImmutableBibliography(this);
+        if (previousState == null) {
+            previousState = new ImmutableBibliography(this);
+        }
         return this;
     }
 

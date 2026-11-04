@@ -143,7 +143,9 @@ public class Note extends AbstractNote{
     public ImmutableNote getPreviousState() { return previousState; }
 
     public Note setPreviousState() {
-        previousState = new ImmutableNote(this);
+        if (previousState == null) {
+            previousState = new ImmutableNote(this);
+        }
         return this;
     }
 
