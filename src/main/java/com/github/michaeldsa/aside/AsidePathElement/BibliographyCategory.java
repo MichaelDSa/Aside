@@ -6,11 +6,11 @@ import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Objects;
 
 /* Bibliography Category:
 To handle subdirectories of BIBLIOGRAPHY AsidePath elements */
 public class BibliographyCategory extends AbstractCategory {
+    private ImmutableBibliographyCategory previousState;
 
     public BibliographyCategory(MetaPath mp) {
         /* client can use metapath root to create a new
@@ -39,6 +39,12 @@ public class BibliographyCategory extends AbstractCategory {
         }
         viewPath = new ViewPath(metaPath);
         nest = new ArrayList<>();
+
+        // AbstractCategory fields:
+        // none
+
+        // this class' fields
+        previousState = new ImmutableBibliographyCategory(this);
 
     }
     public BibliographyCategory(ViewPath vp) {
@@ -69,6 +75,12 @@ public class BibliographyCategory extends AbstractCategory {
         metaPath = new MetaPath(viewPath);
         nest = new ArrayList<>();
 
+        // AbstractCategory fields:
+        // none
+
+        // this class' fields
+        previousState = new ImmutableBibliographyCategory(this);
+
     }
 
     public BibliographyCategory(BibliographyCategory bc) {
@@ -91,6 +103,12 @@ public class BibliographyCategory extends AbstractCategory {
         viewPath = new ViewPath(metaPath);
         nest = new ArrayList<>();
 
+        // AbstractCategory fields:
+        // none
+
+        // this class' fields
+        previousState = bc.getPreviousState(); // next: make this method.
+
     }
 
     // static singleton BibliographyCategory that holds the root bib category;
@@ -107,7 +125,6 @@ public class BibliographyCategory extends AbstractCategory {
         return new BibliographyCategory(metaPath);
     }
 
-
     /* Only BibCat or Bibliography may be added. Later we
     change this to BibCat, MutableBib, ImmutableBib */
     @Override
@@ -116,6 +133,30 @@ public class BibliographyCategory extends AbstractCategory {
             nest.add(ap);
         }
     }
+
+    public BibliographyCategory setParentCategory(BibliographyCategory newParentCategory) {
+        // validate by instantiation
+        try {
+            metaPath = new BibliographyCategory(newParentCategory).getMetaPath().resolve(metaPath.getFileName());
+            viewPath = new ViewPath(metaPath);
+        } catch (IllegalArgumentException e ) {
+            System.err.println("BibliographyuCategory.setParentCategory: IllegalArgumentException. Argument must be BibliographyCategory");
+        }
+        return this;
+    }
+
+
+    public ImmutableBibliographyCategory getPreviousState() {
+        return previousState;
+    }
+
+    public BibliographyCategory setPreviousState() {
+        if(previousState == null) {
+            this.previousState = new ImmutableBibliographyCategory(this);
+        }
+        return this;
+    }
+
 
     // inherited methods:
     // none.

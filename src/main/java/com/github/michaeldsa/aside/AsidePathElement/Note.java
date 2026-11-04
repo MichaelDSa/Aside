@@ -149,7 +149,7 @@ public class Note extends AbstractNote{
         return this;
     }
 
-    public void setParentCategory(Category newParentCategory) {
+    public Note setParentCategory(Category newParentCategory) {
         // validate by instantiating new Category
         try {
             metaPath = new Category(newParentCategory).getMetaPath().resolve(metaPath.getFileName());
@@ -157,6 +157,7 @@ public class Note extends AbstractNote{
         } catch (IllegalArgumentException e) {
             System.err.println("Note.setParentCategory: IllegalArgumentException. Argument must be Category");
         }
+        return this;
     }
     public Note setTitle(String title) {
         this.title = title;

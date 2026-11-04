@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Category extends AbstractCategory {
+    private ImmutableCategory previousState;
 
     public Category(MetaPath mp) {
         if (AsidePathElement.endsWithFileName(mp)) {
@@ -30,6 +31,10 @@ public class Category extends AbstractCategory {
         nest = new ArrayList<>();
 
         // AbstractCategory fields
+        // none
+
+        // this class' fields
+        previousState = null;
     }
     public Category(ViewPath vp) {
         if (AsidePathElement.endsWithFileName(vp)) {
@@ -52,6 +57,10 @@ public class Category extends AbstractCategory {
         nest = new ArrayList<>();
 
         // AbstractCategory fields
+        // none
+
+        // this class' state
+        previousState = null;
     }
     public Category(Category c) {
         MetaPath mp = c.getMetaPath();
@@ -75,13 +84,17 @@ public class Category extends AbstractCategory {
         nest = new ArrayList<>();
 
         // AbstractCategory fields
+        // none
+
+        // This class' fields:
+        previousState = c.getPreviousState();
     }
 
     public Category getParentCategory() {
-        return new Category(metaPath);
+        return new Category(metaPath.getParent());
     }
 
-    public void setParentCategory(Category newParentCategory) {
+    public Category setParentCategory(Category newParentCategory) {
         // validate by instantiation:
         try {
             metaPath = new Category(newParentCategory).getMetaPath().resolve(metaPath.getFileName());
@@ -89,7 +102,17 @@ public class Category extends AbstractCategory {
         } catch (IllegalArgumentException e) {
             System.err.println("Category.setParentCategory: IllegalArgumentException. Argument must be Category");
         }
+        return this;
     }
+
+    public Category setPreviousState() {
+        if (previousState == null) {
+            previousState = new ImmutableCategory(this);
+        }
+        return this;
+    }
+    public ImmutableCategory getPreviousState() { return previousState; }
+
 
     @Override
     public String toString() {
