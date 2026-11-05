@@ -404,6 +404,25 @@ public class Bibliography extends AbstractBibliography {
         return this;
     }
 
+    public Bibliography getInstanceWithSwappedStates() {
+        Bibliography instance = new Bibliography(this);
+        instance.previousState = null;
+        instance.setPreviousState();
+        instance.setParentCategory(this.previousState.getParentCategory())
+                .setAuthors(this.previousState.getAuthors())
+                .setTitle(this.previousState.getTitle())
+                .setPublishers(this.previousState.getPublishers())
+                .setYearPublished(this.previousState.getYearPublished())
+                .setComment(this.previousState.getComment())
+                .setReferences(this.previousState.getReferences())
+                .setIsbn(this.previousState.getIsbn())
+                .setDoi(this.previousState.getDoi())
+                .setUrl(this.previousState.getUrl())
+                .setArXiv_ID(this.previousState.getArXiv_ID())
+                .setAds_Bibcode(this.previousState.getAds_Bibcode());
+        return instance;
+    }
+
     // booleans:
     public boolean hasPreviousState() {
         return previousState != null;

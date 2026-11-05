@@ -63,6 +63,11 @@ public class ImmutableNote extends AbstractNote{
     public ImmutableNote getPreviousState() { return this; }
 
     @Override
+    public Category getParentCategory() {
+        return new Category(this.metaPath.getParent());
+    }
+
+    @Override
     public String toString() {
         return "ImmutableNote{" +
                 "metaPath=" + metaPath +

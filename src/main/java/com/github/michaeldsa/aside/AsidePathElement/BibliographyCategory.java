@@ -157,6 +157,14 @@ public class BibliographyCategory extends AbstractCategory {
         return this;
     }
 
+    public BibliographyCategory getInstanceWithSwappedStates() {
+        BibliographyCategory instance = new BibliographyCategory(this);
+        instance.previousState = null;
+        instance.setPreviousState();
+        instance.setParentCategory(this.previousState.getParentCategory());
+        return instance;
+    }
+
 
     // inherited methods:
     // none.

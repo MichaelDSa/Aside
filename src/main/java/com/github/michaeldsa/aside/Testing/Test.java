@@ -872,6 +872,19 @@ public class Test {
         System.out.println("OLD n2 DATA: " + n2.getPreviousState()); // should be in AsidePathHome/HolidayInn/PorkSuite   CONFIRMED! stdout is exactly the same.
         System.out.println("CURRENT N2 DATA: " + n2); // should be in AsidePathHome/DEFAULT   CONFIRMED! stdout is exactly the same.
     }
+    public static void tests_261104() {
+        Note n1 = new Note(new ViewPath(Paths.get("HolidayInn", "PorkSuite", "999999_9999_99.txt")))
+                .setTitle("Holiday Inn PorkSuite")
+                .setContent("I'm at the Holiday Inn, It's the Berkshire festival. I've booked the famous PorkSuite. It's not what it sounds like. They serve ham and maple syrup mustard all day");
+        n1.setPreviousState();
+        n1.setTitle("Corrected Holiday Inn DinoSuite")
+                .setContent("Correction. I'm still at the Holiday Inn, but I'm in the DinoSuite, where they feed you to a tyrannosaurus rex!")
+                .setParentCategory(new Category(new MetaPath()));
+        Note n2 = n1.getInstanceWithSwappedStates();
+        System.out.println("n1 DATA: " + n1);
+        System.out.println("n2 DATA: " + n2);
+
+    }
 
 
     // CHANGES:

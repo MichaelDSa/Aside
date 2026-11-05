@@ -103,6 +103,10 @@ public class ImmutableBibliography extends AbstractBibliography {
     }
 
     @Override
+    public BibliographyCategory getParentCategory() {
+        return new BibliographyCategory(this.metaPath);
+    }
+    @Override
     public MetaPath getMetaPath() {
         return this.metaPath;
     }

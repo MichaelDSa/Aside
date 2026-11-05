@@ -111,6 +111,14 @@ public class Category extends AbstractCategory {
         }
         return this;
     }
+
+    public Category getInstanceWithSwappedStates(){
+        Category instance = new Category(this);
+        instance.previousState = null;
+        instance.setPreviousState();
+        instance.setParentCategory(this.previousState.getParentCategory());
+        return instance;
+    }
     public ImmutableCategory getPreviousState() { return previousState; }
 
 

@@ -11,24 +11,24 @@ public class Note extends AbstractNote{
 
 
     // constructors:
-    public Note(MetaPath mp) {
+    public Note(MetaPath metaPath) {
         // check endings of parameter. must not end with anything other than Category or Note.
-        if (constructorArgIsInvalid(mp)) {
+        if (constructorArgIsInvalid(metaPath)) {
             System.err.println("IllegalArgumentException. Path must end with a Note or Category file name");
-            throw new IllegalArgumentException("Invalid Path argument:  " + mp);
+            throw new IllegalArgumentException("Invalid Path argument:  " + metaPath);
         }
 
         // AsidePathElement fields:
         /* filename assignment if necessary: */
-        metaPath = AsidePathElement.endsWithNoteName(mp) ? mp : AsidePathElement.generateUniqueFileName(mp);
+        this.metaPath = AsidePathElement.endsWithNoteName(metaPath) ? metaPath : AsidePathElement.generateUniqueFileName(metaPath);
         /* correct if starts with wrong category/directory: */
-        metaPath = AsidePathElement.filterMetaPathElements(metaPath);
+        this.metaPath = AsidePathElement.filterMetaPathElements(this.metaPath);
         /* validate new path: */
-        if (!ValidateAsidePath.NOTE.test(metaPath)) {
-            System.err.println("Note: invalid path argument mutation:  " + metaPath);
-            throw new IllegalArgumentException("Invalid path argument mutation:  " + metaPath);
+        if (!ValidateAsidePath.NOTE.test(this.metaPath)) {
+            System.err.println("Note: invalid path argument mutation:  " + this.metaPath);
+            throw new IllegalArgumentException("Invalid path argument mutation:  " + this.metaPath);
         }
-        viewPath = new ViewPath(metaPath);
+        viewPath = new ViewPath(this.metaPath);
         nest = new ArrayList<>();
 
         // AbstractNote fields:
@@ -40,24 +40,24 @@ public class Note extends AbstractNote{
         // This class' fields:
         previousState = null;
     }
-    public Note(ViewPath vp) {
+    public Note(ViewPath viewPath) {
         // if filename belongs to BIBLIOGRAPHY or DISCARDED:
-        if (constructorArgIsInvalid(vp)) {
+        if (constructorArgIsInvalid(viewPath)) {
             System.err.println("IllegalArgumentException. Path must end with a Note file name.");
-            throw new IllegalArgumentException("Invalid Path argument:  " + vp);
+            throw new IllegalArgumentException("Invalid Path argument:  " + viewPath);
         }
 
         // AsidePathElement fields:
         /* filename assignment if necessary: */
-        viewPath = AsidePathElement.endsWithNoteName(vp) ? vp : new ViewPath(AsidePathElement.generateUniqueFileName(new MetaPath(vp)));
+        this.viewPath = AsidePathElement.endsWithNoteName(viewPath) ? viewPath : new ViewPath(AsidePathElement.generateUniqueFileName(new MetaPath(viewPath)));
         /* correct if starts with wrong category/directory: */
-        viewPath = AsidePathElement.filterViewPathElements(viewPath);
+        this.viewPath = AsidePathElement.filterViewPathElements(this.viewPath);
         /* validate new path: */
-        if (!ValidateAsidePath.NOTE.test(viewPath)) {
-            System.err.println("Note: invalid path argument mutation:  " + viewPath);
-            throw new IllegalArgumentException("Invalid path argument mutation:  " + viewPath);
+        if (!ValidateAsidePath.NOTE.test(this.viewPath)) {
+            System.err.println("Note: invalid path argument mutation:  " + this.viewPath);
+            throw new IllegalArgumentException("Invalid path argument mutation:  " + this.viewPath);
         }
-        metaPath = new MetaPath(viewPath);
+        metaPath = new MetaPath(this.viewPath);
         nest = new ArrayList<>();
 
         // AbstractNote fields:
@@ -69,18 +69,18 @@ public class Note extends AbstractNote{
         // This class' fields:
         previousState = null;
     }
-    public Note(Category c){
+    public Note(Category category){
         /* unlikely, but can fail if cast to Category */
-        if (constructorArgIsInvalid(c.getMetaPath()) || !ValidateAsidePath.NOTE.test(c.getMetaPath())) {
+        if (constructorArgIsInvalid(category.getMetaPath()) || !ValidateAsidePath.NOTE.test(category.getMetaPath())) {
             System.err.println("IllegalArgumentException. Path must end with a Category file name");
-            throw new IllegalArgumentException("Invalid Path argument:  " + c.getMetaPath());
+            throw new IllegalArgumentException("Invalid Path argument:  " + category.getMetaPath());
         }
 
         // AsidePathElement fields:
         /* filename assignment if necessary: */
-        metaPath = AsidePathElement.generateUniqueFileName(c.getMetaPath());
+        metaPath = AsidePathElement.generateUniqueFileName(category.getMetaPath());
         /* correct if starts with wrong category/directory: */
-        metaPath = AsidePathElement.filterMetaPathElements(c.getMetaPath());
+        metaPath = AsidePathElement.filterMetaPathElements(category.getMetaPath());
         if (!ValidateAsidePath.NOTE.test(metaPath)) {
             System.err.println("Note: invalid path argument mutation:  " + metaPath);
             throw new IllegalArgumentException("Invalid path argument mutation:  " + metaPath);
@@ -97,28 +97,28 @@ public class Note extends AbstractNote{
         // This class' fields:
         previousState = null;
     }
-    public Note(Note mn){
+    public Note(Note note){
         /* unlikely, but can fail if cast to Note */
-        if (constructorArgIsInvalid(mn.getMetaPath()) || !ValidateAsidePath.NOTE.test(mn.getMetaPath())) {
+        if (constructorArgIsInvalid(note.getMetaPath()) || !ValidateAsidePath.NOTE.test(note.getMetaPath())) {
             System.err.println("IllegalArgumentException. Path must end with a Note file name");
-            throw new IllegalArgumentException("Invalid Path argument:  " + mn.getMetaPath());
+            throw new IllegalArgumentException("Invalid Path argument:  " + note.getMetaPath());
         }
 
         // AsidepathElement fields:
-        metaPath = mn.getMetaPath();
+        metaPath = note.getMetaPath();
         viewPath = new ViewPath(metaPath);
-        nest = mn.getNest();
+        nest = note.getNest();
 
         // AbstractNote fields:
-        title = mn.getTitle();
-        content = mn.getContent();
-        to = mn.getTo();
-        from = mn.getFrom();
-        tags = mn.getTags();
-        bibliographies = mn.getBibliographies();
+        title = note.getTitle();
+        content = note.getContent();
+        to = note.getTo();
+        from = note.getFrom();
+        tags = note.getTags();
+        bibliographies = note.getBibliographies();
 
         // This class' fields:
-        previousState = mn.getPreviousState();
+        previousState = note.getPreviousState();
     }
 
     @Override
@@ -147,6 +147,20 @@ public class Note extends AbstractNote{
             previousState = new ImmutableNote(this);
         }
         return this;
+    }
+
+    public Note getInstanceWithSwappedStates() {
+        Note instance = new Note(this);
+        instance.previousState = null;
+        instance.setPreviousState();
+        instance.setParentCategory(this.previousState.getParentCategory())
+                .setTitle(this.previousState.getTitle())
+                .setContent(this.previousState.getContent())
+                .setTo(this.previousState.getTo())
+                .setFrom(this.previousState.getFrom())
+                .setTags(this.previousState.getTags())
+                .setBibliographies(this.previousState.getBibliographies());
+        return instance;
     }
 
     public Note setParentCategory(Category newParentCategory) {
