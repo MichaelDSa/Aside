@@ -912,6 +912,12 @@ public class Test {
         Test.echo("bc1 DATA: " + bc1);
         Test.echo("bc2 DATA: " + bc2);
 
+        // test new MetaPath constructor:
+        MetaPath mp1 = new MetaPath(".table", ".couch", ".ottoman");
+        Test.echo("mp1 DATA: " + mp1);
+        ViewPath vp1 = new ViewPath("floor", "fan", "Vornado660");
+        Test.echo("vp1 DATA: " + vp1);
+
 
     }
 

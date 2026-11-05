@@ -3,6 +3,7 @@ package com.github.michaeldsa.aside.AsidePath;
 import com.github.michaeldsa.aside.AsidePathElement.RestrictedLists;
 
 import java.nio.file.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,7 +25,6 @@ public class MetaPath extends AsidePath{
             }
             this.path = path;
         } else {
-            System.out.println("IllegalArgumentException: " + path);
             throw new IllegalArgumentException("invalid Path argument " + path);
         }
     }
@@ -35,6 +35,19 @@ public class MetaPath extends AsidePath{
             this.path = candidate;
         } else {
             throw new IllegalArgumentException("Invalid path argument: " + viewPath);
+        }
+    }
+
+    public MetaPath(String first, String... more) {
+        Path path = Paths.get(first, more);
+        path = path.normalize();
+        if(validate(path)) {
+            if (!path.startsWith(getMetaPathRoot())) {
+                path = getMetaPathRoot().resolve(path);
+            }
+            this.path = path;
+        } else {
+            throw new IllegalArgumentException("invalid String, String[] argument " + first + ", " + Arrays.toString(more));
         }
     }
 

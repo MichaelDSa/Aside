@@ -5,6 +5,7 @@ import com.github.michaeldsa.aside.AsidePathElement.RestrictedLists;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 public class ViewPath extends AsidePath {
@@ -36,6 +37,19 @@ public class ViewPath extends AsidePath {
             this.path = candidate;
         } else {
             throw new IllegalArgumentException("Invalid path argument: " + metaPath);
+        }
+    }
+
+    public ViewPath(String first, String... more) {
+        Path path = Paths.get(first, more);
+        path = path.normalize();
+        if(validate(path)) {
+            if (!path.startsWith(getViewPathRoot())) {
+                path = resolve_to_viewpath_root(path);
+            }
+            this.path = path;
+        } else {
+            throw new IllegalArgumentException("invalid String, String[] argument " + first + ", " + Arrays.toString(more));
         }
     }
 
