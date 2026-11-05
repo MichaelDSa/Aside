@@ -135,12 +135,15 @@ public class BibliographyCategory extends AbstractCategory {
     }
 
     public BibliographyCategory setParentCategory(BibliographyCategory newParentCategory) {
-        // validate by instantiation
-        try {
-            metaPath = new BibliographyCategory(newParentCategory).getMetaPath().resolve(metaPath.getFileName());
-            viewPath = new ViewPath(metaPath);
-        } catch (IllegalArgumentException e ) {
-            System.err.println("BibliographyuCategory.setParentCategory: IllegalArgumentException. Argument must be BibliographyCategory");
+        // not possible if filename is BIBLIOGRAPHY.
+        if (!metaPath.getFileName().equals(AbstractBibliography.bibliographyCategory_MetaPath)) {
+            // validate by instantiation
+            try {
+                metaPath = new BibliographyCategory(newParentCategory).getMetaPath().resolve(metaPath.getFileName());
+                viewPath = new ViewPath(metaPath);
+            } catch (IllegalArgumentException e) {
+                System.err.println("BibliographyCategory.setParentCategory: IllegalArgumentException. Argument must be BibliographyCategory");
+            }
         }
         return this;
     }

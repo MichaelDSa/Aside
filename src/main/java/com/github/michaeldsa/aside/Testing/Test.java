@@ -873,6 +873,8 @@ public class Test {
         System.out.println("CURRENT N2 DATA: " + n2); // should be in AsidePathHome/DEFAULT   CONFIRMED! stdout is exactly the same.
     }
     public static void tests_261104() {
+        Test.echo("// TEST SWAPPED STATES METHOD:");
+        // TEST NOTE SWAPPED STATES
         Note n1 = new Note(new ViewPath(Paths.get("HolidayInn", "PorkSuite", "999999_9999_99.txt")))
                 .setTitle("Holiday Inn PorkSuite")
                 .setContent("I'm at the Holiday Inn, It's the Berkshire festival. I've booked the famous PorkSuite. It's not what it sounds like. They serve ham and maple syrup mustard all day");
@@ -881,8 +883,35 @@ public class Test {
                 .setContent("Correction. I'm still at the Holiday Inn, but I'm in the DinoSuite, where they feed you to a tyrannosaurus rex!")
                 .setParentCategory(new Category(new MetaPath()));
         Note n2 = n1.getInstanceWithSwappedStates();
-        System.out.println("n1 DATA: " + n1);
-        System.out.println("n2 DATA: " + n2);
+        Test.echo("n1 DATA: " + n1);
+        Test.echo("n2 DATA: " + n2);
+        // TEST CATEGORY SWAPPED STATES:
+        Category c1 = new Category(new ViewPath(Paths.get("Bernie_Sanders", "Midterm_elections")));
+        c1.setPreviousState();
+        c1.setParentCategory(new Category(new MetaPath()));
+        Category c2 = c1.getInstanceWithSwappedStates();
+        Test.echo("c1 DATA: " + c1);
+        Test.echo("c2 DATA: " + c2);
+        // TEST BIBLIOGRAPHY SWAPPED STATES:
+        Bibliography b1 = new Bibliography(new ViewPath(Paths.get("BIBLIOGRAPHY", "Frank_Herbert", "Dune")))
+                .setTitle("Dune is a Really Good Book")
+                .setComment("I think Dune is rly good, but it's too short")
+                .addNewAuthor("Herbert", "Frank");
+        b1.setPreviousState();
+        b1.setParentCategory(new BibliographyCategory(new MetaPath()))
+                .setTitle("Dune is a Pretty Good Book")
+                .setComment("I think Dune is  really, really good book, but it's too long");
+        Bibliography b2 = b1.getInstanceWithSwappedStates();
+        Test.echo("b1 DATA: " + b1);
+        Test.echo("b2 DATA: " + b2);
+        // TEST BIBLIOGRAPHYCATEGORY SWAPPED STATES:
+        BibliographyCategory bc1 = new BibliographyCategory(new MetaPath(Paths.get(".BIBLIOGRAPHY", ".Stupid_Books")));
+        bc1.setPreviousState();
+        bc1.setParentCategory(new BibliographyCategory(new ViewPath(Paths.get("BIBLIOGRAPHY", "Gordon_Corman")))); // should fail silently
+        BibliographyCategory bc2 = bc1.getInstanceWithSwappedStates(); // since above line failed, should be identical.
+        Test.echo("bc1 DATA: " + bc1);
+        Test.echo("bc2 DATA: " + bc2);
+
 
     }
 

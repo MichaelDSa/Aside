@@ -95,12 +95,15 @@ public class Category extends AbstractCategory {
     }
 
     public Category setParentCategory(Category newParentCategory) {
-        // validate by instantiation:
-        try {
-            metaPath = new Category(newParentCategory).getMetaPath().resolve(metaPath.getFileName());
-            viewPath = new ViewPath(metaPath);
-        } catch (IllegalArgumentException e) {
-            System.err.println("Category.setParentCategory: IllegalArgumentException. Argument must be Category");
+        // not possible if filename is DEFAULT
+        if (!metaPath.getFileName().equals(new Category(new MetaPath()).getMetaPath())) {
+            // validate by instantiation:
+            try {
+                metaPath = new Category(newParentCategory).getMetaPath().resolve(metaPath.getFileName());
+                viewPath = new ViewPath(metaPath);
+            } catch (IllegalArgumentException e) {
+                System.err.println("Category.setParentCategory: IllegalArgumentException. Argument must be Category");
+            }
         }
         return this;
     }
