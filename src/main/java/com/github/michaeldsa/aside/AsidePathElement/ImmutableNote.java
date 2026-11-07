@@ -5,7 +5,7 @@ import com.github.michaeldsa.aside.AsidePath.ViewPath;
 
 import java.util.*;
 
-public class ImmutableNote extends AbstractNote{
+class ImmutableNote extends AbstractNote{
     private final MetaPath metaPath;
     private final ViewPath viewPath;
     private final List<AsidePathElement> nest;
@@ -58,9 +58,6 @@ public class ImmutableNote extends AbstractNote{
 
     @Override
     public List<AsidePathElement> getNest() { return this.nest; }
-
-    @Override
-    public ImmutableNote getPreviousState() { return this; }
 
     @Override
     public Category getParentCategory() {

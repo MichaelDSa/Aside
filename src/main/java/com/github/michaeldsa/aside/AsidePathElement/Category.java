@@ -122,7 +122,7 @@ public class Category extends AbstractCategory {
         instance.setParentCategory(this.previousState.getParentCategory());
         return instance;
     }
-    public ImmutableCategory getPreviousState() { return previousState; }
+    private ImmutableCategory getPreviousState() { return previousState; }
 
 
     @Override

@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 
-public class ImmutableBibliography extends AbstractBibliography {
+class ImmutableBibliography extends AbstractBibliography {
     private final MetaPath metaPath;
     private final ViewPath viewPath;
     private final ArrayList<Author> authors;

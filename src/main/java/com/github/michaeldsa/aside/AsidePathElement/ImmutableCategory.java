@@ -5,7 +5,7 @@ import com.github.michaeldsa.aside.AsidePath.ViewPath;
 
 import java.util.List;
 
-public class ImmutableCategory extends AbstractCategory {
+class ImmutableCategory extends AbstractCategory {
     private final MetaPath metaPath;
     private final ViewPath viewPath;
     private final List<AsidePathElement> nest;

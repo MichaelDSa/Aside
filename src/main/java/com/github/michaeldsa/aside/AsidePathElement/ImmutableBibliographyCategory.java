@@ -5,7 +5,7 @@ import com.github.michaeldsa.aside.AsidePath.ViewPath;
 
 import java.util.List;
 
-public class ImmutableBibliographyCategory extends AbstractCategory {
+class ImmutableBibliographyCategory extends AbstractCategory {
     private final MetaPath metaPath;
     private final ViewPath viewPath;
     private final List<AsidePathElement> nest;

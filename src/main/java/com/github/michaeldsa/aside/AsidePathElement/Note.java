@@ -139,8 +139,7 @@ public class Note extends AbstractNote{
     @Override
     public HashSet<String> getBibliographies() { return bibliographies; }
 
-    @Override
-    public ImmutableNote getPreviousState() { return previousState; }
+    private ImmutableNote getPreviousState() { return previousState; }
 
     public Note setPreviousState() {
         if (previousState == null) {

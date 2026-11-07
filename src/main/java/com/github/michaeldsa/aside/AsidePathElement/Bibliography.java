@@ -209,7 +209,7 @@ public class Bibliography extends AbstractBibliography {
         return ads_Bibcode;
     }
 
-    public ImmutableBibliography getPreviousState() {
+    private ImmutableBibliography getPreviousState() {
         return previousState;
     }
 

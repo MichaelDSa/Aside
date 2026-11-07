@@ -730,8 +730,8 @@ public class Test {
         System.out.println(new Bibliography(bmcatname));
         System.out.println(new Bibliography(bvcatname));
         // ImmutableBibliography
-        System.out.println(new ImmutableBibliography(new Bibliography(bmname)));
-        System.out.println(new ImmutableBibliography(new Bibliography(bvname)));
+//        System.out.println(new ImmutableBibliography(new Bibliography(bmname))); // 261107: class now package-private
+//        System.out.println(new ImmutableBibliography(new Bibliography(bvname))); // 261107: class nwo pachage-private
         // DiscardedNote
 //        System.out.println(new DiscardedNote(new Note(mname)));
 //        System.out.println(new DiscardedNote(new Note(vname)));
@@ -850,7 +850,7 @@ public class Test {
         Note testNote2 = new Note(new ViewPath(Paths.get("TheSimpsons", "Homer")));
         Category testCat1 = new Category(new ViewPath(Paths.get("TheSimpsons", "Homer")));
 //        Create.CATEGORY.andThen(Create.NOTE).execute(testNote2); // worked
-        ImmutableNote immutableNote1 = new ImmutableNote(testNote1);
+//        ImmutableNote immutableNote1 = new ImmutableNote(testNote1); // 261107: package now has restricted access
 //        Create.CATEGORY.andThen(Create.NOTE).execute(immutableNote1); // worked
 
     }
@@ -866,10 +866,10 @@ public class Test {
         Note n2 = new Note(n1);
 
         // print old data:
-        System.out.println("OLD n1 DATA: " + n1.getPreviousState()); // should be in AsidePathHome/HolidayInn/PorkSuite   CONFIRMED!
+//        System.out.println("OLD n1 DATA: " + n1.getPreviousState()); // should be in AsidePathHome/HolidayInn/PorkSuite   CONFIRMED! // 261107: method made private
         System.out.println("CURRENT N1 DATA: " + n1); // should be in AsidePathHome/DEFAULT   CONFIRMED!
         System.out.println("n1 equals n2:  " + n1.equals(n2)); // should be true, (and it is) but it depends on how .equals is implemented.
-        System.out.println("OLD n2 DATA: " + n2.getPreviousState()); // should be in AsidePathHome/HolidayInn/PorkSuite   CONFIRMED! stdout is exactly the same.
+//        System.out.println("OLD n2 DATA: " + n2.getPreviousState()); // should be in AsidePathHome/HolidayInn/PorkSuite   CONFIRMED! stdout is exactly the same. // 261107: method made private
         System.out.println("CURRENT N2 DATA: " + n2); // should be in AsidePathHome/DEFAULT   CONFIRMED! stdout is exactly the same.
     }
     public static void tests_261104() {
@@ -927,7 +927,17 @@ public class Test {
                 .setContent("Hi This is Homer Simpson. Here is my list of amazing Donuts. french cruller.. mmmmm french.");
         PropUtils.writeNote(testNote1);
 
+        // PropertiesUtil subclasses now set to package-private (default access)
 //        NoteWriter nw = new NoteWriter(); // should fail. failed.
+
+        // Immutable classes now set to package-private (default access)
+        testNote1.setPreviousState(); // success
+        Test.echo(testNote1);
+//        Test.echo(testNote1.getPreviousState());// success // 261107: method made private
+//        ImmutableNote in = testNote1.getPreviousState(); // should fail. failed.
+//        AbstractNote immutable = testNote1.getPreviousState();// should succeed. succeeded // 261107 method made private
+//        Test.echo(immutable); // succeeded. // ImmutableX classes no longer accessible from outside package
+        // time to change access of getPreviousState() to private
     }
 
 

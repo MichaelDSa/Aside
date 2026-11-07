@@ -149,7 +149,7 @@ public class BibliographyCategory extends AbstractCategory {
     }
 
 
-    public ImmutableBibliographyCategory getPreviousState() {
+    private ImmutableBibliographyCategory getPreviousState() {
         return previousState;
     }
 
