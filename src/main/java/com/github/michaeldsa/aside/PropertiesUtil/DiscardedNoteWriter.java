@@ -4,7 +4,7 @@ import com.github.michaeldsa.aside.AsidePathElement.DiscardedNote;
 import com.github.michaeldsa.aside.Pretty;
 import com.github.michaeldsa.aside.Settings.Settings;
 
-public class DiscardedNoteWriter extends DiscardedNotePropertiesUtil {
+class DiscardedNoteWriter extends DiscardedNotePropertiesUtil {
 
     protected DiscardedNoteWriter() {
         super();

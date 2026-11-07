@@ -10,7 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-public abstract class PropertiesUtil {
+abstract class PropertiesUtil {
     public static String delimiter = "\u001f"; // looks like: ^_ or: US
     protected Properties properties;
 

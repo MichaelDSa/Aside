@@ -4,7 +4,7 @@ import com.github.michaeldsa.aside.AsidePathElement.AbstractBibliography;
 import com.github.michaeldsa.aside.Pretty;
 import com.github.michaeldsa.aside.Settings.Settings;
 
-public class BibliographyWriter extends BibliographyPropertiesUtil {
+class BibliographyWriter extends BibliographyPropertiesUtil {
 
     public BibliographyWriter() {
         super();

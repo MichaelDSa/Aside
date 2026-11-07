@@ -6,7 +6,7 @@ import com.github.michaeldsa.aside.AsidePathElement.DiscardedBibliography;
 
 import java.nio.file.Paths;
 
-public class DiscardedBibliographyRetriever extends DiscardedBibliographyPropertiesUtil {
+class DiscardedBibliographyRetriever extends DiscardedBibliographyPropertiesUtil {
     public DiscardedBibliographyRetriever() {
         super();
     }

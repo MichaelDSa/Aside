@@ -2,7 +2,7 @@ package com.github.michaeldsa.aside.PropertiesUtil;
 
 import com.github.michaeldsa.aside.AsidePathElement.Bibliography;
 
-public class BibliographyRetriever extends BibliographyPropertiesUtil {
+class BibliographyRetriever extends BibliographyPropertiesUtil {
 
     public BibliographyRetriever() {
         super();

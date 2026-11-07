@@ -4,7 +4,7 @@ import com.github.michaeldsa.aside.AsidePathElement.DiscardedBibliography;
 import com.github.michaeldsa.aside.Pretty;
 import com.github.michaeldsa.aside.Settings.Settings;
 
-public class DiscardedBibliographyWriter extends DiscardedBibliographyPropertiesUtil {
+class DiscardedBibliographyWriter extends DiscardedBibliographyPropertiesUtil {
     public DiscardedBibliographyWriter() {
         super();
     }

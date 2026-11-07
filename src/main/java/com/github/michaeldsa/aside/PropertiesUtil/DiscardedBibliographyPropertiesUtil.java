@@ -5,7 +5,7 @@ import com.github.michaeldsa.aside.AsidePathElement.DiscardedBibliography;
 import java.util.Arrays;
 import java.util.HashSet;
 
-public class DiscardedBibliographyPropertiesUtil extends DiscardedElementPropertiesUtil {
+class DiscardedBibliographyPropertiesUtil extends DiscardedElementPropertiesUtil {
     // all property key names:
     protected final String authors_k = "authors";
     protected final String title_k = "title";

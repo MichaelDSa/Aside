@@ -5,7 +5,7 @@ import com.github.michaeldsa.aside.AsidePathElement.AbstractNote;
 import java.util.Arrays;
 import java.util.HashSet;
 
-public abstract class NotePropertiesUtil extends PropertiesUtil{
+abstract class NotePropertiesUtil extends PropertiesUtil{
     // all property key names:
     protected final String filename_k = "filename";
     protected final String title_k = "title";

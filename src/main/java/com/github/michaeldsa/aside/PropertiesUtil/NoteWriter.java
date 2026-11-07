@@ -4,7 +4,7 @@ import com.github.michaeldsa.aside.AsidePathElement.AbstractNote;
 import com.github.michaeldsa.aside.Pretty;
 import com.github.michaeldsa.aside.Settings.Settings;
 
-public class NoteWriter extends NotePropertiesUtil {
+class NoteWriter extends NotePropertiesUtil {
 
     protected NoteWriter() {
         super();

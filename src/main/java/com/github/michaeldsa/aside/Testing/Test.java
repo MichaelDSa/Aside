@@ -920,6 +920,15 @@ public class Test {
 
 
     }
+    public static void tests_261107() {
+        Note testNote1 = new Note(new ViewPath(Paths.get("Homer")));
+        testNote1
+                .setTitle("Homer Simpson's list of amazing Donuts")
+                .setContent("Hi This is Homer Simpson. Here is my list of amazing Donuts. french cruller.. mmmmm french.");
+        PropUtils.writeNote(testNote1);
+
+//        NoteWriter nw = new NoteWriter(); // should fail. failed.
+    }
 
 
     // CHANGES:

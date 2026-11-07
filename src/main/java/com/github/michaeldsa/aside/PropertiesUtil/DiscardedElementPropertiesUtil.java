@@ -1,6 +1,6 @@
 package com.github.michaeldsa.aside.PropertiesUtil;
 
-public abstract class DiscardedElementPropertiesUtil extends PropertiesUtil {
+abstract class DiscardedElementPropertiesUtil extends PropertiesUtil {
     /* DiscardedElementPropertiesUtil is the parent
     of all retriever/writer & PropertyUtil classes of
     DiscardedElements. It's purpose is to declare constants shared

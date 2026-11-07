@@ -5,7 +5,7 @@ import com.github.michaeldsa.aside.AsidePathElement.DiscardedNote;
 import java.util.Arrays;
 import java.util.HashSet;
 
-public class DiscardedNotePropertiesUtil extends DiscardedElementPropertiesUtil {
+class DiscardedNotePropertiesUtil extends DiscardedElementPropertiesUtil {
     // all property key names:
     protected final String title_k = "title";
     protected final String content_k = "content";

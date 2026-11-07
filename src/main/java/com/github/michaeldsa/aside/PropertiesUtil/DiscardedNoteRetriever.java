@@ -6,7 +6,7 @@ import com.github.michaeldsa.aside.AsidePathElement.DiscardedNote;
 
 import java.nio.file.Paths;
 
-public class DiscardedNoteRetriever extends DiscardedNotePropertiesUtil {
+class DiscardedNoteRetriever extends DiscardedNotePropertiesUtil {
 
     protected DiscardedNoteRetriever() {
         super();

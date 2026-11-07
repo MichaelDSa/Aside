@@ -3,7 +3,7 @@ package com.github.michaeldsa.aside.PropertiesUtil;
 import com.github.michaeldsa.aside.AsidePathElement.Note;
 
 
-public class NoteRetriever extends NotePropertiesUtil {
+class NoteRetriever extends NotePropertiesUtil {
 
     protected NoteRetriever() {
         super();

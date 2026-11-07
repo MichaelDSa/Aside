@@ -5,7 +5,7 @@ import com.github.michaeldsa.aside.AsidePathElement.AbstractBibliography;
 import java.util.Arrays;
 import java.util.HashSet;
 
-public class BibliographyPropertiesUtil extends PropertiesUtil{
+class BibliographyPropertiesUtil extends PropertiesUtil{
     // all property key names:
     protected final String authors_k = "authors";
     protected final String title_k = "title";
