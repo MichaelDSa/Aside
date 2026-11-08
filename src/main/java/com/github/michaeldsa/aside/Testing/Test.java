@@ -971,8 +971,14 @@ public class Test {
         echo(new Note(new ViewPath("James_Bond", "Roger_Moore")));
         echo(new Note(new MetaPath(".James_Bond", ".Sean_Connery")));
         echo(new Note("James_Bond", "A_view_To_a_Kill"));
-        echo(new Note("James Bond", "A view To a Kill")); // spaces are not allowed. Failed.
-        // Should I allow spaces? 
+//        echo(new Note("James Bond", "A view To a Kill")); // spaces are not allowed. Failed.
+        // Should I allow spaces?
+
+        // Bibliography test: new constructors:
+        echo(new Bibliography());
+        echo(new Bibliography("BIBLIOGRAPHY", "william_shakespeare"));
+        echo(new Bibliography(new MetaPath(".BIBLIOGRAPHY", ".Buddhism", ".Zen", ".Zen_and_the_art_of_Motorcycle_Maintenance" )));
+        echo(new Bibliography(new ViewPath("BIBLIOGRAPHY", "Buddhism", "American_authors", "Zen", "Zen_and_the_art_of_Motorcycle_Maintenance" )));
 
     }
 

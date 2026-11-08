@@ -15,96 +15,22 @@ public class Bibliography extends AbstractBibliography {
     private ImmutableBibliography previousState;
 
 
-    public Bibliography(MetaPath mp) {
-        /* client can use metaPath_root to create a new bibliography
-        in the default bibliography category. */
-        if (mp.equals(new MetaPath())) {
-            mp = bibliographyCategory_MetaPath;
-        }
-        /* mp must start with BIBLIOGRAPHY category and must end
-        with either a bibliography filename or no filename. */
-        if (AbstractBibliography.constructorArgIsInvalid(mp)) {
-            System.err.println("InvalidArgumentException. Path must start with '.BIBLIOGRAPHY' and end with Bibliography file name.");
-            throw new IllegalArgumentException("Invalid Path argument: " + mp);
-        }
-
-        // AsidePathElement fields:
-        /* generate bibliography filename if necessary */
-        metaPath = ValidateName.BIBLIOGRAPHY.test(mp.getPath().getFileName().toString())
-                ? mp
-                : AbstractBibliography.generateNewBibliographyFileName(mp);
-        /* validate new path: */
-        if (!ValidateAsidePath.BIBLIOGRAPHY.test(metaPath)) {
-            System.err.println("Bibliography: invalid path argument mutation: " + metaPath);
-            throw new IllegalArgumentException("Invalid Path Argument mutation: " + metaPath);
-        }
-        viewPath = new ViewPath(metaPath);
-        nest = new ArrayList<>();
-
-
-        // AbstractBibliography fields:
-        setBibFieldsToEmpty();
-
-        // this class' fields:
-        previousState = null;
-
+    public Bibliography() {
+        constructorHelper(RestrictedLists.getMetaPathBibliographyDirectoryName());
     }
-    public Bibliography(ViewPath vp) {
-        /* client can use viewPath_root to create a new bibliography
-        in the default bibliography category. */
-        if (vp.equals(new ViewPath())) {
-            vp = bibliographyCategory_ViewPath;
-        }
-        /* vp must start with BIBLIOGRAPHY category and must end
-        with either a bibliography filename or no filename. */
-        if (AbstractBibliography.constructorArgIsInvalid(vp)) {
-            System.err.println("InvalidArgumentException. Path must start with 'BIBLIOGRAPHY' and end with Bibliography file name.");
-            throw new IllegalArgumentException("Invalid Path argument: " + vp);
-        }
-
-        // AsidePathElement fields:
-        /* ensure that viewPath ends with a Bibliography filename */
-        viewPath = ValidateName.BIBLIOGRAPHY.test(vp.getPath().getFileName().toString())
-                ? vp
-                : AbstractBibliography.generateNewBibliographyFileName(vp);
-        /* validate new path: */
-        if (!ValidateAsidePath.BIBLIOGRAPHY.test(viewPath)) {
-            System.err.println("Bibliography: invalid path argument mutation: " + viewPath);
-            throw new IllegalArgumentException("Invalid Path Argument mutation: " + viewPath);
-        }
-        metaPath = new MetaPath(viewPath);
-        nest = new ArrayList<>();
-
-        // AbstractBibliography fields:
-        setBibFieldsToEmpty();
-
-        // this class' fields:
-        previousState = null;
-
+    public Bibliography(MetaPath metaPath) {
+        constructorHelper(metaPath);
+    }
+    public Bibliography(ViewPath viewPath) {
+        constructorHelper(viewPath);
     }
     public Bibliography(BibliographyCategory bc) {
         /* unlikely, but arg can fail if cast to BibliographyCategory */
-        if (AbstractBibliography.constructorArgIsInvalid(bc.getMetaPath()) || AsidePathElement.endsWithFileName(bc.getMetaPath())) {
+        if (AsidePathElement.endsWithFileName(bc.getMetaPath())) {
             System.err.println("InvalidArgumentException. Path must start with '[.]BIBLIOGRAPHY' and end with Bibliography file name.");
             throw new IllegalArgumentException("Invalid Path argument: " + bc.getMetaPath());
         }
-
-        // AsidePathElement fields:
-        /* ensure that metaPath ends with a Bibliography filename.*/
-        metaPath = AbstractBibliography.generateNewBibliographyFileName(bc.getMetaPath());
-        /* validate new path: */
-        if (!ValidateAsidePath.BIBLIOGRAPHY.test(metaPath)) {
-            System.err.println("Bibliography: invalid path argument mutation: " + metaPath);
-            throw new IllegalArgumentException("Invalid Path Argument mutation: " + metaPath);
-        }
-        viewPath = new ViewPath(metaPath);
-        nest = new ArrayList<>();
-
-        // AbstractBibliography fields:
-        setBibFieldsToEmpty();
-
-        // this class' fields:
-        previousState = null;
+        constructorHelper(bc.getMetaPath());
     }
     public Bibliography(Bibliography bb) {
         /* unlikely, but arg can fail if cast to Bibliography */
@@ -135,10 +61,42 @@ public class Bibliography extends AbstractBibliography {
         // this class' fields:
         previousState = bb.getPreviousState();
     }
+    public Bibliography(String asidePath, String... more) {
+        constructorHelper(asidePath, more);
+    }
+    public Bibliography(String[] array) {
+        constructorHelper(array[0], Arrays.copyOfRange(array, 1, array.length));
+    }
+
+    // constructor helpers
+    private void constructorHelper(MetaPath mp) {
+        /* client can use metaPath_root to create a new bibliography
+        in the default bibliography category. */
+        if (mp.equals(new MetaPath())) {
+            mp = bibliographyCategory_MetaPath;
+        }
+        /* mp must start with BIBLIOGRAPHY category and must end
+        with either a bibliography filename or no filename. */
+        if (AbstractBibliography.constructorArgIsInvalid(mp)) {
+            System.err.println("InvalidArgumentException. Path must start with '.BIBLIOGRAPHY' and end with Bibliography file name.");
+            throw new IllegalArgumentException("Invalid Path argument: " + mp);
+        }
+
+        // AsidePathElement fields:
+        /* generate bibliography filename if necessary */
+        metaPath = ValidateName.BIBLIOGRAPHY.test(mp.getPath().getFileName().toString())
+                ? mp
+                : AbstractBibliography.generateNewBibliographyFileName(mp);
+        /* validate new path: */
+        if (!ValidateAsidePath.BIBLIOGRAPHY.test(metaPath)) {
+            System.err.println("Bibliography: invalid path argument mutation: " + metaPath);
+            throw new IllegalArgumentException("Invalid Path Argument mutation: " + metaPath);
+        }
+        viewPath = new ViewPath(metaPath);
+        nest = new ArrayList<>();
 
 
-    // Constructor helper methods:
-    private void setBibFieldsToEmpty() {
+        // AbstractBibliography fields:
         authors = new ArrayList<>();
         title = "";
         publishers = new HashSet<>();
@@ -150,7 +108,21 @@ public class Bibliography extends AbstractBibliography {
         url = new HashSet<>();
         arXiv_ID = new HashSet<>();
         ads_Bibcode = new HashSet<>();
+
+        // this class' fields:
+        previousState = null;
     }
+    private void constructorHelper(ViewPath vp) {
+        constructorHelper(new MetaPath(vp));
+    }
+    private void constructorHelper(String first, String... more) {
+        if(first.startsWith(".")) {
+            constructorHelper(new MetaPath(first, more));
+        } else {
+            constructorHelper(new ViewPath(first, more));
+        }
+    }
+
 
     // getters:
 
