@@ -10,6 +10,9 @@ import java.util.Arrays;
 public class Category extends AbstractCategory {
     private ImmutableCategory previousState;
 
+    public Category() {
+        constructorHelper(RestrictedLists.getMetaPathDefaultDirectoryName());
+    }
     public Category(MetaPath mp) {
         constructorHelper(mp);
     }

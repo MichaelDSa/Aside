@@ -963,6 +963,17 @@ public class Test {
         echo(bc1);
 //        BibliographyCategory bc2 = new BibliographyCategory("Wally", "June", "Ward");// should fail. Failed.
 
+        // Note test: new constructors:
+        Note n1 = new Note("261107_2212_00.txt");
+        echo(n1);
+        echo(new Note()); // added default constructor
+        echo(new Category()); // added default constructor
+        echo(new Note(new ViewPath("James_Bond", "Roger_Moore")));
+        echo(new Note(new MetaPath(".James_Bond", ".Sean_Connery")));
+        echo(new Note("James_Bond", "A_view_To_a_Kill"));
+        echo(new Note("James Bond", "A view To a Kill")); // spaces are not allowed. Failed.
+        // Should I allow spaces? 
+
     }
 
 
