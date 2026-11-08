@@ -6,6 +6,7 @@ import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /* Bibliography Category:
 To handle subdirectories of BIBLIOGRAPHY AsidePath elements */
@@ -13,6 +14,25 @@ public class BibliographyCategory extends AbstractCategory {
     private ImmutableBibliographyCategory previousState;
 
     public BibliographyCategory(MetaPath mp) {
+        constructorHelper(mp);
+    }
+    public BibliographyCategory(ViewPath vp) {
+        constructorHelper(vp);
+    }
+
+    public BibliographyCategory(BibliographyCategory bc) {
+        constructorHelper(bc.getMetaPath());
+        nest = bc.getNest();
+        previousState = bc.getPreviousState();
+    }
+    public BibliographyCategory(String first, String... more) {
+        constructorHelper(first, more);
+    }
+    public BibliographyCategory(String[] array) {
+        constructorHelper(array[0], Arrays.copyOfRange(array, 1, array.length));
+    }
+
+    private void constructorHelper(MetaPath mp) {
         /* client can use metapath root to create a new
         BibliographyCategory instance pointing to default bibliography dirs */
         if(mp.equals(new MetaPath())) {
@@ -44,72 +64,19 @@ public class BibliographyCategory extends AbstractCategory {
         // none
 
         // this class' fields
-        previousState = new ImmutableBibliographyCategory(this);
-
+        previousState = null;
     }
-    public BibliographyCategory(ViewPath vp) {
-        /* client can use viewpath root to create a new
-        BibliographyCategory instance pointing to default bibliography dirs */
-        if (vp.equals(new ViewPath())) {
-            vp = AbstractBibliography.bibliographyCategory_ViewPath;
+    private void constructorHelper(ViewPath vp) {
+        constructorHelper(new MetaPath(vp));
+    }
+    private void constructorHelper(String first, String... more) {
+        if (first.startsWith(".")) {
+            constructorHelper(new MetaPath(first, more));
+        } else {
+            constructorHelper(new ViewPath(first, more));
         }
-        if (AbstractBibliography.constructorArgIsInvalid(vp)) {
-            System.err.println("IllegalArgumentException");
-            throw new IllegalArgumentException("Invalid Path argument BibliogrphyCategory(ViewPath vp): " + vp);
-        }
-
-        // AsidePathElement fields:
-        /* must not end with filename. */
-        viewPath = AsidePathElement.endsWithFileName(vp)
-                ? vp.getParent()
-                : vp;
-        /* must start with correct dir */
-        viewPath = viewPath.startsWith(new ViewPath(Paths.get(RestrictedLists.getViewPathBibliographyDirectoryName())))
-                ? viewPath
-                : new ViewPath(Paths.get(RestrictedLists.getViewPathBibliographyDirectoryName())).resolve(viewPath);
-        /* validate new path: */
-        if (!ValidateAsidePath.BIBLIOGRAPHY_CATEGORY.test(viewPath)) {
-            System.err.println("BibliographyCategory: invalid path argument mutation: " + viewPath);
-            throw new IllegalArgumentException("Invalid Path Argument mutation: " + viewPath);
-        }
-        metaPath = new MetaPath(viewPath);
-        nest = new ArrayList<>();
-
-        // AbstractCategory fields:
-        // none
-
-        // this class' fields
-        previousState = new ImmutableBibliographyCategory(this);
-
     }
 
-    public BibliographyCategory(BibliographyCategory bc) {
-        /* unlikely, but can fail if cast to BibliographyCategory */
-        if (AbstractBibliography.constructorArgIsInvalid(bc.getMetaPath()) || AsidePathElement.endsWithFileName(bc.getMetaPath())) {
-            System.err.println("IllegalArgumentException");
-            throw new IllegalArgumentException("Invalid Path argument BibliographyCategory(MetaPath mp): " + bc.getMetaPath());
-        }
-
-        // AsidePathElement fields:
-        /* must start with correct dir */
-        metaPath = bc.getMetaPath().startsWith(new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName())))
-                ? bc.getMetaPath()
-                : new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName())).resolve(metaPath);
-        /* validate new path: */
-        if (!ValidateAsidePath.BIBLIOGRAPHY_CATEGORY.test(metaPath)) {
-            System.err.println("BibliographyCategory: invalid path argument mutation: " + metaPath);
-            throw new IllegalArgumentException("Invalid Path Argument mutation: " + metaPath);
-        }
-        viewPath = new ViewPath(metaPath);
-        nest = new ArrayList<>();
-
-        // AbstractCategory fields:
-        // none
-
-        // this class' fields
-        previousState = bc.getPreviousState(); // next: make this method.
-
-    }
 
     // static singleton BibliographyCategory that holds the root bib category;
     private static class BibliographyCategoryHolder {

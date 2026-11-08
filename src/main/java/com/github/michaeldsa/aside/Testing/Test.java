@@ -951,12 +951,17 @@ public class Test {
 //        test_arraycopy("Michael", "Alfred", "James", "Steven", "Joseph", "Rosita", "John", "Julie", "Desmond", "Patrick");
 
 
-        // Category: test new constructdors
+        // Category: test new constructors;
         Category c1 = new Category("David_Rocco", "Made_in_Italy");
         echo(c1);
         String[] args = {"Financial_books", "Mary_Buffett", "Buffettology"};
         Category c2 = new Category(args);
         echo(c2);
+
+        // BibliographyCategory: test new constructors:
+        BibliographyCategory bc1 = new BibliographyCategory("BIBLIOGRAPHY", "Beaver", "Cleaver");
+        echo(bc1);
+//        BibliographyCategory bc2 = new BibliographyCategory("Wally", "June", "Ward");// should fail. Failed.
 
     }
 

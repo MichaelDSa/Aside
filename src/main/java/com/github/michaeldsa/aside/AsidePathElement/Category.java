@@ -18,6 +18,7 @@ public class Category extends AbstractCategory {
     }
     public Category(Category c) {
         constructorHelper(c.getMetaPath());
+        nest = c.getNest();
         previousState = c.getPreviousState();
     }
     public Category(String asidePath, String... more) {
