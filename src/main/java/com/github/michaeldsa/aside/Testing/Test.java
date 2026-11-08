@@ -938,11 +938,29 @@ public class Test {
 //        AbstractNote immutable = testNote1.getPreviousState();// should succeed. succeeded // 261107 method made private
 //        Test.echo(immutable); // succeeded. // ImmutableX classes no longer accessible from outside package
         // time to change access of getPreviousState() to private
+
+        // System.arraycopy
+        String[] sa0 = {"second", "third", "fourth", "fifth"};
+        String[] sa2 = {};
+        String[] sa1 = new String[1 + sa2.length];
+        sa1[0] = "first";
+        System.arraycopy(sa2, 0, sa1, 1, sa2.length);
+        System.out.println(Arrays.toString(sa1));
+
+        System.out.println("\n");
+//        test_arraycopy("Michael", "Alfred", "James", "Steven", "Joseph", "Rosita", "John", "Julie", "Desmond", "Patrick");
+
+
+        // Category: test new constructdors
+        Category c1 = new Category("David_Rocco", "Made_in_Italy");
+        echo(c1);
+        String[] args = {"Financial_books", "Mary_Buffett", "Buffettology"};
+        Category c2 = new Category(args);
+        echo(c2);
+
     }
 
 
-    // CHANGES:
-    /* changes to AsidePathElement: correct validation methods */
 
 
 }

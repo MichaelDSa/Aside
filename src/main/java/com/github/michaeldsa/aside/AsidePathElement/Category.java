@@ -5,12 +5,29 @@ import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.Arrays;
 
 public class Category extends AbstractCategory {
     private ImmutableCategory previousState;
 
     public Category(MetaPath mp) {
+        constructorHelper(mp);
+    }
+    public Category(ViewPath vp) {
+        constructorHelper(vp);
+    }
+    public Category(Category c) {
+        constructorHelper(c.getMetaPath());
+        previousState = c.getPreviousState();
+    }
+    public Category(String asidePath, String... more) {
+        constructorHelper(asidePath, more);
+    }
+    public Category(String[] array) {
+        constructorHelper(array[0], Arrays.copyOfRange(array, 1, array.length));
+    }
+
+    private void constructorHelper(MetaPath mp) {
         if (AsidePathElement.endsWithFileName(mp)) {
             metaPath = mp.getParent();
         } else if (AsidePathElement.endsWithCategoryName(mp)) {
@@ -36,58 +53,15 @@ public class Category extends AbstractCategory {
         // this class' fields
         previousState = null;
     }
-    public Category(ViewPath vp) {
-        if (AsidePathElement.endsWithFileName(vp)) {
-            viewPath = vp.getParent();
-        } else if (AsidePathElement.endsWithCategoryName(vp)) {
-            viewPath = vp;
-        } else {
-            System.err.println("IllegalArgumentException");
-            throw new IllegalArgumentException("Invalid Path Argument: " + vp);
-        }
-
-        // AsidePathElement fields
-        viewPath = AsidePathElement.filterViewPathElements(viewPath);
-        /* validate new path: */
-        if (!ValidateAsidePath.CATEGORY.test(viewPath)) {
-            System.err.println("Category: invalid path argument mutation:  " + viewPath);
-            throw new IllegalArgumentException("Invalid path argument mutation:  " + viewPath);
-        }
-        metaPath = new MetaPath(viewPath);
-        nest = new ArrayList<>();
-
-        // AbstractCategory fields
-        // none
-
-        // this class' state
-        previousState = null;
+    private void constructorHelper(ViewPath vp) {
+        constructorHelper(new MetaPath(vp));
     }
-    public Category(Category c) {
-        MetaPath mp = c.getMetaPath();
-        if (AsidePathElement.endsWithFileName(mp)) {
-            metaPath = mp.getParent();
-        } else if (AsidePathElement.endsWithCategoryName(mp)) {
-            metaPath = mp;
+    private void constructorHelper(String first, String... more) {
+        if (first.startsWith(".")) {
+            constructorHelper(new MetaPath(first, more));
         } else {
-            System.err.println("IllegalArgumentException");
-            throw new IllegalArgumentException("Invalid Path Argument: " + mp);
+            constructorHelper(new ViewPath(first, more));
         }
-
-        // AsidePathElement fields
-        metaPath = AsidePathElement.filterMetaPathElements(metaPath);
-        /* validate new path: */
-        if (!ValidateAsidePath.CATEGORY.test(metaPath)) {
-            System.err.println("Category: invalid path argument mutation:  " + metaPath);
-            throw new IllegalArgumentException("Invalid path argument mutation:  " + metaPath);
-        }
-        viewPath = new ViewPath(metaPath);
-        nest = new ArrayList<>();
-
-        // AbstractCategory fields
-        // none
-
-        // This class' fields:
-        previousState = c.getPreviousState();
     }
 
     public Category getParentCategory() {
