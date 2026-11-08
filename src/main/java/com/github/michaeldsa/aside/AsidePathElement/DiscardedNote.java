@@ -34,70 +34,13 @@ public class DiscardedNote extends AbstractDiscardedElement {
     private HashSet<String> bibliographies;
 
 
-    // constructor validation method(s):
-    private boolean constructorArgIsInvalid(AsidePath ap) {
-        return !ValidateAsidePath.DISCARDED_NOTE.test(ap) || !startsWithDiscardedCategory(ap);
-    }
-
     // constructors:
-
     public DiscardedNote(MetaPath mp) {
-        // mp must begin with DISCARDED Category, and end with a DiscardedNote filename.
-        if(constructorArgIsInvalid(mp)) {
-            System.err.println("IllegalArgumentException. Path must start with '.DISCARDED' MetaPath Category, and end with DiscardedNote filename.");
-            throw new IllegalArgumentException("Invalid Path argument: " + mp);
-        }
-
-
-        // AbstractDiscardedElement fields:
-        fileTypeName = fileTypeName_note;
-        fileNamePrefix = fileNamePrefix_discardedNote;
-        originalMetaPath = null;
-        originalViewPath = null;
-
-        // AsidePathElement fields:
-        // DiscardedElement may only have parent .DISCARDED and DISCARDED.
-        metaPath = mp;
-        viewPath = new ViewPath(metaPath);
-        nest = new ArrayList<>();
-
-        // this class' fields:
-        title = "";
-        content = "";
-        message = "";
-        to = new HashSet<>();
-        from = new HashSet<>();
-        tags = new HashSet<>();
-        bibliographies = new HashSet<>();
+        constructorHelper(mp);
     }
-
     public DiscardedNote(ViewPath vp) {
-        // vp must begin with DISCARDED category, and end with a DiscardedNote filename
-        if(constructorArgIsInvalid(vp)) {
-            System.err.println("IllegalArgumentException. Path must start with 'DISCARDED' ViewPath Category, and end with DiscardedNote filename.");
-            throw new IllegalArgumentException("Invalid Path argument: " + vp);
-        }
-        // AbstractDiscardedElement fields:
-        fileTypeName = fileTypeName_note;
-        fileNamePrefix = fileNamePrefix_discardedNote;
-        originalViewPath = null;
-        originalMetaPath = null;
-
-        // AsidePathElement fields:
-        // DiscardedElement may only have parent .DISCARDED and DISCARDED.
-        viewPath = vp;
-        metaPath = new MetaPath(viewPath);
-        nest = new ArrayList<>();
-
-        // this class' fields
-        title = "";
-        content = "";
-        message = "";
-        to = new HashSet<>(); from = new HashSet<>();
-
-        bibliographies = new HashSet<>();
+        constructorHelper(vp);
     }
-
     public DiscardedNote(Note mn) {
         // validation not necessary, since MutableNote filename is regulated.
 
@@ -126,6 +69,58 @@ public class DiscardedNote extends AbstractDiscardedElement {
         from = mn.getFrom();
         tags = mn.getTags();
         bibliographies = mn.getBibliographies();
+    }
+    public DiscardedNote(String filename) {
+        String first = filename.startsWith(".")
+                ? RestrictedLists.getMetaPathDiscardedDirectoryName()
+                : RestrictedLists.getViewPathDiscardedDirectoryName();
+        constructorHelper(first, filename);
+    }
+
+    // constructor helper methods:
+    private void constructorHelper(MetaPath mp) {
+        // mp must begin with DISCARDED Category, and end with a DiscardedNote filename.
+        if(constructorArgIsInvalid(mp)) {
+            System.err.println("IllegalArgumentException. Path must start with '.DISCARDED' MetaPath Category, and end with DiscardedNote filename.");
+            throw new IllegalArgumentException("Invalid Path argument: " + mp);
+        }
+
+
+        // AbstractDiscardedElement fields:
+        fileTypeName = fileTypeName_note;
+        fileNamePrefix = fileNamePrefix_discardedNote;
+        originalMetaPath = null;
+        originalViewPath = null;
+
+        // AsidePathElement fields:
+        // DiscardedElement may only have parent .DISCARDED and DISCARDED.
+        metaPath = mp;
+        viewPath = new ViewPath(metaPath);
+        nest = new ArrayList<>();
+
+        // this class' fields:
+        title = "";
+        content = "";
+        message = "";
+        to = new HashSet<>();
+        from = new HashSet<>();
+        tags = new HashSet<>();
+        bibliographies = new HashSet<>();
+    }
+    private void constructorHelper(ViewPath vp) {
+        constructorHelper(new MetaPath(vp));
+    }
+    private void constructorHelper(String first, String... more) {
+        if (first.startsWith(".")) {
+            constructorHelper(new MetaPath(first, more));
+        } else {
+            constructorHelper(new ViewPath(first, more));
+        }
+    }
+
+    // constructor helper: validation method(s):
+    private boolean constructorArgIsInvalid(AsidePath ap) {
+        return !ValidateAsidePath.DISCARDED_NOTE.test(ap) || !startsWithDiscardedCategory(ap);
     }
 
     // getters & setters:
