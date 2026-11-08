@@ -61,11 +61,15 @@ public class Bibliography extends AbstractBibliography {
         // this class' fields:
         previousState = bb.getPreviousState();
     }
+    /* Client does not have to include BIBLIOGRAPHY as first element  */
     public Bibliography(String asidePath, String... more) {
-        constructorHelper(asidePath, more);
+        String[] elements = new String[1 + more.length];
+        elements[0] = asidePath;
+        System.arraycopy(more, 0, elements, 1, more.length);
+        constructorHelper(getBibliographyDirectoryName(asidePath), elements);
     }
     public Bibliography(String[] array) {
-        constructorHelper(array[0], Arrays.copyOfRange(array, 1, array.length));
+        constructorHelper(getBibliographyDirectoryName(array[0]), array);
     }
 
     // constructor helpers
@@ -121,6 +125,11 @@ public class Bibliography extends AbstractBibliography {
         } else {
             constructorHelper(new ViewPath(first, more));
         }
+    }
+    private String getBibliographyDirectoryName(String first) {
+        return first.startsWith(".")
+                ? RestrictedLists.getMetaPathBibliographyDirectoryName()
+                : RestrictedLists.getViewPathBibliographyDirectoryName();
     }
 
 

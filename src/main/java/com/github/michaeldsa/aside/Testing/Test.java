@@ -966,23 +966,38 @@ public class Test {
         // Note test: new constructors:
         Note n1 = new Note("261107_2212_00.txt");
         echo(n1);
-//        echo(new Note()); // added default constructor
-//        echo(new Category()); // added default constructor
-//        echo(new Note(new ViewPath("James_Bond", "Roger_Moore")));
-//        echo(new Note(new MetaPath(".James_Bond", ".Sean_Connery")));
-//        echo(new Note("James_Bond", "A_view_To_a_Kill"));
+        echo(new Note()); // added default constructor
+        echo(new Category()); // added default constructor
+        echo(new Note(new ViewPath("James_Bond", "Roger_Moore")));
+        echo(new Note(new MetaPath(".James_Bond", ".Sean_Connery")));
+        echo(new Note("James_Bond", "A_view_To_a_Kill"));
 //        echo(new Note("James Bond", "A view To a Kill")); // spaces are not allowed. Failed.
         // Should I allow spaces?
 
         // Bibliography test: new constructors:
-//        echo(new Bibliography());
-//        echo(new Bibliography("BIBLIOGRAPHY", "william_shakespeare"));
-//        echo(new Bibliography(new MetaPath(".BIBLIOGRAPHY", ".Buddhism", ".Zen", ".Zen_and_the_art_of_Motorcycle_Maintenance" )));
-//        echo(new Bibliography(new ViewPath("BIBLIOGRAPHY", "Buddhism", "American_authors", "Zen", "Zen_and_the_art_of_Motorcycle_Maintenance" )));
+        echo(new Bibliography());
+        echo(new Bibliography("BIBLIOGRAPHY", "william_shakespeare"));
+        echo(new Bibliography(new MetaPath(".BIBLIOGRAPHY", ".Buddhism", ".Zen", ".Zen_and_the_art_of_Motorcycle_Maintenance" )));
+        echo(new Bibliography(new ViewPath("BIBLIOGRAPHY", "Buddhism", "American_authors", "Zen", "Zen_and_the_art_of_Motorcycle_Maintenance" )));
 
         // DiscardedNote test: new constructors:
         echo(new DiscardedNote("d261107_0000_00.txt"));
         echo(new DiscardedNote(".d261107_0000_00.txt"));
+    }
+    public static void tests_261108() {
+        // test DiscardedBibliography: new constructors
+        DiscardedBibliography db = new DiscardedBibliography(".db000000_0000_00.txt"); // success
+        echo(db); // success
+        DiscardedBibliography db1 = new DiscardedBibliography("db000000_0000_00.txt"); // success
+        echo(db1); // success
+
+        // test Bibliography constructor
+        Bibliography b1 = new Bibliography("Human", "Anatomy", "western");
+        echo(b1);
+
+        String[] array1 = {"Counterpoint", "Warren_Buffett", "History", "Yoga", "light"};
+        Bibliography b2 = new Bibliography(array1); // success
+        echo(b2); // success
 
     }
 

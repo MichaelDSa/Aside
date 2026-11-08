@@ -31,52 +31,12 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
     }
 
     // constructors:
-
-    public DiscardedBibliography(MetaPath mp) {
-        // mp must begin with DISCARDED, and end with DiscardedBibliography filename
-        if (invalidConstructorArg(mp)) {
-            System.err.println("IllegalArgumentException.  Path must start with '.DISCARDED' MetaPath Category and end with DiscardedBibilography filename.");
-            throw new IllegalArgumentException("Invalid Path argument: " + mp);
-        }
-
-        // AbstractDiscardedElement fields:
-        fileTypeName = fileTypeName_bibliography;
-        fileNamePrefix = fileNamePrefix_discardedBibliography;
-        originalMetaPath = null;
-        originalViewPath = null;
-
-        // AsidePathElement fields:
-        metaPath = mp;
-        viewPath = new ViewPath(mp);
-        nest = new ArrayList<>();
-
-        // This class' fields:
-        setBiliographyFieldsToEmpty();
+    public DiscardedBibliography(MetaPath metaPath) {
+        constructorHelper(metaPath);
     }
-
-    public DiscardedBibliography(ViewPath vp) {
-        // vp must begin with DISCARDED, and end with DiscardedBibliography filename
-        if (invalidConstructorArg(vp)) {
-            System.err.println("IllegalArgumentException.  Path must start with 'DISCARDED' ViewPath Category and end with DiscardedBibilography filename.");
-            throw new IllegalArgumentException("Invalid Path argument: " + vp);
-        }
-
-        // AbstractDiscardedElement fields:
-        fileTypeName = fileTypeName_bibliography;
-        fileNamePrefix = fileNamePrefix_discardedBibliography;
-        originalMetaPath = null;
-        originalViewPath = null;
-
-        // AsidePathElement fields:
-        viewPath = vp;
-        metaPath = new MetaPath(vp);
-        nest = new ArrayList<>();
-
-        // This class' fileds:
-        setBiliographyFieldsToEmpty();
+    public DiscardedBibliography(ViewPath viewPath) {
+        constructorHelper(viewPath);
     }
-
-    // arg should be a Bibliography
     public DiscardedBibliography(Bibliography bb) {
         /* test Metapath. Arg can fail if cast to Bibliography */
         MetaPath bibliographyCategory = new MetaPath(Paths.get(RestrictedLists.getMetaPathBibliographyDirectoryName()));
@@ -115,9 +75,33 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
         arXiv_ID = bb.getArXiv_ID();
         ads_Bibcode = bb.getAds_Bibcode();
     }
+    public DiscardedBibliography(String filename) {
+        String first = filename.startsWith(".")
+                ? RestrictedLists.getMetaPathDiscardedDirectoryName()
+                : RestrictedLists.getViewPathDiscardedDirectoryName();
+        constructorHelper(first, filename);
+    }
 
     // Constructor helper methods:
-    private void setBiliographyFieldsToEmpty() {
+    private void constructorHelper(MetaPath mp) {
+        // mp must begin with DISCARDED, and end with DiscardedBibliography filename
+        if (invalidConstructorArg(mp)) {
+            System.err.println("IllegalArgumentException.  Path must start with '.DISCARDED' MetaPath Category and end with DiscardedBibilography filename.");
+            throw new IllegalArgumentException("Invalid Path argument: " + mp);
+        }
+
+        // AbstractDiscardedElement fields:
+        fileTypeName = fileTypeName_bibliography;
+        fileNamePrefix = fileNamePrefix_discardedBibliography;
+        originalMetaPath = null;
+        originalViewPath = null;
+
+        // AsidePathElement fields:
+        metaPath = mp;
+        viewPath = new ViewPath(mp);
+        nest = new ArrayList<>();
+
+        // This class' fields:
         authors = new ArrayList<>();
         title = "";
         message = "";
@@ -130,6 +114,16 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
         url = new HashSet<>();
         arXiv_ID = new HashSet<>();
         ads_Bibcode = new HashSet<>();
+    }
+    private void constructorHelper(ViewPath vp) {
+        constructorHelper(new MetaPath(vp));
+    }
+    private void constructorHelper(String first, String... more) {
+        if (first.startsWith(".")) {
+            constructorHelper(new MetaPath(first, more));
+        } else {
+            constructorHelper(new ViewPath(first, more));
+        }
     }
 
     // getters:
