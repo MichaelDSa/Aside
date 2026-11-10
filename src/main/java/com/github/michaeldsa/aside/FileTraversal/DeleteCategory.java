@@ -61,10 +61,12 @@ public class DeleteCategory extends Traverser {
     // traversal methods:
     @Override
     public FileVisitResult _visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        Path de_mpath = RestrictedLists.getDiscardedCategory().getMetaPath().getPath();
-        Path de_vpath = RestrictedLists.getDiscardedCategory().getViewPath().getPath();
-        Path parent = file.getParent();
-        if (!parent.equals(de_mpath) && !parent.equals(de_vpath)) {
+        boolean starts_with_BIBLIOGRAPHY_or_DISCARDED =
+                file.startsWith(new MetaPath(RestrictedLists.getMetaPathDiscardedDirectoryName()).getPath())        // .DISCARDED
+                || file.startsWith(new ViewPath(RestrictedLists.getViewPathDiscardedDirectoryName()).getPath())     // DISCARDED
+                || file.startsWith(new MetaPath(RestrictedLists.getMetaPathBibliographyDirectoryName()).getPath())  // .BIBLIOGRAPHY
+                || file.startsWith(new ViewPath(RestrictedLists.getViewPathBibliographyDirectoryName()).getPath()); // BIBLIOGRAPHY
+        if(!starts_with_BIBLIOGRAPHY_or_DISCARDED) {
             Files.delete(file);
         }
         return FileVisitResult.CONTINUE;
