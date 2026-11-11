@@ -6,6 +6,9 @@ import com.github.michaeldsa.aside.AsidePath.AsidePath;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsidePathElement.*;
+import com.github.michaeldsa.aside.FileTraversal.DeleteBibliographyCategory;
+import com.github.michaeldsa.aside.FileTraversal.DeleteCategory;
+import com.github.michaeldsa.aside.FileTraversal.DeleteDiscardedCategory;
 import com.github.michaeldsa.aside.Initialization.CurrentCategory;
 import com.github.michaeldsa.aside.FileTraversal.Traversers;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
@@ -998,6 +1001,49 @@ public class Test {
         String[] array1 = {"Counterpoint", "Warren_Buffett", "History", "Yoga", "light"};
         Bibliography b2 = new Bibliography(array1); // success
         echo(b2); // success
+    }
+    public static void tests_261110() throws IOException {
+        // test DeleteBibliographyCategory & DeleteDiscardedCategory
+        DeleteBibliographyCategory dbc = new DeleteBibliographyCategory();
+        DeleteDiscardedCategory ddc = new DeleteDiscardedCategory();
+
+        // test creating a BibliographyCategory:
+        BibliographyCategory bc = new BibliographyCategory("SCTV", "Earl_Camenbert");
+//        Create.BIBLIOGRAPHY_CATEGORY.execute(bc); // result: success. repeated use yeilds error output
+        Bibliography b1 = new Bibliography(bc)
+                .setTitle("Live from Edmonton! It's Thursday Night")
+                .setComment("Earl spoofs Steve Martin's weird King Tut video, and the crowd laughs at and overreacts for every small thing.");
+//        Create.BIBLIOGRAPHY.execute(b1); // result: success. Now commenting out
+        // test deleting a single element: the above Bibliography:
+//        DeleteBibliographyCategory dbc1 = new DeleteBibliographyCategory(b1.getMetaPath());
+        Bibliography b2 = new Bibliography("SCTV", "Earl_Camenbert", "b261110_1733_48.txt")
+                .setTitle("Live from Edmonton! It's Thursday Night")
+                .setComment("Earl spoofs Steve Martin's weird King Tut video, and the crowd laughs at and overreacts for every small thing.");
+        dbc.setStartingPoint(b2.getMetaPath());
+//        Create.BIBLIOGRAPHY.execute(b2);
+        /* test:
+                1) traverse(),
+                2) traverse_and_purgeViewPathOrphans() */
+//        dbc.traverse(); // failed. Not sure why. testing DeleteCategory... it worked. So why doesn't this one work?... It worked now. wrong filename, because I kept using b1, which creates a new unique filename.
+        /*
+        * 1) Overidden methods are set to default access. I now made them public.made all Overridden methods public
+        * */
+//        dbc.traverse_and_purgeViewPathOrphans(); // test result: success. commenting out.
+
+        // test DeleteCategory by deleting a single file.
+//        DeleteCategory dc1 = new DeleteCategory(new Note(".command1", ".250818_1157_07.txt").getMetaPath());
+//        dc1.traverse(); // does it work? yes. commenting out.
+
+        // testing recursive deletion
+//        dbc.setStartingPoint(new BibliographyCategory("SCTV").getMetaPath());
+//        dbc.traverse_and_purgeViewPathOrphans(); // success
+//        ddc.setStartingPoint(new MetaPath(RestrictedLists.getMetaPathDiscardedDirectoryName(), ".db260531_1621_22.txt"));
+        ddc.setStartingPoint(new MetaPath(".command1", ".250818_0353_00.txt" ));
+//        ddc.traverse_and_purgeViewPathOrphans(); // success
+        ddc.traverse(); // startingPoint should be null, and cause termination.
+
+        // both DeleteBibliographyCategory and DelteDiscardedCategory work as expected.
+
 
     }
 

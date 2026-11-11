@@ -6,6 +6,7 @@ import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Arrays;
 import java.util.Set;
 
 public abstract class Traverser {
@@ -29,7 +30,8 @@ public abstract class Traverser {
         return FileVisitResult.CONTINUE;
     }
     public FileVisitResult _visitFileFailed(Path file, IOException ex)throws IOException {
-        System.err.println(Traverser.class.getName() + " _visitFileFailed() \n" + ex.getMessage());
+        System.err.println(Traverser.class.getName() + " _visitFileFailed() \n" + "Path: " + ex.getMessage() + "\nStack Trace:");
+        for (String s : Arrays.toString(ex.getStackTrace()).split(" ")) System.err.println(s);
         return FileVisitResult.CONTINUE;
     }
 

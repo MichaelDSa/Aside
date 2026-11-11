@@ -7,6 +7,7 @@ import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 /* Bibliography Category:
 To handle subdirectories of BIBLIOGRAPHY AsidePath elements */
@@ -26,12 +27,16 @@ public class BibliographyCategory extends AbstractCategory {
         previousState = bc.getPreviousState();
     }
     public BibliographyCategory(String first, String... more) {
-        constructorHelper(first, more);
+        String[] elements = new String[1 + more.length];
+        elements[0] = first;
+        System.arraycopy(more, 0, elements, 1, more.length);
+        constructorHelper(getBibliographyDirectoryName(first), elements);
     }
     public BibliographyCategory(String[] array) {
-        constructorHelper(array[0], Arrays.copyOfRange(array, 1, array.length));
+        constructorHelper(getBibliographyDirectoryName(array[0]), array);
     }
 
+    // constructor helpers
     private void constructorHelper(MetaPath mp) {
         /* client can use metapath root to create a new
         BibliographyCategory instance pointing to default bibliography dirs */
@@ -75,6 +80,11 @@ public class BibliographyCategory extends AbstractCategory {
         } else {
             constructorHelper(new ViewPath(first, more));
         }
+    }
+    private String getBibliographyDirectoryName(String first) {
+        return first.startsWith(".")
+                ? RestrictedLists.getMetaPathBibliographyDirectoryName()
+                : RestrictedLists.getViewPathBibliographyDirectoryName();
     }
 
 
@@ -140,4 +150,24 @@ public class BibliographyCategory extends AbstractCategory {
     // none.
     // Now write toString, equals & hashcode.
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof BibliographyCategory that)) return false;
+        if (!super.equals(o)) return false;
+        return Objects.equals(previousState, that.previousState);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), previousState);
+    }
+
+    @Override
+    public String toString() {
+        return "BibliographyCategory{" +
+                "previousState=" + previousState +
+                ", metaPath=" + metaPath +
+                ", viewPath=" + viewPath +
+                '}';
+    }
 }

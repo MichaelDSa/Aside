@@ -33,4 +33,12 @@ public class Traversers {
     public static DeleteCategory deleteCategory(ViewPath startingPoint) {
         return new DeleteCategory(startingPoint);
     }
+
+    public static DeleteBibliographyCategory deleteBibliographyCategory() { return new DeleteBibliographyCategory();}
+    public static DeleteBibliographyCategory deleteBibligoraphyCategory(MetaPath startingPoint) { return new DeleteBibliographyCategory(startingPoint);}
+    public static DeleteBibliographyCategory deleteBibligoraphyCategory(ViewPath startingPoint) { return new DeleteBibliographyCategory(startingPoint);}
+
+    public static DeleteDiscardedCategory deleteDiscardedCategory() { return new DeleteDiscardedCategory(); }
+    public static DeleteDiscardedCategory deleteDiscardedCategory(MetaPath startingPoint) { return new DeleteDiscardedCategory(startingPoint);}
+    public static DeleteDiscardedCategory deleteDiscardedCategory(ViewPath startingPoint) { return new DeleteDiscardedCategory(startingPoint);}
 }

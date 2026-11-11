@@ -7,6 +7,7 @@ import com.github.michaeldsa.aside.AsidePathElement.Note;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
 import com.github.michaeldsa.aside.Validation.ValidatePath;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -282,7 +283,13 @@ public class TestRunner {
 //            Test.tests_261103();
 //            Test.tests_261104();
 //            Test.tests_261107();
-            Test.tests_261108();
+//            Test.tests_261108();
+
+            try {
+                Test.tests_261110();
+            } catch (IOException e) {
+                System.err.println("tests_261110() failed. " + e.getMessage());
+            }
 
 
 

@@ -14,6 +14,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collections;
 import java.util.Set;
 
+/* Recursively delete any Category including any of its children, while avoiding deletion of permanent categories. */
 public class DeleteCategory extends Traverser {
     public DeleteCategory() {
         this.startingPoint = RootPaths.INSTANCE.getMetapath();
@@ -63,9 +64,7 @@ public class DeleteCategory extends Traverser {
     public FileVisitResult _visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         boolean starts_with_BIBLIOGRAPHY_or_DISCARDED =
                 file.startsWith(new MetaPath(RestrictedLists.getMetaPathDiscardedDirectoryName()).getPath())        // .DISCARDED
-                || file.startsWith(new ViewPath(RestrictedLists.getViewPathDiscardedDirectoryName()).getPath())     // DISCARDED
-                || file.startsWith(new MetaPath(RestrictedLists.getMetaPathBibliographyDirectoryName()).getPath())  // .BIBLIOGRAPHY
-                || file.startsWith(new ViewPath(RestrictedLists.getViewPathBibliographyDirectoryName()).getPath()); // BIBLIOGRAPHY
+                || file.startsWith(new MetaPath(RestrictedLists.getMetaPathBibliographyDirectoryName()).getPath()); // .BIBLIOGRAPHY
         if(!starts_with_BIBLIOGRAPHY_or_DISCARDED) {
             Files.delete(file);
         }
@@ -79,6 +78,12 @@ public class DeleteCategory extends Traverser {
             Files.delete(dir);
         }
         return FileVisitResult.CONTINUE;
+    }
+
+    public void traverse_and_purgeViewPathOrphans() throws IOException{
+        this.traverse();
+        PurgeViewPathOrphans pvo = new PurgeViewPathOrphans(new ViewPath(new MetaPath(this.startingPoint)));
+        pvo.traverse();
     }
 
 }
