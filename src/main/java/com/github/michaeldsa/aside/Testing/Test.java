@@ -7,12 +7,12 @@ import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsidePathElement.*;
 import com.github.michaeldsa.aside.FileTraversal.DeleteBibliographyCategory;
-import com.github.michaeldsa.aside.FileTraversal.DeleteCategory;
 import com.github.michaeldsa.aside.FileTraversal.DeleteDiscardedCategory;
 import com.github.michaeldsa.aside.Initialization.CurrentCategory;
 import com.github.michaeldsa.aside.FileTraversal.Traversers;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
 import com.github.michaeldsa.aside.Ops.Create;
+import com.github.michaeldsa.aside.Ops.Delete;
 import com.github.michaeldsa.aside.PathKeeper;
 import com.github.michaeldsa.aside.Pretty;
 import com.github.michaeldsa.aside.PropertiesUtil.PropUtils;
@@ -1043,8 +1043,16 @@ public class Test {
         ddc.traverse(); // startingPoint should be null, and cause termination.
 
         // both DeleteBibliographyCategory and DelteDiscardedCategory work as expected.
+    }
+    public static void tests_261111() {
+//        Delete.CATEGORY1.execute(new Category("PropUtils")); // success
+//        Delete.CATEGORY.execute(new Category()); // DEFAULT category. should fail. FAILED SUCCESSFULLY. it worked as expected
+//        Delete.CATEGORY.execute(new Note("cat4")); // should fail.
+//        Delete.DEFAULT_CATEGORY.execute(new Note("cat4")); // should fail. success.
+//        Delete.DEFAULT_CATEGORY.execute(new Category("Dune")); // should fail. success.
+//        Delete.DEFAULT_CATEGORY.execute(new Category()); // should delete all elements in DEFAULT and .DEFAULT, except for parents. success
 
-
+        
     }
 
 
