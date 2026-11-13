@@ -4,6 +4,7 @@ import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsidePathElement.RestrictedLists;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
+import com.github.michaeldsa.aside.Testing.Test;
 
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
@@ -62,10 +63,10 @@ public class DeleteCategory extends Traverser {
     // traversal methods:
     @Override
     public FileVisitResult _visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        boolean starts_with_BIBLIOGRAPHY_or_DISCARDED =
-                file.startsWith(new MetaPath(RestrictedLists.getMetaPathDiscardedDirectoryName()).getPath())        // .DISCARDED
-                || file.startsWith(new MetaPath(RestrictedLists.getMetaPathBibliographyDirectoryName()).getPath()); // .BIBLIOGRAPHY
-        if(!starts_with_BIBLIOGRAPHY_or_DISCARDED) {
+        boolean agreement                                                                                            // agreement. file may be deleted on the condition that:
+                =  !file.startsWith(new MetaPath(RestrictedLists.getMetaPathDiscardedDirectoryName()).getPath())     // file must not start with the DISCARDED permanent category
+                && !file.startsWith(new MetaPath(RestrictedLists.getMetaPathBibliographyDirectoryName()).getPath()); // file must not start with the BIBLIOGRAPHY permanent category
+        if(agreement) {
             Files.delete(file);
         }
         return FileVisitResult.CONTINUE;
@@ -74,7 +75,10 @@ public class DeleteCategory extends Traverser {
     @Override
     public FileVisitResult _postVisitDirectory(Path dir, IOException ex) throws IOException {
         // do not delete permanent directories such as .DEFAULT or DISCARDED.
-        if (!RestrictedLists.isPermanentDirectory(dir)) {
+        boolean agreement                                           // agreement. dir may be deleted on the condition that:
+                =  !RestrictedLists.isPermanentDirectory(dir)       // dir must not be a permanent category
+                && !dir.equals(RootPaths.INSTANCE.getMetapath());   // dir must not equal MetaPathRoot
+        if (agreement) {
             Files.delete(dir);
         }
         return FileVisitResult.CONTINUE;
@@ -83,6 +87,7 @@ public class DeleteCategory extends Traverser {
     public void traverse_and_purgeViewPathOrphans() throws IOException{
         this.traverse();
         PurgeViewPathOrphans pvo = new PurgeViewPathOrphans(new ViewPath(new MetaPath(this.startingPoint)));
+        Test.echo("pvo startingPoint: " + pvo.startingPoint);
         pvo.traverse();
     }
 

@@ -1051,8 +1051,46 @@ public class Test {
 //        Delete.DEFAULT_CATEGORY.execute(new Note("cat4")); // should fail. success.
 //        Delete.DEFAULT_CATEGORY.execute(new Category("Dune")); // should fail. success.
 //        Delete.DEFAULT_CATEGORY.execute(new Category()); // should delete all elements in DEFAULT and .DEFAULT, except for parents. success
+    }
 
-        
+    public static void tests_261112() {
+        /*
+        * Tests to complete:
+        *                   1) BIBLIOGRAPHY_CATEGORY
+        *                   2) ALL_CATEGORIES
+        *                   3) try casting a Category as Note, then print to stdout*/
+
+        // test stdout of category cast to Note:
+        Category c1 = new Category("command1");
+        // 3) casting Category as Note
+//        System.out.println("(Note) Category:  " + (Note) c1); // incompatible types. Category cannot be converted to Note.
+
+        // 2) ALL_CATEGORIES failures:
+//        Delete.ALL_CATEGORIES.execute(c1); // should fail because startingPoint is not DEFAULT. Success.
+//        Delete.ALL_CATEGORIES.execute(new Note()); // wrong subtype. should fail. Success.
+
+        // 2) ALL_CATEGORIES delete all:
+//        Delete.ALL_CATEGORIES.execute(new Category()); // should delete all categories, including DEFAULT contents, but not DEFAULT, or any permanent categories. success
+
+        // these are tests from tests_261111(). They should work as expected with the DeleteCategory changes.
+//        Delete.CATEGORY.execute(new Category("PropUtils")); // success
+//        Delete.CATEGORY.execute(new Category()); // DEFAULT category. should fail. FAILED SUCCESSFULLY. it worked as expected
+//        Delete.CATEGORY.execute(new Note("cat4")); // should fail.
+//        Delete.DEFAULT_CATEGORY.execute(new Note("cat4")); // should fail. success.
+//        Delete.DEFAULT_CATEGORY.execute(new Category("Dune")); // should fail. success.
+//        Delete.DEFAULT_CATEGORY.execute(new Category()); // should delete all elements in DEFAULT and .DEFAULT, except for parents. success
+        // ALL ABOVE TESTS WORKED AS EXPECTED
+
+        // 1) BIBLIOGRAPHY_CATEGORY failures:
+        // cast category to BibliographyCategory:
+//        Delete.BIBLIOGRAPHY_CATEGORY.execute((BibliographyCategory) new Category()); // should fail. success. inconvertible types
+
+        // try to use different type:
+//        Delete.BIBLIOGRAPHY_CATEGORY.execute(new Note()); // should fail. success.
+
+        // try for success:
+//        Delete.BIBLIOGRAPHY_CATEGORY.execute(new BibliographyCategory()); // should delete all elements in BIBLIOGRAPHY, but not the parent. success.
+
     }
 
 

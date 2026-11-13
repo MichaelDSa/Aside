@@ -2,6 +2,7 @@ package com.github.michaeldsa.aside.FileTraversal;
 
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
+import com.github.michaeldsa.aside.Initialization.RootPaths;
 
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
@@ -60,10 +61,11 @@ public class PurgeViewPathOrphans extends Traverser {
     @Override
     public FileVisitResult _postVisitDirectory(Path dir, IOException ex) throws IOException {
         // get the MetaPath counterpart as a Path
-        Path mdir = new MetaPath(new ViewPath(dir)).getPath();
+        boolean agreement                                                       // agreement. dir may be deleted on the condition that:
+                =  Files.notExists(new MetaPath(new ViewPath(dir)).getPath())   // dir must not have a corresponding MetaPath directory
+                && !dir.equals(RootPaths.INSTANCE.getViewpath());               // dir must not equal ViewPathRoot
 
-        // delete if mdir counterpart does not exist.
-        if (Files.notExists(mdir)) {
+        if (agreement) {
             Files.delete(dir);
         }
         return FileVisitResult.CONTINUE;
@@ -72,7 +74,10 @@ public class PurgeViewPathOrphans extends Traverser {
     @Override
     public FileVisitResult _visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         Path mfile = new MetaPath(new ViewPath(file)).getPath();
-        if (Files.notExists(mfile)) {
+        boolean agreement                                                         // agreement. file may be deleted on the condition that:
+                = Files.notExists(new MetaPath(new ViewPath(file)).getPath());    // A corresponding MetaPath file exists
+
+        if (agreement) {
             Files.delete(file);
         }
         return FileVisitResult.CONTINUE;

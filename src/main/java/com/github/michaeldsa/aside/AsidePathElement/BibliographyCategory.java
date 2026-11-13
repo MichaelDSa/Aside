@@ -14,6 +14,9 @@ To handle subdirectories of BIBLIOGRAPHY AsidePath elements */
 public class BibliographyCategory extends AbstractCategory {
     private ImmutableBibliographyCategory previousState;
 
+    public BibliographyCategory() {
+        constructorHelper(new MetaPath(RestrictedLists.getMetaPathBibliographyDirectoryName()));
+    }
     public BibliographyCategory(MetaPath mp) {
         constructorHelper(mp);
     }
