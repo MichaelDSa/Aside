@@ -87,7 +87,6 @@ public class DeleteCategory extends Traverser {
     public void traverse_and_purgeViewPathOrphans() throws IOException{
         this.traverse();
         PurgeViewPathOrphans pvo = new PurgeViewPathOrphans(new ViewPath(new MetaPath(this.startingPoint)));
-        Test.echo("pvo startingPoint: " + pvo.startingPoint);
         pvo.traverse();
     }
 

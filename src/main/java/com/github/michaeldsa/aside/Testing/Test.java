@@ -1058,7 +1058,10 @@ public class Test {
         * Tests to complete:
         *                   1) BIBLIOGRAPHY_CATEGORY
         *                   2) ALL_CATEGORIES
-        *                   3) try casting a Category as Note, then print to stdout*/
+        *                   3) try casting a Category as Note, then print to stdout
+        *                   4) DISCARDED_CATEGORY
+        *                   5) NOTE
+        *                   6) BIBLIOGRAPHY*/
 
         // test stdout of category cast to Note:
         Category c1 = new Category("command1");
@@ -1091,6 +1094,24 @@ public class Test {
         // try for success:
 //        Delete.BIBLIOGRAPHY_CATEGORY.execute(new BibliographyCategory()); // should delete all elements in BIBLIOGRAPHY, but not the parent. success.
 
+        // 4) DISCARDED_CATEGORY: test for failures:
+//        Delete.DISCARDED_CATEGORY.execute((DiscardedCategory) new Category()); // should fail. success. incovertible types.
+//        Delete.DISCARDED_CATEGORY.execute(new Category("PropUtils")); // should fail. success
+//        Delete.DISCARDED_CATEGORY.execute(DiscardedCategory.getInstance()); // should succeed in deleteing all DISCARDED elements, but not the parent dir. success.
+
+        // 5) NOTE: test for failures:
+//        Delete.NOTE.execute(new Note()); // file does not exist. Should fail. failed.
+//        Delete.NOTE.execute(new Bibliography()); // wrong type. failed
+//        Delete.NOTE.execute((Note) new Bibliography()); // Inconvertible types. failed
+
+        // try for success:
+//        Delete.NOTE.execute(new Note("command1", "250814_0909_22.txt")); // should delete specified note. success.
+
+        // 6) BIBLIOGRAPHY: test for success:
+//        Delete.BIBLIOGRAPHY.execute(new Bibliography("b260530_1611_11.txt")); // should delete specified Bibliography file. success.
+
+//        Delete.DISCARDED_ELEMENT.execute(new DiscardedNote("d260531_1544_22.txt")); // should work. success.
+//        Delete.DISCARDED_ELEMENT.execute(new DiscardedBibliography("db260531_0902_29.txt")); // should work. success.
     }
 
 
