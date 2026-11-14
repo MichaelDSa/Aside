@@ -12,52 +12,36 @@ import java.nio.file.Path;
 public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
 
     CATEGORY(ape-> {
-        // prerequisite: parameter must be Category or AbstractNote implementation.
-        if (!(ape instanceof Category || ape instanceof AbstractNote)) {
+    // create Category (a directory in the MetaPath and corresponding ViewPath), if not exists
+        // ape must be a Category
+        if (!(ape instanceof Category)) {
             System.err.println("Create.CATEGORY: Parameter must be Category or AbstractNote instance\n");
             return ape;
         }
         // get the Paths
-        Path m_newCategory = ape instanceof AbstractNote
-                ? ape.getParentCategory().getMetaPath().getPath()
-                : ape.getMetaPath().getPath();
+        Path m_newCategory = ape.getMetaPath().getPath();
         Path v_newCategory = new ViewPath(new MetaPath(m_newCategory)).getPath();
 
-        // test Path to make sure it isn't Metapath_root. It should not be.
-        // This block is redundant. please test.
-//        Path mpr = RootPaths.INSTANCE.getMetapath();
-//        if (m_newCategory.equals(mpr)
-//                || !m_newCategory.startsWith(mpr)
-//                || Files.exists(m_newCategory)) {
-//            return ape;
-//        }
-
-        // create permenant categories (.default, .trash, etc) if not exists.
+        // create permanent categories (.default, .trash, etc) if not exists.
         Create.createPermanentCategories();
 
-        // AsidePathElements avoid creation of invalid permanent directories.
-        // for example:
-        //      new Category(new MetaPath(Paths.get(metaPathRoot, ".default"))) is fine,
-        //  but new Category(new MetaPath(Paths.get(metaPathRoot, ".default", ".subdirectory))) is modified to:
-        //      new Category(new MetaPath(Paths.get(metaPathRoot, ".subdirectory")))
-        // so we don't have to modify paths here, at this level.
-        
-        // create category
+        // create category if not exists
         createCustomCategory(m_newCategory, v_newCategory, "Create.CATEGORY failed\n");
-        return ape;
+
+        return new Category((Category) ape);
     }),
     NOTE(ape -> {
 
         Path m_note = ape.getMetaPath().getPath();
 
-        if ( !(ape instanceof AbstractNote) ) {
+        if ( !(ape instanceof Note) ) {
             System.err.println("Create.NOTE: Parameter must be AbstractNote subclass instance\n");
             return ape;
         }
 
         if (Files.exists(m_note)) {
             System.err.println("Create.NOTE: Note or file already exists!");
-            return ape;
+            return new Note((Note) ape);
         }
 
         // consider placing this in the UI instead of here.
@@ -67,12 +51,12 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
         if (!Files.exists(m_note.getParent())) {
             String cat_name = new ViewPath(ape.getMetaPath()).getPath().getParent().getFileName().toString();
             System.out.println("Category does not exist: " + cat_name);
-            return ape;
+            return new Note((Note) ape);
         }
 
         PropUtils.writeNote( (AbstractNote) ape );
 
-        return ape;
+        return new Note((Note) ape);
     }),
     DISCARDED_NOTE(ape -> {
         if (!(ape instanceof DiscardedNote)) {
@@ -84,10 +68,10 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
 
         if (Files.exists(ape.getMetaPath().getPath())) {
             System.err.println("Create.DISCARDED_NOTE: file already exists!");
-            return ape;
+            return new DiscardedNote((DiscardedNote) ape);
         }
         PropUtils.writeDiscardedNote( (DiscardedNote) ape );
-        return ape;
+        return new DiscardedNote((DiscardedNote) ape);
     }),
     DISCARDED_BIBLIOGRAPHY(ape -> {
         if (!(ape instanceof DiscardedBibliography)) {
@@ -99,10 +83,10 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
 
         if (Files.exists(ape.getMetaPath().getPath())) {
             System.err.println("Create.DISCARDED_BIBLIOGRAHY: file already exists!");
-            return ape;
+            return new DiscardedBibliography((DiscardedBibliography) ape);
         }
         PropUtils.writeDiscardedBibliography( (DiscardedBibliography) ape );
-        return ape;
+        return new DiscardedBibliography((DiscardedBibliography) ape);
     }),
     BIBLIOGRAPHY_CATEGORY(ape -> {
         Path m_bibCat = ape.getMetaPath().getPath();
@@ -117,11 +101,11 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
 
         if (Files.exists(m_bibCat)) {
             System.err.println("Create.BIBLIOGRAPHY_CATEGORY: File already exists!");
-            return ape;
+            return new BibliographyCategory((BibliographyCategory) ape);
         }
 
         createCustomCategory(m_bibCat, v_bibCat, "Create.BIBLIOGRAPHY_CATEGRY failed\n");
-        return ape;
+        return new BibliographyCategory((BibliographyCategory) ape);
     }),
     BIBLIOGRAPHY(ape -> {
         if (!(ape instanceof Bibliography)) {
@@ -133,12 +117,12 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
 
         if (Files.exists(ape.getMetaPath().getPath())) {
             System.err.println("Create.BIBLIOGRAPHY: file already exists!");
-            return ape;
+            return new Bibliography((Bibliography) ape);
         }
 
         PropUtils.writeBibliography( (Bibliography) ape );
 
-        return ape;
+        return new Bibliography((Bibliography) ape);
     });
 
     // class boilerplate:
