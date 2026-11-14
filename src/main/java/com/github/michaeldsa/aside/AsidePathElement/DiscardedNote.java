@@ -70,6 +70,33 @@ public class DiscardedNote extends AbstractDiscardedElement {
         tags = mn.getTags();
         bibliographies = mn.getBibliographies();
     }
+    public DiscardedNote(DiscardedNote dn) {
+        // mp must begin with DISCARDED Category, and end with a DiscardedNote filename.
+        if(constructorArgIsInvalid(dn.getMetaPath())) {
+            System.err.println("IllegalArgumentException. Path must start with '.DISCARDED' MetaPath Category, and end with DiscardedNote filename.");
+            throw new IllegalArgumentException("Invalid Path argument: " + dn.getMetaPath());
+        }
+
+        // AbstractDiscardedElement fields
+        this.fileTypeName = dn.fileTypeName;
+        this.fileNamePrefix = dn.fileNamePrefix;
+        this.originalMetaPath = dn.metaPath;
+        this.originalViewPath = dn.viewPath;
+
+        //AsidePathElement fields:
+        this.metaPath = dn.metaPath;
+        this.viewPath = dn.viewPath;
+        this.nest = dn.nest;
+
+        // this class' fields:
+        this.title = dn.title;
+        this.content = dn.content;
+        this.message = dn.message;
+        this.to = dn.to;
+        this.from = dn.from;
+        this.tags = dn.tags;
+        this.bibliographies = dn.bibliographies;
+    }
     public DiscardedNote(String filename) {
         String first = filename.startsWith(".")
                 ? RestrictedLists.getMetaPathDiscardedDirectoryName()

@@ -75,6 +75,38 @@ public class DiscardedBibliography extends AbstractDiscardedElement{
         arXiv_ID = bb.getArXiv_ID();
         ads_Bibcode = bb.getAds_Bibcode();
     }
+    public DiscardedBibliography(DiscardedBibliography db) {
+        // mp must begin with DISCARDED, and end with DiscardedBibliography filename
+        if (invalidConstructorArg(db.getMetaPath())) {
+            System.err.println("IllegalArgumentException.  Path must start with '.DISCARDED' MetaPath Category and end with DiscardedBibilography filename.");
+            throw new IllegalArgumentException("Invalid Path argument: " + db.getMetaPath());
+        }
+
+        // AbstractDiscardedElement fields:
+        this.fileTypeName = db.fileTypeName_bibliography;
+        this.fileNamePrefix = db.fileNamePrefix_discardedBibliography;
+        this.originalMetaPath = db.originalMetaPath;
+        this.originalViewPath = db.originalViewPath;
+
+        // AsidePathElement fields:
+        this.metaPath = db.metaPath;
+        this.viewPath = db.viewPath;
+        this.nest = db.nest;
+
+        // This class' fields:
+        this.authors = db.authors;
+        this.title = db.title;
+        this.message = db.message;
+        this.publishers = db.publishers;
+        this.yearPublished = db.yearPublished;
+        this.comment = db.comment;
+        this.references = db.references;
+        this.isbn = db.isbn;
+        this.doi = db.doi;
+        this.url = db.url;
+        this.arXiv_ID = db.arXiv_ID;
+        this.ads_Bibcode = db.ads_Bibcode;
+    }
     public DiscardedBibliography(String filename) {
         String first = filename.startsWith(".")
                 ? RestrictedLists.getMetaPathDiscardedDirectoryName()

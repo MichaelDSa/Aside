@@ -1,17 +1,12 @@
 package com.github.michaeldsa.aside.Ops;
 
 import com.github.michaeldsa.aside.AsidePathElement.*;
-import com.github.michaeldsa.aside.AsideUtils;
-import com.github.michaeldsa.aside.Initialization.CurrentCategory;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
-import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.FileTraversal.Traversers;
 import com.github.michaeldsa.aside.Testing.Test;
-import com.github.michaeldsa.aside.Validation.ValidateAsidePath;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 
 public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
 
@@ -32,17 +27,17 @@ public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
 
         if (!ape.getMetaPath().equals(default_category)) {
             System.err.println("Delete.ALL_CATEGORIES: Category.metaPath (starting point) must equal: " + default_category + "\nstartingPoint provided: " + ape.getMetaPath());
-            return ape;
+            return new Category((Category) ape);
+
         }
 
         try {
             Traversers.deleteCategory(startingPoint).traverse_and_purgeViewPathOrphans();
         } catch (IOException e) {
             System.err.println("Delete.ALL_CATEGORIES: IOException \n" + e.getMessage());
-            e.printStackTrace();
         }
 
-        return ape;
+        return new Category((Category) ape);
     }),
     BIBLIOGRAPHY (ape -> {
     // delete a single Bibilography within a BibliographyCategory. depends on DeleteCategory.
@@ -56,12 +51,7 @@ public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
 
         if (Files.notExists(startingPoint.getPath())) {
             System.err.println("Delete.BIBLIOGRAPHY: file does not exist: " + startingPoint);
-            return ape;
-        }
-
-        if (!ValidateAsidePath.BIBLIOGRAPHY.test(startingPoint)) {
-            System.err.println("Delete.BIBLIOGRAPHY: Invalid MetaPath: " + startingPoint);
-            return ape;
+            return new Bibliography((Bibliography) ape);
         }
 
         try {
@@ -70,7 +60,7 @@ public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
             System.err.println("Delete.BIBLIOGRAPHY: IOException \n" + e.getMessage());
         }
 
-        return ape;
+        return new Bibliography((Bibliography) ape);
 
 
     }),
@@ -88,6 +78,7 @@ public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
 
         if (!startingPoint.startsWith(bibliography_category)) {
             System.err.println("Delete.BIBLIOGRAPHY_CATEGORY: BibliographyCategory.metaPath (starting point) must start with: " + bibliography_category + "\nstartingPoint provided: " + ape.getMetaPath());
+            return new BibliographyCategory((BibliographyCategory) ape);
         }
 
         try {
@@ -96,7 +87,7 @@ public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
             System.err.println("Delete.BIBLIOGRAPHY_CATEGORY: IOException \n" + e.getMessage());
         }
 
-        return ape;
+        return new BibliographyCategory((BibliographyCategory) ape);
     }),
     CATEGORY (ape -> {
     /* recursively deletes any category and it's contents, except DEFAULT,
@@ -110,15 +101,14 @@ public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
             System.err.println("Delete.CATEGORY: can operate only on Category types \narg type provided: " + ape.getClass().getSimpleName());
             return ape;
         }
-        Test.echo("Delete.CATEGORY1: startingPoint: " + startingPoint);
         if (Files.notExists(startingPoint.getPath())) {
             System.err.println("Delete.CATEGORY: file does not exist: " + startingPoint.getPath());
-            return ape;
+            return new Category((Category) ape);
         }
 
         if (startingPoint.equals(default_category)) {
             System.err.println("Delete.CATEGORY: use Delete.DEFAULT_CATEGORY to recursively delete all notes in DEFAULT.");
-            return ape;
+            return new Category((Category) ape);
         }
 
         try {
@@ -127,7 +117,7 @@ public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
             System.err.println("Delete.CATEGORY: IOException \n" + e.getMessage());
         }
 
-        return ape;
+        return new Category((Category) ape);
     }),
     DEFAULT_CATEGORY (ape -> {
     // deletes all contents of DEFAULT, but not the DEFAULT parent, which is a permanent category.
@@ -142,7 +132,7 @@ public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
 
         if (!startingPoint.equals(default_category)) {
             System.err.println("Delete.DEFAULT_CATEGORY: Category.metaPath (starting point) must equal: " + default_category);
-            return ape;
+            return new Category((Category) ape);
         }
 
         try {
@@ -150,7 +140,7 @@ public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
         } catch (IOException e) {
             System.err.println("Delete.DEFAULT_CATEGORY: IOException \n" + e.getMessage());
         }
-        return ape;
+        return new Category((Category) ape);
     }),
     DISCARDED_CATEGORY (ape -> {
         // deletes all contents of DISCARDED, but not the DISCARDED parent, which is a permanent category.
@@ -165,7 +155,7 @@ public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
 
         if (!startingPoint.equals(discarded_category)) {
             System.err.println("Delete.DISCARDED_CATEGORY: DiscardedCategory.metaPath (starting point) must equal: " + discarded_category);
-            return ape;
+            return DiscardedCategory.getInstance();
         }
 
         try {
@@ -173,7 +163,7 @@ public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
         } catch (IOException e) {
             System.err.println("Delete.DISCARDED_CATEGORY: IOException \n" + e.getMessage());
         }
-        return ape;
+        return DiscardedCategory.getInstance();
     }),
     DISCARDED_ELEMENT (ape -> {
     // delete a single note within a Category. depends on DeleteCategory.
@@ -187,12 +177,9 @@ public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
 
         if (Files.notExists(startingPoint.getPath())) {
             System.err.println("Delete.DISCARDED_ELEMENT: file does not exist: " + startingPoint);
-            return ape;
-        }
-
-        if (!(ValidateAsidePath.DISCARDED_NOTE.test(startingPoint) || ValidateAsidePath.DISCARDED_BIBLIOGRAPHY.test(startingPoint))) {
-            System.err.println("Delete.DISCARDED_ELEMENT: Invalid MetaPath: " + startingPoint);
-            return ape;
+            return ape instanceof DiscardedNote
+                    ? new DiscardedNote((DiscardedNote) ape)
+                    : new DiscardedBibliography((DiscardedBibliography) ape);
         }
 
         try {
@@ -201,7 +188,9 @@ public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
             System.err.println("Delete.DISCARDED_ELEMENT: IOException \n" + e.getMessage());
         }
 
-        return ape;
+        return ape instanceof DiscardedNote
+                ? new DiscardedNote((DiscardedNote) ape)
+                : new DiscardedBibliography((DiscardedBibliography) ape);
 
     }),
     NOTE (ape -> {
@@ -216,12 +205,7 @@ public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
 
         if (Files.notExists(startingPoint.getPath())) {
             System.err.println("Delete.NOTE: file does not exist: " + startingPoint);
-            return ape;
-        }
-
-        if (!ValidateAsidePath.NOTE.test(startingPoint)) {
-            System.err.println("Delete.NOTE: Invalid MetaPath: " + startingPoint);
-            return ape;
+            return new Note((Note) ape);
         }
 
         try {
@@ -230,7 +214,7 @@ public enum Delete implements CrudOps<AsidePathElement, AsidePathElement> {
             System.err.println("Delete.NOTE: IOException \n" + e.getMessage());
         }
 
-        return ape;
+        return new Note((Note) ape);
     });
 
 
