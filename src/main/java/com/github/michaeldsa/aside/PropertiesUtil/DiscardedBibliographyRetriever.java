@@ -18,7 +18,7 @@ class DiscardedBibliographyRetriever extends DiscardedBibliographyPropertiesUtil
                 .setOriginalViewPath(new ViewPath(Paths.get(getPropAsString(originalViewPath_k))))
                 .setAuthors(configFormattedStringToAuthorsList(getPropAsString(authors_k)))
                 .setTitle(getPropAsString(title_k))
-                .setPublishers(stringToHashSet(getPropAsString(publishers_k)))
+                .setPublishers(getPropAsHashSet(publishers_k))
                 .setYearPublished(getPropAsIntegerHashSet(yearPublished_k))
                 .setComment(getPropAsString(comment_k))
                 .setReferences(getPropAsHashSet(references_k))

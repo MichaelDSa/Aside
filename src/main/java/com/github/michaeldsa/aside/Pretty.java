@@ -1,9 +1,11 @@
 package com.github.michaeldsa.aside;
 
 import com.github.michaeldsa.aside.AsidePathElement.*;
+import com.github.michaeldsa.aside.Testing.Test;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Objects;
 
 public class Pretty {
 
@@ -129,8 +131,8 @@ public class Pretty {
         String url = format(collections2String(db.getUrl()), width);
         String arXiv_ID = format(collections2String(db.getArXiv_ID()), width);
         String adsBibcode = format(collections2String(db.getAds_Bibcode()), width);
-        String originalMetaPath = format(db.getOriginalMetaPath().getPath().toString(), width);
-        String originalViewPath = format(db.getOriginalViewPath().getPath().toString(), width);
+        String originalMetaPath = db.getOriginalMetaPath() == null ? format("", width) : format(db.getOriginalMetaPath().toString(), width);
+        String originalViewPath = db.getOriginalViewPath() == null ? format("", width) : format(db.getOriginalViewPath().toString(), width);
 
         String nl = "\n";
         if (!filename.isBlank()) {

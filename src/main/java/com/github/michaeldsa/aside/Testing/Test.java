@@ -13,6 +13,7 @@ import com.github.michaeldsa.aside.FileTraversal.Traversers;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
 import com.github.michaeldsa.aside.Ops.Create;
 import com.github.michaeldsa.aside.Ops.Delete;
+import com.github.michaeldsa.aside.Ops.Retrieve;
 import com.github.michaeldsa.aside.PathKeeper;
 import com.github.michaeldsa.aside.Pretty;
 import com.github.michaeldsa.aside.PropertiesUtil.PropUtils;
@@ -1052,7 +1053,6 @@ public class Test {
 //        Delete.DEFAULT_CATEGORY.execute(new Category("Dune")); // should fail. success.
 //        Delete.DEFAULT_CATEGORY.execute(new Category()); // should delete all elements in DEFAULT and .DEFAULT, except for parents. success
     }
-
     public static void tests_261112() {
         /*
         * Tests to complete:
@@ -1112,6 +1112,61 @@ public class Test {
 
 //        Delete.DISCARDED_ELEMENT.execute(new DiscardedNote("d260531_1544_22.txt")); // should work. success.
 //        Delete.DISCARDED_ELEMENT.execute(new DiscardedBibliography("db260531_0902_29.txt")); // should work. success.
+    }
+    public static void tests_261114() {
+        /*
+        * Tests to be completed:
+        *                        1) Retrieve.BIBLIOGRAPHY
+        *                        2) Retrieve.DISCARDED_BIBLIOGRAPHY
+        *                        3) Retrieve.DISCARDED_NOTE
+        *                        4) Retrieve.Note*/
+
+        // 1) Retrieve.BIBLIOGRAPHY: Works as expected.
+//        Bibliography b1 = new Bibliography("b260530_1727_25.txt");
+//        b1.setPreviousState();
+//        Test.echo("before Retrieve.BIBLIOGRAPHY: " + b1);
+//        Bibliography b2 = (Bibliography) Retrieve.BIBLIOGRAPHY.execute(b1);
+//        Test.echo("after Retrieve.BIBLIOGRAPHY: " + Pretty.formatBibliography4ViewPath(b2, 80));
+//        Test.echo("test Pretty:  " + Pretty.formatDiscardedBibliography4ViewPath(new DiscardedBibliography(b2), 80));
+
+        // 2) Retrieve.DISCARDED_BIBLIOGRAPHY: Works as expected.
+        // write new DiscardedBibliography:
+//        Create.DISCARDED_BIBLIOGRAPHY.execute(new DiscardedBibliography(b2));
+        /*
+        * Problem:
+        * originalMetaPath & originalViewPath have values that start with DISCARDED permanent category. The original paths should start with BIBLIOGRAPHY!!
+        * FIXED. problem was with DiscardedBibliographyPropertiesUtil
+        * */
+//        DiscardedBibliography db1 = new DiscardedBibliography("db261115_1138_26.txt");
+//        Test.echo("before Retrieve.DISCARDEDBIBLIOGRAPHY:  " + db1);
+//        DiscardedBibliography db2 = (DiscardedBibliography) Retrieve.DISCARDED_BIBLIOGRAPHY.execute(db1);
+//        Test.echo("after: " + Pretty.formatDiscardedBibliography4ViewPath(db2, 80));
+
+
+        // 4) Retrieve.NOTE: Worked as expected.
+//        Note n1 = new Note("BennyHill", "Yakety_sax")
+//                .setTitle("Benny Hill's Yakety Sax was the Greatest Sax Song of All Time!")
+//                .setContent("Well, actually, no it wasn't. I just wanted the title to sound like clickbait. But it does have great sax playing.")
+//                .addTags("YaketySax", "BennyHill", "Saxophone")
+//                .addTo("000000_0000_00.txt", "111111_1111_11.txt", "222222_2222_22.txt")
+//                .addFrom("333333_3333_33.txt", "444444_4444_44.txt")
+//                .addBibliographies("b999999_9999_99.txt");
+//        Create.NOTE.execute(n1);
+
+        Note n2 = (Note) Retrieve.NOTE.execute(new Note("BennyHill", "Yakety_sax", "261115_1211_38.txt"));
+        Test.echo("retrieved note, n2: " + n2);
+        Test.echo("\n" + Pretty.formatNote4ViewPath(n2, 80));
+
+        // 3) Retrieve.DISCARDED_NOTE: Works as expected.
+        DiscardedNote dn1 = new DiscardedNote(n2);
+//        Create.DISCARDED_NOTE.execute(dn1); // created DISCARDED/d261115_1224_12.txt
+        DiscardedNote dn2 = (DiscardedNote) Retrieve.DISCARDED_NOTE.execute(new DiscardedNote("d261115_1224_12.txt"));
+        Test.echo("dn2:  " + dn2);
+
+        Test.echo(Pretty.formatDiscardedNote4ViewPath(dn2, 80));
+
+
+
     }
 
 

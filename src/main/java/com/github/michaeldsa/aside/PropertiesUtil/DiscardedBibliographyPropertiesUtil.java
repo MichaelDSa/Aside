@@ -34,8 +34,8 @@ class DiscardedBibliographyPropertiesUtil extends DiscardedElementPropertiesUtil
         properties.setProperty(warning_k, emptyIfNull(db.getWarning()));
         properties.setProperty(message_k, emptyIfNull(db.getMessage()));
         properties.setProperty(originalFileType_k, emptyIfNull(db.getFileTypeName()));
-        properties.setProperty(originalMetaPath_k, emptyIfNull(db.getMetaPath().toString()));
-        properties.setProperty(originalViewPath_k, emptyIfNull(db.getViewPath().toString()));
+        properties.setProperty(originalMetaPath_k, emptyIfNull(db.getOriginalMetaPath().toString()));
+        properties.setProperty(originalViewPath_k, emptyIfNull(db.getOriginalViewPath().toString()));
 
         // assign keys from this class:
         properties.setProperty(authors_k, emptyIfNull(authorsListToConfigFormattedString(db.getAuthors())));
