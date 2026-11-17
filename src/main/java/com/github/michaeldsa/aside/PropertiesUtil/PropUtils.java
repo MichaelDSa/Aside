@@ -29,8 +29,8 @@ public class PropUtils {
     }
 
     // writers (MetaPath & ViewPath):
-    public static void writeNote(AbstractNote abstractNote) {
-        note_w.write(abstractNote);
+    public static void writeNote(Note note) {
+        note_w.write(note);
     }
     public static void writeDiscardedNote(DiscardedNote de) {
         discarded_w.write(de);
@@ -43,8 +43,8 @@ public class PropUtils {
     }
 
     // writers (ViewPath only):
-    public static void writeNote_ViewPath(AbstractNote abstractNote) {
-        note_w.writeToViewPath(abstractNote);
+    public static void writeNote_ViewPath(Note note) {
+        note_w.writeToViewPath(note);
     }
     public static void writeDiscardedNote_ViewPath(DiscardedNote de) {
         discarded_w.writeToViewPath(de);

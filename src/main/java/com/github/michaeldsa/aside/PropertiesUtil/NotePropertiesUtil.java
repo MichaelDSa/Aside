@@ -1,6 +1,6 @@
 package com.github.michaeldsa.aside.PropertiesUtil;
 
-import com.github.michaeldsa.aside.AsidePathElement.AbstractNote;
+import com.github.michaeldsa.aside.AsidePathElement.Note;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -23,7 +23,7 @@ abstract class NotePropertiesUtil extends PropertiesUtil{
         hashSetStringPropertiesKeysSubset = new HashSet<>(Arrays.asList(to_k, from_k, tags_k, bibliographies_k));
     }
 
-    protected void setProperties(AbstractNote note) {
+    protected void setProperties(Note note) {
         // clear properties
         properties.clear();
 

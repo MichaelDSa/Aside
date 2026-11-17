@@ -54,7 +54,7 @@ public enum Create implements CrudOps<AsidePathElement, AsidePathElement> {
             return new Note((Note) ape);
         }
 
-        PropUtils.writeNote( (AbstractNote) ape );
+        PropUtils.writeNote( (Note) ape );
 
         return new Note((Note) ape);
     }),

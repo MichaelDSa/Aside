@@ -14,10 +14,12 @@ import com.github.michaeldsa.aside.Initialization.RootPaths;
 import com.github.michaeldsa.aside.Ops.Create;
 import com.github.michaeldsa.aside.Ops.Delete;
 import com.github.michaeldsa.aside.Ops.Retrieve;
+import com.github.michaeldsa.aside.Ops.Update;
 import com.github.michaeldsa.aside.PathKeeper;
 import com.github.michaeldsa.aside.Pretty;
 import com.github.michaeldsa.aside.PropertiesUtil.PropUtils;
 import com.github.michaeldsa.aside.Search.Search;
+import com.github.michaeldsa.aside.Search.SearchFor;
 import com.github.michaeldsa.aside.Settings.Settings;
 import com.github.michaeldsa.aside.Settings.TempSettings;
 import com.github.michaeldsa.aside.Validation.ValidatePath;
@@ -1153,20 +1155,64 @@ public class Test {
 //                .addBibliographies("b999999_9999_99.txt");
 //        Create.NOTE.execute(n1);
 
-        Note n2 = (Note) Retrieve.NOTE.execute(new Note("BennyHill", "Yakety_sax", "261115_1211_38.txt"));
-        Test.echo("retrieved note, n2: " + n2);
-        Test.echo("\n" + Pretty.formatNote4ViewPath(n2, 80));
+//        Note n2 = (Note) Retrieve.NOTE.execute(new Note("BennyHill", "Yakety_sax", "261115_1211_38.txt"));
+//        Test.echo("retrieved note, n2: " + n2);
+//        Test.echo("\n" + Pretty.formatNote4ViewPath(n2, 80));
 
         // 3) Retrieve.DISCARDED_NOTE: Works as expected.
-        DiscardedNote dn1 = new DiscardedNote(n2);
+//        DiscardedNote dn1 = new DiscardedNote(n2);
 //        Create.DISCARDED_NOTE.execute(dn1); // created DISCARDED/d261115_1224_12.txt
-        DiscardedNote dn2 = (DiscardedNote) Retrieve.DISCARDED_NOTE.execute(new DiscardedNote("d261115_1224_12.txt"));
-        Test.echo("dn2:  " + dn2);
+//        DiscardedNote dn2 = (DiscardedNote) Retrieve.DISCARDED_NOTE.execute(new DiscardedNote("d261115_1224_12.txt"));
+//        Test.echo("dn2:  " + dn2);
+//
+//        Test.echo(Pretty.formatDiscardedNote4ViewPath(dn2, 80));
 
-        Test.echo(Pretty.formatDiscardedNote4ViewPath(dn2, 80));
+        // ALL ABOVE TESTS PASS
+    }
+    public static void tests_261116() {
+//        List<Path> s1 = SearchFor.categoryFromRoot().search(".Yakety_sax"); // should find directory. success
+//        s1.addAll(SearchFor.categoryFromRoot().search(".261115_1211_38.txt")); // should do nothing. success
+//        Test.echo(s1.toString()); // success
+
+        // test Update.NOTE:
+//        Note n1 = new Note("BennyHill", "Yakety_sax", "261115_1211_38.txt");
+//        Create.NOTE.execute(n1.setTitle("Benny Hill was a wayyy better sax player than Bill Klingon").setContent("Both of them were lady chasers, just one of them was more straightforward about it"));
+//        n1 = (Note) Retrieve.NOTE.execute(n1);
+//        Test.echo(Pretty.formatNote4ViewPath(n1, 80));
+//        n1.setPreviousState().setTitle("updated").setContent("updated content").setParentCategory(new Category("Homer", "Oddesius"));
+//        Test.echo("\n"+Pretty.formatNote4ViewPath(n1, 80));
+//        Test.echo("n1.getMetaPath():  " + n1.getMetaPath());
+//        Update.NOTE.execute(n1);
+
+        // original
+        Note n1  = (Note) Retrieve.NOTE.execute(new Note("Homer", "Oddesius", "261115_1211_38.txt"));
+        Test.echo("Note n1 (" + n1.getMetaPath() + ")" + " " + n1 + "\n" + Pretty.formatNote4ViewPath(n1, 80));
+
+        n1.setPreviousState()
+                .setParentCategory(new Category("BennyHill", "Yakety_sax"))
+                .setTitle("Yakety Sax is a great saxophone song, and it should be included in Royal Conservatory testing repertoire")
+                .setContent("The playing is very nuanced, and conveys humor more effectvely than any other song on TV. It should be played as an advanced band song")
+                .addTo("111111_1111_11.txt", "222222_2222_22.txt")
+                .addFrom("333333_3333_33.txt");
+
+        // updated
+        Note n2 = (Note) Update.NOTE.execute(n1);
+        Test.echo("Note n2 (" + n2.getMetaPath() + ")" + " " + n2 + "\n" + Pretty.formatNote4ViewPath(n2, 80));
+
+        // swapped states
+        Note n3 = (Note) Update.NOTE.execute(n1.getInstanceWithSwappedStates());
+        Test.echo("Note n3 (" + n3.getMetaPath() + ")" + " " + n3 + "\n" + Pretty.formatNote4ViewPath(n3, 80));
+
+        // swap states again. File should move to 'BennyHill/Yakety_sax'
+        Note n4 = (Note) Update.NOTE.execute(n3.getInstanceWithSwappedStates());
 
 
 
+        /* Tests:
+        * 1) previous state is not set. should fail. success
+        * 2) see if note is moved, to 'Homer/Oddesius' and previous location at 'BennyHill/Yakety_sax' is deleted: success
+        * 3) reverse test 2): Success.
+        * */
     }
 
 

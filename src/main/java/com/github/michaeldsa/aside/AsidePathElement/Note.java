@@ -135,6 +135,20 @@ public class Note extends AbstractNote{
         return instance;
     }
 
+    // if Note has set it's previousState, and has updated any field, return true
+    public boolean getUpdateStatus() {
+        return previousState != null &&
+                !( this.metaPath.equals(previousState.getMetaPath())
+                && this.viewPath.equals(previousState.getViewPath())
+                && this.title.equals(previousState.getTitle())
+                && this.content.equals(previousState.getContent())
+                && this.to.equals(previousState.getTo())
+                && this.from.equals(previousState.getFrom())
+                && this.tags.equals(previousState.getTags())
+                && this.bibliographies.equals(previousState.getBibliographies()) );
+
+    }
+
     public Note setParentCategory(Category newParentCategory) {
         // validate by instantiating new Category
         try {

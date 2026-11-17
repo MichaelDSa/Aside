@@ -1,102 +1,69 @@
 package com.github.michaeldsa.aside.Ops;
 
-import com.github.michaeldsa.aside.AsidePathElement.AbstractNote;
+import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePathElement.AsidePathElement;
+import com.github.michaeldsa.aside.AsidePathElement.Note;
 import com.github.michaeldsa.aside.FileTraversal.Traversers;
+import com.github.michaeldsa.aside.PropertiesUtil.PropUtils;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.Properties;
-import java.util.Set;
 
 public enum Update implements CrudOps<AsidePathElement,AsidePathElement> {
 
-    CATEGORY (ape -> {
-        return ape;
-    }),
     NOTE (ape -> {
-        return ape;
-    }),
-    // deprecated.
-    WRITE_NOTE_METADATA(ape -> {
-        // prerequisite: must be AbstractNote subclass
-        if (!(ape instanceof AbstractNote)) {
-            System.out.println("Update.WRITE_NOTE_METADATA can only operate on AbstractNote subclasses.");
+        Note note;
+        Path currentStatePath;
+        Path previousStatePath;
+        Path parentCategoryPath;
+        boolean updatePath;
+        boolean categoryExists;
+
+        if (ape instanceof Note) {
+            note = new Note((Note) ape);
+        } else {
+            System.err.println("Update.NOTE: can only operate on Note type. Type provided: " + ape.getClass().getSimpleName());
             return ape;
         }
 
-        // define and set each property:
-        Properties props = new Properties();
-
-        // set title property
-        String title = ((AbstractNote) ape).getTitle();
-        if (title == null) {
-            title = "";
-        }
-        props.setProperty("title", title);
-
-        // set content property
-        String content = ((AbstractNote) ape).getContent();
-        if (content == null) {
-            content = "";
-        }
-        props.setProperty("content", content);
-
-        // set to property
-        Set<String> to = ((AbstractNote) ape).getTo();
-        if (to == null) {
-            to = Collections.emptySet();
-        }
-        props.setProperty("to", to.toString());
-
-        // set from property
-        Set<String> from = ((AbstractNote) ape).getFrom();
-        if (from == null) {
-            from = Collections.emptySet();
-        }
-        props.setProperty("from", from.toString());
-
-        // set tags property
-        Set<String> tags = ((AbstractNote) ape).getTags();
-        if (tags == null) {
-            tags = Collections.emptySet();
-        }
-        props.setProperty("tags", tags.toString());
-
-        // save the properties to the file:
-        Path m_note = ape.getMetaPath().getPath();
-        try (OutputStream out = Files.newOutputStream(m_note)) {
-            props.store(out, null);
-            Traversers.resolveViewPath(ape.getViewPath()).traverse();
-        } catch (IOException e) {
-            System.err.println("Create.NOTE failed: " + e.getMessage());
+        // Operation fails if previousState is null, or fields do not differ
+        if (note.getUpdateStatus()) {
+            currentStatePath = note.getMetaPath().getPath();
+            previousStatePath = note.getInstanceWithSwappedStates().getMetaPath().getPath();
+            parentCategoryPath = note.getParentCategory().getMetaPath().getPath();
+            updatePath = !currentStatePath.equals(previousStatePath);
+            categoryExists = Files.exists(parentCategoryPath);
+        } else {
+            String filename = note.getMetaPath().getPath().getFileName().toString();
+            System.err.println("Update.NOTE: Note " + filename + " has not been updated. \nThe update status of  " + note.getMetaPath() + "  is  " + note.getUpdateStatus());
+            return ape;
         }
 
-        return ape;
-    }),
+        if (Files.notExists(currentStatePath) && Files.notExists(previousStatePath)) {
+            System.err.println("Update.NOTE: Note does not exist: \ncurrent state: " + currentStatePath + "\nprevious state: "  + previousStatePath);
+            return ape;
+        }
 
-    METADATA_CONTENT_PREPEND (ape -> {
-        System.out.println("METADATA_UPDATE_CONTENT_PREPEND" + ape);
-        return ape;
-    }),
-    METADATA_CONTENT_APPEND (ape -> {
-        System.out.println("METADATA_UPDATE_CONTENT_APPEND" + ape);
-        return ape;
-    }),
-    METADATA_CONTENT_TRUNCATE (ape -> {
-        System.out.println("METADATA_UPDATE_CONTENT_TRUNCATE" + ape);
-        return ape;
-    }),
-    RESOLVE_CONTENT_META_TO_VIEW (ape -> {
-        // update specific ViewPath from ape.getViewPath().
-        System.out.println("RESOLVE_CONTENT_META_TO_VIEW" + ape);
-        return ape;
-    }),
-    RESOLVE_CONTENT_VIEW_TO_META (ape -> {
-        System.out.println("RESOLVE_CONTENT_VIEW_TO_META" + ape);
+        // write new data if category exists
+        if (categoryExists) {
+
+            PropUtils.writeNote(note);
+
+        } else {
+            System.err.println("Update.NOTE: Parent Category does not exist: " + parentCategoryPath);
+            return ape;
+        }
+
+        // delete old data if necessary:
+        if (updatePath) {
+            try {
+                Traversers.deleteCategory(new MetaPath(previousStatePath)).traverse_and_purgeViewPathOrphans();
+            } catch (IOException e ) {
+                System.err.println("Update.NOTE: IOException while deleting " + note.getMetaPath() + "\n" + e.getMessage());
+                return ape;
+            }
+        }
         return ape;
     });
 
