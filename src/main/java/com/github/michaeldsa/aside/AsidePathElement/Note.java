@@ -147,7 +147,6 @@ public class Note extends AbstractNote{
                 && this.from.equals(previousState.getFrom())
                 && this.tags.equals(previousState.getTags())
                 && this.bibliographies.equals(previousState.getBibliographies()) );
-
     }
 
     public Note setParentCategory(Category newParentCategory) {

@@ -405,6 +405,23 @@ public class Bibliography extends AbstractBibliography {
         return instance;
     }
 
+    public boolean getUpdateStatus() {
+        return previousState != null
+                && !(this.metaPath.equals(previousState.getMetaPath())
+                && this.viewPath.equals(previousState.getViewPath())
+                && this.authors.equals(previousState.getAuthors())
+                && this.title.equals(previousState.getTitle())
+                && this.publishers.equals(previousState.getPublishers())
+                && this.yearPublished.equals(previousState.getYearPublished())
+                && this.comment.equals(previousState.getComment())
+                && this.references.equals(previousState.getReferences())
+                && this.isbn.equals(previousState.getIsbn())
+                && this.doi.equals(previousState.getDoi())
+                && this.url.equals(previousState.getUrl())
+                && this.arXiv_ID.equals(previousState.getArXiv_ID())
+                && this.ads_Bibcode.equals(previousState.getAds_Bibcode()) );
+    }
+
     // booleans:
     public boolean hasPreviousState() {
         return previousState != null;

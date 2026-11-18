@@ -149,6 +149,13 @@ public class BibliographyCategory extends AbstractCategory {
         return instance;
     }
 
+    public boolean getUpdateStatus() {
+        return previousState != null
+                && !(this.metaPath.equals(previousState.getMetaPath())
+                && this.viewPath.equals(previousState.getViewPath())
+                && this.nest.equals(previousState.getNest()) );
+    }
+
 
     // inherited methods:
     // none.

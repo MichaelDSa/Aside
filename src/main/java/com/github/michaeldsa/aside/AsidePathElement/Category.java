@@ -101,6 +101,12 @@ public class Category extends AbstractCategory {
         instance.nest = this.previousState.getNest();
         return instance;
     }
+    public boolean getUpdateStatus() {
+        return previousState != null
+                && !(this.metaPath.equals(previousState.getMetaPath())
+                && this.viewPath.equals(previousState.getViewPath())
+                && this.nest.equals(previousState.getNest()) ); // may have to make sure that nest is deeply equivalent
+    }
     private ImmutableCategory getPreviousState() { return previousState; }
 
 
