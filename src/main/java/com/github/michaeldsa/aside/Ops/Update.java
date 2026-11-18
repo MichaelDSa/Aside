@@ -27,7 +27,7 @@ public enum Update implements CrudOps<AsidePathElement,AsidePathElement> {
             return ape;
         }
 
-        // Operation fails if previousState is null, or fields do not differ
+        // Operation fails if previousState is null, or if fields of this state and previousState have the same values
         if (note.getUpdateStatus()) {
             currentStatePath = note.getMetaPath().getPath();
             previousStatePath = note.getInstanceWithSwappedStates().getMetaPath().getPath();
@@ -40,7 +40,8 @@ public enum Update implements CrudOps<AsidePathElement,AsidePathElement> {
             return ape;
         }
 
-        if (Files.notExists(currentStatePath) && Files.notExists(previousStatePath)) {
+        // previousState must have a metaPath of a file that exists.
+        if (Files.notExists(previousStatePath)) {
             System.err.println("Update.NOTE: Note does not exist: \ncurrent state: " + currentStatePath + "\nprevious state: "  + previousStatePath);
             return ape;
         }

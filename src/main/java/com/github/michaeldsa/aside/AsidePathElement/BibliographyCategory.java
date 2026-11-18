@@ -143,8 +143,9 @@ public class BibliographyCategory extends AbstractCategory {
     public BibliographyCategory getInstanceWithSwappedStates() {
         BibliographyCategory instance = new BibliographyCategory(this);
         instance.previousState = null;
-        instance.setPreviousState();
-        instance.setParentCategory(this.previousState.getParentCategory());
+        instance.setPreviousState()
+                .setParentCategory(this.previousState.getParentCategory());
+        instance.nest = this.previousState.getNest();
         return instance;
     }
 

@@ -124,14 +124,15 @@ public class Note extends AbstractNote{
     public Note getInstanceWithSwappedStates() {
         Note instance = new Note(this);
         instance.previousState = null;
-        instance.setPreviousState();
-        instance.setParentCategory(this.previousState.getParentCategory())
+        instance.setPreviousState()
+                .setParentCategory(this.previousState.getParentCategory())
                 .setTitle(this.previousState.getTitle())
                 .setContent(this.previousState.getContent())
                 .setTo(this.previousState.getTo())
                 .setFrom(this.previousState.getFrom())
                 .setTags(this.previousState.getTags())
                 .setBibliographies(this.previousState.getBibliographies());
+        instance.nest = this.previousState.getNest();
         return instance;
     }
 

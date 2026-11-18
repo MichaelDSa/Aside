@@ -96,8 +96,9 @@ public class Category extends AbstractCategory {
     public Category getInstanceWithSwappedStates(){
         Category instance = new Category(this);
         instance.previousState = null;
-        instance.setPreviousState();
-        instance.setParentCategory(this.previousState.getParentCategory());
+        instance.setPreviousState()
+                .setParentCategory(this.previousState.getParentCategory());
+        instance.nest = this.previousState.getNest();
         return instance;
     }
     private ImmutableCategory getPreviousState() { return previousState; }

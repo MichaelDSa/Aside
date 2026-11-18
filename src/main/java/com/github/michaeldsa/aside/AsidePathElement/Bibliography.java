@@ -388,8 +388,8 @@ public class Bibliography extends AbstractBibliography {
     public Bibliography getInstanceWithSwappedStates() {
         Bibliography instance = new Bibliography(this);
         instance.previousState = null;
-        instance.setPreviousState();
-        instance.setParentCategory(this.previousState.getParentCategory())
+        instance.setPreviousState()
+                .setParentCategory(this.previousState.getParentCategory())
                 .setAuthors(this.previousState.getAuthors())
                 .setTitle(this.previousState.getTitle())
                 .setPublishers(this.previousState.getPublishers())
@@ -401,6 +401,7 @@ public class Bibliography extends AbstractBibliography {
                 .setUrl(this.previousState.getUrl())
                 .setArXiv_ID(this.previousState.getArXiv_ID())
                 .setAds_Bibcode(this.previousState.getAds_Bibcode());
+        instance.nest = this.previousState.getNest();
         return instance;
     }
 
