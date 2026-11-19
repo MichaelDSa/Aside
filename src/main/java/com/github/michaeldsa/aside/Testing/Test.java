@@ -6,20 +6,22 @@ import com.github.michaeldsa.aside.AsidePath.AsidePath;
 import com.github.michaeldsa.aside.AsidePath.MetaPath;
 import com.github.michaeldsa.aside.AsidePath.ViewPath;
 import com.github.michaeldsa.aside.AsidePathElement.*;
+import com.github.michaeldsa.aside.Command.Command;
+import com.github.michaeldsa.aside.Command.Commands;
+import com.github.michaeldsa.aside.Command.TestUI4Invoker;
+import com.github.michaeldsa.aside.Command.Undoable;
 import com.github.michaeldsa.aside.FileTraversal.DeleteBibliographyCategory;
 import com.github.michaeldsa.aside.FileTraversal.DeleteDiscardedCategory;
 import com.github.michaeldsa.aside.Initialization.CurrentCategory;
 import com.github.michaeldsa.aside.FileTraversal.Traversers;
 import com.github.michaeldsa.aside.Initialization.RootPaths;
 import com.github.michaeldsa.aside.Ops.Create;
-import com.github.michaeldsa.aside.Ops.Delete;
 import com.github.michaeldsa.aside.Ops.Retrieve;
 import com.github.michaeldsa.aside.Ops.Update;
 import com.github.michaeldsa.aside.PathKeeper;
 import com.github.michaeldsa.aside.Pretty;
 import com.github.michaeldsa.aside.PropertiesUtil.PropUtils;
 import com.github.michaeldsa.aside.Search.Search;
-import com.github.michaeldsa.aside.Search.SearchFor;
 import com.github.michaeldsa.aside.Settings.Settings;
 import com.github.michaeldsa.aside.Settings.TempSettings;
 import com.github.michaeldsa.aside.Validation.ValidatePath;
@@ -1216,6 +1218,18 @@ public class Test {
     }
     public static void tests_261118() {
         Test.echo("reaches tests_261118()");
+//        Command cmd1 = knew Command();
+//        cmd1.exec(Create.NOTE, new Note());
+    }
+    public static void tests_261119() {
+//        Commands cmd = new Commands();
+//        Note n1 = new Note();
+//        echo("cmd is instance of Undoable: " + (cmd.createNote(n1) instanceof Undoable));
+//        echo("cmd is instance of Command: " + (cmd.createNote(n1) instanceof Command));
+        // Above commands were successful
+
+        TestUI4Invoker ui = new TestUI4Invoker();
+        ui.start();
     }
 
 

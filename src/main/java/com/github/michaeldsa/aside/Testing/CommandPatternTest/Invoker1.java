@@ -1,19 +1,19 @@
-package com.github.michaeldsa.aside;
+package com.github.michaeldsa.aside.Testing.CommandPatternTest;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Invoker {
+public class Invoker1 {
 
     private static class CmdPair {
-        private final Command command;
-        private final Command undo;
-        CmdPair(Command cmd, Command und) {
-            command = cmd;
+        private final Cmd cmd;
+        private final Cmd undo;
+        CmdPair(Cmd cmd, Cmd und) {
+            this.cmd = cmd;
             undo = und;
         }
         private boolean exec() {
-            return command.execute();
+            return cmd.execute();
         }
         private boolean undo() {
             return undo.execute();
@@ -23,11 +23,11 @@ public class Invoker {
     private final List<CmdPair> cmds = new ArrayList<>();
     private int i;
 
-    public Invoker() {
+    public Invoker1() {
         i = -1;
     }
 
-    public void execute(Command cmd, Command und) {
+    public void execute(Cmd cmd, Cmd und) {
         CmdPair pair = new CmdPair(cmd, und);
         if(pair.exec()) {
             i++;

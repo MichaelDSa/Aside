@@ -1,11 +1,11 @@
-package com.github.michaeldsa.aside;
+package com.github.michaeldsa.aside.Testing.CommandPatternTest;
 
 import com.github.michaeldsa.aside.UserInput.Input;
 
 import java.util.Scanner;
 
 public class UIInvoker {
-    Invoker invoker = new Invoker();
+    Invoker1 invoker1 = new Invoker1();
 
     public void invokeUI() {
 
@@ -24,19 +24,19 @@ public class UIInvoker {
                 String operation = input.getOperation();
                 String command = input.getCommand();
 
-                Command exec = () -> {
+                Cmd exec = () -> {
                     System.out.println(command);
                     return false;
                 };
-                Command undo =() -> {
+                Cmd undo =() -> {
                     System.out.println("undo: " + command);
                     return true;
                 };
 
                 switch (operation) {
-                    case "add" -> invoker.execute(exec, undo);
-                    case "undo" -> invoker.undo();
-                    case "redo" -> invoker.redo();
+                    case "add" -> invoker1.execute(exec, undo);
+                    case "undo" -> invoker1.undo();
+                    case "redo" -> invoker1.redo();
                 }
 
             }
